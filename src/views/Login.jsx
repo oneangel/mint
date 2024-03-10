@@ -12,7 +12,11 @@ export const Login = () => {
   const handleSubmit = () => {
     // Lógica de inicio de sesión
     navigate("/home");
-  }
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/register/step1");
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -20,7 +24,7 @@ export const Login = () => {
         {/* Left Side */}
         <div className="">
           <Header />
-          <h1 className="text-8xl font-bold text-start mx-56 my-56 text-gray-800">
+          <h1 className="text-8xl font-bold text-start mx-56 my-56 text-gray-800 ">
             INICIAR <p></p> <span className="ml-20">SESIÓN</span>
           </h1>
         </div>
@@ -49,7 +53,11 @@ export const Login = () => {
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                   <IoLockClosed className="text-sky-700" />
                 </div>
-                <Input type={showPassword ? "text" : "password"} id='password' placeholder="Contraseña"/>
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Contraseña"
+                />
                 <div className="absolute inset-y-0 end-5 flex items-center ps-3.5">
                   {showPassword ? (
                     <GoEyeClosed
@@ -75,7 +83,7 @@ export const Login = () => {
               </div>
             </div>
             <div className="text-center">
-              <ButtonA type='sumbit'>Iniciar Sesión</ButtonA>
+              <ButtonA type="sumbit">Iniciar Sesión</ButtonA>
             </div>
             <p className="text-center mt-10 font-bold">
               ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯{" "}
@@ -84,12 +92,12 @@ export const Login = () => {
             </p>
 
             <div className="text-center mt-10">
-              <Link
-                to="/register"
-                className="text-sky-700 border border-sky-700 bg-white hover:bg-cyan-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-4xl px-48 py-3 w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              <button
+                onClick={handleRegisterClick}
+                className="text-sky-700 border border-sky-700 bg-white hover:bg-cyan-100 font-medium rounded-2xl text-4xl px-48 py-3 w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Registrarse
-              </Link>
+              </button>
             </div>
             <p className="text-center text-xl font-semibold mt-6">
               Registrándose en nuestros{" "}
@@ -100,4 +108,4 @@ export const Login = () => {
       </section>
     </div>
   );
-}
+};

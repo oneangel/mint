@@ -20,82 +20,67 @@ export const NavigationBar = () => {
       <div className="flex justify-between items-center px-10">
         <ul className="flex flex-wrap items-center py-6 font-normal text-xl">
           <MintIcon className="h-10" />
-          <li className="px-6">
+          <li className="px-6 ">
             <Link to="/home">
               <div
-                className={`flex items-center justify-center rounded-lg ${
-                  location.pathname === "/home" ? "bg-sky-100 h-10 w-full p-2" : ""
+                className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
+                  location.pathname === "/home"
+                    ? "bg-sky-100 hover:bg-sky-200 scale-110"
+                    : ""
                 }`}
               >
-                <IoHome
-                  className={
-                    location.pathname === "/home"
-                      ? "text-sky-700"
-                      : "text-zinc-600"
-                  }
-                />
-
-                <span
-                  className={
-                    location.pathname === "/home"
-                      ? "text-sky-700 ml-2"
-                      : "text-zinc-600 ml-2"
-                  }
+                <div
+                  className={`flex items-center hover:text-sky-700 p-2 transition ${
+                    location.pathname === "/home" ? "text-sky-700" : "text-zinc-600"
+                  }`}
                 >
-                  Home
-                </span>
+                  <IoHome className="mr-2" />
+                  <span>Home</span>
+                </div>
               </div>
             </Link>
           </li>
           <li className="px-6">
             <Link to="/transfer">
               <div
-                className={`flex items-center justify-center rounded-lg ${
-                  location.pathname === "/transfer" ? "bg-sky-100 h-10 w-full p-2" : ""
+                className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
+                  location.pathname === "/transfer"
+                    ? "bg-sky-100 hover:bg-sky-200 scale-110"
+                    : ""
                 }`}
               >
-                <IoSwapVerticalOutline
-                  className={
+                <div
+                  className={`flex items-center hover:text-sky-700 p-2 transition ${
                     location.pathname === "/transfer"
                       ? "text-sky-700"
                       : "text-zinc-600"
-                  }
-                />
-                <span
-                  className={
-                    location.pathname === "/transfer"
-                      ? "text-sky-700 ml-2"
-                      : "text-zinc-600 ml-2"
-                  }
+                  }`}
                 >
-                  Transacción
-                </span>
+                  <IoSwapVerticalOutline className="mr-2" />
+                  <span>Transacción</span>
+                </div>
               </div>
             </Link>
           </li>
           <li className="px-6">
             <Link to="/wallet">
               <div
-                className={`flex items-center justify-center rounded-lg ${
-                  location.pathname === "/wallet" ? "bg-sky-100 h-10 w-full p-2" : ""
+                className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
+                  location.pathname === "/wallet"
+                    ? "bg-sky-100 hover:bg-sky-200 scale-110"
+                    : ""
                 }`}
               >
-                <IoWallet
-                  className={
+                <div
+                  className={`flex items-center hover:text-sky-700 p-2 transition ${
                     location.pathname === "/wallet"
                       ? "text-sky-700"
                       : "text-zinc-600"
-                  }
-                />
-                <span
-                  className={
-                    location.pathname === "/wallet"
-                      ? "text-sky-700 ml-2"
-                      : "text-zinc-600 ml-2"
-                  }
+                  }`}
                 >
-                  Cartera
-                </span>
+                  <IoWallet className="mr-2" />
+                  <span>Cartera</span>
+                </div>
               </div>
             </Link>
           </li>

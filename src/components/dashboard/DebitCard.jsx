@@ -4,7 +4,7 @@ import { ChipIcon } from "../../icons/ChipIcon";
 
 export const DebitCard = () => {
   return (
-    <div className="h-[223px] w-[365px] bg-gradient-to-tr from-black to-sky-900 rounded-3xl">
+    <div className="h-[223px] w-[365px] bg-gradient-to-tr from-black to-sky-900 rounded-3xl hover:scale-110 transition">
 
       <div className="flex justify-between items-center px-6 pt-4">
         <p className="text-white font-semibold text-xl">Tarjeta 1</p>

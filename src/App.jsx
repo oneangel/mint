@@ -10,7 +10,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
+          <Route path="/register/*" element={<Register />} />
           <Route path="/home" element={<Home />}></Route>
           <Route path="/transfer" element={<Transfer />}></Route>
           <Route path="/wallet" element={<Wallet />}></Route>
