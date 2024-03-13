@@ -1,30 +1,80 @@
-// RegisterPage.js
-import React, { useState } from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
-import {Step1} from './Step1';
-import {Step2} from './Step2';
-import {Step3} from './Step3';
+import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import * as UserServices from "../services/user.service";
+import * as ClientServices from "../services/client.service";
+import Header from "../components/Header";
+import { ButtonA } from "../components/ui/ButtonA";
+import { Step1 } from "./Step1";
+import { Step2 } from "./Step2";
+import { Step3 } from "./Step3";
 
 export const Register = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const navigate = useNavigate();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-  const handleNextStep = () => {
-    setCurrentStep(currentStep + 1);
-    navigate(`/register/step${currentStep + 1}`);
+  const changeStep = () => {
+    console.log("hola");
+    if (currentIndex < 2) {
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    } else if (currentIndex >= 2) {
+      setCurrentIndex(0);
+    }
   };
 
-  const handlePrevStep = () => {
-    setCurrentStep(currentStep - 1);
-    navigate(`/register/step${currentStep - 1}`);
+  const onSubmit = async (data) => {
+    try {
+      const resUser = await UserServices.registerUser({
+        username: data.username,
+        password: data.password,
+      });
+      const resClient = await ClientServices.registerClient(data);
+      console.log(resUser);
+      console.log(resClient);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <Routes>
-      <Route path="/step1" element={<Step1 onNextStep={handleNextStep} />} />
-      <Route path="/step2" element={<Step2 onNextStep={handleNextStep} onPrevStep={handlePrevStep} />} />
-      <Route path="/step3" element={<Step3 onPrevStep={handlePrevStep} />} />
-    </Routes>
+    <div className="flex flex-col min-h-screen">
+      <section className="flex-grow grid grid-cols-2 gap-0">
+        {/* Left Side */}
+        <div className="text-center">
+          <Header />
+          <h1 className="text-8xl font-bold text-gray-800 py-48">
+            REGISTRARSE
+          </h1>
+        </div>
+
+        <div className="bg-cyan-100/70 rounded-ss-[130px] rounded-es-[130px] py-28">
+          <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl mx-auto">
+            {currentIndex === 0 ? (
+              <Step1 control={register} />
+            ) : currentIndex === 1 ? (
+              <Step2 control={register} />
+            ) : (
+              <Step3 control={register} />
+            )}
+
+            {currentIndex === 2 ? (
+              <ButtonA type="submit">Crear cuenta</ButtonA>
+            ) : (
+              <></>
+            )}
+
+            <p className="text-center text-xl font-semibold mt-10">
+              ¿Ya tiene cuenta?{" "}
+              <span className="text-sky-700 font-bold">Iniciar Sesión</span>
+            </p>
+          </form>
+        </div>
+
+        <button onClick={changeStep}>Siguiente</button>
+      </section>
+    </div>
   );
 };
-

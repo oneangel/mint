@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Slider from "react-slick";
 import {
   CurrentBalance,
@@ -6,8 +6,13 @@ import {
   NavigationBar,
   TransactionHistory,
 } from "../components/dashboard/dashboard-components";
+import toast, { Toaster } from "react-hot-toast";
 
 export const Home = () => {
+  useEffect(() => {
+    toast.success("¡Bienvenido!");
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -15,7 +20,7 @@ export const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,  
+    autoplaySpeed: 3000,
   };
 
   return (
@@ -64,6 +69,7 @@ export const Home = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
