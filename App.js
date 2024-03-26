@@ -15,7 +15,7 @@ const walletName = () => <WalletScreen/>
 const profileName = () => <ProfileScreen/>
 
 export default function App () {
-
+  
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
       { key: 'home', title: 'Home', focusedIcon: 'home',},
