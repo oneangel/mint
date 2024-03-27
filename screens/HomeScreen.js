@@ -16,21 +16,25 @@ const HomeScreen = () => {
     <View style={styles.container}>
       <Image style={styles.logo} source={require('../assets/mint-logo.png')}></Image>
       
-      <View style={{flexDirection:'row', alignItems: 'center'}}>
+      <View style={{flexDirection:'row', alignItems: 'center',}}>
         <Text style={styles.title1}>¡Hola Lalo!</Text>
-        <IconButton
-          mode='contained-tonal'
-          containerColor='#F5F6FA'
-          iconColor='#606060'
-          icon={'bell'}
-          size={23}
-          onPress={() => console.log('Notificacion')}
-        />
+        <View>
+          <IconButton
+            mode='contained-tonal'
+            containerColor='#F5F6FA'
+            iconColor='#606060'
+            icon={'bell'}
+            size={23}
+            onPress={() => console.log('Notificacion')}
+          />
+        </View>
       </View>
+      
 
-      <View style={{marginTop:50, marginBottom: 80}}>
-        <Text style={styles.titleBalance}>Saldo de la Cuenta</Text>
+      <View style={{marginTop:50, marginBottom: 40, alignItems: 'center'}}>
+        <Text style={styles.titleBalance}>Balance Actual</Text>
         <Text style={styles.titleMoney}>$25,000</Text>
+        <Text style={styles.titleDate}>Martes 11, 2024 • 6:25 PM</Text>
       </View>
       
       <View style={{flexDirection: 'row', marginBottom: 55}}>
@@ -73,9 +77,9 @@ const HomeScreen = () => {
 
         <View style={{paddingLeft: 20,paddingRight:20, flexDirection:'row', }}>
           <Text style={styles.title3}>Transacciones Recientes</Text>
-          <Text Text style={[styles.title4, {paddingLeft: 30}]}>Ver Todos</Text>
-          
+          <Text style={[styles.title4, {paddingLeft: 30}]}>Ver Todos</Text>
         </View>
+
         <View style={{paddingTop:15, paddingLeft: 20,paddingRight:20, alignSelf:'center'}}>
           <TransactionList />
         </View>

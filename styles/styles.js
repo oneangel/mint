@@ -13,18 +13,8 @@ export default StyleSheet.create({
       textAlign:'center',
       color: '#363636',
     },
-    titleBalance: {
-      fontSize: 17,
-      fontWeight: '500',
-      color: '#363636',
-    },
-    titleMoney: {
-      fontSize: 40,
-      fontWeight: '500',
-      color: '#1C9782',
-    },
     title2: {
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: '500',
       marginHorizontal: 40,
       color: '#606060',
@@ -38,6 +28,30 @@ export default StyleSheet.create({
       fontSize: 18,
       fontWeight: '500',
       color: '#3E70A1',
+    },
+    title5: {
+      textAlign:'center',
+      fontSize: 18,
+      fontWeight: '500',
+      color: '#363636',
+    },
+    titleBalance: {
+      textAlign:'center',
+      fontSize: 18,
+      fontWeight: '500',
+      color: '#363636',
+    },
+    titleMoney: {
+      textAlign:'center',
+      fontSize: 40,
+      fontWeight: '500',
+      color: '#1C9782',
+    },
+    titleDate:{
+      textAlign:'center',
+      fontSize: 15,
+      fontWeight: '500',
+      color: '#AFAFAF',
     },
     logo: {
       width: 45,

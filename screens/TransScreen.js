@@ -23,12 +23,15 @@ const TransScreen = () => {
         value={searchQuery}
       />
       <ScrollView>
-        <View style={{ marginTop: 35, marginBottom: 35 }}>
-          <Text style={styles.titulo}>Total de Abonos</Text>
+        <View style={{ arginTop: 35, marginBottom: 35 }}>
+          
+          <Text style={styles.title5}>Total de Abonos</Text>
           <TotalAbonos/>
-
-          <Text style={styles.titulo}>Total de Gastos</Text>
-          <TotalGastos/>
+          
+          <View style={{ marginTop: 20}}>
+            <Text style={styles.title5}>Total de Gastos</Text>
+            <TotalGastos/>
+          </View>
         </View>
         
         <TransactionList />
