@@ -1,6 +1,12 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Switch } from "@nextui-org/react";
+import {
+  Switch,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/react";
 import { MoonIcon } from "../../icons/MoonIcon";
 import { SunIcon } from "../../icons/SunIcon";
 import {
@@ -16,7 +22,7 @@ export const NavigationBar = () => {
   const location = useLocation();
 
   return (
-    <nav className="w-screen max-h-20 shadow-md">
+    <nav className="w-screen max-h-20 shadow-md bg-white">
       <div className="flex justify-between items-center px-10">
         <ul className="flex flex-wrap items-center py-6 font-normal text-xl">
           <MintIcon className="h-10" />
@@ -31,7 +37,9 @@ export const NavigationBar = () => {
               >
                 <div
                   className={`flex items-center hover:text-sky-700 p-2 transition ${
-                    location.pathname === "/home" ? "text-sky-700" : "text-zinc-600"
+                    location.pathname === "/home"
+                      ? "text-sky-700"
+                      : "text-zinc-600"
                   }`}
                 >
                   <IoHome className="mr-2" />
@@ -91,7 +99,7 @@ export const NavigationBar = () => {
             <Switch
               defaultSelected
               size="lg"
-              color="secondary"
+              color="primary"
               thumbIcon={({ isSelected, className }) =>
                 isSelected ? (
                   <SunIcon className={className} />
@@ -109,19 +117,51 @@ export const NavigationBar = () => {
           </li>
 
           <li className="px-3">
-            <div className="h-10 w-10 rounded-full bg-zinc-200/80 flex items-center justify-center">
-              <IoSettingsSharp className="text-zinc-600" />
-            </div>
+            <Dropdown>
+              <DropdownTrigger>
+                <div className="h-10 w-10 rounded-full bg-zinc-200/80 flex items-center justify-center hover:bg-neutral-300">
+                  <IoSettingsSharp className="text-zinc-600" />
+                </div>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem key="new">New file</DropdownItem>
+                <DropdownItem key="copy">Copy link</DropdownItem>
+                <DropdownItem key="edit">Edit file</DropdownItem>
+                <DropdownItem
+                  key="delete"
+                  className="text-danger"
+                  color="danger"
+                >
+                  Delete file
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </li>
 
           <li className="px-3">
-            <div className="h-10 w-10 rounded-full overflow-hidden">
-              <img
-                src="https://randomuser.me/api/portraits/men/36.jpg"
-                alt="Profile"
-                className="h-full w-full object-cover"
-              />
-            </div>
+            <Dropdown>
+              <DropdownTrigger>
+                <div className="h-10 w-10 rounded-full overflow-hidden">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/36.jpg"
+                    alt="Profile"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Static Actions">
+                <DropdownItem key="new">New file</DropdownItem>
+                <DropdownItem key="copy">Copy link</DropdownItem>
+                <DropdownItem key="edit">Edit file</DropdownItem>
+                <DropdownItem
+                  key="delete"
+                  className="text-danger"
+                  color="danger"
+                >
+                  Delete file
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </li>
         </ul>
       </div>

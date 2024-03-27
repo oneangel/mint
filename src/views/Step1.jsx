@@ -1,40 +1,67 @@
 import React from "react";
-import { Input, Label } from "../components/ui/ui-components";
-import { IoMailSharp, IoCall } from "react-icons/io5";
+import { Button, Input } from "@nextui-org/react";
+import { IoMailSharp, IoCall, IoPersonCircle } from "react-icons/io5";
 
 export const Step1 = ({ control }) => {
   return (
     <>
       {/* Username */}
-      <div className="mb-12">
-        <Label htmlFor="username">Username</Label>
+      <div className="mb-8">
         <div className="relative text-3xl font-light">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <IoMailSharp className="text-sky-700" />
-          </div>
-          <input name="username" {...control("username")} />
+          <Input
+            isRequired
+            type="text"
+            name="username"
+            label="Nombre de Usuario"
+            {...control("username")}
+            variant="bordered"
+            size="lg"
+            classNames={{label: "text-2xl"}}
+            className="rounded-2xl bg-white"
+            startContent={
+              <IoPersonCircle className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+            }
+          />
         </div>
       </div>
 
       {/* Email */}
-      <div className="mb-12">
-        <Label htmlFor="email">Email</Label>
+      <div className="mb-8">
         <div className="relative text-3xl font-light">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <IoMailSharp className="text-sky-700" />
-          </div>
-          <input name="email" {...control("email")} />
+          <Input
+            isRequired
+            type="email"
+            name="email"
+            label="Correo Electronico"
+            {...control("email")}
+            variant="bordered"
+            size="lg"
+            classNames={{label: "text-2xl"}}
+            className="rounded-2xl bg-white"
+            startContent={
+              <IoMailSharp className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+            }
+          />
         </div>
       </div>
 
       {/*  Phone number */}
       <div className="mb-12">
-        <Label htmlFor="phone">Número de telefono</Label>
         <div className="relative text-3xl font-light">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <IoCall className="text-sky-700" />
-          </div>
-          <input name="phone" {...control("phone")} />
+        <Input
+            isRequired
+            type="text"
+            name="phone"
+            label="Número de telefono"
+            {...control("phone")}
+            variant="bordered"
+            size="lg"
+            classNames={{label: "text-2xl"}}
+            className="rounded-2xl bg-white"
+            startContent={
+              <IoCall className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+            }
+          />
         </div>
         <p className="text-2xl font-light mt-3">
           Al continuar, confirma que está autorizado para utilizar este número
@@ -42,10 +69,10 @@ export const Step1 = ({ control }) => {
         </p>
       </div>
 
-      <div className="text-center mt-40">
-        <button className="text-sky-700 border border-sky-700 bg-white hover:bg-cyan-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl text-4xl px-48 py-3 w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-          Siguiente
-        </button>
+      <div className="text-center mt-20">
+        <Button className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg">
+        Siguiente
+        </Button>
       </div>
     </>
   );

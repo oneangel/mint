@@ -1,12 +1,14 @@
-import { React, useState } from "react";
+import { React, useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ButtonA, Input, Label } from "../components/ui/ui-components";
+import { ButtonA, Label } from "../components/ui/ui-components";
+import { Button, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
 import { IoMailSharp, IoLockClosed } from "react-icons/io5";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import * as Services from "../services/user.service";
 import toast, { Toaster } from "react-hot-toast";
+import { AuthContext } from "../context/AuthContext";
+import { MintIcon } from "../icons/MintIcon";
 
 export const Login = () => {
   const {
@@ -43,37 +45,60 @@ export const Login = () => {
     <div className="flex flex-col min-h-screen">
       <section className="flex-grow grid grid-cols-2 gap-0">
         {/* Left Side */}
-        <div>
-          <Header />
-          <h1 className="text-8xl font-bold text-start mx-56 my-56 text-gray-800 ">
-            INICIAR <p></p> <span className="ml-20">SESIÓN</span>
-          </h1>
+        <div className="flex justify-center items-center">
+          <MintIcon className="w-96" />
         </div>
 
         {/* Right Side / Form */}
-        <div className="bg-cyan-100/70 rounded-ss-[130px] rounded-es-[130px] py-28">
+        <div className="bg-cyan-100/70 rounded-ss-[130px] rounded-es-[130px] py-28 max-h-screen">
+          <h1 className="text-6xl font-bold text-start mx-56 mb-10 text-gray-800 ">
+            INICIAR SESIÓN
+          </h1>
           <form className="max-w-xl mx-auto" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-12">
-              <Label htmlFor="email">Correo Electronico</Label>
-              <div className="relative text-3xl font-light">
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <IoMailSharp className="text-sky-700" />
-                </div>
-                <input name="username" {...register("username")} />
+              <div className="">
+                <Input
+                  isRequired
+                  type="text"
+                  name="username"
+                  label="Usuario" 
+                  variant="bordered"
+                  {...register("username")}
+                    size="lg"
+                  classNames={{label: "text-2xl"}}
+                  className="rounded-2xl bg-white"
+                  startContent={<IoMailSharp className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />}
+                />
+                {/* <input
+                  name="username"
+                  {...register("username")}
+                  className="bg-white border border-gray- text-gray-900 rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-14 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                /> */}
                 {errors.username && <p>Username is required.</p>}
               </div>
             </div>
             <div className="mb-12">
-              <Label htmlFor="password">Contraseña</Label>
-              <div className="relative text-3xl font-light">
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                  <IoLockClosed className="text-sky-700" />
-                </div>
-                <input
+              <div className="">
+                <Input
+                  isRequired
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  label="Contraseña"
+                  variant="bordered"
+                  size="lg"
+                  {...register("password")}
+                  className="rounded-2xl bg-white"
+                  classNames={{label: "text-2xl"}}
+                  startContent={
+                    <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+                  }
+                />
+                {/* <input
                   name="password"
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                />
+                  className="bg-white border border-gray- text-gray-900 rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-14 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                /> */}
                 {errors.password && <p>Last name is required.</p>}
                 <div className="absolute inset-y-0 end-5 flex items-center ps-3.5">
                   {showPassword ? (
@@ -100,7 +125,13 @@ export const Login = () => {
               </div>
             </div>
             <div className="text-center">
-              <ButtonA type="submit">Iniciar Sesión</ButtonA>
+              <Button
+                size="lg"
+                type="submit"
+                className="bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium text-4xl w-full py-8 text-white shadow-lg"
+              >
+                Iniciar Sesión
+              </Button>
             </div>
             <p className="text-center mt-10 font-bold">
               ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯{" "}
@@ -109,12 +140,12 @@ export const Login = () => {
             </p>
 
             <div className="text-center mt-10">
-              <button
-                onClick={handleRegisterClick}
-                className="text-sky-700 border border-sky-700 bg-white hover:bg-cyan-100 font-medium rounded-2xl text-4xl px-48 py-3 w-full dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              <Button
+              onClick={handleRegisterClick}
+              className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg"
               >
                 Registrarse
-              </button>
+              </Button>
             </div>
             <p className="text-center text-xl font-semibold mt-6">
               Registrándose en nuestros{" "}

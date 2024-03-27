@@ -7,6 +7,7 @@ import { ButtonA } from "../components/ui/ButtonA";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
+import { MintIcon } from "../icons/MintIcon";
 
 export const Register = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -40,17 +41,17 @@ export const Register = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen ">
       <section className="flex-grow grid grid-cols-2 gap-0">
         {/* Left Side */}
-        <div className="text-center">
-          <Header />
-          <h1 className="text-8xl font-bold text-gray-800 py-48">
-            REGISTRARSE
-          </h1>
+        <div className="flex justify-center items-center">
+          <MintIcon className="w-96" />
         </div>
 
-        <div className="bg-cyan-100/70 rounded-ss-[130px] rounded-es-[130px] py-28">
+        <div className="bg-cyan-100/70 rounded-ss-[130px] rounded-es-[130px] py-10 max-h-screen">
+          <h1 className="text-6xl font-bold mb-10 text-center text-gray-800">
+            REGISTRARSE
+          </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl mx-auto">
             {currentIndex === 0 ? (
               <Step1 control={register} />
@@ -66,14 +67,14 @@ export const Register = () => {
               <></>
             )}
 
-            <p className="text-center text-xl font-semibold mt-10">
+            <p className="text-center text-xl font-semibold pt-8">
               ¿Ya tiene cuenta?{" "}
               <span className="text-sky-700 font-bold">Iniciar Sesión</span>
             </p>
           </form>
         </div>
 
-        <button onClick={changeStep}>Siguiente</button>
+        {/* <button onClick={changeStep}>Siguiente</button> */}
       </section>
     </div>
   );
