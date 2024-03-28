@@ -33,7 +33,6 @@ const transactionSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: true,
-    validate: validator.isFloat
   },
 
   origin: {
@@ -62,7 +61,6 @@ const transactionSchema = new mongoose.Schema({
   status: {
     type: Boolean,
     default: true,
-    validate: validator.isBoolean
   }
 });
 

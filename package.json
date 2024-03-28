@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@paypal/checkout-server-sdk": "^1.0.3",
+    "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "connect-mongodb-session": "^4.0.0",
     "cookie-parser": "^1.4.6",

@@ -3,7 +3,7 @@ import { User, Transaction } from "../models/models.js";
 //Create a new Transaction
 export const registerTransaction = async (req, res) => {
   console.log(req.body);
-  const { idTransaction, username, createdAt, description, amount, origin, destination, type, state, status } =
+  const { username, createdAt, description, amount, origin, destination, type, state, status } =
     req.body;
 
   try {
@@ -13,6 +13,8 @@ export const registerTransaction = async (req, res) => {
     if (!existingUser) {
       return res.status(404).send("User not found");
     }
+
+    const idTransaction = Math.random().toString(36).slice(2, 10 + 2);
 
     const newTransaction = new Transaction({
       idTransaction, username, createdAt, description, amount, origin, destination, type, state, status
@@ -79,7 +81,7 @@ export const updateTransaction = async (req, res) => {
 export const getTransaction = async (req, res) => {
   const { code } = req.params;
   try {
-    const existingTransaction = await User.findOne({ idTransaction: code });
+    const existingTransaction = await Transaction.findOne({ idTransaction: code });
 
     if (!existingTransaction || existingTransaction.status === false) {
       return res.status(404).send("Transaction not found");
@@ -89,5 +91,48 @@ export const getTransaction = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Error getting Transaction info");
+  }
+};
+
+//Get user's transactions list
+export const getUserTransactionsList = async (req, res) => {
+  const { code } = req.params;
+
+  try {
+    const transactionList = await Transaction.find({ username: code });
+    res.send(transactionList);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+//Get user's transactions by date range
+export const getUserTransactionsByDateRange = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const { startDate, endDate } = req.body;
+
+    const transactionList = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          createdAt: {
+            $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+            $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+          }
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          totalAmount: { $sum: "$amount" }
+        }
+      },
+      { $sort: { "_id": 1 } } //To sort them ascendant
+    ])
+    res.json(transactionList);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' })
   }
 };
