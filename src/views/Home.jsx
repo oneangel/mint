@@ -1,27 +1,36 @@
 import React, { useEffect } from "react";
+import { useQuery } from "react-query";
 import Slider from "react-slick";
 import {
   CurrentBalance,
-  DebitCard,
   NavigationBar,
   TransactionHistory,
 } from "../components/dashboard/dashboard-components";
 import toast, { Toaster } from "react-hot-toast";
 import { Skeleton, CircularProgress } from "@nextui-org/react";
-import {rows} from './Transfer'
-
-
+import { rows } from "./Transfer";
+import { PieChart, AreaChart } from "../components/charts/charts";
+import { getTransactionsByRange } from "../utils/transaction.utils";
 
 export const Home = () => {
-  const [isLoaded, setIsLoaded] = React.useState(false);
+  const useTransactionsByRange = (weeksAgo) => {
+    return useQuery(`transactionsByRange${weeksAgo}`, () =>
+      getTransactionsByRange(weeksAgo)
+    );
+  };
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 1000);
+  const {
+    data: currWeekData,
+    isLoading: isLoadingcurr,
+    isError: isErrorcurr,
+  } = useTransactionsByRange(0);
+  const {
+    data: lastWeekData,
+    isLoading: isLoadinglast,
+    isError: isErrorlast,
+  } = useTransactionsByRange(1);
 
-    return () => clearTimeout(timer);
-  }, []);
+  //const [isLoaded, setIsLoaded] = React.useState(false);
 
   useEffect(() => {
     toast.success("¡Bienvenido!");
@@ -42,12 +51,18 @@ export const Home = () => {
       <NavigationBar />
       <div className="">
         <div className="flex justify-between">
-          <Skeleton isLoaded={isLoaded} className="rounded-3xl mt-10 ml-20">
+          <Skeleton
+            isLoaded={!isLoadingcurr}
+            className="rounded-3xl mt-10 ml-20"
+          >
             <h1 className="text-4xl font-semibold text-sky-700">Home</h1>
           </Skeleton>
 
-          <Skeleton isLoaded={isLoaded} className="rounded-3xl mr-72 mt-10">
-            {/* <h1 className="text-3xl font-light ">¡Hola Lalo!</h1> */}
+          <Skeleton
+            isLoaded={!isLoadingcurr}
+            className="rounded-3xl mr-72 mt-10"
+          >
+            <h1 className="text-3xl font-light ">¡Hola Lalo!</h1>
           </Skeleton>
         </div>
 
@@ -75,6 +90,8 @@ export const Home = () => {
                   <p>$30,689</p>
                 </div>
               </div>
+
+              <PieChart />
             </div>
           </div>
 
@@ -83,44 +100,50 @@ export const Home = () => {
           </div>
 
           <div className="w-2/5 flex  justify-center">
-          <div className="flex flex-col">
-            {/* Abonos */}
-            <div className="">
-              <h2 className="text-center text-xl font-semibold mb-2">
-                Total de Abonos
-              </h2>
-              <div className="bg-green-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
-                <span className="text-3xl font-semibold text-teal-600">
-                  $239.00
-                </span>
-                <p className="text-sm"> a partir de Marzo 25, 2024 </p>
+            <div className="flex flex-col">
+              {/* Abonos */}
+              <div className="">
+                <h2 className="text-center text-xl font-semibold mb-2">
+                  Total de Abonos
+                </h2>
+                <div className="bg-green-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
+                  <span className="text-3xl font-semibold text-teal-600">
+                    $239.00
+                  </span>
+                  <p className="text-sm"> a partir de Marzo 25, 2024 </p>
+                </div>
               </div>
-            </div>
 
-            {/* Cargos */}
-            <div className="mt-8">
-              <h2 className="text-center text-xl font-semibold mb-2">
-                Gastos del Mes: <span className="text-neutral-600">Marzo</span>
-              </h2>
-              <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
-                <span className="text-3xl font-semibold text-red-700">
-                  $2,022.00
-                </span>
-                <p className="text-sm"> a partir de Marzo 18, 2024 </p>
+              {/* Cargos */}
+              <div className="mt-8">
+                <h2 className="text-center text-xl font-semibold mb-2">
+                  Gastos del Mes:{" "}
+                  <span className="text-neutral-600">Marzo</span>
+                </h2>
+                <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
+                  <span className="text-3xl font-semibold text-red-700">
+                    $2,022.00
+                  </span>
+                  <p className="text-sm"> a partir de Marzo 18, 2024 </p>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
         {/* Bottom side */}
         <div className="flex mt-6 px-20">
           <div className="w-3/5 max-h-[400px]">
-            <Skeleton isLoaded={isLoaded} className="rounded-3xl shadow-md border-1">
-              <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px]"></div>
+            <Skeleton
+              isLoaded={!isLoadingcurr && !isLoadinglast}
+              className="rounded-3xl shadow-md border-1"
+            >
+              <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px]">
+                <AreaChart currentData={currWeekData} lastData={lastWeekData} />
+              </div>
             </Skeleton>
           </div>
           <div className="w-2/5 flex items-center justify-end">
-            <TransactionHistory transactions={rows}/>
+            <TransactionHistory transactions={rows} />
           </div>
         </div>
       </div>

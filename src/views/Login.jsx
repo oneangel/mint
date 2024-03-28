@@ -1,16 +1,19 @@
 import { React, useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { ButtonA, Label } from "../components/ui/ui-components";
 import { Button, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { IoMailSharp, IoLockClosed } from "react-icons/io5";
 import { GoEye, GoEyeClosed } from "react-icons/go";
-import * as Services from "../services/user.service";
+import { userService } from "../services/services";
 import toast, { Toaster } from "react-hot-toast";
-import { AuthContext } from "../context/AuthContext";
 import { MintIcon } from "../icons/MintIcon";
+import { useMutation, QueryCache } from "react-query";
 
 export const Login = () => {
+  //Create an instance to use our global context
+  const auth = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -21,19 +24,27 @@ export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  /* It use the method login of service.js and update the goblal
+  state of login and finally it sets a token and a username
+  in the localstorage */
+  const loginMutation = useMutation(userService.login, {
+    onSuccess: (res) => {
+      console.log(res);
+      auth.login();
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.username);
+      navigate("/home");
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   const onSubmit = async (data) => {
     try {
-      const res = await Services.login(data);
-      navigate("/home");
-      console.log(res);
+      loginMutation.mutate(data);
     } catch (error) {
-      if (error.response.status === 401) {
-        toast.error("¡Credenciales incorrectas!");
-      }
-
-      if (error.response.status === 500) {
-        toast.error("¡Error con el servidor!");
-      }
+      console.log(error);
     }
   };
 
@@ -61,13 +72,15 @@ export const Login = () => {
                   isRequired
                   type="text"
                   name="username"
-                  label="Usuario" 
+                  label="Usuario"
                   variant="bordered"
                   {...register("username")}
-                    size="lg"
-                  classNames={{label: "text-2xl"}}
+                  size="lg"
+                  classNames={{ label: "text-2xl" }}
                   className="rounded-2xl bg-white"
-                  startContent={<IoMailSharp className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />}
+                  startContent={
+                    <IoMailSharp className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+                  }
                 />
                 {/* <input
                   name="username"
@@ -88,7 +101,7 @@ export const Login = () => {
                   size="lg"
                   {...register("password")}
                   className="rounded-2xl bg-white"
-                  classNames={{label: "text-2xl"}}
+                  classNames={{ label: "text-2xl" }}
                   startContent={
                     <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
                   }
@@ -141,8 +154,8 @@ export const Login = () => {
 
             <div className="text-center mt-10">
               <Button
-              onClick={handleRegisterClick}
-              className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg"
+                onClick={handleRegisterClick}
+                className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg"
               >
                 Registrarse
               </Button>

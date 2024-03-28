@@ -97,9 +97,7 @@ export const Landing = () => {
           </div>
         </section>
 
-        <section
-          className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
-        >
+        <section className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
           <h1 className="text-center pt-40 text-sky-700 text-5xl font-semibold">
             Nosotros
           </h1>
@@ -146,9 +144,7 @@ export const Landing = () => {
         </section>
 
         {/* Contacto */}
-        <section className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
-
-        </section>
+        <section className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></section>
       </div>
     </div>
   );
