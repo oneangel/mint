@@ -1,10 +1,8 @@
 import React from 'react';
+import * as Components from '../components/Components'
 import { StatusBar, View, Text, Image } from 'react-native';
-import styles from '../styles/styles';
-import GastosMes from '../components/GastosMes';
-import ActividadesChart from '../components/ActividadesChart';
 import { ScrollView } from 'react-native';
-import MetaAhorros from '../components/MetaAhorros';
+import styles from '../styles/styles';
 
 const WalletScreen = () => {
   return (
@@ -21,12 +19,12 @@ const WalletScreen = () => {
       <ScrollView>
         <View style={{alignItems: 'center'}}>
           <Text style={styles.title5}>Gastos del Mes: Marzo</Text>
-          <GastosMes/>
+          <Components.GastosMes/>
         </View>
       
         <View style={{marginTop: 60, paddingLeft: 20, paddingRight:20}}>
           <Text style={styles.title3}>Actividad Recientes</Text>
-          <ActividadesChart/>
+          <Components.ActividadesChart/>
         </View>
 
         <View style={{ marginTop: 60, paddingLeft: 20, paddingRight:20, flexDirection:'row', }}>
@@ -36,14 +34,18 @@ const WalletScreen = () => {
         </View>
       
         <View style={{paddingTop:15, paddingLeft: 20,paddingRight:20, alignSelf:'center'}}>
-          <MetaAhorros/>
+          <Components.MetaAhorros/>
         </View>
+
+        <View style={{ marginTop: 40, paddingTop:15, paddingLeft: 20,paddingRight:20,}}>
+         <Text style={styles.title3}>Gastos Generales</Text>
+          <Components.GastosGenerales/>
+        </View>
+        
       </ScrollView>
       
-
       <StatusBar style="auto" />
     </View>
   );
 };
-
 export default WalletScreen;

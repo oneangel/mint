@@ -1,14 +1,10 @@
 import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { IconButton} from 'react-native-paper';
+import * as Components from '../components/Components'
 import { Text, View, Image, ScrollView } from 'react-native';
-
-import styles from '../styles/styles';
 import ProgressCard from '../components/CardChart';
-import ButtonTrans from '../components/ButtonTrans';
-import ButtonDeposit from '../components/ButtonDeposit';
-import TransactionList from '../components/TransactionList';
-
+import { IconButton} from 'react-native-paper';
+import { StatusBar } from 'expo-status-bar';
+import styles from '../styles/styles';
 
 const HomeScreen = () => {
 
@@ -29,7 +25,6 @@ const HomeScreen = () => {
           />
         </View>
       </View>
-      
 
       <View style={{marginTop:50, marginBottom: 40, alignItems: 'center'}}>
         <Text style={styles.titleBalance}>Balance Actual</Text>
@@ -39,7 +34,7 @@ const HomeScreen = () => {
       
       <View style={{flexDirection: 'row', marginBottom: 55}}>
         <View style={{alignItems:'center'}}>
-          <ButtonTrans/>
+          <Components.ButtonTrans/>
           <Text
             style={styles.title2}
             onPress={() => console.log('Transferir')}
@@ -51,7 +46,7 @@ const HomeScreen = () => {
         </View>
 
         <View style={{alignItems:"center"}}>
-          <ButtonDeposit/>
+          <Components.ButtonDeposit/>
           <Text
             style={styles.title2}
             onPress={() => console.log('Depositar')}
@@ -81,15 +76,13 @@ const HomeScreen = () => {
         </View>
 
         <View style={{paddingTop:15, paddingLeft: 20,paddingRight:20, alignSelf:'center'}}>
-          <TransactionList />
+          <Components.TransactionList />
         </View>
          
       </ScrollView>
-      
       
       <StatusBar style="auto" />
     </View>
   );
 }
-
 export default HomeScreen;

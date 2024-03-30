@@ -1,18 +1,13 @@
 import * as React from 'react';
-import { BottomNavigation } from 'react-native-paper';
+import * as Screens from './screens/Screens'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { BottomNavigation } from 'react-native-paper';
 
-import {
-  HomeScreen,
-  TransScreen,
-  WalletScreen,
-  ProfileScreen
-} from './screens/Screens';
-
-const homeName = () => <HomeScreen/>
-const transName = () => <TransScreen/>
-const walletName = () => <WalletScreen/>
-const profileName = () => <ProfileScreen/>
+const homeName = () => <Screens.HomeScreen/>
+const transName = () => <Screens.TransScreen/>
+const walletName = () => <Screens.WalletScreen/>
+const servicesName = () => <Screens.ServicesScreen/>
+const profileName = () => <Screens.ProfileScreen/>
 
 export default function App () {
   
@@ -21,6 +16,7 @@ export default function App () {
       { key: 'home', title: 'Home', focusedIcon: 'home',},
       { key: 'trans', title: 'Transacción', focusedIcon: 'bank-transfer'},
       { key: 'wallet', title: 'Cartera', focusedIcon: 'wallet' },
+      { key: 'services', title: 'Servicios', focusedIcon: 'file-cog' },
       { key: 'profile', title: 'Perfil', focusedIcon: 'account',},
     ]);
 
@@ -28,6 +24,7 @@ export default function App () {
       home: homeName,
       trans: transName,
       wallet: walletName,
+      services: servicesName,
       profile: profileName,
     });
 
