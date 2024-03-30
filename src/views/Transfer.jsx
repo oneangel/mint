@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useQuery } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import {
   Input,
@@ -22,74 +23,17 @@ import {
   IoCalendarOutline,
   IoPieChart,
 } from "react-icons/io5";
-
-export const rows = [
-  {
-    key: "1",
-    date: "Marz 25, 2024",
-    status: "Abono",
-    description: "Chuy",
-    amount: "70.00",
-  },
-  {
-    key: "2",
-    date: "Marz 18, 2024",
-    status: "Cargo",
-    description: "Angel",
-    amount: "750.00",
-  },
-  {
-    key: "3",
-    date: "Marz 17, 2024",
-    status: "Cargo",
-    description: "Didi Food",
-    amount: "365.00",
-  },
-  {
-    key: "4",
-    date: "Marz 25, 2024",
-    status: "Abono",
-    description: "Oxxo",
-    amount: "37.00",
-  },
-  {
-    key: "5",
-    date: "Marz 25, 2024",
-    status: "Abono",
-    description: "Oxxo",
-    amount: "37.00",
-  },
-  {
-    key: "6",
-    date: "Marz 27, 2024",
-    status: "Cargo",
-    description: "Oxxo",
-    amount: "37.00",
-  },
-  {
-    key: "7",
-    date: "Marz 27, 2024",
-    status: "Abono",
-    description: "Oxxo",
-    amount: "37.00",
-  },
-  {
-    key: "8",
-    date: "Marz 28, 2024",
-    status: "Abono",
-    description: "Oxxo",
-    amount: "37.00",
-  },
-];
+import { transactionService } from "../services/services";
+import { format } from "date-fns";
 
 const columns = [
   {
-    key: "date",
+    key: "createdAt",
     label: "Fecha",
   },
   {
-    key: "status",
-    label: "Estado",
+    key: "type",
+    label: "Tipo",
   },
   {
     key: "description",
@@ -102,14 +46,31 @@ const columns = [
 ];
 
 export const Transfer = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const getTransactionList = async () => {
+    try {
+      const username = localStorage.getItem("username");
+      const token = localStorage.getItem("token");
+      const res = await transactionService.getTransactionsList(username, token);
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const {
+    data: transactionListData,
+    isLoading: isLoadingTransactionList,
+    isError: isErrorTransactionList,
+  } = useQuery("transactionList", getTransactionList);
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  const getStatusIcon = (status) => {
-    if (status === "Abono") {
+  const getStatusIcon = (type) => {
+    if (type === "income") {
       return <IoArrowUpOutline className="text-green-500" />;
-    } else if (status === "Cargo") {
+    } else if (type === "expense") {
       return <IoArrowDownSharp className="text-red-500" />;
     }
   };
@@ -118,23 +79,24 @@ export const Transfer = () => {
     setCurrentPage(page);
   };
 
-  const paginatedRows = rows.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const getPaginatedRows = (arr) => {
+    return arr.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+  };
 
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), "yyyy-MM-dd");
+  };
 
   return (
     <div className="h-screen bg-sky-50/50">
       <NavigationBar />
-      <Skeleton isLoaded={isLoaded} className="rounded-3xl mt-10 ml-20 w-1/6">
+      <Skeleton
+        isLoaded={!isLoadingTransactionList}
+        className="rounded-3xl mt-10 ml-20 w-1/6"
+      >
         <h1 className="text-4xl font-semibold text-sky-700">Transacciones</h1>
       </Skeleton>
 
@@ -143,7 +105,10 @@ export const Transfer = () => {
         <div className="w-1/2">
           <div className="flex h-16 mt-10 gap-4">
             <div className="w-1/4">
-              <Skeleton isLoaded={isLoaded} className="rounded-xl max-w-xs">
+              <Skeleton
+                isLoaded={!isLoadingTransactionList}
+                className="rounded-xl max-w-xs"
+              >
                 <Select
                   variant="bordered"
                   startContent={<IoCalendarOutline className="text-sky-700" />}
@@ -165,7 +130,10 @@ export const Transfer = () => {
             </div>
 
             <div className="w-3/4">
-              <Skeleton isLoaded={isLoaded} className="rounded-xl w-full">
+              <Skeleton
+                isLoaded={!isLoadingTransactionList}
+                className="rounded-xl w-full"
+              >
                 <Input
                   variant="bordered"
                   radius="lg"
@@ -195,47 +163,67 @@ export const Transfer = () => {
           </div>
 
           <div className="mt-4">
-            <Table className="max-h-[600px]">
-              <TableHeader columns={columns}>
-                {(column) => (
-                  <TableColumn
-                    key={column.key}
-                    className="text-xl text-neutral-800"
-                  >
-                    {column.label}
-                  </TableColumn>
-                )}
-              </TableHeader>
-              <TableBody
-                items={paginatedRows}
-                emptyContent={"No transacciones aún."}
-              >
-                {(item) => (
-                  <TableRow key={item.key}>
-                    {(columnKey) => (
-                      <TableCell className="text-xl pt-8">
-                        {columnKey === "status" && (
-                          <div className="flex items-center">
-                            {getStatusIcon(item.status)}
-                            <span className="ml-1">
-                              {getKeyValue(item, columnKey)}
+            {!isLoadingTransactionList && (
+              <Table className="max-h-[600px]">
+                <TableHeader columns={columns}>
+                  {(column) => (
+                    <TableColumn
+                      key={column.key}
+                      className="text-xl text-neutral-800"
+                    >
+                      {column.label}
+                    </TableColumn>
+                  )}
+                </TableHeader>
+                <TableBody
+                  items={getPaginatedRows(transactionListData.data)}
+                  emptyContent={"No transacciones aún."}
+                >
+                  {(item) => (
+                    <TableRow key={item._id}>
+                      {(columnKey) => (
+                        <TableCell className="text-xl pt-8">
+                          {columnKey === "type" && (
+                            <div className="flex items-center">
+                              {console.log(item._id)}
+                              {getStatusIcon(item.type)}
+                              <span className="ml-1">
+                                {getKeyValue(
+                                  item.type === "income" ? "Ingreso" : "Gasto",
+                                  columnKey
+                                )}
+                              </span>
+                            </div>
+                          )}
+
+                          {columnKey === "createdAt" && (
+                            <span>
+                              {formatDate(getKeyValue(item, columnKey))}
                             </span>
-                          </div>
-                        )}
-                        {columnKey !== "status" && getKeyValue(item, columnKey)}
-                      </TableCell>
-                    )}
-                  </TableRow>
+                          )}
+
+                          {columnKey != "type" && columnKey != "createdAt" && (
+                            <span>{getKeyValue(item, columnKey)}</span>
+                          )}
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            )}
+
+            {!isLoadingTransactionList && (
+              <Pagination
+                showControls
+                className="justify-end flex mt-2"
+                total={Math.ceil(
+                  transactionListData.data.length / itemsPerPage
                 )}
-              </TableBody>
-            </Table>
-            <Pagination
-              showControls
-              className="justify-end flex mt-2"
-              total={Math.ceil(rows.length / itemsPerPage)}
-              current={currentPage}
-              onChange={handlePageChange}
-            />
+                current={currentPage}
+                onChange={handlePageChange}
+              />
+            )}
           </div>
         </div>
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Slider from "react-slick";
 import {
@@ -8,15 +8,42 @@ import {
 } from "../components/dashboard/dashboard-components";
 import toast, { Toaster } from "react-hot-toast";
 import { Skeleton, CircularProgress } from "@nextui-org/react";
-import { rows } from "./Transfer";
 import { PieChart, AreaChart } from "../components/charts/charts";
 import { getTransactionsByRange } from "../utils/transaction.utils";
+import { transactionService } from "../services/services";
+import { getMonth, format } from "date-fns";
+import { es } from "date-fns/locale";
 
 export const Home = () => {
+  const [month, setMonth] = useState("");
+
   const useTransactionsByRange = (weeksAgo) => {
     return useQuery(`transactionsByRange${weeksAgo}`, () =>
       getTransactionsByRange(weeksAgo)
     );
+  };
+
+  const getBalance = async () => {
+    try {
+      const username = localStorage.getItem("username");
+      const token = localStorage.getItem("token");
+      const res = await transactionService.getBalance(username, token);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getLastTransactions = async () => {
+    try {
+      const username = localStorage.getItem("username");
+      const token = localStorage.getItem("token");
+      const res = await transactionService.getLastTransactions(username, token);
+      console.log(res);
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const {
@@ -30,10 +57,22 @@ export const Home = () => {
     isError: isErrorlast,
   } = useTransactionsByRange(1);
 
-  //const [isLoaded, setIsLoaded] = React.useState(false);
+  const {
+    data: balanceData,
+    isLoading: isLoadingBalance,
+    isError: isErrorBalance,
+  } = useQuery("balance", getBalance);
+
+  const {
+    data: lastTransactionsData,
+    isLoading: isLoadingLastTransactions,
+    isError: isErrorLastTransactions,
+  } = useQuery("lastTransactions", getLastTransactions);
 
   useEffect(() => {
     toast.success("¡Bienvenido!");
+    const today = new Date();
+    setMonth(format(today, "MMMM", { locale: es }));
   }, []);
 
   const settings = {
@@ -96,7 +135,12 @@ export const Home = () => {
           </div>
 
           <div className="w-2/5 flex justify-center items-center">
-            <CurrentBalance />
+            {!isLoadingBalance && (
+              <CurrentBalance
+                isLoading={isLoadingBalance}
+                balance={balanceData}
+              />
+            )}
           </div>
 
           <div className="w-2/5 flex  justify-center">
@@ -118,7 +162,7 @@ export const Home = () => {
               <div className="mt-8">
                 <h2 className="text-center text-xl font-semibold mb-2">
                   Gastos del Mes:{" "}
-                  <span className="text-neutral-600">Marzo</span>
+                  <span className="text-neutral-600">{month}</span>
                 </h2>
                 <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
                   <span className="text-3xl font-semibold text-red-700">
@@ -134,7 +178,9 @@ export const Home = () => {
         <div className="flex mt-6 px-20">
           <div className="w-3/5 max-h-[400px]">
             <Skeleton
-              isLoaded={!isLoadingcurr && !isLoadinglast}
+              isLoaded={
+                !isLoadingcurr && !isLoadinglast && !isErrorcurr && !isErrorlast
+              }
               className="rounded-3xl shadow-md border-1"
             >
               <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px]">
@@ -143,7 +189,12 @@ export const Home = () => {
             </Skeleton>
           </div>
           <div className="w-2/5 flex items-center justify-end">
-            <TransactionHistory transactions={rows} />
+            {!isLoadingLastTransactions && (
+              <TransactionHistory
+                transactions={lastTransactionsData.data}
+                isLoading={isLoadingLastTransactions}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -1,21 +1,12 @@
 import React from "react";
 import { IoArrowUpOutline, IoArrowDownSharp } from "react-icons/io5";
 import { Skeleton } from "@nextui-org/react";
+import { format } from "date-fns";
 
-export const TransactionHistory = ({ transactions }) => {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
+export const TransactionHistory = ({ transactions, isLoading }) => {
   return (
     <Skeleton
-      isLoaded={isLoaded}
+      isLoaded={!isLoading}
       className="rounded-3xl shadow-md w-[95%] h-[400px]"
     >
       <div className="bg-white rounded-3xl border-1 border-gray-200 h-[400px]">
@@ -24,25 +15,25 @@ export const TransactionHistory = ({ transactions }) => {
           <p className="text-medium font-semibold text-sky-700">Ver Todos</p>
         </div>
 
-        {transactions.slice(0, 3).map((transaction, index) => (
+        {transactions.map((transaction, index) => (
           <div key={index} className="flex flex-wrap px-6 py-3 mt-6">
             <div className="flex items-center w-1/3">
               <div
                 className={`flex items-center justify-center mr-4 ${
-                  transaction.status === "Abono"
+                  transaction.type === "income"
                     ? "text-green-500"
                     : "text-red-500"
                 }`}
               >
-                {transaction.status === "Abono" ? (
+                {transaction.type === "income" ? (
                   <IoArrowDownSharp className="size-8" />
                 ) : (
                   <IoArrowUpOutline className="size-8" />
                 )}
               </div>
               <div>
-                <p className="text-lg font-medium">{transaction.status}</p>
-                <p>{transaction.date}</p>
+                <p className="text-lg font-medium">{transaction.income}</p>
+                <p>{format(new Date(transaction.createdAt), "yyyy-MM-dd")}</p>
               </div>
             </div>
 
@@ -53,12 +44,12 @@ export const TransactionHistory = ({ transactions }) => {
               <div className="flex flex-wrap items-end">
                 <p
                   className={
-                    transaction.status === "Abono"
+                    transaction.type === "income"
                       ? "text-green-500"
                       : "text-red-600"
                   }
                 >
-                  {transaction.status === "Abono" ? "+" : "-"}$
+                  {transaction.type === "income" ? "+" : "-"}$
                   {transaction.amount}
                 </p>
               </div>
