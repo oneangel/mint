@@ -1,6 +1,6 @@
 import { User, Transaction } from "../models/models.js";
 
-//Create a new Transaction
+//Creates a new Transaction
 export const registerTransaction = async (req, res) => {
   console.log(req.body);
   const { username, createdAt, description, amount, origin, destination, type, state, status } =
@@ -27,7 +27,7 @@ export const registerTransaction = async (req, res) => {
   }
 };
 
-//Delete an existing Transaction
+//Deletes an existing Transaction
 export const deleteTransaction = async (req, res) => {
   try {
     const { code } = req.params;
@@ -46,7 +46,7 @@ export const deleteTransaction = async (req, res) => {
   }
 }
 
-//Update an existing Transaction
+//Updates an existing Transaction
 export const updateTransaction = async (req, res) => {
   const { code } = req.params;
   const { createdAt, description, amount, origin, destination, type, state, status } =
@@ -77,7 +77,7 @@ export const updateTransaction = async (req, res) => {
   }
 };
 
-//Get an existing Transaction
+//Gets an existing Transaction
 export const getTransaction = async (req, res) => {
   const { code } = req.params;
   try {
@@ -94,7 +94,20 @@ export const getTransaction = async (req, res) => {
   }
 };
 
-//Get user's transactions list
+//Gets the last three user's transactions
+export const getLastTransactions = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const transactions = await Transaction.find({ username: code }).sort({ createdAt: -1 }).limit(3);
+    res.json(transactions)
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
+
+//Gets user's transactions list
 export const getUserTransactionsList = async (req, res) => {
   const { code } = req.params;
 
@@ -106,7 +119,7 @@ export const getUserTransactionsList = async (req, res) => {
   }
 };
 
-//Get user's transactions by date range
+//Gets user's transactions by date range
 export const getUserTransactionsByDateRange = async (req, res) => {
   try {
     const { code } = req.params;
@@ -136,3 +149,28 @@ export const getUserTransactionsByDateRange = async (req, res) => {
     res.status(500).json({ error: 'Server error' })
   }
 };
+
+// Gets user's balance account
+export const getBalanceAccount = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const balance = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          balance: { $sum: "$amount" }
+        }
+      }
+    ])
+    res.json(balance[0]);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+}

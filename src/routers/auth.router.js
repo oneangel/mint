@@ -24,6 +24,8 @@ router.put('/update/transaction/:code', authMiddleware, TransactionController.up
 router.get('/get/transaction/:code', authMiddleware, TransactionController.getTransaction);
 router.get('/get/user/transactions/:code', authMiddleware, TransactionController.getUserTransactionsList);
 router.post('/get/transactions/bydate/:code', authMiddleware, TransactionController.getUserTransactionsByDateRange);
+router.get('/get/transaction/balance/:code', authMiddleware, TransactionController.getBalanceAccount);
+router.get('/get/transaction/last-ones/:code', authMiddleware, TransactionController.getLastTransactions);
 
 //Savings Goal
 router.post('/register/goal', authMiddleware, SavingsGoal.registerSavingGoals);
