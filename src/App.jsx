@@ -8,6 +8,7 @@ import {
   Register,
   Transfer,
   Wallet,
+  Services
 } from "./views/Views.js";
 import "./index.css";
 import {} from "@nextui-org/react";
@@ -36,6 +37,7 @@ export default function App() {
               />
               <Route path="/transfer" element={<Transfer />}></Route>
               <Route path="/wallet" element={<Wallet />}></Route>
+              <Route path="/services" element={<Services />}></Route>
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </BrowserRouter>

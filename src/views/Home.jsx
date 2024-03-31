@@ -7,7 +7,7 @@ import {
   TransactionHistory,
 } from "../components/dashboard/dashboard-components";
 import toast, { Toaster } from "react-hot-toast";
-import { Skeleton, CircularProgress } from "@nextui-org/react";
+import { Skeleton } from "@nextui-org/react";
 import { PieChart, AreaChart } from "../components/charts/charts";
 import { getTransactionsByRange } from "../utils/transaction.utils";
 import { transactionService } from "../services/services";
@@ -89,13 +89,8 @@ export const Home = () => {
     <div className="h-screen bg-sky-50/50">
       <NavigationBar />
       <div className="">
-        <div className="flex justify-between">
-          <Skeleton
-            isLoaded={!isLoadingcurr}
-            className="rounded-3xl mt-10 ml-20"
-          >
-            <h1 className="text-4xl font-semibold text-sky-700">Home</h1>
-          </Skeleton>
+        <div className="flex justify-between mx-20">
+            <h1 className="text-4xl font-semibold text-sky-700 mt-32">Home</h1>
 
           <Skeleton
             isLoaded={!isLoadingcurr}
@@ -177,17 +172,21 @@ export const Home = () => {
         {/* Bottom side */}
         <div className="flex mt-6 px-20">
           <div className="w-3/5 max-h-[400px]">
-            <Skeleton
-              isLoaded={
-                !isLoadingcurr && !isLoadinglast && !isErrorcurr && !isErrorlast
-              }
-              className="rounded-3xl shadow-md border-1"
-            >
-              <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px]">
+            <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px] shadow-md">
+              <Skeleton
+                isLoaded={
+                  !isLoadingcurr &&
+                  !isLoadinglast &&
+                  !isErrorcurr &&
+                  !isErrorlast
+                }
+                className="rounded-3xl border-1"
+              >
                 <AreaChart currentData={currWeekData} lastData={lastWeekData} />
-              </div>
-            </Skeleton>
+              </Skeleton>
+            </div>
           </div>
+
           <div className="w-2/5 flex items-center justify-end">
             {!isLoadingLastTransactions && (
               <TransactionHistory

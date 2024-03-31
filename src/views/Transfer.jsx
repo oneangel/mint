@@ -93,12 +93,8 @@ export const Transfer = () => {
   return (
     <div className="h-screen bg-sky-50/50">
       <NavigationBar />
-      <Skeleton
-        isLoaded={!isLoadingTransactionList}
-        className="rounded-3xl mt-10 ml-20 w-1/6"
-      >
-        <h1 className="text-4xl font-semibold text-sky-700">Transacciones</h1>
-      </Skeleton>
+        <h1 className="text-4xl pl-20 font-semibold text-sky-700 pt-32">Transacciones</h1>
+
 
       <div className="flex flex-wrap mx-20">
         {/* left side / table */}

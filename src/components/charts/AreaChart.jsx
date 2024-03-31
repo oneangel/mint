@@ -114,7 +114,7 @@ const AreaChart = ({ currentData, lastData }) => {
     };
   }, [currentData, lastData]); // Agrega currentData y lastData a las dependencias de useEffect
 
-  return <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>;
+  return <div ref={chartRef} style={{ width: "100%", height: "400px" }} className="p-6"></div>;
 };
 
 export default AreaChart;
