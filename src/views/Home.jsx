@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import Slider from "react-slick";
 import {
   CurrentBalance,
   NavigationBar,
   TransactionHistory,
 } from "../components/dashboard/dashboard-components";
 import toast, { Toaster } from "react-hot-toast";
-import { Skeleton } from "@nextui-org/react";
+import { Skeleton, CircularProgress } from "@nextui-org/react";
 import { PieChart, AreaChart } from "../components/charts/charts";
-import { getTransactionsByRange } from "../utils/transaction.utils";
-import { transactionService } from "../services/services";
-import { getMonth, format } from "date-fns";
+import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import {
+  getBalance,
+  getLastTransactions,
+  getTotalExpense,
+} from "../hooks/transaction.hooks";
+import { getTransactionsByRange } from "../utils/transaction.utils";
 
 export const Home = () => {
   const [month, setMonth] = useState("");
@@ -21,29 +24,6 @@ export const Home = () => {
     return useQuery(`transactionsByRange${weeksAgo}`, () =>
       getTransactionsByRange(weeksAgo)
     );
-  };
-
-  const getBalance = async () => {
-    try {
-      const username = localStorage.getItem("username");
-      const token = localStorage.getItem("token");
-      const res = await transactionService.getBalance(username, token);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getLastTransactions = async () => {
-    try {
-      const username = localStorage.getItem("username");
-      const token = localStorage.getItem("token");
-      const res = await transactionService.getLastTransactions(username, token);
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const {
@@ -69,6 +49,12 @@ export const Home = () => {
     isError: isErrorLastTransactions,
   } = useQuery("lastTransactions", getLastTransactions);
 
+  const {
+    data: totalExpenseData,
+    isLoading: isLoadingTotalExpense,
+    isError: isErrorTotalExpense,
+  } = useQuery("totalExpenses", getTotalExpense);
+
   useEffect(() => {
     toast.success("¡Bienvenido!");
     const today = new Date();
@@ -86,24 +72,24 @@ export const Home = () => {
   };
 
   return (
-    <div className="h-screen overflow-y-auto bg-sky-50/50">
+    <div className="h-screen bg-sky-50/50">
       <NavigationBar />
       <div className="">
         <div className="flex justify-between mx-20">
-            <h1 className="text-4xl font-semibold text-sky-700 mt-32">Home</h1>
+          <h1 className="text-4xl font-semibold text-sky-700 mt-32">Home</h1>
 
           <Skeleton
             isLoaded={!isLoadingcurr}
-            className="rounded-3xl mr-72 mt-32 hidden md:block"
+            className="rounded-3xl mr-72 mt-10"
           >
-            <h1 className="text-3xl font-light">¡Hola Lalo!</h1>
+            <h1 className="text-3xl font-light ">¡Hola Lalo!</h1>
           </Skeleton>
         </div>
 
-        <div className="flex flex-wrap mt-8 mx-20">
+        <div className="flex mt-8 mx-20 h-72">
           {/* Gastos generales */}
-          <div className="w-full md:w-1/2 lg:w-2/5 mb-4 md:mb-0 px-2 ">
-            <div className="bg-white h-[280px] w-[480px] rounded-3xl shadow-md border-1">
+          <div className="w-1/4 flex items-center">
+            <div className="bg-white h-[280px] w-[418px] rounded-3xl shadow-md border-1">
               <h1 className="p-4 text-lg font-semibold">Gastos Generales </h1>
 
               <div className="flex flex-wrap justify-center items-center gap-9">
@@ -129,8 +115,7 @@ export const Home = () => {
             </div>
           </div>
 
-          {/* Balance General */}
-          <div className="w-full md:w-1/2 lg:w-2/5 mb-4 md:mb-0 px-2">
+          <div className="w-2/5 flex justify-center items-center">
             {!isLoadingBalance && (
               <CurrentBalance
                 isLoading={isLoadingBalance}
@@ -139,11 +124,10 @@ export const Home = () => {
             )}
           </div>
 
-          {/* Abonos */}
-          <div className="w-full md:w-full lg:w-1/5 px-2">
-            <div className="flex flex-col items-center">
+          <div className="w-2/5 flex  justify-center">
+            <div className="flex flex-col">
               {/* Abonos */}
-              <div className="mb-4">
+              <div className="">
                 <h2 className="text-center text-xl font-semibold mb-2">
                   Total de Abonos
                 </h2>
@@ -159,12 +143,14 @@ export const Home = () => {
               <div className="mt-8">
                 <h2 className="text-center text-xl font-semibold mb-2">
                   Gastos del Mes:{" "}
-                  <span className="text-neutral-600 ">{month}</span>
+                  <span className="text-neutral-600">{month}</span>
                 </h2>
                 <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
-                  <span className="text-3xl font-semibold text-red-700">
-                    $2,022.00
-                  </span>
+                  {!isLoadingTotalExpense && (
+                    <span className="text-3xl font-semibold text-red-700">
+                      $-{totalExpenseData.data.expenseTotal}
+                    </span>
+                  )}
                   <p className="text-sm"> a partir de Marzo 18, 2024 </p>
                 </div>
               </div>
@@ -172,24 +158,20 @@ export const Home = () => {
           </div>
         </div>
         {/* Bottom side */}
-        <div className="flex flex-wrap mt-6 px-20">
-          <div className="w-full md:w-3/5 mb-4 md:mb-0 px-2">
-            <div className="bg-white rounded-3xl border-gray-200 w-full h-[400px] shadow-md">
-              <Skeleton
-                isLoaded={
-                  !isLoadingcurr &&
-                  !isLoadinglast &&
-                  !isErrorcurr &&
-                  !isErrorlast
-                }
-                className="rounded-3xl border-1"
-              >
+        <div className="flex mt-6 px-20">
+          <div className="w-3/5 max-h-[400px]">
+            <Skeleton
+              isLoaded={
+                !isLoadingcurr && !isLoadinglast && !isErrorcurr && !isErrorlast
+              }
+              className="rounded-3xl shadow-md border-1"
+            >
+              <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px]">
                 <AreaChart currentData={currWeekData} lastData={lastWeekData} />
-              </Skeleton>
-            </div>
+              </div>
+            </Skeleton>
           </div>
-
-          <div className="w-full md:w-2/5 px-2">
+          <div className="w-2/5 flex items-center justify-end">
             {!isLoadingLastTransactions && (
               <TransactionHistory
                 transactions={lastTransactionsData.data}

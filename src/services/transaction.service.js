@@ -15,6 +15,10 @@ export function getTransactionsList(user, token) {
 		{ headers: { Authorization: token } });
 }
 
+export function getTotalExpenseByDate(user, range) {
+	return axios.post(`${URL_API}/get/expensesTotal/bydate/${user}`, range)
+}
+
 export function getBalance(user, token) {
 	return axios.get(`${URL_API}/get/transaction/balance/${user}`,
 		{ headers: { Authorization: token } });

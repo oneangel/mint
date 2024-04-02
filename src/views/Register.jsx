@@ -8,7 +8,6 @@ import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { MintIcon } from "../icons/MintIcon";
-import { Button } from "@nextui-org/react";
 
 export const Register = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -18,12 +17,20 @@ export const Register = () => {
     formState: { errors },
   } = useForm();
 
-  const changeStep = () => {
+  const nextStep = () => {
     console.log("hola");
     if (currentIndex < 2) {
       setCurrentIndex((prevIndex) => prevIndex + 1);
     } else if (currentIndex >= 2) {
       setCurrentIndex(0);
+    }
+  };
+
+  const previousStep = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prevIndex) => prevIndex - 1);
+    } else {
+      setCurrentIndex(2);
     }
   };
 
@@ -55,15 +62,19 @@ export const Register = () => {
           </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl mx-auto">
             {currentIndex === 0 ? (
-              <Step1 control={register} />
+              <Step1 control={register} nextStep={nextStep} />
             ) : currentIndex === 1 ? (
-              <Step2 control={register} />
+              <Step2
+                control={register}
+                nextStep={nextStep}
+                previousStep={previousStep}
+              />
             ) : (
-              <Step3 control={register} />
+              <Step3 control={register} previousStep={previousStep} />
             )}
 
             {currentIndex === 2 ? (
-              <Button size="lg" className="bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium text-4xl w-full py-8 text-white shadow-lg" type="submit">Crear cuenta</Button>
+              <ButtonA type="submit">Crear cuenta</ButtonA>
             ) : (
               <></>
             )}
@@ -74,8 +85,6 @@ export const Register = () => {
             </p>
           </form>
         </div>
-
-        <button onClick={changeStep}>Siguiente</button>
       </section>
     </div>
   );

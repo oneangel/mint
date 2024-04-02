@@ -1,30 +1,13 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
-import {
-  Input,
-  Pagination,
-  Select,
-  SelectItem,
-  Skeleton,
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  getKeyValue,
-} from "@nextui-org/react";
+import { Pagination, Select, SelectItem, Skeleton } from "@nextui-org/react";
 import { animals } from "./data";
-import {
-  IoSearch,
-  IoArrowUpOutline,
-  IoArrowDownSharp,
-  IoCalendarOutline,
-  IoPieChart,
-} from "react-icons/io5";
-import { transactionService } from "../services/services";
-import { format } from "date-fns";
+import { IoCalendarOutline, IoPieChart } from "react-icons/io5";
+import PieChart2 from "../components/charts/PieChart2";
+import { TableCustom } from "../components/dashboard/TableCustom";
+import { SearchBar } from "../components/dashboard/SearchBar";
+import { getTransactionList } from "../hooks/transaction.hooks";
 
 const columns = [
   {
@@ -46,18 +29,6 @@ const columns = [
 ];
 
 export const Transfer = () => {
-  const getTransactionList = async () => {
-    try {
-      const username = localStorage.getItem("username");
-      const token = localStorage.getItem("token");
-      const res = await transactionService.getTransactionsList(username, token);
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const {
     data: transactionListData,
     isLoading: isLoadingTransactionList,
@@ -65,15 +36,8 @@ export const Transfer = () => {
   } = useQuery("transactionList", getTransactionList);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
   const itemsPerPage = 7;
-
-  const getStatusIcon = (type) => {
-    if (type === "income") {
-      return <IoArrowUpOutline className="text-green-500" />;
-    } else if (type === "expense") {
-      return <IoArrowDownSharp className="text-red-500" />;
-    }
-  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -86,15 +50,24 @@ export const Transfer = () => {
     );
   };
 
-  const formatDate = (dateString) => {
-    return format(new Date(dateString), "yyyy-MM-dd");
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
+
+  const filteredData = transactionListData?.data.filter((item) =>
+    Object.values(item).some(
+      (value) =>
+        typeof value === "string" &&
+        value.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   return (
     <div className="h-screen bg-sky-50/50">
       <NavigationBar />
-        <h1 className="text-4xl pl-20 font-semibold text-sky-700 pt-32">Transacciones</h1>
-
+      <h1 className="text-4xl pl-20 font-semibold text-sky-700 pt-32">
+        Transacciones
+      </h1>
 
       <div className="flex flex-wrap mx-20">
         {/* left side / table */}
@@ -130,29 +103,9 @@ export const Transfer = () => {
                 isLoaded={!isLoadingTransactionList}
                 className="rounded-xl w-full"
               >
-                <Input
-                  variant="bordered"
-                  radius="lg"
-                  className="bg-white"
-                  classNames={{
-                    input: [
-                      "text-black/90 dark:text-white/90 text-xl",
-                      "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                    ],
-                    innerWrapper: "bg-white",
-                    inputWrapper: [
-                      "dark:bg-default/60",
-                      "backdrop-blur-xl",
-                      "backdrop-saturate-200",
-                      "dark:hover:bg-default/70",
-                      "group-data-[focused=true]:bg-default-200/50",
-                      "dark:group-data-[focused=true]:bg-default/60",
-                      "!cursor-text",
-                      "text-2xl",
-                    ],
-                  }}
-                  placeholder="Escribe para buscar la descripción..."
-                  startContent={<IoSearch className="text-sky-700" />}
+                <SearchBar
+                  searchTerm={searchTerm}
+                  handleSearchChange={handleSearchChange}
                 />
               </Skeleton>
             </div>
@@ -160,62 +113,17 @@ export const Transfer = () => {
 
           <div className="mt-4">
             {!isLoadingTransactionList && (
-              <Table className="max-h-[600px]">
-                <TableHeader columns={columns}>
-                  {(column) => (
-                    <TableColumn
-                      key={column.key}
-                      className="text-xl text-neutral-800"
-                    >
-                      {column.label}
-                    </TableColumn>
-                  )}
-                </TableHeader>
-                <TableBody
-                  items={getPaginatedRows(transactionListData.data)}
-                  emptyContent={"No transacciones aún."}
-                >
-                  {(item) => (
-                    <TableRow key={item._id}>
-                      {(columnKey) => (
-                        <TableCell className="text-xl pt-8">
-                          {columnKey === "type" && (
-                            <div className="flex items-center">
-                              {console.log(item._id)}
-                              {getStatusIcon(item.type)}
-                              <span className="ml-1">
-                                {getKeyValue(
-                                  item.type === "income" ? "Ingreso" : "Gasto",
-                                  columnKey
-                                )}
-                              </span>
-                            </div>
-                          )}
-
-                          {columnKey === "createdAt" && (
-                            <span>
-                              {formatDate(getKeyValue(item, columnKey))}
-                            </span>
-                          )}
-
-                          {columnKey != "type" && columnKey != "createdAt" && (
-                            <span>{getKeyValue(item, columnKey)}</span>
-                          )}
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+              <TableCustom
+                columns={columns}
+                data={getPaginatedRows(filteredData)}
+              />
             )}
 
             {!isLoadingTransactionList && (
               <Pagination
                 showControls
                 className="justify-end flex mt-2"
-                total={Math.ceil(
-                  transactionListData.data.length / itemsPerPage
-                )}
+                total={Math.ceil((filteredData?.length || 0) / itemsPerPage)}
                 current={currentPage}
                 onChange={handlePageChange}
               />
@@ -261,7 +169,9 @@ export const Transfer = () => {
               </p>
             </div>
 
-            <div>{/* Grafica */}</div>
+            <div>
+              <PieChart2 />
+            </div>
           </div>
         </div>
       </div>

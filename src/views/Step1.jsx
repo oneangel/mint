@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Input } from "@nextui-org/react";
 import { IoMailSharp, IoCall, IoPersonCircle } from "react-icons/io5";
 
-export const Step1 = ({ control }) => {
+export const Step1 = ({ control, nextStep }) => {
   return (
     <>
       {/* Username */}
@@ -16,7 +16,7 @@ export const Step1 = ({ control }) => {
             {...control("username")}
             variant="bordered"
             size="lg"
-            classNames={{label: "text-2xl"}}
+            classNames={{ label: "text-2xl" }}
             className="rounded-2xl bg-white"
             startContent={
               <IoPersonCircle className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
@@ -36,7 +36,7 @@ export const Step1 = ({ control }) => {
             {...control("email")}
             variant="bordered"
             size="lg"
-            classNames={{label: "text-2xl"}}
+            classNames={{ label: "text-2xl" }}
             className="rounded-2xl bg-white"
             startContent={
               <IoMailSharp className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
@@ -48,7 +48,7 @@ export const Step1 = ({ control }) => {
       {/*  Phone number */}
       <div className="mb-12">
         <div className="relative text-3xl font-light">
-        <Input
+          <Input
             isRequired
             type="text"
             name="phone"
@@ -56,7 +56,7 @@ export const Step1 = ({ control }) => {
             {...control("phone")}
             variant="bordered"
             size="lg"
-            classNames={{label: "text-2xl"}}
+            classNames={{ label: "text-2xl" }}
             className="rounded-2xl bg-white"
             startContent={
               <IoCall className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
@@ -70,8 +70,11 @@ export const Step1 = ({ control }) => {
       </div>
 
       <div className="text-center mt-20">
-        <Button className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg">
-        Siguiente
+        <Button
+          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg"
+          onClick={nextStep}
+        >
+          Siguiente
         </Button>
       </div>
     </>
