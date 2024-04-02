@@ -6,7 +6,7 @@ import { Header } from "../components/dashboard/Header";
 const personas = [
   { nombre: "Ricardo López", rol: "Rol de la persona" },
   { nombre: "Carlos Marín", rol: "Rol de la persona" },
-  { nombre: "Elio Luján", rol: "Rol de la persona" },
+  { nombre: "Elio Luján", rol: "Morido Ja ⚰️⚰️☠️" },
   { nombre: "Jesús Mórales", rol: "Rol de la persona" },
   { nombre: "Homero Funtes", rol: "Rol de la persona" },
   { nombre: "Eduardo Gurrola", rol: "Rol de la persona" },

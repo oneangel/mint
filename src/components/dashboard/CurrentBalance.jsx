@@ -31,12 +31,12 @@ export const CurrentBalance = ({ balance, isLoading }) => {
 
   return (
     <Tooltip content="Presiona para ver mas detalle" color="primary">
-      <div className="h-[250px] w-[480px] bg-white rounded-3xl border-1 border-gray-200 shadow-md">
+      <div className="h-[280px] w-[480px] bg-white rounded-3xl border-1 border-gray-200 shadow-md">
         <p className="pt-4 pl-4 text-xl font-semibold">Balance general</p>
 
         <div className="flex flex-col h-full justify-center">
           <h1 className="text-center font-semibold text-6xl text-teal-600 mb-2">
-            ${balance.data.balance.toFixed(2)}
+            {/* ${balance.data.balance.toFixed(2)} */}
           </h1>
           <p className="text-center pb-10 text-lg text-zinc-500">
             {daysOfWeek[currentDay]} •<span> {formattedTime} PM</span>

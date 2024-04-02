@@ -1,5 +1,5 @@
+import { Button, Input } from "@nextui-org/react";
 import { React, useState } from "react";
-import { Input, Label } from "../components/ui/ui-components";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { IoLockClosed } from "react-icons/io5";
 
@@ -10,69 +10,75 @@ export const Step2 = ({ control }) => {
   return (
     <>
       <div className="mb-12">
-        <Label htmlFor="password">Contraseña</Label>
-        <div className="relative text-3xl font-light">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <IoLockClosed className="text-sky-700" />
-          </div>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            {...control("password")}
-          />
-          <div className="absolute inset-y-0 end-5 flex items-center ps-3.5">
-            {showPassword ? (
-              <GoEyeClosed
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPassword(false)}
-              />
-            ) : (
-              <GoEye
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPassword(true)}
-              />
-            )}
-          </div>
-        </div>
+        <Input
+          isRequired
+          type={showPassword ? "text" : "password"}
+          name="password"
+          label="Contraseña"
+          variant="bordered"
+          size="lg"
+          {...control("password")}
+          className="rounded-2xl bg-white"
+          classNames={{ label: "text-2xl" }}
+          startContent={
+            <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+          }
+          endContent={
+            <button className="focus:outline-none my-auto">
+              {" "}
+              {showPassword ? (
+                <GoEyeClosed
+                  className="text-2xl text-default-400"
+                  onClick={() => setShowPassword(false)}
+                />
+              ) : (
+                <GoEye
+                  className="text-2xl text-default-400"
+                  onClick={() => setShowPassword(true)}
+                />
+              )}
+            </button>
+          }
+        />
       </div>
 
       <div className="mb-12">
-        <Label htmlFor="passwordC">Confirmar Contraseña</Label>
-        <div className="relative text-3xl font-light">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <IoLockClosed className="text-sky-700" />
-          </div>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="passwordC"
-            {...control("passwordC")}
-          />
-          <div className="absolute inset-y-0 end-5 flex items-center ps-3.5">
-            {showPasswordC ? (
-              <GoEyeClosed
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPasswordC(false)}
-              />
-            ) : (
-              <GoEye
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPasswordC(true)}
-              />
-            )}
-          </div>
-        </div>
+        <Input
+          isRequired
+          type={showPasswordC ? "text" : "password"}
+          name="passwordC"
+          label="Confirmar Contraseña"
+          variant="bordered"
+          size="lg"
+          {...control("passwordC")}
+          className="rounded-2xl bg-white"
+          classNames={{ label: "text-2xl" }}
+          startContent={
+            <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+          }
+          endContent={
+            <button className="focus:outline-none my-auto">
+              {" "}
+              {showPasswordC ? (
+                <GoEyeClosed
+                  className="text-2xl text-default-400"
+                  onClick={() => setShowPasswordC(false)}
+                />
+              ) : (
+                <GoEye
+                  className="text-2xl text-default-400"
+                  onClick={() => setShowPasswordC(true)}
+                />
+              )}
+            </button>
+          }
+        />
       </div>
 
       <div className="text-center mt-48 flex">
-        <button className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl px-20 py-3 w-1/2 flex justify-center mx-2">
-          Anterior
-        </button>
-        <button
-          type="submit"
-          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl px-20 py-3 w-1/2 flex justify-center"
-        >
-          Siguiente
-        </button>
+      <Button className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg">
+        Siguiente
+        </Button>
       </div>
     </>
   );

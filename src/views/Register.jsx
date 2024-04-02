@@ -8,6 +8,7 @@ import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { MintIcon } from "../icons/MintIcon";
+import { Button } from "@nextui-org/react";
 
 export const Register = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -62,7 +63,7 @@ export const Register = () => {
             )}
 
             {currentIndex === 2 ? (
-              <ButtonA type="submit">Crear cuenta</ButtonA>
+              <Button size="lg" className="bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium text-4xl w-full py-8 text-white shadow-lg" type="submit">Crear cuenta</Button>
             ) : (
               <></>
             )}
@@ -74,7 +75,7 @@ export const Register = () => {
           </form>
         </div>
 
-        {/* <button onClick={changeStep}>Siguiente</button> */}
+        <button onClick={changeStep}>Siguiente</button>
       </section>
     </div>
   );

@@ -1,6 +1,8 @@
 import { React, useState } from "react";
-import { ButtonA, Input, Label } from "../components/ui/ui-components";
+import { Label } from "../components/ui/ui-components";
 import { Link, useNavigate } from "react-router-dom";
+import { Button, Input } from "@nextui-org/react";
+import { IoMailSharp } from "react-icons/io5";
 
 export const Step3 = ({ control }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,22 +11,39 @@ export const Step3 = ({ control }) => {
   return (
     <>
       <div className="mb-12">
-        <Label htmlFor="text">Nombre legal</Label>
-        <div className="relative text-3xl font-light">
-          <input name="name" {...control("firstname")} />
-        </div>
+        <p className="mb-8 text-center text-xl font-semibold">Asegúrese de que coincida con su identificación oficial.</p>
+        <Input
+          isRequired
+          type="text"
+          name="name"
+          label="Nombre legal"
+          variant="bordered"
+          {...control("firstname")}
+          size="lg"
+          classNames={{ label: "text-2xl" }}
+          className="rounded-2xl bg-white"
+        />
       </div>
+
       <div className="mb-12">
-        <Label htmlFor="text">Apellidos legales</Label>
-        <div className="relative text-3xl font-light">
-          <input name="lastname" {...control("lastname")} />
-        </div>
+        <Input
+          isRequired
+          type="text"
+          name="lastname"
+          label="Apellidos legales"
+          variant="bordered"
+          {...control("lastname")}
+          size="lg"
+          classNames={{ label: "text-2xl" }}
+          className="rounded-2xl bg-white"
+        />
+
       </div>
 
       <div className="text-center pt-20">
-        <button className="text-sky-700 border border-sky-700 bg-white hover:bg-cyan-100 font-medium rounded-2xl text-4xl px-48 py-3 w-full mb-6">
+        <Button size="lg" className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg mb-6">
           Anterior
-        </button>
+        </Button>
       </div>
     </>
   );

@@ -14,8 +14,8 @@ import {
   IoNotifications,
   IoSwapVerticalOutline,
   IoWallet,
+  IoSpeedometerSharp,
   IoMenu,
-  IoSpeedometerSharp
 } from "react-icons/io5";
 import { MintIcon } from "../../icons/MintIcon";
 
@@ -36,10 +36,12 @@ export const NavigationBar = () => {
   ];
 
   return (
-    <nav className="w-screen max-h-20 shadow-md fixed top-0 left-0 right-0 z-10 bg-white">
-      <div className="flex justify-between items-center px-10">
-        <ul className="flex items-center py-6 font-normal text-xl">
-          <MintIcon className="h-10" />
+    <nav className="w-screen h-20 max-h-20 shadow-md fixed top-0 left-0 right-0 z-10 bg-white">
+      <div className="flex justify-between items-center px-10 md:px-20 h-full">
+        <MintIcon className="h-10" />
+        
+        {/* Ocultar enlaces en pantallas pequeñas */}
+        <ul className="hidden md:flex items-center py-6 font-normal text-xl">
           {/* Map de los enlaces */}
           {navLinks.map((link, index) => (
             <li className="px-6" key={index}>
@@ -102,7 +104,7 @@ export const NavigationBar = () => {
                   </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem key="new">New file</DropdownItem>
+                  <DropdownItem key="new"><Link to="/transfer"></Link></DropdownItem>
                   <DropdownItem key="copy">Copy link</DropdownItem>
                   <DropdownItem key="edit">Edit file</DropdownItem>
                   <DropdownItem
@@ -117,19 +119,23 @@ export const NavigationBar = () => {
             </li>
           </ul>
 
+
           <div className="md:hidden">
             <IoMenu
-              className="h-10 w-10 rounded-full bg-zinc-200/80 flex items-center justify-center"
+              className="size-10"
               onClick={toggleMenu}
             />
             {showMenu && (
               <ul className="absolute top-16 right-0 bg-white rounded-md shadow-lg py-2">
-                <li className="px-4 py-2">New file</li>
-                <li className="px-4 py-2">Copy link</li>
-                <li className="px-4 py-2">Edit file</li>
-                <li className="px-4 py-2 text-danger">Delete file</li>
+                {/* Map de los enlaces */}
+                {navLinks.map((link, index) => (
+                  <li className="px-4 py-2" key={index}>
+                    <Link to={link.path}>{link.text}</Link>
+                  </li>
+                ))}
               </ul>
             )}
+
           </div>
         </div>
       </div>

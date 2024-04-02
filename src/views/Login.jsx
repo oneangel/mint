@@ -105,27 +105,19 @@ export const Login = () => {
                   startContent={
                     <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
                   }
-                />
-                {/* <input
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  {...register("password")}
-                  className="bg-white border border-gray- text-gray-900 rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-14 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                /> */}
-                {errors.password && <p>Last name is required.</p>}
-                <div className="absolute inset-y-0 end-5 flex items-center ps-3.5">
-                  {showPassword ? (
+                  endContent={<button className="focus:outline-none my-auto"> {showPassword ? (
                     <GoEyeClosed
-                      className="text-gray-400 mt-1"
+                      className="text-2xl text-default-400"
                       onClick={() => setShowPassword(false)}
                     />
                   ) : (
                     <GoEye
-                      className="text-gray-400 mt-1"
+                      className="text-2xl text-default-400"
                       onClick={() => setShowPassword(true)}
                     />
-                  )}
-                </div>
+                  )}</button>}
+                />
+                {errors.password && <p>Last name is required.</p>}
               </div>
 
               <div className="text-end mt-3 mb-14">

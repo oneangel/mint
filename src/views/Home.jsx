@@ -86,7 +86,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="h-screen bg-sky-50/50">
+    <div className="h-screen overflow-y-auto bg-sky-50/50">
       <NavigationBar />
       <div className="">
         <div className="flex justify-between mx-20">
@@ -94,16 +94,16 @@ export const Home = () => {
 
           <Skeleton
             isLoaded={!isLoadingcurr}
-            className="rounded-3xl mr-72 mt-10"
+            className="rounded-3xl mr-72 mt-32 hidden md:block"
           >
-            <h1 className="text-3xl font-light ">¡Hola Lalo!</h1>
+            <h1 className="text-3xl font-light">¡Hola Lalo!</h1>
           </Skeleton>
         </div>
 
-        <div className="flex mt-8 mx-20 h-72">
+        <div className="flex flex-wrap mt-8 mx-20">
           {/* Gastos generales */}
-          <div className="w-1/4 flex items-center">
-            <div className="bg-white h-[280px] w-[418px] rounded-3xl shadow-md border-1">
+          <div className="w-full md:w-1/2 lg:w-2/5 mb-4 md:mb-0 px-2 ">
+            <div className="bg-white h-[280px] w-[480px] rounded-3xl shadow-md border-1">
               <h1 className="p-4 text-lg font-semibold">Gastos Generales </h1>
 
               <div className="flex flex-wrap justify-center items-center gap-9">
@@ -129,7 +129,8 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="w-2/5 flex justify-center items-center">
+          {/* Balance General */}
+          <div className="w-full md:w-1/2 lg:w-2/5 mb-4 md:mb-0 px-2">
             {!isLoadingBalance && (
               <CurrentBalance
                 isLoading={isLoadingBalance}
@@ -138,10 +139,11 @@ export const Home = () => {
             )}
           </div>
 
-          <div className="w-2/5 flex  justify-center">
-            <div className="flex flex-col">
+          {/* Abonos */}
+          <div className="w-full md:w-full lg:w-1/5 px-2">
+            <div className="flex flex-col items-center">
               {/* Abonos */}
-              <div className="">
+              <div className="mb-4">
                 <h2 className="text-center text-xl font-semibold mb-2">
                   Total de Abonos
                 </h2>
@@ -157,7 +159,7 @@ export const Home = () => {
               <div className="mt-8">
                 <h2 className="text-center text-xl font-semibold mb-2">
                   Gastos del Mes:{" "}
-                  <span className="text-neutral-600">{month}</span>
+                  <span className="text-neutral-600 ">{month}</span>
                 </h2>
                 <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
                   <span className="text-3xl font-semibold text-red-700">
@@ -170,9 +172,9 @@ export const Home = () => {
           </div>
         </div>
         {/* Bottom side */}
-        <div className="flex mt-6 px-20">
-          <div className="w-3/5 max-h-[400px]">
-            <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px] shadow-md">
+        <div className="flex flex-wrap mt-6 px-20">
+          <div className="w-full md:w-3/5 mb-4 md:mb-0 px-2">
+            <div className="bg-white rounded-3xl border-gray-200 w-full h-[400px] shadow-md">
               <Skeleton
                 isLoaded={
                   !isLoadingcurr &&
@@ -187,7 +189,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="w-2/5 flex items-center justify-end">
+          <div className="w-full md:w-2/5 px-2">
             {!isLoadingLastTransactions && (
               <TransactionHistory
                 transactions={lastTransactionsData.data}
