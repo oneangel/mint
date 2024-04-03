@@ -113,6 +113,11 @@ export const getUserTransactionsList = async (req, res) => {
 
   try {
     const transactionList = await Transaction.find({ username: code });
+
+    if (!transactionList) {
+      return res.json(null);
+    }
+
     res.send(transactionList);
   } catch (error) {
     res.send(error);
@@ -149,6 +154,101 @@ export const getUserTransactionsByDateRange = async (req, res) => {
     res.status(500).json({ error: 'Server error' })
   }
 };
+
+// Gets user's expenses by range
+export const getExpensesByRangeTotal = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const { startDate, endDate } = req.body;
+
+    const expenseTotal = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          type: "expense",
+          createdAt: {
+            $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+            $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+          }
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          expenseTotal: { $sum: "$amount" }
+        }
+      }
+    ])
+
+    // Verify is expenseTotal is empty
+    const total = expenseTotal.length > 0 ? expenseTotal[0].expenseTotal : 0;
+
+    res.json({ expenseTotal: total });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+// Gets user's expenses
+export const getExpensesTotal = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const expenseTotal = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          type: "expense",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          expenseTotal: { $sum: "$amount" }
+        }
+      }
+    ])
+
+    // Verify is expenseTotal is empty
+    const total = expenseTotal.length > 0 ? expenseTotal[0].expenseTotal : 0;
+
+    res.json({ expenseTotal: total });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+// Gets user's incomes
+export const getIncomesTotal = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const incomeTotal = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          type: "income",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          incomeTotal: { $sum: "$amount" }
+        }
+      }
+    ])
+
+    // Verify is incomeTotal is empty
+    const total = incomeTotal.length > 0 ? incomeTotal[0].incomeTotal : 0;
+
+    res.json({ incomeTotal: total });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
 
 // Gets user's balance account
 export const getBalanceAccount = async (req, res) => {

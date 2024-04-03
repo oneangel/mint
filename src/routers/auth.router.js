@@ -1,5 +1,13 @@
 import { Router } from "express";
-import { UserController, ClientController, TransactionController, SavingsGoal } from "../controllers/controllers.js";
+import {
+  UserController,
+  ClientController,
+  TransactionController,
+  SavingsGoal,
+  MeterController,
+  ServiceController
+} from "../controllers/controllers.js";
+
 import authMiddleware from "../middlewares/auth.middleware.js";
 const router = Router();
 
@@ -24,6 +32,9 @@ router.put('/update/transaction/:code', authMiddleware, TransactionController.up
 router.get('/get/transaction/:code', authMiddleware, TransactionController.getTransaction);
 router.get('/get/user/transactions/:code', authMiddleware, TransactionController.getUserTransactionsList);
 router.post('/get/transactions/bydate/:code', authMiddleware, TransactionController.getUserTransactionsByDateRange);
+router.post('/get/expensesTotal/bydate/:code', TransactionController.getExpensesByRangeTotal);
+router.get('/get/expensesTotal/:code', TransactionController.getExpensesTotal);
+router.get('/get/incomesTotal/:code', TransactionController.getIncomesTotal);
 router.get('/get/transaction/balance/:code', authMiddleware, TransactionController.getBalanceAccount);
 router.get('/get/transaction/last-ones/:code', authMiddleware, TransactionController.getLastTransactions);
 
@@ -32,5 +43,11 @@ router.post('/register/goal', authMiddleware, SavingsGoal.registerSavingGoals);
 router.put('/delete/goal/:code', authMiddleware, SavingsGoal.deleteSavingGoals);
 router.put('/update/goal/:code', authMiddleware, SavingsGoal.updateSavingGoals);
 router.get('/get/goal/:code', authMiddleware, SavingsGoal.getsavingGoals);
+
+//Meter
+router.post('/register/meter', MeterController.registerMeter);
+
+//Service
+router.post('/register/service', ServiceController.registerService);
 
 export default router;
