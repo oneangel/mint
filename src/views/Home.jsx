@@ -13,7 +13,7 @@ import { es } from "date-fns/locale";
 import {
   getBalance,
   getLastTransactions,
-  getTotalExpense,
+  getTotalExpenseByDate,
 } from "../hooks/transaction.hooks";
 import { getTransactionsByRange } from "../utils/transaction.utils";
 
@@ -53,7 +53,7 @@ export const Home = () => {
     data: totalExpenseData,
     isLoading: isLoadingTotalExpense,
     isError: isErrorTotalExpense,
-  } = useQuery("totalExpenses", getTotalExpense);
+  } = useQuery("totalExpenses", getTotalExpenseByDate);
 
   useEffect(() => {
     toast.success("¡Bienvenido!");
@@ -148,7 +148,7 @@ export const Home = () => {
                 <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
                   {!isLoadingTotalExpense && (
                     <span className="text-3xl font-semibold text-red-700">
-                      $-{totalExpenseData.data.expenseTotal}
+                      ${totalExpenseData.data.expenseTotal}
                     </span>
                   )}
                   <p className="text-sm"> a partir de Marzo 18, 2024 </p>

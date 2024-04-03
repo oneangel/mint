@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import * as echarts from "echarts";
 
-const PieChart2 = () => {
+const PieChart2 = ({ expenses, incomes }) => {
   useEffect(() => {
     const chartDom = document.getElementById("main");
     const myChart = echarts.init(chartDom);
@@ -14,14 +14,15 @@ const PieChart2 = () => {
         orient: "vertical",
         left: "left",
       },
+      color: ["#0D9488", "#B91C1C"],
       series: [
         {
           name: "Access From",
           type: "pie",
           radius: "50%",
           data: [
-            { value: 1048, name: "Ingresos" },
-            { value: 735, name: "Gastos" },
+            { value: incomes, name: "Ingresos" },
+            { value: Math.abs(expenses), name: "Gastos" },
           ],
           emphasis: {
             itemStyle: {

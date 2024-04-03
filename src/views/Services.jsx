@@ -1,5 +1,6 @@
 import React from "react";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
+import GaugeChart from "../components/charts/GaugeChart";
 
 export const Services = () => {
   return (
@@ -10,7 +11,7 @@ export const Services = () => {
       </h1>
 
       <div className="bg-white h-[70%] shadow-md mt-8 rounded-3xl border-2 w-[90%] mx-auto">
-
+        <GaugeChart />
       </div>
     </div>
   );

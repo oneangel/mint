@@ -7,7 +7,11 @@ import { IoCalendarOutline, IoPieChart } from "react-icons/io5";
 import PieChart2 from "../components/charts/PieChart2";
 import { TableCustom } from "../components/dashboard/TableCustom";
 import { SearchBar } from "../components/dashboard/SearchBar";
-import { getTransactionList } from "../hooks/transaction.hooks";
+import {
+  getTransactionList,
+  getTotalExpense,
+  getTotalIncome,
+} from "../hooks/transaction.hooks";
 
 const columns = [
   {
@@ -34,6 +38,18 @@ export const Transfer = () => {
     isLoading: isLoadingTransactionList,
     isError: isErrorTransactionList,
   } = useQuery("transactionList", getTransactionList);
+
+  const {
+    data: totalExpenseData,
+    isLoading: isLoadingTotalExpense,
+    isError: isErrorTotalExpense,
+  } = useQuery("totalExpense", getTotalExpense);
+
+  const {
+    data: totalIncomeData,
+    isLoading: isLoadingTotalIncome,
+    isError: isErrorTotalIncome,
+  } = useQuery("totalIncome", getTotalIncome);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -135,30 +151,34 @@ export const Transfer = () => {
         <div className="w-1/2">
           <div className="flex flex-wrap">
             {/* Abonos */}
-            <div className="w-1/2 h-52">
-              <h2 className="text-center text-2xl font-semibold mb-4">
-                Total de Abonos
-              </h2>
-              <div className="bg-green-50 m-auto h-32 w-80 rounded-3xl flex flex-col justify-center items-center shadow-md border-1">
-                <span className="text-4xl font-semibold text-teal-600">
-                  $239.00
-                </span>
-                <p className="text-lg"> a partir de Marzo 25, 2024 </p>
+            {!isLoadingTotalIncome && (
+              <div className="w-1/2 h-52">
+                <h2 className="text-center text-2xl font-semibold mb-4">
+                  Total de Abonos
+                </h2>
+                <div className="bg-green-50 m-auto h-32 w-80 rounded-3xl flex flex-col justify-center items-center shadow-md border-1">
+                  <span className="text-4xl font-semibold text-teal-600">
+                    ${totalIncomeData.data.incomeTotal}
+                  </span>
+                  <p className="text-lg"> a partir de Marzo 25, 2024 </p>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Cargos */}
-            <div className="w-1/2 h-52">
-              <h2 className="text-center text-2xl font-semibold mb-4">
-                Total de Cargos
-              </h2>
-              <div className="bg-red-50 m-auto h-32 w-80 rounded-3xl flex flex-col justify-center items-center shadow-md border-1">
-                <span className="text-4xl font-semibold text-red-700">
-                  $2,022.00
-                </span>
-                <p className="text-lg"> a partir de Marzo 18, 2024 </p>
+            {!isLoadingTotalExpense && (
+              <div className="w-1/2 h-52">
+                <h2 className="text-center text-2xl font-semibold mb-4">
+                  Total de Cargos
+                </h2>
+                <div className="bg-red-50 m-auto h-32 w-80 rounded-3xl flex flex-col justify-center items-center shadow-md border-1">
+                  <span className="text-4xl font-semibold text-red-700">
+                    ${totalExpenseData.data.expenseTotal}
+                  </span>
+                  <p className="text-lg"> a partir de Marzo 18, 2024 </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="bg-white border-1 m-auto w-3/5 h-[450px] rounded-3xl shadow-md">
@@ -170,7 +190,12 @@ export const Transfer = () => {
             </div>
 
             <div>
-              <PieChart2 />
+              {!isLoadingTotalExpense && (
+                <PieChart2
+                  expenses={totalExpenseData.data.expenseTotal}
+                  incomes={totalIncomeData.data.incomeTotal}
+                />
+              )}
             </div>
           </div>
         </div>

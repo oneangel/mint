@@ -23,12 +23,35 @@ export const getBalance = async () => {
     }
 };
 
-export const getTotalExpense = async () => {
+export const getTotalExpenseByDate = async () => {
     try {
         const res = await transactionService.getTotalExpenseByDate(username, {
             startDate: startOfMonth(new Date()),
             endDate: endOfMonth(new Date()),
         });
+        console.log('Holaaa');
+        console.log(res);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getTotalExpense = async () => {
+    try {
+        const res = await transactionService.getTotalExpense(username);
+        console.log('Holaaa');
+        console.log(res);
+        return res;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getTotalIncome = async () => {
+    try {
+        const res = await transactionService.getTotalIncome(username);
+        console.log(res);
         return res;
     } catch (error) {
         console.log(error);
