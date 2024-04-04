@@ -46,8 +46,10 @@ router.get('/get/goal/:code', authMiddleware, SavingsGoal.getsavingGoals);
 
 //Meter
 router.post('/register/meter', MeterController.registerMeter);
+router.post('/get/meter', MeterController.getMeter);
 
 //Service
 router.post('/register/service', ServiceController.registerService);
+router.get('/get/totalMeasure/:code', ServiceController.getTotalMeasure);
 
 export default router;

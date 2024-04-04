@@ -30,7 +30,8 @@ const userSchema = new mongoose.Schema({
   status: {
     type: Boolean,
     default: true,
-  }
+  },
+
 });
 
 //Es para especificarle a mongoose cual es nuestro modelo

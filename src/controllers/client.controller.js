@@ -172,13 +172,17 @@ export const verifyAccount = async (req, res) => {
 export const getClient = async (req, res) => {
 	const { code } = req.params;
 	try {
-		const existingClient = await User.findOne({ username: code });
+		const existingClient = await Client.findOne({ username: code });
 
 		if (!existingClient || existingClient.status === false) {
 			return res.status(404).send("Client not found");
 		}
+		// Convertir el buffer de avatar a una cadena base64
+		const avatarBase64 = existingClient.avatar.toString('base64');
+		const userDataWithAvatar = { ...existingClient.toObject(), avatar: avatarBase64 };
 
-		res.send(existingClient);
+		// Enviar los datos del usuario con la imagen del avatar en base64
+		res.json(userDataWithAvatar);
 	} catch (error) {
 		console.error(error);
 		res.status(500).send("Error getting client info");

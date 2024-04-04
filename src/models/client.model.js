@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import fs from "fs";
+import path from "path";
+
+const defaultAvatarPath = path.join("/home/ricardo/Documents/UTD/Mint/sesionApp/src/assets/images/", 'user.jpg');
+const defaultAvatar = fs.readFileSync(defaultAvatarPath);
 
 const clientSchema = new mongoose.Schema({
   username: {
@@ -60,6 +65,11 @@ const clientSchema = new mongoose.Schema({
   verify: {
     type: Boolean,
     default: false
+  },
+
+  avatar: {
+    type: Buffer,
+    default: defaultAvatar
   }
 });
 

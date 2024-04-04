@@ -29,7 +29,7 @@ const meterSchema = new mongoose.Schema({
 
   user: {
     type: String,
-    default: null
+    default: ""
   }
 });
 
