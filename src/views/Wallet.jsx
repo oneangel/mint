@@ -22,14 +22,21 @@ import {
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
-  DropdownSection,
   DropdownItem,
+  Select,
+  SelectItem,
 } from "@nextui-org/react";
 import { getTransactionsByRange } from "../utils/transaction.utils";
 import { transactionService } from "../services/services";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import { CurrentBalance } from "../components/dashboard/CurrentBalance";
-import { IoAddCircle, IoSearch, IoEllipsisVertical, IoTrash, IoPencilSharp } from "react-icons/io5";
+import {
+  IoAddCircle,
+  IoSearch,
+  IoEllipsisVertical,
+  IoTrash,
+  IoPencilSharp,
+} from "react-icons/io5";
 
 export const rows = [
   {
@@ -237,7 +244,7 @@ export const Wallet = () => {
                 startContent={<IoAddCircle className="text-white size-6" />}
                 onPress={onOpen}
               >
-                Agregar
+                Crear Meta
               </Button>
 
               <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -248,7 +255,18 @@ export const Wallet = () => {
                         Crear nueva meta
                       </ModalHeader>
                       <ModalBody>
-                        <p>...</p>
+                        <form action="">
+                          <Input
+                            type="text"
+                            label="Descripción"
+                            className="mb-5"
+                          />
+                          <Input
+                            type="number"
+                            label="Meta"
+                            className="mb-5"
+                          />
+                        </form>
                       </ModalBody>
                       <ModalFooter>
                         <Button variant="light" onPress={onClose}>
@@ -259,7 +277,7 @@ export const Wallet = () => {
                           onPress={onClose}
                           className="bg-sky-700 text-white"
                         >
-                          Agregar
+                          Crear
                         </Button>
                       </ModalFooter>
                     </>
@@ -293,10 +311,15 @@ export const Wallet = () => {
                           <div className="flex items-center">
                             <Dropdown>
                               <DropdownTrigger>
-                                <span><IoEllipsisVertical className="text-neutral-500 ml-8" /></span>
+                                <span>
+                                  <IoEllipsisVertical className="text-neutral-500 ml-8" />
+                                </span>
                               </DropdownTrigger>
                               <DropdownMenu aria-label="Static Actions">
-                                <DropdownItem key="edit" startContent={<IoPencilSharp />}>
+                                <DropdownItem
+                                  key="edit"
+                                  startContent={<IoPencilSharp />}
+                                >
                                   Editar
                                 </DropdownItem>
                                 <DropdownItem
