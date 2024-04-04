@@ -167,24 +167,7 @@ export const Transfer = () => {
                           
                             <Input type="text" label="Descripción" className="mb-5"/>
                             <Input type="number" label="Cantidad" className="mb-5"/>
-                            <Select label="Tipo" className="mb-5">
-                              <SelectItem value="income" color="success" variant="flat">Ingreso</SelectItem>
-                              <SelectItem value="expense" color="danger" variant="flat">Gasto</SelectItem>
-                            </Select>
-                            <Select label="Categoría" className="mb-5">
-                              <SelectItem value="food">Comida</SelectItem>
-                              <SelectItem value="transportation">
-                                Transporte
-                              </SelectItem>
-                              <SelectItem value="entertainment">
-                                Entretenimiento
-                              </SelectItem>
-                              <SelectItem value="health">Salud</SelectItem>
-                              <SelectItem value="education">
-                                Educación
-                              </SelectItem>
-                              <SelectItem value="other">Otro</SelectItem>
-                            </Select>
+                            <Input type="text" label="Destinatario" className="mb-5" description="*A quien esta dirigido el monto"/>
                             <Input type="date" className="mb-5"/>
                         </form>
                       </ModalBody>

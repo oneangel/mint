@@ -41,39 +41,39 @@ import {
 export const rows = [
   {
     key: "1",
-    progress: "80%",
+    fechalimit: "10/08/24",
     desc: "Chuy",
-    cantidad: "70.0",
+    status: "Activo",
     goal: "170.00",
   },
   {
     key: "2",
-    progress: "80%",
+    fechalimit: "10/08/24",
     desc: "Chuy",
-    cantidad: "70.0",
+    status: "Activo",
     goal: "170.00",
   },
   {
     key: "3",
-    progress: "80%",
+    fechalimit: "10/08/24",
     desc: "Chuy",
-    cantidad: "70.0",
+    status: "Terminado",
     goal: "170.00",
   },
 ];
 
 const columns = [
   {
-    key: "progress",
-    label: "Progreso",
+    key: "fechalimit",
+    label: "Fecha Limite",
   },
   {
     key: "desc",
     label: "Descripcion",
   },
   {
-    key: "cantidad",
-    label: "cantidad",
+    key: "status",
+    label: "Estado",
   },
   {
     key: "goal",
@@ -261,9 +261,11 @@ export const Wallet = () => {
                             label="Descripción"
                             className="mb-5"
                           />
+                          <Input type="number" label="Meta" className="mb-5" />
                           <Input
-                            type="number"
-                            label="Meta"
+                            type="date"
+                            label="Fecha de meta"
+                            placeholder="dd/mm/aaaa"
                             className="mb-5"
                           />
                         </form>
@@ -333,6 +335,17 @@ export const Wallet = () => {
                               </DropdownMenu>
                             </Dropdown>
                           </div>
+                        ) : // Aquí verificamos si el columnKey es "status" y aplicamos las clases correspondientes
+                        columnKey === "status" ? (
+                          <span
+                            className={
+                              item.status === "Activo"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }
+                          >
+                            {item.status}
+                          </span>
                         ) : (
                           getKeyValue(item, columnKey)
                         )}
@@ -342,6 +355,7 @@ export const Wallet = () => {
                 )}
               </TableBody>
             </Table>
+
             <Pagination
               showControls
               className="justify-end flex mt-2"
