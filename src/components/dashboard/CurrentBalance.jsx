@@ -14,7 +14,7 @@ export const CurrentBalance = ({ balance, isLoading }) => {
   }, [currentTime]);
 
   useEffect(() => {
-    console.log(balance.data.balance);
+    // console.log(balance.data.balance);
   }, []);
 
   const formattedTime = format(currentTime, "HH:mm:ss");
@@ -36,7 +36,7 @@ export const CurrentBalance = ({ balance, isLoading }) => {
 
         <div className="flex flex-col h-full justify-center">
           <h1 className="text-center font-semibold text-6xl text-teal-600 mb-2">
-            ${balance.data.balance.toFixed(2)}
+            {/* ${balance.data.balance.toFixed(2)} */}
           </h1>
           <p className="text-center pb-10 text-lg text-zinc-500">
             {daysOfWeek[currentDay]} •<span> {formattedTime} PM</span>

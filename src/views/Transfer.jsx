@@ -1,9 +1,27 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
-import { Pagination, Select, SelectItem, Skeleton } from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Pagination,
+  Select,
+  SelectItem,
+  Skeleton,
+  useDisclosure,
+} from "@nextui-org/react";
 import { animals } from "./data";
-import { IoCalendarOutline, IoPieChart } from "react-icons/io5";
+import {
+  IoCalendarOutline,
+  IoPieChart,
+  IoEllipsisVertical,
+  IoAddCircle,
+} from "react-icons/io5";
 import PieChart2 from "../components/charts/PieChart2";
 import { TableCustom } from "../components/dashboard/TableCustom";
 import { SearchBar } from "../components/dashboard/SearchBar";
@@ -78,6 +96,8 @@ export const Transfer = () => {
     )
   );
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
   return (
     <div className="h-screen bg-sky-50/50">
       <NavigationBar />
@@ -114,7 +134,7 @@ export const Transfer = () => {
               </Skeleton>
             </div>
 
-            <div className="w-3/4">
+            <div className="w-2/4">
               <Skeleton
                 isLoaded={!isLoadingTransactionList}
                 className="rounded-xl w-full"
@@ -124,6 +144,66 @@ export const Transfer = () => {
                   handleSearchChange={handleSearchChange}
                 />
               </Skeleton>
+            </div>
+
+            <div className="w-1/4">
+              <Button
+                className="w-full h-14 text-xl text-white bg-sky-700"
+                startContent={<IoAddCircle className="text-white size-6" />}
+                onPress={onOpen}
+              >
+                Agregar
+              </Button>
+
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                  {(onClose) => (
+                    <>
+                      <ModalHeader className="flex flex-col gap-1">
+                        Agregar Transacción
+                      </ModalHeader>
+                      <ModalBody>
+                        <form action="">
+                          
+                            <Input type="text" label="Descripción" className="mb-5"/>
+                            <Input type="number" label="Cantidad" className="mb-5"/>
+                            <Select label="Tipo" className="mb-5">
+                              <SelectItem value="income" color="success" variant="flat">Ingreso</SelectItem>
+                              <SelectItem value="expense" color="danger" variant="flat">Gasto</SelectItem>
+                            </Select>
+                            <Select label="Categoría" className="mb-5">
+                              <SelectItem value="food">Comida</SelectItem>
+                              <SelectItem value="transportation">
+                                Transporte
+                              </SelectItem>
+                              <SelectItem value="entertainment">
+                                Entretenimiento
+                              </SelectItem>
+                              <SelectItem value="health">Salud</SelectItem>
+                              <SelectItem value="education">
+                                Educación
+                              </SelectItem>
+                              <SelectItem value="other">Otro</SelectItem>
+                            </Select>
+                            <Input type="date" className="mb-5"/>
+                        </form>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button variant="light" onPress={onClose}>
+                          Cerrar
+                        </Button>
+                        <Button
+                          color="primary"
+                          onPress={onClose}
+                          className="bg-sky-700 text-white"
+                        >
+                          Agregar
+                        </Button>
+                      </ModalFooter>
+                    </>
+                  )}
+                </ModalContent>
+              </Modal>
             </div>
           </div>
 
@@ -183,7 +263,7 @@ export const Transfer = () => {
 
           <div className="bg-white border-1 m-auto w-3/5 h-[450px] rounded-3xl shadow-md">
             <div className="pt-6 flex justify-center">
-              <IoPieChart className="m-0.5 mr-4 text-2xl" />
+              <IoPieChart className="m-0.5 mr-4 text-2xl"/>
               <p className="text-xl text-center font-semibold">
                 Comparacion de Abonos y Cargos
               </p>

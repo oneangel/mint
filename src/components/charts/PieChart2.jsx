@@ -14,7 +14,7 @@ const PieChart2 = ({ expenses, incomes }) => {
         orient: "vertical",
         left: "left",
       },
-      color: ["#0D9488", "#B91C1C"],
+      color: ["#2DD683", "#E74A51"],
       series: [
         {
           name: "Access From",
@@ -43,7 +43,7 @@ const PieChart2 = ({ expenses, incomes }) => {
     };
   }, []);
 
-  return <div id="main" style={{ width: "100%", height: "400px" }} />;
+  return <div id="main" style={{ width: "100%", height: "400px" }} className="p-4 pt-10"/>;
 };
 
 export default PieChart2;

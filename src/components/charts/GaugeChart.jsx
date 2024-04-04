@@ -99,7 +99,7 @@ const GaugeChart = () => {
     };
   }, []);
 
-  return <div ref={chartRef} style={{ width: "100%", height: "500px" }}></div>;
+  return <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>;
 };
 
 export default GaugeChart;
