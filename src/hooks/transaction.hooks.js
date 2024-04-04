@@ -17,6 +17,8 @@ export const getTransactionList = async () => {
 export const getBalance = async () => {
     try {
         const res = await transactionService.getBalance(username, token);
+        console.log('Balance');
+        console.log(res);
         return res;
     } catch (error) {
         console.log(error);

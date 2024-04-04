@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
+import { useQuery } from "react-query";
 import {
   Switch,
   Dropdown,
@@ -18,10 +20,14 @@ import {
   IoMenu,
 } from "react-icons/io5";
 import { MintIcon } from "../../icons/MintIcon";
+import { getClient } from "../../hooks/client.hooks";
 
 export const NavigationBar = () => {
+  const auth = useContext(AuthContext);
   const location = useLocation();
   const [showMenu, setShowMenu] = useState(false);
+
+  const { data, isLoading, isError } = useQuery("client", getClient);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -39,7 +45,7 @@ export const NavigationBar = () => {
     <nav className="w-screen h-20 max-h-20 shadow-md fixed top-0 left-0 right-0 z-10 bg-white">
       <div className="flex justify-between items-center px-10 md:px-20 h-full">
         <MintIcon className="h-10" />
-        
+
         {/* Ocultar enlaces en pantallas pequeñas */}
         <ul className="hidden md:flex items-center py-6 font-normal text-xl">
           {/* Map de los enlaces */}
@@ -96,35 +102,36 @@ export const NavigationBar = () => {
               <Dropdown>
                 <DropdownTrigger>
                   <div className="h-10 w-10 rounded-full overflow-hidden">
-                    <img
-                      src="https://randomuser.me/api/portraits/men/36.jpg"
-                      alt="Profile"
-                      className="h-full w-full object-cover"
-                    />
+                    {!isLoading && (
+                      <img
+                        src={`data:image/jpeg;base64,${data.data.avatar}`}
+                        alt="Profile"
+                        className="h-full w-full object-cover"
+                      />
+                    )}
                   </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem key="new"><Link to="/transfer"></Link></DropdownItem>
+                  <DropdownItem key="new">
+                    <Link to="/transfer"></Link>
+                  </DropdownItem>
                   <DropdownItem key="copy">Copy link</DropdownItem>
                   <DropdownItem key="edit">Edit file</DropdownItem>
                   <DropdownItem
                     key="delete"
                     className="text-danger"
                     color="danger"
+                    onClick={auth.logout}
                   >
-                    Delete file
+                    Cerrar Sesion
                   </DropdownItem>
                 </DropdownMenu>
               </Dropdown>
             </li>
           </ul>
 
-
           <div className="md:hidden">
-            <IoMenu
-              className="size-10"
-              onClick={toggleMenu}
-            />
+            <IoMenu className="size-10" onClick={toggleMenu} />
             {showMenu && (
               <ul className="absolute top-16 right-0 bg-white rounded-md shadow-lg py-2">
                 {/* Map de los enlaces */}
@@ -135,7 +142,6 @@ export const NavigationBar = () => {
                 ))}
               </ul>
             )}
-
           </div>
         </div>
       </div>
