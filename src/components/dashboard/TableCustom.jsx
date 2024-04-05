@@ -11,6 +11,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Tooltip
 } from "@nextui-org/react";
 import {
   IoArrowUpOutline,
@@ -18,8 +19,11 @@ import {
   IoEllipsisVertical,
   IoPencilSharp,
   IoTrash,
+  IoEyeOutline,
 } from "react-icons/io5";
 import { format } from "date-fns";
+import { FaPen } from "react-icons/fa";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 export const TableCustom = ({ columns, data }) => {
   const formatDate = (dateString) => {
@@ -49,30 +53,22 @@ export const TableCustom = ({ columns, data }) => {
             {(columnKey) => (
               <TableCell className="text-xl pt-8">
                 {columnKey === "acciones" ? (
-                  <div className="flex items-center">
-                    <Dropdown>
-                      <DropdownTrigger>
-                        <span>
-                          <IoEllipsisVertical className="text-neutral-500 ml-8" />
-                        </span>
-                      </DropdownTrigger>
-                      <DropdownMenu aria-label="Static Actions">
-                        <DropdownItem
-                          key="edit"
-                          startContent={<IoPencilSharp />}
-                        >
-                          Editar
-                        </DropdownItem>
-                        <DropdownItem
-                          key="delete"
-                          className="text-danger"
-                          color="danger"
-                          startContent={<IoTrash />}
-                        >
-                          Eliminar
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </Dropdown>
+                  <div className="relative flex items-center gap-2 ml-4">
+                    <Tooltip content="Detalles">
+                      <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
+                      <MdOutlineRemoveRedEye />
+                      </span>
+                    </Tooltip>
+                    <Tooltip content="Editar">
+                      <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
+                        <FaPen />
+                      </span>
+                    </Tooltip>
+                    <Tooltip color="danger" content="Eliminar">
+                      <span className="text-xl text-danger cursor-pointer active:opacity-50">
+                        <IoTrash />
+                      </span>
+                    </Tooltip>
                   </div>
                 ) : (
                   columnKey === "type" && (

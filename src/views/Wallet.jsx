@@ -19,10 +19,6 @@ import {
   TableCell,
   Pagination,
   getKeyValue,
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
   Tooltip,
   Chip,
 } from "@nextui-org/react";
@@ -34,11 +30,9 @@ import {
   IoAddCircle,
   IoSearch,
   IoTrash,
-  IoPencilSharp,
-  IoEye,
-  IoEyeOutline,
 } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 const statusColorMap = {
   Activo: "success",
@@ -175,45 +169,52 @@ export const Wallet = () => {
 
       <div className="flex flex-wrap mx-20">
         <div className="w-2/5 flex flex-col pt-10 ">
-          {/*           <CurrentBalance isLoading={isLoadingBalance} balance={balanceData} />
-           */}
-          <div className="bg-white h-[400px] shadow-md mt-8 rounded-3xl border-2 w-[480px]">
-            <div className="mt-4 w-1/3 text-center">
+          <CurrentBalance isLoading={isLoadingBalance} balance={balanceData} />
+
+          <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-[480px]">
+            <div className="mt-4 w-3/4 text-center">
               <Skeleton isLoaded={true} className="rounded-3xl">
-                <p className="text-xl font-semibold">Mis ahorros</p>
+                <p className="text-xl font-semibold">
+                  Meta Seleccionada:{" "}
+                  <span className="ml-2 font-normal text-default-700">
+                    PC Gamer
+                  </span>
+                </p>
               </Skeleton>
             </div>
 
-            <p className="text-end mx-9 text-default-800 font-semibold">Meta</p>
-
-            {/* mapeo para generar las barras de progreso */}
-            {progressData.map((item, index) => (
-              <div className="flex flex-wrap mx-8 mb-5" key={index}>
-                <div className="flex flex-col w-4/5">
-                  <p className="font-semibold text-default-800 mb-2">
-                    {item.descripcion}
-                  </p>
-                  <div className="flex">
-                    <Progress
-                      size="sm"
-                      value={item.value}
-                      maxValue={item.maxValue}
-                      color="success"
-                      showValueLabel={true}
-                      formatOptions={{ style: "currency", currency: "mxn" }}
-                      className="max-w-md w-64"
-                      classNames={{
-                        value: "text-default-500",
-                        indicator: "bg-teal-600",
-                      }}
-                    />
-                  </div>
+            <div className="flex flex-wrap mx-8 mb-5 mt-10 items-center">
+              <div className="flex flex-col w-4/5 mx-auto">
+                <p className="font-semibold text-default-800 ">
+                  Fecha de inicio:
+                  <span className="ml-2 text-default-700 font-normal">
+                    Marzo 31, 2024
+                  </span>
+                </p>
+                <p className="font-semibold text-default-800 mt-4">
+                  Fecha límite:
+                  <span className="ml-2 text-default-700 font-normal">
+                    Agosto 31, 2024
+                  </span>
+                </p>
+                <p className="mt-10 text-4xl text-center text-teal-600 font-semibold">$5,250</p>
+                <div className="flex mt-4">
+                  <Progress
+                    size="md"
+                    value={500}
+                    maxValue={1000}
+                    color="success"
+                    formatOptions={{ style: "currency", currency: "mxn" }}
+                    className="max-w-md w-64"
+                    classNames={{
+                      value: "text-default-500",
+                      indicator: "bg-teal-600",
+                    }}
+                  />
                 </div>
-                <div className="justify-end flex items-end w-1/5 text-end">
-                  <p className="">{`$${item.maxValue.toLocaleString()}`}</p>
-                </div>
+                <p className="text-sm mt-6">Se ha recaudado el 30% de la meta de <span className="font-semibold">$17,500</span> </p>
               </div>
-            ))}
+            </div>
           </div>
         </div>
 
@@ -321,7 +322,7 @@ export const Wallet = () => {
                           <div className="relative flex items-center gap-2 ml-4">
                             <Tooltip content="Detalles">
                               <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
-                                <IoEyeOutline />
+                                <MdOutlineRemoveRedEye />
                               </span>
                             </Tooltip>
                             <Tooltip content="Editar">

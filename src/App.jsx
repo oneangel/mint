@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
+  EditProfile,
   ErrorPage,
   Home,
   Landing,
@@ -57,6 +58,15 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Services />
+                  </ProtectedRoute>
+                }
+              ></Route>
+
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <EditProfile />
                   </ProtectedRoute>
                 }
               ></Route>

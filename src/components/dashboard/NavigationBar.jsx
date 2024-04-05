@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import {
   Switch,
@@ -18,6 +18,8 @@ import {
   IoWallet,
   IoSpeedometerSharp,
   IoMenu,
+  IoSettingsOutline,
+  IoLogOutOutline,
 } from "react-icons/io5";
 import { MintIcon } from "../../icons/MintIcon";
 import { getClient } from "../../hooks/client.hooks";
@@ -25,12 +27,17 @@ import { getClient } from "../../hooks/client.hooks";
 export const NavigationBar = () => {
   const auth = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
 
   const { data, isLoading, isError } = useQuery("client", getClient);
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
+  };
+
+  const handleProfile = () => {
+    navigate("/profile");
   };
 
   // Definir la lista de enlaces
@@ -115,13 +122,13 @@ export const NavigationBar = () => {
                   <DropdownItem key="new">
                     <Link to="/transfer"></Link>
                   </DropdownItem>
-                  <DropdownItem key="copy">Copy link</DropdownItem>
-                  <DropdownItem key="edit">Edit file</DropdownItem>
+                  <DropdownItem key="edit" onClick={handleProfile} startContent={<IoSettingsOutline />}>Editar perfil</DropdownItem>
                   <DropdownItem
                     key="delete"
                     className="text-danger"
                     color="danger"
                     onClick={auth.logout}
+                    startContent={<IoLogOutOutline />}
                   >
                     Cerrar Sesion
                   </DropdownItem>
