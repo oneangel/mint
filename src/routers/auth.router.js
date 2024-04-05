@@ -26,7 +26,7 @@ router.get("/get/client/:code", authMiddleware, ClientController.getClient);
 router.get('/verify/user/:token', ClientController.verifyAccount);
 
 //Transaction
-router.post('/register/transaction', authMiddleware, TransactionController.registerTransaction);
+router.post('/register/transaction/:code', authMiddleware, TransactionController.registerTransaction);
 router.put('/delete/transaction/:code', authMiddleware, TransactionController.deleteTransaction);
 router.put('/update/transaction/:code', authMiddleware, TransactionController.updateTransaction);
 router.get('/get/transaction/:code', authMiddleware, TransactionController.getTransaction);

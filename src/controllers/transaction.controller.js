@@ -1,23 +1,22 @@
-import { User, Transaction } from "../models/models.js";
+import { Transaction, Client } from "../models/models.js";
 
 //Creates a new Transaction
 export const registerTransaction = async (req, res) => {
-  console.log(req.body);
-  const { username, createdAt, description, amount, origin, destination, type, state, status } =
+  const { code } = req.params;
+  const { description, amount, destination, createdAt, origin, type, state, status } =
     req.body;
-
   try {
 
-    const existingUser = await User.findOne({ username });
+    const existingUser = await Client.findOne({ username: code });
 
     if (!existingUser) {
-      return res.status(404).send("User not found");
+      return res.status(404).send("Client not found");
     }
 
     const idTransaction = Math.random().toString(36).slice(2, 10 + 2);
 
     const newTransaction = new Transaction({
-      idTransaction, username, createdAt, description, amount, origin, destination, type, state, status
+      idTransaction, username: code, description, amount, destination, createdAt, origin, type, state, status
     });
 
     const saveTransaction = await newTransaction.save();

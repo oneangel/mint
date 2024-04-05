@@ -17,13 +17,6 @@ const transactionSchema = new mongoose.Schema({
     validate: validator.isAlphanumeric
   },
 
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    trim: true,
-    validate: validator.isDate
-  },
-
   description: {
     type: String,
     required: true,
@@ -35,13 +28,20 @@ const transactionSchema = new mongoose.Schema({
     required: true,
   },
 
-  origin: {
+  destination: {
     type: String,
     required: true,
     validate: validator.isAlphanumeric
   },
 
-  destination: {
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    trim: true,
+    validate: validator.isDate
+  },
+
+  origin: {
     type: String,
     required: true,
     validate: validator.isAlphanumeric
