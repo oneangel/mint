@@ -16,12 +16,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { animals } from "./data";
-import {
-  IoCalendarOutline,
-  IoPieChart,
-  IoEllipsisVertical,
-  IoAddCircle,
-} from "react-icons/io5";
+import { IoCalendarOutline, IoPieChart, IoAddCircle } from "react-icons/io5";
 import PieChart2 from "../components/charts/PieChart2";
 import { TableCustom } from "../components/dashboard/TableCustom";
 import { SearchBar } from "../components/dashboard/SearchBar";

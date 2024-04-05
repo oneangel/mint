@@ -12,7 +12,13 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { IoArrowUpOutline, IoArrowDownSharp } from "react-icons/io5";
+import {
+  IoArrowUpOutline,
+  IoArrowDownSharp,
+  IoEllipsisVertical,
+  IoPencilSharp,
+  IoTrash,
+} from "react-icons/io5";
 import { format } from "date-fns";
 
 export const TableCustom = ({ columns, data }) => {
