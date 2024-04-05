@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import {
   Button,
@@ -29,7 +29,11 @@ import {
   getTransactionList,
   getTotalExpense,
   getTotalIncome,
-} from "../hooks/transaction.hooks";
+  useAddTransaction,
+} from "../hooks/transaction.hooks"; // Asumiendo que tienes estas funciones en transaction.hooks.js
+
+import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
 
 const columns = [
   {
@@ -51,6 +55,14 @@ const columns = [
 ];
 
 export const Transfer = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const queryClient = useQueryClient();
+
   const {
     data: transactionListData,
     isLoading: isLoadingTransactionList,
@@ -96,7 +108,26 @@ export const Transfer = () => {
     )
   );
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const addTransactionMutation = useMutation(useAddTransaction, {
+    onSuccess: () => {
+      onClose();
+      queryClient.refetchQueries(
+        "transactionList",
+        "totalExpense",
+        "totalIncome"
+      );
+    },
+
+    onError: () => {
+      toast.error("Hubo un error en la operacion");
+    },
+  });
+
+  const onSubmit = (data) => {
+    addTransactionMutation.mutate(data);
+  };
 
   return (
     <div className="h-screen bg-sky-50/50">
@@ -155,36 +186,54 @@ export const Transfer = () => {
                 Agregar
               </Button>
 
-              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+              <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalContent>
-                  {(onClose) => (
-                    <>
-                      <ModalHeader className="flex flex-col gap-1">
-                        Agregar Transacción
-                      </ModalHeader>
-                      <ModalBody>
-                        <form action="">
-                          
-                            <Input type="text" label="Descripción" className="mb-5"/>
-                            <Input type="number" label="Cantidad" className="mb-5"/>
-                            <Input type="text" label="Destinatario" className="mb-5" description="*A quien esta dirigido el monto"/>
-                            <Input type="date" className="mb-5"/>
-                        </form>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button variant="light" onPress={onClose}>
-                          Cerrar
-                        </Button>
-                        <Button
-                          color="primary"
-                          onPress={onClose}
-                          className="bg-sky-700 text-white"
-                        >
-                          Agregar
-                        </Button>
-                      </ModalFooter>
-                    </>
-                  )}
+                  <ModalHeader className="flex flex-col gap-1">
+                    Agregar Transacción
+                  </ModalHeader>
+                  <ModalBody>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <Input
+                        type="text"
+                        label="Descripción"
+                        name="description"
+                        className="mb-5"
+                        {...register("description")}
+                      />
+                      <Input
+                        type="number"
+                        label="Cantidad"
+                        name="amount"
+                        className="mb-5"
+                        {...register("amount")}
+                      />
+                      <Input
+                        type="text"
+                        label="Destinatario"
+                        name="destination"
+                        className="mb-5"
+                        description="*A quien esta dirigido el monto"
+                        {...register("destination")}
+                      />
+                      <Input
+                        type="date"
+                        className="mb-5"
+                        {...register("createdAt")}
+                      />
+                    </form>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button variant="light" onPress={onClose}>
+                      Cerrar
+                    </Button>
+                    <Button
+                      color="primary"
+                      onPress={handleSubmit(onSubmit)}
+                      className="bg-sky-700 text-white"
+                    >
+                      Agregar
+                    </Button>
+                  </ModalFooter>
                 </ModalContent>
               </Modal>
             </div>
@@ -246,7 +295,7 @@ export const Transfer = () => {
 
           <div className="bg-white border-1 m-auto w-3/5 h-[450px] rounded-3xl shadow-md">
             <div className="pt-6 flex justify-center">
-              <IoPieChart className="m-0.5 mr-4 text-2xl"/>
+              <IoPieChart className="m-0.5 mr-4 text-2xl" />
               <p className="text-xl text-center font-semibold">
                 Comparacion de Abonos y Cargos
               </p>
@@ -263,6 +312,7 @@ export const Transfer = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

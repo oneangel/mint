@@ -167,8 +167,8 @@ export const Wallet = () => {
 
       <div className="flex flex-wrap mx-20">
         <div className="w-2/5 flex flex-col pt-10 ">
-          <CurrentBalance isLoading={isLoadingBalance} balance={balanceData} />
-
+          {/*           <CurrentBalance isLoading={isLoadingBalance} balance={balanceData} />
+           */}
           <div className="bg-white h-[400px] shadow-md mt-8 rounded-3xl border-2 w-[480px]">
             <div className="mt-4 w-1/3 text-center">
               <Skeleton isLoaded={true} className="rounded-3xl">
