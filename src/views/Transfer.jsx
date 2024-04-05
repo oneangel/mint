@@ -52,6 +52,10 @@ const columns = [
     key: "amount",
     label: "Cantidad",
   },
+  {
+    key: "acciones",
+    label: "Acciones",
+  },
 ];
 
 export const Transfer = () => {

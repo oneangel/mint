@@ -23,8 +23,6 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Select,
-  SelectItem,
 } from "@nextui-org/react";
 import { getTransactionsByRange } from "../utils/transaction.utils";
 import { transactionService } from "../services/services";
@@ -335,7 +333,7 @@ export const Wallet = () => {
                               </DropdownMenu>
                             </Dropdown>
                           </div>
-                        ) : // Aquí verificamos si el columnKey es "status" y aplicamos las clases correspondientes
+                        ) :
                         columnKey === "status" ? (
                           <span
                             className={
