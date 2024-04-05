@@ -12,15 +12,14 @@ export const Header = () => {
   const handleLogin = () => {
     navigate("/login");
   };
-
-  const handleRegister = () => {
-    navigate("/register");
-  };
   return (
-    <nav className="w-screen max-h-20 shadow-md fixed top-0 left-0 right-0 z-10 bg-white">
+    <nav className="w-screen max-h-20 fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center px-10">
         <ul className="flex flex-wrap items-center py-6 font-normal text-xl">
           <MintIcon className="h-10" />
+        </ul>
+        <ul className="flex flex-wrap items-center py-6 font-normal text-xl">
+          
           <li className="px-6 ">
             <Link to="/">
               <div
@@ -42,7 +41,7 @@ export const Header = () => {
               </div>
             </Link>
           </li>
-          <li className="px-6">
+          <li className="px-6 ">
             <Link to="/">
               <div
                 className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
@@ -63,7 +62,7 @@ export const Header = () => {
               </div>
             </Link>
           </li>
-          <li className="px-6">
+          <li className="px-6 ">
             <Link to="/">
               <div
                 className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
@@ -89,24 +88,6 @@ export const Header = () => {
         <ul className="flex flex-wrap items-center font-normal text-xl">
           <li className="px-3">
             <button onClick={handleLogin} className="px-6 text-white bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium rounded-2xl text-2xl py-1.5 w-full">Iniciar Sesión</button>
-          </li>
-          <li className="px-3">
-            <button onClick={handleRegister} className="px-6 text-sky-700 border border-sky-700 bg-white hover:bg-cyan-100 font-medium rounded-2xl text-2xl py-1.5">Registrarse</button>
-          </li>
-          <li className="px-3">
-            <Switch
-              defaultSelected={false}
-              
-              size="lg"
-              color="primary"
-              thumbIcon={({ isSelected, className }) =>
-                isSelected ? (
-                  <SunIcon className={className} />
-                ) : (
-                  <MoonIcon className={className} />
-                )
-              }
-            ></Switch>
           </li>
         </ul>
       </div>

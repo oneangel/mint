@@ -23,6 +23,8 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Tooltip,
+  Chip,
 } from "@nextui-org/react";
 import { getTransactionsByRange } from "../utils/transaction.utils";
 import { transactionService } from "../services/services";
@@ -31,10 +33,17 @@ import { CurrentBalance } from "../components/dashboard/CurrentBalance";
 import {
   IoAddCircle,
   IoSearch,
-  IoEllipsisVertical,
   IoTrash,
   IoPencilSharp,
+  IoEye,
+  IoEyeOutline,
 } from "react-icons/io5";
+import { FaPen } from "react-icons/fa";
+
+const statusColorMap = {
+  Activo: "success",
+  Terminado: "danger",
+};
 
 export const rows = [
   {
@@ -70,13 +79,14 @@ const columns = [
     label: "Descripcion",
   },
   {
-    key: "status",
-    label: "Estado",
-  },
-  {
     key: "goal",
     label: "Meta",
   },
+  {
+    key: "status",
+    label: "Estado",
+  },
+
   {
     key: "acciones",
     label: "Acciones",
@@ -308,42 +318,32 @@ export const Wallet = () => {
                     {(columnKey) => (
                       <TableCell className="text-xl pt-8">
                         {columnKey === "acciones" ? (
-                          <div className="flex items-center">
-                            <Dropdown>
-                              <DropdownTrigger>
-                                <span>
-                                  <IoEllipsisVertical className="text-neutral-500 ml-8" />
-                                </span>
-                              </DropdownTrigger>
-                              <DropdownMenu aria-label="Static Actions">
-                                <DropdownItem
-                                  key="edit"
-                                  startContent={<IoPencilSharp />}
-                                >
-                                  Editar
-                                </DropdownItem>
-                                <DropdownItem
-                                  key="delete"
-                                  className="text-danger"
-                                  color="danger"
-                                  startContent={<IoTrash />}
-                                >
-                                  Eliminar
-                                </DropdownItem>
-                              </DropdownMenu>
-                            </Dropdown>
+                          <div className="relative flex items-center gap-2 ml-4">
+                            <Tooltip content="Detalles">
+                              <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
+                                <IoEyeOutline />
+                              </span>
+                            </Tooltip>
+                            <Tooltip content="Editar">
+                              <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
+                                <FaPen />
+                              </span>
+                            </Tooltip>
+                            <Tooltip color="danger" content="Eliminar">
+                              <span className="text-xl text-danger cursor-pointer active:opacity-50">
+                                <IoTrash />
+                              </span>
+                            </Tooltip>
                           </div>
-                        ) :
-                        columnKey === "status" ? (
-                          <span
-                            className={
-                              item.status === "Activo"
-                                ? "text-green-500"
-                                : "text-red-500"
-                            }
+                        ) : columnKey === "status" ? (
+                          <Chip
+                            className="capitalize"
+                            color={statusColorMap[item.status]}
+                            size="sm"
+                            variant="flat"
                           >
                             {item.status}
-                          </span>
+                          </Chip>
                         ) : (
                           getKeyValue(item, columnKey)
                         )}

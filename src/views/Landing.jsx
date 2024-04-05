@@ -1,7 +1,15 @@
 import React from "react";
 import Spline from "@splinetool/react-spline";
-import { IoCall, IoCash, IoShieldCheckmark } from "react-icons/io5";
+import {
+  IoArrowForwardOutline,
+  IoCall,
+  IoCash,
+  IoLogoAndroid,
+  IoShieldCheckmark,
+} from "react-icons/io5";
 import { Header } from "../components/dashboard/Header";
+import { Avatar, Button, Chip } from "@nextui-org/react";
+import Analytics from "../assets/img/Analytics.png";
 
 const personas = [
   { nombre: "Ricardo López", rol: "Rol de la persona" },
@@ -19,80 +27,65 @@ export const Landing = () => {
       <Header />
       <div className="h-screen overflow-auto">
         {/* Inicio */}
-        <section
-          id="home"
-          className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] flex flex-col justify-center items-center"
-        >
-          <h1 className="text-center text-8xl text-sky-700 pt-10 20 font-semibold">
-            Mint
-          </h1>
-          <h2 className="text-center text-3xl mt-8 font-light text-neutral-700">
-            Ahorra fresco, vive sin límites.
-          </h2>
-          <div className="justify-center flex">
-            <div className="">
-              <Spline scene="https://prod.spline.design/mBSc-eUub6dBJsu8/scene.splinecode" />
+        <section id="home" className="h-screen w-full bg-white">
+          <div className="w-full flex flex-wrap h-full">
+            <div className="w-1/2">
+              <div className="mt-64 ml-20 bg-default-200 w-80 rounded-full p-2 flex flex-wrap items-center">
+                <Chip
+                  variant="shadow"
+                  classNames={{
+                    base: "bg-gradient-to-br from-indigo-500 to-pink-500 border-small border-white/50 shadow-pink-500/30",
+                    content: "drop-shadow shadow-black text-white",
+                  }}
+                >
+                  New
+                </Chip>
+                <p className="ml-2 text-sm font-semibold">
+                  The Mint Dashboard 1.0 is Live!
+                </p>
+              </div>
+              <div className="mt-4 ml-20">
+                <h1 className="text-7xl text-pretty font-bold">
+                  Ahorra fresco, vive sin límites 🍃
+                </h1>
+                <p className="text-default-700 mt-10 text-3xl">
+                  Mint te ayuda a controlar tus finanzas de una manera ágil y
+                  sencilla para mantener una salud financiera.
+                </p>
+                <div className="flex flex-wrap mt-6 gap-3">
+                  <Button
+                    color="primary"
+                    size="lg"
+                    endContent={<IoArrowForwardOutline />}
+                  >
+                    Comienza gratis
+                  </Button>
+                  <Button
+                    color="default"
+                    size="lg"
+                    endContent={
+                      <IoLogoAndroid className="size-10 text-green-600" />
+                    }
+                  >
+                    Descargar App
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="w-1/2 flex items-center justify-center">
+              <div className="flex items-center justify-center h-full">
+                <img src={Analytics} alt="Mint" className="w-2/3" />
+              </div>
             </div>
           </div>
         </section>
 
         {/* Nosotros */}
-        <section
-          id="nosotros"
-          className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px] flex flex-col justify-center items-center"
-        >
-          <div className="bg-white w-10/12 h-4/5 border border-default-200 rounded-3xl shadow-xl">
-            <h1 className="text-center mt-10 text-sky-700 text-5xl font-semibold">
-              Seguridad y Confianza
-            </h1>
+        <section id="nosotros" className="h-screen w-full bg-white flex">
+          <div className="bg-green-500 h-[90%] w-[70%] my-auto mx-auto">
+            <div className="w-full h-60 bg-red-500 rounded-3xl">
 
-            <div className="flex flex-wrap w-full mt-14">
-              <div className="w-1/3 text-2xl flex flex-col items-center">
-                <div className="flex justify-center">
-                  <IoCash className="text-6xl text-default-700" />
-                </div>
-                <div className="mt-5 text-center px-10">
-                  <h2 className="text-default-800 font-medium">
-                    Fácil acceso a tus ingresos
-                  </h2>
-                  <p className="text-pretty text-default-600">
-                    Acceso rápido y sencillo a tus ingresos para una mejor
-                    visualización, análisis y control.
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-1/3 text-2xl flex flex-col items-center">
-                <div className="flex justify-center">
-                  <IoShieldCheckmark className="text-6xl text-default-700" />
-                </div>
-
-                <div className="mt-5 text-center px-10">
-                  <h2 className="text-default-800 font-medium">
-                    Tus ingresos están protegidos
-                  </h2>
-                  <p className="text-pretty text-default-600">
-                    Proteges tus ingresos gracias a nuestra seguridad,
-                    mostrandote donde puedes mejorar para no perder ingresos.
-                  </p>
-                </div>
-              </div>
-
-              <div className="w-1/3 text-2xl flex flex-col items-center">
-                <div className="flex justify-center">
-                  <IoCall className="text-6xl text-default-700" />
-                </div>
-
-                <div className="mt-5 text-center px-10">
-                  <h2 className="text-default-800 font-medium">
-                    Estamos aquí para ayudarte
-                  </h2>
-                  <p className="text-pretty text-default-600">
-                    Nuestro gran equipo de atención al cliente está listo para
-                    responder a tus preguntas al momento que nos necesites.
-                  </p>
-                </div>
-              </div>
             </div>
           </div>
         </section>
