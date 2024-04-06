@@ -11,7 +11,7 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Tooltip
+  Tooltip,
 } from "@nextui-org/react";
 import {
   IoArrowUpOutline,
@@ -56,7 +56,7 @@ export const TableCustom = ({ columns, data }) => {
                   <div className="relative flex items-center gap-2 ml-4">
                     <Tooltip content="Detalles">
                       <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
-                      <MdOutlineRemoveRedEye />
+                        <MdOutlineRemoveRedEye />
                       </span>
                     </Tooltip>
                     <Tooltip content="Editar">

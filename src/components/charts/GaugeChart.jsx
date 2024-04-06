@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-const GaugeChart = () => {
+const GaugeChart = ({ kw }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -15,18 +15,18 @@ const GaugeChart = () => {
           center: ["50%", "75%"],
           radius: "90%",
           min: 0,
-          max: 1,
+          max: 4.5,
           splitNumber: 2, // Solo 3 grados
           axisLine: {
             lineStyle: {
               width: 6,
               color: [
-                [0, "#FF6E76"], // Primer grado
-                [0.33, "#FF6E76"], // Primer grado
+                [0, "#0D9488"], // Primer grado
+                [0.33, "#0D9488"], // Primer grado
                 [0.33, "#FDDD60"], // Segundo grado
                 [0.66, "#FDDD60"], // Segundo grado
-                [0.66, "#58D9F9"], // Tercer grado
-                [1, "#58D9F9"], // Tercer grado
+                [0.66, "#B91C1C"], // Tercer grado
+                [1, "#B91C1C"], // Tercer grado
               ],
             },
           },
@@ -60,11 +60,11 @@ const GaugeChart = () => {
             rotate: "tangential",
             formatter: function (value) {
               if (value === 0) {
-                return "Grade A";
-              } else if (value === 0.5) {
-                return "Grade B";
-              } else if (value === 1) {
-                return "Grade C";
+                return "Basica";
+              } else if (value === 2.25) {
+                return "Intermedia";
+              } else if (value === 4.5) {
+                return "Excesiva";
               }
               return "";
             },
@@ -84,7 +84,7 @@ const GaugeChart = () => {
           },
           data: [
             {
-              value: 800,
+              value: kw,
               name: "Kw",
             },
           ],

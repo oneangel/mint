@@ -116,12 +116,12 @@ export const Home = () => {
           </div>
 
           <div className="w-2/5 flex justify-center items-center">
-            {!isLoadingBalance && (
-              <CurrentBalance
-                isLoading={isLoadingBalance}
-                balance={balanceData}
-              />
-            )}
+            <Skeleton
+              isLoaded={!isLoadingBalance}
+              className="rounded-3xl shadow-md border-1"
+            >
+              {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
+            </Skeleton>
           </div>
 
           <div className="w-2/5 flex  justify-center">
@@ -146,11 +146,13 @@ export const Home = () => {
                   <span className="text-neutral-600">{month}</span>
                 </h2>
                 <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1">
-                  {!isLoadingTotalExpense && (
-                    <span className="text-3xl font-semibold text-red-700">
-                      ${totalExpenseData.data.expenseTotal}
-                    </span>
-                  )}
+                  <Skeleton isLoaded={!isLoadingTotalExpense}>
+                    {!isLoadingTotalExpense && (
+                      <span className="text-3xl font-semibold text-red-700">
+                        ${totalExpenseData.data.expenseTotal}
+                      </span>
+                    )}
+                  </Skeleton>
                   <p className="text-sm"> a partir de Marzo 18, 2024 </p>
                 </div>
               </div>

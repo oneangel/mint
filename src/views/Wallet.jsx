@@ -22,42 +22,38 @@ import {
   Tooltip,
   Chip,
 } from "@nextui-org/react";
-import { getTransactionsByRange } from "../utils/transaction.utils";
+import { useGetGoalsList } from "../hooks/goal.hooks";
 import { transactionService } from "../services/services";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import { CurrentBalance } from "../components/dashboard/CurrentBalance";
-import {
-  IoAddCircle,
-  IoSearch,
-  IoTrash,
-} from "react-icons/io5";
+import { IoAddCircle, IoSearch, IoTrash } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 const statusColorMap = {
-  Activo: "success",
-  Terminado: "danger",
+  true: "success",
+  false: "danger",
 };
 
 export const rows = [
   {
     key: "1",
     fechalimit: "10/08/24",
-    desc: "Chuy",
+    desc: "Chuy1",
     status: "Activo",
     goal: "170.00",
   },
   {
     key: "2",
     fechalimit: "10/08/24",
-    desc: "Chuy",
+    desc: "Chuy2",
     status: "Activo",
     goal: "170.00",
   },
   {
     key: "3",
     fechalimit: "10/08/24",
-    desc: "Chuy",
+    desc: "Chuy3",
     status: "Terminado",
     goal: "170.00",
   },
@@ -65,19 +61,19 @@ export const rows = [
 
 const columns = [
   {
-    key: "fechalimit",
+    key: "finalDate",
     label: "Fecha Limite",
   },
   {
-    key: "desc",
+    key: "description",
     label: "Descripcion",
   },
   {
-    key: "goal",
+    key: "amountGoal",
     label: "Meta",
   },
   {
-    key: "status",
+    key: "state",
     label: "Estado",
   },
 
@@ -87,12 +83,6 @@ const columns = [
   },
 ];
 export const Wallet = () => {
-  const useTransactionsByRange = (weeksAgo) => {
-    return useQuery(`transactionsByRange${weeksAgo}`, () =>
-      getTransactionsByRange(weeksAgo)
-    );
-  };
-
   // lista de datos para las barras de progreso
   const progressData = [
     { descripcion: "PC Gamer", value: 5250, maxValue: 17500 },
@@ -111,30 +101,6 @@ export const Wallet = () => {
     }
   };
 
-  const getLastTransactions = async () => {
-    try {
-      const username = localStorage.getItem("username");
-      const token = localStorage.getItem("token");
-      const res = await transactionService.getLastTransactions(username, token);
-      console.log(res);
-      return res;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const {
-    data: currWeekData,
-    isLoading: isLoadingcurr,
-    isError: isErrorcurr,
-  } = useTransactionsByRange(0);
-
-  const {
-    data: lastWeekData,
-    isLoading: isLoadinglast,
-    isError: isErrorlast,
-  } = useTransactionsByRange(1);
-
   const {
     data: balanceData,
     isLoading: isLoadingBalance,
@@ -142,10 +108,10 @@ export const Wallet = () => {
   } = useQuery("balance", getBalance);
 
   const {
-    data: lastTransactionsData,
-    isLoading: isLoadingLastTransactions,
-    isError: isErrorLastTransactions,
-  } = useQuery("lastTransactions", getLastTransactions);
+    data: goalsData,
+    isLoading: isLoadingGoals,
+    isError: isErrorGoals,
+  } = useQuery("goals", useGetGoalsList);
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
@@ -155,10 +121,7 @@ export const Wallet = () => {
     setCurrentPage(page);
   };
 
-  const paginatedRows = rows.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const [selectedGoal, setSelectedGoal] = useState(0);
 
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50">
@@ -169,53 +132,74 @@ export const Wallet = () => {
 
       <div className="flex flex-wrap mx-20">
         <div className="w-2/5 flex flex-col pt-10 ">
-          <CurrentBalance isLoading={isLoadingBalance} balance={balanceData} />
+          <Skeleton isLoaded={!isLoadingBalance}>
+            {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
+          </Skeleton>
 
-          <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-[480px]">
-            <div className="mt-4 w-3/4 text-center">
-              <Skeleton isLoaded={true} className="rounded-3xl">
+          <Skeleton isLoaded={!isLoadingGoals} className="rounded-3xl">
+            <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-[480px]">
+              <div className="mt-4 w-3/4 text-center">
                 <p className="text-xl font-semibold">
                   Meta Seleccionada:{" "}
-                  <span className="ml-2 font-normal text-default-700">
-                    PC Gamer
-                  </span>
+                  {!isLoadingGoals && (
+                    <span className="ml-2 font-normal text-default-700">
+                      {goalsData.data[selectedGoal].description}
+                    </span>
+                  )}
                 </p>
-              </Skeleton>
-            </div>
+              </div>
 
-            <div className="flex flex-wrap mx-8 mb-5 mt-10 items-center">
-              <div className="flex flex-col w-4/5 mx-auto">
-                <p className="font-semibold text-default-800 ">
-                  Fecha de inicio:
-                  <span className="ml-2 text-default-700 font-normal">
-                    Marzo 31, 2024
-                  </span>
-                </p>
-                <p className="font-semibold text-default-800 mt-4">
-                  Fecha límite:
-                  <span className="ml-2 text-default-700 font-normal">
-                    Agosto 31, 2024
-                  </span>
-                </p>
-                <p className="mt-10 text-4xl text-center text-teal-600 font-semibold">$5,250</p>
-                <div className="flex mt-4">
-                  <Progress
-                    size="md"
-                    value={500}
-                    maxValue={1000}
-                    color="success"
-                    formatOptions={{ style: "currency", currency: "mxn" }}
-                    className="max-w-md w-64"
-                    classNames={{
-                      value: "text-default-500",
-                      indicator: "bg-teal-600",
-                    }}
-                  />
+              <div className="flex flex-wrap mx-8 mb-5 mt-10 items-center">
+                <div className="flex flex-col w-4/5 mx-auto">
+                  <p className="font-semibold text-default-800 ">
+                    Fecha de inicio:
+                    {!isLoadingGoals && (
+                      <span className="ml-2 text-default-700 font-normal">
+                        {goalsData.data[selectedGoal].createdAt}
+                      </span>
+                    )}
+                  </p>
+                  <p className="font-semibold text-default-800 mt-4">
+                    Fecha límite:
+                    {!isLoadingGoals && (
+                      <span className="ml-2 text-default-700 font-normal">
+                        {goalsData.data[selectedGoal].finalDate}
+                      </span>
+                    )}
+                  </p>
+                  {!isLoadingGoals && (
+                    <p className="mt-10 text-4xl text-center text-teal-600 font-semibold">
+                      {goalsData.data[selectedGoal].amount}
+                    </p>
+                  )}
+                  {!isLoadingGoals && (
+                    <div className="flex mt-4">
+                      <Progress
+                        size="md"
+                        value={goalsData.data[selectedGoal].amount}
+                        maxValue={goalsData.data[selectedGoal].amountGoal}
+                        color="success"
+                        formatOptions={{ style: "currency", currency: "mxn" }}
+                        className="max-w-md w-64"
+                        classNames={{
+                          value: "text-default-500",
+                          indicator: "bg-teal-600",
+                        }}
+                      />
+                    </div>
+                  )}
+                  {!isLoadingGoals && (
+                    <p className="text-sm mt-6">
+                      Se ha recaudado el 30% de la meta de{" "}
+                      <span className="font-semibold">
+                        ${goalsData.data[selectedGoal].amountGoal.toFixed(2)}
+                      </span>{" "}
+                    </p>
+                  )}
                 </div>
-                <p className="text-sm mt-6">Se ha recaudado el 30% de la meta de <span className="font-semibold">$17,500</span> </p>
               </div>
             </div>
-          </div>
+          </Skeleton>
         </div>
 
         <div className="w-3/5 max-h-[400px] mt-10">
@@ -299,69 +283,86 @@ export const Wallet = () => {
           </div>
 
           <div className="mt-4">
-            <Table className="max-h-[600px]">
-              <TableHeader columns={columns}>
-                {(column) => (
-                  <TableColumn
-                    key={column.key}
-                    className="text-xl text-neutral-800"
-                  >
-                    {column.label}
-                  </TableColumn>
-                )}
-              </TableHeader>
-              <TableBody
-                items={paginatedRows}
-                emptyContent={"No transacciones aún."}
+            {!isLoadingGoals && (
+              <Table
+                className="max-h-[600px]"
+                selectionMode="single"
+                aria-label="Goals"
+                defaultSelectedKeys={["1"]}
               >
-                {(item) => (
-                  <TableRow key={item.key}>
-                    {(columnKey) => (
-                      <TableCell className="text-xl pt-8">
-                        {columnKey === "acciones" ? (
-                          <div className="relative flex items-center gap-2 ml-4">
-                            <Tooltip content="Detalles">
-                              <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
-                                <MdOutlineRemoveRedEye />
-                              </span>
-                            </Tooltip>
-                            <Tooltip content="Editar">
-                              <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
-                                <FaPen />
-                              </span>
-                            </Tooltip>
-                            <Tooltip color="danger" content="Eliminar">
-                              <span className="text-xl text-danger cursor-pointer active:opacity-50">
-                                <IoTrash />
-                              </span>
-                            </Tooltip>
-                          </div>
-                        ) : columnKey === "status" ? (
-                          <Chip
-                            className="capitalize"
-                            color={statusColorMap[item.status]}
-                            size="sm"
-                            variant="flat"
-                          >
-                            {item.status}
-                          </Chip>
-                        ) : (
-                          getKeyValue(item, columnKey)
-                        )}
-                      </TableCell>
-                    )}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                <TableHeader columns={columns}>
+                  {(column) => (
+                    <TableColumn
+                      key={column.key}
+                      className="text-xl text-neutral-800"
+                    >
+                      {column.label}
+                    </TableColumn>
+                  )}
+                </TableHeader>
+                <TableBody
+                  items={goalsData.data.slice(
+                    (currentPage - 1) * itemsPerPage,
+                    currentPage * itemsPerPage
+                  )}
+                  emptyContent={"No metas aún."}
+                >
+                  {(item) => (
+                    <TableRow
+                      key={item.idGoal}
+                      onClick={() => {
+                        console.log(item);
+                      }}
+                    >
+                      {(columnKey) => (
+                        <TableCell className="text-xl pt-8">
+                          {columnKey === "acciones" ? (
+                            <div className="relative flex items-center gap-2 ml-4">
+                              <Tooltip content="Detalles">
+                                <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
+                                  <MdOutlineRemoveRedEye />
+                                </span>
+                              </Tooltip>
+                              <Tooltip content="Editar">
+                                <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
+                                  <FaPen />
+                                </span>
+                              </Tooltip>
+                              <Tooltip color="danger" content="Eliminar">
+                                <span className="text-xl text-danger cursor-pointer active:opacity-50">
+                                  <IoTrash />
+                                </span>
+                              </Tooltip>
+                            </div>
+                          ) : columnKey === "state" ? (
+                            <Chip
+                              className="capitalize"
+                              color={statusColorMap[item.state]}
+                              size="sm"
+                              variant="flat"
+                            >
+                              {item.state ? "Activo" : "Inactivo"}
+                            </Chip>
+                          ) : (
+                            getKeyValue(item, columnKey)
+                          )}
+                        </TableCell>
+                      )}
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            )}
 
-            <Pagination
-              showControls
-              className="justify-end flex mt-2"
-              total={Math.ceil(rows.length / itemsPerPage)}
-              current={currentPage}
-              onChange={handlePageChange}
-            />
+            {!isLoadingGoals && (
+              <Pagination
+                showControls
+                className="justify-end flex mt-2"
+                total={Math.ceil(goalsData.data.length / itemsPerPage)}
+                current={currentPage}
+                onChange={handlePageChange}
+              />
+            )}
           </div>
         </div>
       </div>

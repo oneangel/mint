@@ -3,7 +3,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { getDay, format } from "date-fns";
 
-export const CurrentBalance = ({ balance, isLoading }) => {
+export const CurrentBalance = ({ balance }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   useEffect(() => {
     const interval = setInterval(() => {
