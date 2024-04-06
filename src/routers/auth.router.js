@@ -39,10 +39,10 @@ router.get('/get/transaction/balance/:code', authMiddleware, TransactionControll
 router.get('/get/transaction/last-ones/:code', authMiddleware, TransactionController.getLastTransactions);
 
 //Savings Goal
-router.post('/register/goal', authMiddleware, SavingsGoal.registerSavingGoals);
+router.post('/register/goal', SavingsGoal.registerSavingGoals);
 router.put('/delete/goal/:code', authMiddleware, SavingsGoal.deleteSavingGoals);
 router.put('/update/goal/:code', authMiddleware, SavingsGoal.updateSavingGoals);
-router.get('/get/goal/:code', authMiddleware, SavingsGoal.getsavingGoals);
+router.get('/get/goals/:code', authMiddleware, SavingsGoal.getsavingGoals);
 
 //Meter
 router.post('/register/meter', MeterController.registerMeter);
@@ -50,6 +50,6 @@ router.post('/get/meter', MeterController.getMeter);
 
 //Service
 router.post('/register/service', ServiceController.registerService);
-router.get('/get/totalMeasure/:code', ServiceController.getTotalMeasure);
+router.post('/get/totalMonthMeasure/:code', ServiceController.getTotalMonthMeasure);
 
 export default router;

@@ -3,7 +3,7 @@ import { User, SavingsGoal } from "../models/models.js";
 //Create a new savingGoals
 export const registerSavingGoals = async (req, res) => {
   console.log(req.body);
-  const { idGoal, name, createdAt, amount, username } =
+  const { idGoal, description, createdAt, finalDate, amount, amountGoal, username, state } =
     req.body;
 
   try {
@@ -15,7 +15,7 @@ export const registerSavingGoals = async (req, res) => {
     }
 
     const newSavingGoals = new SavingsGoal({
-      idGoal, name, createdAt, amount, username
+      idGoal, description, createdAt, finalDate, amount, amountGoal, username, state
     });
 
     const saveSavingGoals = await newSavingGoals.save();
@@ -73,10 +73,10 @@ export const updateSavingGoals = async (req, res) => {
 export const getsavingGoals = async (req, res) => {
   const { code } = req.params;
   try {
-    const existingsavingGoals = await User.findOne({ idGoal: code });
+    const existingsavingGoals = await SavingsGoal.find({ username: code });
 
     if (!existingsavingGoals) {
-      return res.status(404).send("Savings Goal not found");
+      return res.status(404).send("Saving Goals not found");
     }
 
     res.send(existingsavingGoals);

@@ -23,16 +23,19 @@ export const registerService = async (req, res) => {
 };
 
 //Gets user's services
-export const getTotalMeasure = async (req, res) => {
+export const getTotalMonthMeasure = async (req, res) => {
   try {
     const { code } = req.params;
-
-
+    const { startDate, endDate } = req.body;
 
     const totalMeasure = await Service.aggregate([
       {
         $match: {
           serial: code,
+          createdAt: {
+            $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+            $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+          }
         },
       },
       {
@@ -42,7 +45,10 @@ export const getTotalMeasure = async (req, res) => {
         }
       },
     ])
-    res.json(totalMeasure);
+
+    const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
+
+    res.json({ totalMeasure: total });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Server error' })

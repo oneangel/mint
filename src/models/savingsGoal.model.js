@@ -10,10 +10,9 @@ const savingsGoalSchema = new mongoose.Schema({
     validate: validator.isAlphanumeric
   },
 
-  name: {
+  description: {
     type: String,
     required: true,
-    validate: validator.isStrongPassword
   },
 
   createdAt: {
@@ -30,8 +29,12 @@ const savingsGoalSchema = new mongoose.Schema({
 
   amount: {
     type: Number,
+    default: 0,
+  },
+
+  amountGoal: {
+    type: Number,
     required: true,
-    validate: validator.isFloat
   },
 
   username: {
@@ -41,8 +44,8 @@ const savingsGoalSchema = new mongoose.Schema({
   },
 
   state: {
-    type: String,
-    default: "En proceso"
+    type: Boolean,
+    default: true
   }
 });
 
