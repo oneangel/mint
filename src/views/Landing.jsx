@@ -4,6 +4,7 @@ import {
   IoArrowForwardOutline,
   IoCall,
   IoCash,
+  IoLockClosed,
   IoLogoAndroid,
   IoShieldCheckmark,
 } from "react-icons/io5";
@@ -83,61 +84,26 @@ export const Landing = () => {
 
         {/* Nosotros */}
         <section id="nosotros" className="h-screen w-full bg-white flex">
-          <div className="bg-green-500 h-[90%] w-[70%] my-auto mx-auto">
-            <div className="w-full h-60 bg-red-500 rounded-3xl">
-
+          <div className="h-[90%] w-[70%] my-auto mx-auto flex flex-col justify-center">
+            <div className="w-full h-72 bg-blue-500 rounded-3xl flex flex-col">
+              <span className="ml-10"><IoLockClosed /></span>
+              <h1 className="text-5xl ml-10 text-white font-semibold my-auto">
+                Seguridad y Confianza
+              </h1>
+            </div>
+            <div className="w-full flex mt-4 gap-4 justify-center">
+              <div className="w-1/2">
+                <div className="bg-blue-500 w-full h-96 rounded-3xl"></div>
+              </div>
+              <div className="w-1/2 flex flex-col gap-y-4 max-h-96">
+                <div className="bg-purple-500 w-full h-48 rounded-3xl"></div>
+                <div className="bg-orange-500 w-full h-48 rounded-3xl"></div>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
-          <h1 className="text-center pt-40 text-sky-700 text-5xl font-semibold">
-            Nosotros
-          </h1>
-          <p className="text-center text-2xl text-default-700 pt-8">
-            Comprometidos a operar de acuerdo con los más altos estándares
-            éticos en todas nuestras actividades.
-          </p>
-
-          <div className="flex flex-wrap mt-20">
-            {personas.slice(0, 4).map((persona, index) => (
-              <div
-                key={index}
-                className="w-1/4 flex flex-col items-center justify-center"
-              >
-                <img
-                  src={`https://randomuser.me/api/portraits/men/${index}.jpg`}
-                  alt="Profile"
-                  className="size-40 object-cover"
-                />
-                <h2 className="text-lg font-semibold">{persona.nombre}</h2>
-                <p className="text-default-700">{persona.rol}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap px-64 mt-20">
-            {personas.slice(4).map((persona, index) => (
-              <div
-                key={index}
-                className="w-1/3 flex flex-col items-center justify-center"
-              >
-                <img
-                  src={`https://randomuser.me/api/portraits/men/${
-                    index + 4
-                  }.jpg`}
-                  alt="Profile"
-                  className="size-40 object-cover"
-                />
-                <h2 className="text-lg font-semibold">{persona.nombre}</h2>
-                <p className="text-default-700">{persona.rol}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Contacto */}
-        <section className="inset-0 -z-10 h-screen w-full bg-white bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"></section>
+        <section className="bg-black h-screen w-full"></section>
       </div>
     </div>
   );

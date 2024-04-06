@@ -1,8 +1,5 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Switch } from "@nextui-org/react";
-import { MoonIcon } from "../../icons/MoonIcon";
-import { SunIcon } from "../../icons/SunIcon";
 import { MintIcon } from "../../icons/MintIcon";
 
 export const Header = () => {
