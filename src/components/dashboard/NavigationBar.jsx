@@ -111,7 +111,7 @@ export const NavigationBar = () => {
                   <div className="h-10 w-10 rounded-full overflow-hidden">
                     {!isLoading && (
                       <img
-                        src={`data:image/jpeg;base64,${data.data.avatar}`}
+                        // src={`data:image/jpeg;base64,${data.data.avatar}`}
                         alt="Profile"
                         className="h-full w-full object-cover"
                       />

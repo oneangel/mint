@@ -35,30 +35,6 @@ const statusColorMap = {
   false: "danger",
 };
 
-export const rows = [
-  {
-    key: "1",
-    fechalimit: "10/08/24",
-    desc: "Chuy1",
-    status: "Activo",
-    goal: "170.00",
-  },
-  {
-    key: "2",
-    fechalimit: "10/08/24",
-    desc: "Chuy2",
-    status: "Activo",
-    goal: "170.00",
-  },
-  {
-    key: "3",
-    fechalimit: "10/08/24",
-    desc: "Chuy3",
-    status: "Terminado",
-    goal: "170.00",
-  },
-];
-
 const columns = [
   {
     key: "finalDate",
@@ -83,6 +59,8 @@ const columns = [
   },
 ];
 export const Wallet = () => {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   // lista de datos para las barras de progreso
   const progressData = [
     { descripcion: "PC Gamer", value: 5250, maxValue: 17500 },
@@ -323,16 +301,21 @@ export const Wallet = () => {
                                   <MdOutlineRemoveRedEye />
                                 </span>
                               </Tooltip>
-                              <Tooltip content="Editar">
-                                <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
-                                  <FaPen />
-                                </span>
-                              </Tooltip>
-                              <Tooltip color="danger" content="Eliminar">
-                                <span className="text-xl text-danger cursor-pointer active:opacity-50">
-                                  <IoTrash />
-                                </span>
-                              </Tooltip>
+                              <div onClick={() => setShowEditModal(true)}>
+                                <Tooltip content="Editar">
+                                  <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
+                                    <FaPen />
+                                  </span>
+                                </Tooltip>
+                              </div>
+
+                              <div onClick={() => setShowDeleteModal(true)}>
+                                <Tooltip color="danger" content="Eliminar">
+                                  <span className="text-xl text-danger cursor-pointer active:opacity-50">
+                                    <IoTrash />
+                                  </span>
+                                </Tooltip>
+                              </div>
                             </div>
                           ) : columnKey === "state" ? (
                             <Chip
@@ -353,6 +336,61 @@ export const Wallet = () => {
                 </TableBody>
               </Table>
             )}
+            <Modal isOpen={showEditModal} onOpenChange={setShowEditModal}>
+              <ModalContent>
+                <ModalHeader>Editar Meta</ModalHeader>
+                <ModalBody>
+                  <form action="">
+                    <Input type="text" label="Descripción" className="mb-5" />
+                    <Input type="number" label="Meta" className="mb-5" />
+                    <Input
+                      type="date"
+                      label="Fecha de meta"
+                      placeholder="dd/mm/aaaa"
+                      className="mb-5"
+                    />
+                  </form>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="danger"
+                    variant="light"
+                    onPress={() => setShowEditModal(false)}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    color="primary"
+                    onPress={() => setShowEditModal(false)}
+                  >
+                    Guardar cambios
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+
+            {/* Modal de eliminación */}
+            <Modal isOpen={showDeleteModal} onOpenChange={setShowDeleteModal}>
+              <ModalContent>
+                <ModalHeader>Eliminar Meta</ModalHeader>
+                <ModalBody>¿Estas seguro de eliminar esta Meta?</ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="primary"
+                    variant="light"
+                    onPress={() => setShowDeleteModal(false)}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    color="danger"
+                    onPress={() => setShowDeleteModal(false)}
+                  >
+                    Eliminar
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
 
             {!isLoadingGoals && (
               <Pagination
