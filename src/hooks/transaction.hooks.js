@@ -19,6 +19,25 @@ export const useAddTransaction = async (transaction) => {
 	}
 }
 
+export const useDeleteTransaction = async (id) => {
+	try {
+		const res = await transactionService.deleteTransaction(id, token);
+		console.log(res);
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export const useUpdateTransaction = async (data) => {
+	try {
+		const res = await transactionService.updateTransaction(data.id, data.transaction, token);
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export const getTransactionList = async () => {
 	try {
 		const res = await transactionService.getTransactionsList(username, token);

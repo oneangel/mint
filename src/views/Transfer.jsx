@@ -25,6 +25,8 @@ import {
   getTotalExpense,
   getTotalIncome,
   useAddTransaction,
+  useDeleteTransaction,
+  useUpdateTransaction,
 } from "../hooks/transaction.hooks"; // Asumiendo que tienes estas funciones en transaction.hooks.js
 
 import { useForm } from "react-hook-form";
@@ -112,11 +114,9 @@ export const Transfer = () => {
   const addTransactionMutation = useMutation(useAddTransaction, {
     onSuccess: () => {
       onClose();
-      queryClient.refetchQueries(
-        "transactionList",
-        "totalExpense",
-        "totalIncome"
-      );
+      queryClient.refetchQueries("transactionList");
+      queryClient.refetchQueries("totalIncome");
+      queryClient.refetchQueries("totalExpense");
     },
 
     onError: () => {
@@ -126,6 +126,38 @@ export const Transfer = () => {
 
   const onSubmit = (data) => {
     addTransactionMutation.mutate(data);
+  };
+
+  const deleteTransactionMutation = useMutation(useDeleteTransaction, {
+    onSuccess: () => {
+      queryClient.refetchQueries("transactionList");
+      queryClient.refetchQueries("totalIncome");
+      queryClient.refetchQueries("totalExpense");
+    },
+
+    onError: () => {
+      toast.error("¡Hubo un error en la operacion!");
+    },
+  });
+
+  const onDelete = (id) => {
+    deleteTransactionMutation.mutate(id);
+  };
+
+  const updateTransactionMutation = useMutation(useUpdateTransaction, {
+    onSuccess: () => {
+      queryClient.refetchQueries("transactionList");
+      queryClient.refetchQueries("totalIncome");
+      queryClient.refetchQueries("totalExpense");
+    },
+
+    onError: () => {
+      toast.error("¡Hubo un error en la operacion!");
+    },
+  });
+
+  const onUpdate = (id, transaction) => {
+    updateTransactionMutation.mutate({ id, transaction });
   };
 
   return (
@@ -239,22 +271,29 @@ export const Transfer = () => {
           </div>
 
           <div className="mt-4">
-            {!isLoadingTransactionList && (
-              <TableCustom
-                columns={columns}
-                data={getPaginatedRows(filteredData)}
-              />
-            )}
+            <Skeleton
+              isLoaded={!isLoadingTransactionList}
+              className="rounded-xl w-full"
+            >
+              {!isLoadingTransactionList && (
+                <TableCustom
+                  onDelete={onDelete}
+                  onUpdate={onUpdate}
+                  columns={columns}
+                  data={getPaginatedRows(filteredData)}
+                />
+              )}
 
-            {!isLoadingTransactionList && (
-              <Pagination
-                showControls
-                className="justify-end flex mt-2"
-                total={Math.ceil((filteredData?.length || 0) / itemsPerPage)}
-                current={currentPage}
-                onChange={handlePageChange}
-              />
-            )}
+              {!isLoadingTransactionList && (
+                <Pagination
+                  showControls
+                  className="justify-end flex mt-2"
+                  total={Math.ceil((filteredData?.length || 0) / itemsPerPage)}
+                  current={currentPage}
+                  onChange={handlePageChange}
+                />
+              )}
+            </Skeleton>
           </div>
         </div>
 

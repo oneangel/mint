@@ -99,7 +99,13 @@ export const Wallet = () => {
     setCurrentPage(page);
   };
 
-  const [selectedGoal, setSelectedGoal] = useState(0);
+  const [selectedGoal, setSelectedGoal] = useState({
+    description: "Ninguna",
+    createdAt: "",
+    finalDate: "",
+    amount: 0,
+    amountGoal: 0,
+  });
 
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50">
@@ -119,9 +125,9 @@ export const Wallet = () => {
               <div className="mt-4 w-3/4 text-center">
                 <p className="text-xl font-semibold">
                   Meta Seleccionada:{" "}
-                  {!isLoadingGoals && (
+                  {!isLoadingGoals && !isErrorGoals && (
                     <span className="ml-2 font-normal text-default-700">
-                      {goalsData.data[selectedGoal].description}
+                      {selectedGoal.description}
                     </span>
                   )}
                 </p>
@@ -131,31 +137,31 @@ export const Wallet = () => {
                 <div className="flex flex-col w-4/5 mx-auto">
                   <p className="font-semibold text-default-800 ">
                     Fecha de inicio:
-                    {!isLoadingGoals && (
+                    {!isLoadingGoals && !isErrorGoals && (
                       <span className="ml-2 text-default-700 font-normal">
-                        {goalsData.data[selectedGoal].createdAt}
+                        {selectedGoal.createdAt}
                       </span>
                     )}
                   </p>
                   <p className="font-semibold text-default-800 mt-4">
                     Fecha límite:
-                    {!isLoadingGoals && (
+                    {!isLoadingGoals && !isErrorGoals && (
                       <span className="ml-2 text-default-700 font-normal">
-                        {goalsData.data[selectedGoal].finalDate}
+                        {selectedGoal.finalDate}
                       </span>
                     )}
                   </p>
-                  {!isLoadingGoals && (
+                  {!isLoadingGoals && !isErrorGoals && (
                     <p className="mt-10 text-4xl text-center text-teal-600 font-semibold">
-                      {goalsData.data[selectedGoal].amount}
+                      {selectedGoal.amount}
                     </p>
                   )}
-                  {!isLoadingGoals && (
+                  {!isLoadingGoals && !isErrorGoals && (
                     <div className="flex mt-4">
                       <Progress
                         size="md"
-                        value={goalsData.data[selectedGoal].amount}
-                        maxValue={goalsData.data[selectedGoal].amountGoal}
+                        value={selectedGoal.amount}
+                        maxValue={selectedGoal.amountGoal}
                         color="success"
                         formatOptions={{ style: "currency", currency: "mxn" }}
                         className="max-w-md w-64"
@@ -166,11 +172,11 @@ export const Wallet = () => {
                       />
                     </div>
                   )}
-                  {!isLoadingGoals && (
+                  {!isLoadingGoals && !isErrorGoals && (
                     <p className="text-sm mt-6">
                       Se ha recaudado el 30% de la meta de{" "}
                       <span className="font-semibold">
-                        ${goalsData.data[selectedGoal].amountGoal.toFixed(2)}
+                        {selectedGoal.amountGoal}
                       </span>{" "}
                     </p>
                   )}
@@ -289,7 +295,8 @@ export const Wallet = () => {
                     <TableRow
                       key={item.idGoal}
                       onClick={() => {
-                        console.log(item);
+                        setSelectedGoal(item);
+                        console.log(selectedGoal);
                       }}
                     >
                       {(columnKey) => (

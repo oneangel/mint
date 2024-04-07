@@ -40,3 +40,11 @@ export function getLastTransactions(user, token) {
 export function addTransaction(user, transaction, token) {
 	return axios.post(`${URL_API}/register/transaction/${user}`, transaction, { headers: { Authorization: token } })
 }
+
+export function deleteTransaction(id, token) {
+	return axios.put(`${URL_API}/delete/transaction/${id}`, { headers: { Authorization: token } })
+}
+
+export function updateTransaction(id, transaction, token) {
+	return axios.put(`${URL_API}/update/transaction/${id}`, transaction, { headers: { Authorization: token } })
+}

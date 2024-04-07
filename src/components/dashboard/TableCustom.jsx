@@ -16,18 +16,33 @@ import {
   Input,
   Button,
 } from "@nextui-org/react";
-import {
-  IoArrowUpOutline,
-  IoArrowDownSharp,
-  IoTrash,
-} from "react-icons/io5";
+import { IoArrowUpOutline, IoArrowDownSharp, IoTrash } from "react-icons/io5";
 import { format } from "date-fns";
 import { FaPen } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { useForm } from "react-hook-form";
 
-export const TableCustom = ({ columns, data }) => {
+export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItem, setSelectedItem] = useState({
+    description: "",
+    amount: "",
+    destination: "",
+    createdAt: "",
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    setShowEditModal(false);
+    onUpdate(selectedItemId, data);
+  };
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "yyyy-MM-dd");
@@ -63,7 +78,13 @@ export const TableCustom = ({ columns, data }) => {
                           <MdOutlineRemoveRedEye />
                         </span>
                       </Tooltip>
-                      <div onClick={() => setShowEditModal(true)}>
+                      <div
+                        onClick={() => {
+                          setSelectedItem(item);
+                          setSelectedItemId(item._id);
+                          setShowEditModal(true);
+                        }}
+                      >
                         <Tooltip content="Editar">
                           <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
                             <FaPen />
@@ -71,7 +92,12 @@ export const TableCustom = ({ columns, data }) => {
                         </Tooltip>
                       </div>
 
-                      <div onClick={() => setShowDeleteModal(true)}>
+                      <div
+                        onClick={() => {
+                          setSelectedItemId(item._id);
+                          setShowDeleteModal(true);
+                        }}
+                      >
                         <Tooltip color="danger" content="Eliminar">
                           <span className="text-xl text-danger cursor-pointer active:opacity-50">
                             <IoTrash />
@@ -110,19 +136,23 @@ export const TableCustom = ({ columns, data }) => {
       <Modal isOpen={showEditModal} onOpenChange={setShowEditModal}>
         <ModalContent>
           <ModalHeader>Editar transacción</ModalHeader>
-          <ModalBody>
-            <form >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ModalBody>
               <Input
                 type="text"
                 label="Descripción"
                 name="description"
                 className="mb-5"
+                defaultValue={selectedItem.description}
+                {...register("description")}
               />
               <Input
                 type="number"
                 label="Cantidad"
                 name="amount"
                 className="mb-5"
+                defaultValue={selectedItem.amount}
+                {...register("amount")}
               />
               <Input
                 type="text"
@@ -130,22 +160,30 @@ export const TableCustom = ({ columns, data }) => {
                 name="destination"
                 className="mb-5"
                 description="*A quien esta dirigido el monto"
+                defaultValue={selectedItem.destination}
+                {...register("destination")}
               />
-              <Input type="date" className="mb-5" />
-            </form>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color="danger"
-              variant="light"
-              onPress={() => setShowEditModal(false)}
-            >
-              Cancelar
-            </Button>
-            <Button color="primary" onPress={() => setShowEditModal(false)}>
-              Guardar cambios
-            </Button>
-          </ModalFooter>
+              <Input
+                type="date"
+                name="createdAt"
+                defaultValue={selectedItem.createdAt.toString().split("T")[0]}
+                className="mb-5"
+                readOnly
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" type="submit">
+                Guardar cambios
+              </Button>
+              <Button
+                color="danger"
+                variant="light"
+                onPress={() => setShowEditModal(false)}
+              >
+                Cancelar
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
 
@@ -162,7 +200,14 @@ export const TableCustom = ({ columns, data }) => {
             >
               Cancelar
             </Button>
-            <Button color="danger" onPress={() => setShowDeleteModal(false)}>
+            <Button
+              color="danger"
+              onPress={() => {
+                onDelete(selectedItemId);
+                setShowDeleteModal(false);
+                setSelectedItemId(null);
+              }}
+            >
               Eliminar
             </Button>
           </ModalFooter>

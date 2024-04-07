@@ -1,4 +1,4 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { ButtonA, Label } from "../components/ui/ui-components";
@@ -105,17 +105,22 @@ export const Login = () => {
                   startContent={
                     <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
                   }
-                  endContent={<button className="focus:outline-none my-auto"> {showPassword ? (
-                    <GoEyeClosed
-                      className="text-2xl text-default-400"
-                      onClick={() => setShowPassword(false)}
-                    />
-                  ) : (
-                    <GoEye
-                      className="text-2xl text-default-400"
-                      onClick={() => setShowPassword(true)}
-                    />
-                  )}</button>}
+                  endContent={
+                    <button className="focus:outline-none my-auto">
+                      {" "}
+                      {showPassword ? (
+                        <GoEyeClosed
+                          className="text-2xl text-default-400"
+                          onClick={() => setShowPassword(false)}
+                        />
+                      ) : (
+                        <GoEye
+                          className="text-2xl text-default-400"
+                          onClick={() => setShowPassword(true)}
+                        />
+                      )}
+                    </button>
+                  }
                 />
                 {errors.password && <p>Last name is required.</p>}
               </div>

@@ -41,9 +41,15 @@ const PieChart2 = ({ expenses, incomes }) => {
     return () => {
       myChart.dispose();
     };
-  }, []);
+  }, [expenses, incomes]);
 
-  return <div id="main" style={{ width: "100%", height: "400px" }} className="p-4 pt-10"/>;
+  return (
+    <div
+      id="main"
+      style={{ width: "100%", height: "400px" }}
+      className="p-4 pt-10"
+    />
+  );
 };
 
 export default PieChart2;
