@@ -86,7 +86,9 @@ export const Landing = () => {
         <section id="nosotros" className="h-screen w-full bg-white flex">
           <div className="h-[90%] w-[70%] my-auto mx-auto flex flex-col justify-center">
             <div className="w-full h-72 bg-blue-500 rounded-3xl flex flex-col">
-              <span className="ml-10"><IoLockClosed /></span>
+              <span className="ml-10">
+                <IoLockClosed />
+              </span>
               <h1 className="text-5xl ml-10 text-white font-semibold my-auto">
                 Seguridad y Confianza
               </h1>
@@ -103,7 +105,30 @@ export const Landing = () => {
           </div>
         </section>
 
-        <section className="bg-black h-screen w-full"></section>
+        <section className="bg-black h-screen w-full">
+          <div className="pt-20">
+            <h2 className="text-center text-6xl text-white w-1/2 mx-auto font-semibold">
+              Comienza a construir tu futuro financiero con Mint
+            </h2>
+            <Button
+              color="primary"
+              size="lg"
+              endContent={<IoArrowForwardOutline />}
+              className="mx-auto flex mt-10"
+            >
+              Comienza gratis
+            </Button>
+          </div>
+          <hr className="mt-20 mb-10 w-[90%] mx-auto flex " />
+          <div className="w-[90%] mx-auto">
+            <h3 className="text-default-400 mb-4">Compañia</h3>
+            <p className="text-white mb-2">Acerca de nosotros</p>
+            <p className="text-white mb-2">Contactanos</p>
+            <p className="text-white mb-2">Cookies</p>
+            <p className="text-white">Política de privacidad</p>
+          </div>
+          <hr className="mt-36 w-[90%] mx-auto flex " />
+        </section>
       </div>
     </div>
   );

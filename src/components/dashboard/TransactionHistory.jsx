@@ -2,17 +2,23 @@ import React from "react";
 import { IoArrowUpOutline, IoArrowDownSharp } from "react-icons/io5";
 import { Skeleton } from "@nextui-org/react";
 import { format } from "date-fns";
+import { Link } from "react-router-dom";
 
 export const TransactionHistory = ({ transactions, isLoading }) => {
   return (
     <Skeleton
       isLoaded={!isLoading}
-      className="rounded-3xl shadow-md w-[95%] h-[400px]"
+      className="rounded-3xl shadow-md w-[95%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800"
     >
-      <div className="bg-white rounded-3xl border-1 border-gray-200 h-[400px]">
+      <div className="bg-white rounded-3xl border-1 border-gray-200 h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
         <div className="flex justify-between pt-6 px-6">
           <h1 className="text-xl font-semibold">Historial de Transacciones</h1>
-          <p className="text-medium font-semibold text-sky-700">Ver Todos</p>
+          <Link
+            className="text-medium font-semibold text-sky-700 dark:text-sky-400"
+            to="/transfer"
+          >
+            Ver Todos
+          </Link>
         </div>
 
         {transactions.map((transaction, index) => (

@@ -61,7 +61,7 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
       <Table className="max-h-[600px]">
         <TableHeader columns={columns}>
           {(column) => (
-            <TableColumn key={column.key} className="text-xl text-neutral-800">
+            <TableColumn key={column.key} className="text-xl text-neutral-800 dark:text-neutral-200">
               {column.label}
             </TableColumn>
           )}

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -23,6 +23,7 @@ import {
 } from "react-icons/io5";
 import { MintIcon } from "../../icons/MintIcon";
 import { getClient } from "../../hooks/client.hooks";
+import { MintIconL } from "../../icons/MintIconL";
 
 export const NavigationBar = () => {
   const auth = useContext(AuthContext);
@@ -31,6 +32,30 @@ export const NavigationBar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   const { data, isLoading, isError } = useQuery("client", getClient);
+  
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "light"
+  );
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
+  const handleChangeTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };  
+
+  const getThemeFromLocation = () => {
+    const params = new URLSearchParams(location.search);
+    const theme = params.get('theme');
+    return theme || 'light';
+  };
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -49,9 +74,11 @@ export const NavigationBar = () => {
   ];
 
   return (
-    <nav className="w-screen h-20 max-h-20 shadow-md fixed top-0 left-0 right-0 z-10 bg-white">
+    <nav className="w-screen h-20 max-h-20 shadow-md fixed top-0 left-0 right-0 z-10 bg-white dark:bg-zinc-900">
       <div className="flex justify-between items-center px-10 md:px-20 h-full">
-        <MintIcon className="h-10" />
+        <MintIcon className="h-10 dark:hidden" />
+        <MintIconL className="hidden h-10 dark:block" />
+        
 
         {/* Ocultar enlaces en pantallas pequeñas */}
         <ul className="hidden md:flex items-center py-6 font-normal text-xl">
@@ -60,17 +87,17 @@ export const NavigationBar = () => {
             <li className="px-6" key={index}>
               <Link to={link.path}>
                 <div
-                  className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
+                  className={`flex items-center justify-center rounded-lg hover:bg-sky-100 dark:hover:bg-sky-600 hover:scale-110 transition ${
                     location.pathname === link.path
-                      ? "bg-sky-100 hover:bg-sky-200 scale-110"
+                      ? "bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 scale-110"
                       : ""
                   }`}
                 >
                   <div
                     className={`flex items-center hover:text-sky-700 p-2 transition ${
                       location.pathname === link.path
-                        ? "text-sky-700"
-                        : "text-zinc-600"
+                        ? "text-sky-700 dark:text-sky-100"
+                        : "text-zinc-600 dark:text-white"
                     }`}
                   >
                     {link.icon && <span className="mr-2">{link.icon}</span>}
@@ -86,14 +113,14 @@ export const NavigationBar = () => {
           <ul className="hidden md:flex items-center font-normal text-xl">
             <li className="px-1">
               <Switch
-                defaultSelected
                 size="lg"
                 color="primary"
+                onClick={handleChangeTheme}
                 thumbIcon={({ isSelected, className }) =>
                   isSelected ? (
-                    <SunIcon className={className} />
-                  ) : (
                     <MoonIcon className={className} />
+                  ) : (
+                    <SunIcon className={className} />
                   )
                 }
               ></Switch>
@@ -111,7 +138,7 @@ export const NavigationBar = () => {
                   <div className="h-10 w-10 rounded-full overflow-hidden">
                     {!isLoading && (
                       <img
-                        src={`data:image/png;base64,${data.data.avatar}`}
+                        // src={`data:image/jpeg;base64,${data.data.avatar}`}
                         alt="Profile"
                         className="h-full w-full object-cover"
                       />
@@ -119,16 +146,7 @@ export const NavigationBar = () => {
                   </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem key="new">
-                    <Link to="/transfer"></Link>
-                  </DropdownItem>
-                  <DropdownItem
-                    key="edit"
-                    onClick={handleProfile}
-                    startContent={<IoSettingsOutline />}
-                  >
-                    Editar perfil
-                  </DropdownItem>
+                  <DropdownItem key="edit" onClick={handleProfile} startContent={<IoSettingsOutline />}>Editar perfil</DropdownItem>
                   <DropdownItem
                     key="delete"
                     className="text-danger"

@@ -61,12 +61,6 @@ const columns = [
 export const Wallet = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  // lista de datos para las barras de progreso
-  const progressData = [
-    { descripcion: "PC Gamer", value: 5250, maxValue: 17500 },
-    { descripcion: "Televisión", value: 6450, maxValue: 6800 },
-    { descripcion: "Televisión", value: 6450, maxValue: 6800 },
-  ];
 
   const getBalance = async () => {
     try {
@@ -108,9 +102,9 @@ export const Wallet = () => {
   });
 
   return (
-    <div className="h-screen overflow-y-auto bg-sky-50/50">
+    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
-      <h1 className="text-4xl font-semibold pl-20 text-sky-700 pt-32">
+      <h1 className="text-4xl font-semibold pl-20 text-sky-700 pt-32 dark:text-white">
         Cartera
       </h1>
 
@@ -121,9 +115,9 @@ export const Wallet = () => {
           </Skeleton>
 
           <Skeleton isLoaded={!isLoadingGoals} className="rounded-3xl">
-            <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-[480px]">
+            <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-[480px] dark:bg-zinc-900 dark:border-zinc-800">
               <div className="mt-4 w-3/4 text-center">
-                <p className="text-xl font-semibold">
+                <p className="text-xl font-semibold text-start ml-8">
                   Meta Seleccionada:{" "}
                   {!isLoadingGoals && !isErrorGoals && (
                     <span className="ml-2 font-normal text-default-700">
@@ -139,21 +133,29 @@ export const Wallet = () => {
                     Fecha de inicio:
                     {!isLoadingGoals && !isErrorGoals && (
                       <span className="ml-2 text-default-700 font-normal">
-                        {selectedGoal.createdAt}
-                      </span>
+                      {new Date(selectedGoal.finalDate).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
                     )}
                   </p>
                   <p className="font-semibold text-default-800 mt-4">
                     Fecha límite:
                     {!isLoadingGoals && !isErrorGoals && (
                       <span className="ml-2 text-default-700 font-normal">
-                        {selectedGoal.finalDate}
-                      </span>
+                      {new Date(selectedGoal.finalDate).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
                     )}
                   </p>
                   {!isLoadingGoals && !isErrorGoals && (
                     <p className="mt-10 text-4xl text-center text-teal-600 font-semibold">
-                      {selectedGoal.amount}
+                      ${selectedGoal.amount}
                     </p>
                   )}
                   {!isLoadingGoals && !isErrorGoals && (
@@ -172,14 +174,6 @@ export const Wallet = () => {
                       />
                     </div>
                   )}
-                  {!isLoadingGoals && !isErrorGoals && (
-                    <p className="text-sm mt-6">
-                      Se ha recaudado el 30% de la meta de{" "}
-                      <span className="font-semibold">
-                        {selectedGoal.amountGoal}
-                      </span>{" "}
-                    </p>
-                  )}
                 </div>
               </div>
             </div>
@@ -193,18 +187,18 @@ export const Wallet = () => {
                 type="text"
                 variant="bordered"
                 placeholder="Buscar..."
-                className="bg-white"
+                className="bg-white rounded-3xl"
                 classNames={{
                   input: [
                     "text-black/90 dark:text-white/90 text-xl",
                     "placeholder:text-default-700/50 dark:placeholder:text-white/60",
                   ],
-                  innerWrapper: "bg-white",
+                  innerWrapper: "bg-white dark:bg-zinc-900",
                   inputWrapper: [
-                    "dark:bg-default/60",
+                    "dark:bg-zinc-900",
                     "backdrop-blur-xl",
                     "backdrop-saturate-200",
-                    "dark:hover:bg-default/70",
+                    "dark:hover:border-zinc-500",
                     "group-data-[focused=true]:bg-default-200/50",
                     "dark:group-data-[focused=true]:bg-default/60",
                     "!cursor-text",
@@ -278,7 +272,7 @@ export const Wallet = () => {
                   {(column) => (
                     <TableColumn
                       key={column.key}
-                      className="text-xl text-neutral-800"
+                      className="text-xl text-neutral-800 dark:text-neutral-200"
                     >
                       {column.label}
                     </TableColumn>

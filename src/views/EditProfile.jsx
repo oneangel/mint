@@ -80,16 +80,16 @@ export const EditProfile = () => {
   ];
 
   return (
-    <div className="h-screen overflow-y-auto bg-sky-50/50">
+    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
       <div className="w-full h-full flex flex-col items-center">
         <div className="mt-40 w-[700px]">
-          <div className="w-full flex flex-wrap bg-white p-2 border-2 rounded-3xl shadow-sm">
+          <div className="w-full flex flex-wrap bg-white p-2 border-2 rounded-3xl shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
             <div className="w-1/4 items-center justify-center flex">
               <div className="size-40 rounded-full overflow-hidden">
                 {!isLoading && (
                   <img
-                    src={`data:image/jpeg;base64,${data.data.avatar}`}
+                    // src={`data:image/jpeg;base64,${data.data.avatar}`}
                     alt="Profile"
                     className="h-full w-full object-cover"
                   />
@@ -111,7 +111,7 @@ export const EditProfile = () => {
             </div>
           </div>
 
-          <div className="mt-10 bg-white p-6 border-2 shadow-sm rounded-3xl">
+          <div className="mt-10 bg-white p-6 border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
             {fields.map((field, index) => (
               <div key={index} className="mb-5 flex flex-wrap">
                 <div className="w-[90%]">

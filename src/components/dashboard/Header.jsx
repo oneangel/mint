@@ -12,10 +12,10 @@ export const Header = () => {
   return (
     <nav className="w-screen max-h-20 fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center px-10">
-        <ul className="flex flex-wrap items-center py-6 font-normal text-xl">
+        <ul className="flex flex-wrap items-center py-6 font-normal text-xl w-1/3">
           <MintIcon className="h-10" />
         </ul>
-        <ul className="flex flex-wrap items-center py-6 font-normal text-xl">
+        <ul className="flex flex-wrap items-center justify-center py-6 font-normal text-xl w-1/3">
           
           <li className="px-6 ">
             <Link to="/">
@@ -82,7 +82,7 @@ export const Header = () => {
           </li>
         </ul>
 
-        <ul className="flex flex-wrap items-center font-normal text-xl">
+        <ul className="flex flex-wrap items-center justify-end font-normal text-xl w-1/3">
           <li className="px-3">
             <button onClick={handleLogin} className="px-6 text-white bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium rounded-2xl text-2xl py-1.5 w-full">Iniciar Sesión</button>
           </li>

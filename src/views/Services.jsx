@@ -14,21 +14,24 @@ export const Services = () => {
   } = useQuery("measure", useMonthMeasure);
 
   return (
-    <div className="h-screen bg-sky-50/50">
+    <div className="h-screen bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
-      <h1 className="text-4xl font-semibold pl-20 text-sky-700 pt-32">
+      <h1 className="text-4xl font-semibold pl-20 text-sky-700 pt-32 dark:text-white">
         Servicios
       </h1>
       <div className="mx-20 flex flex-wrap h-[700px]">
         <div className="w-1/2 flex justify-center items-center">
-          <div className="w-[70%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md">
+          <div className="w-[70%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800 items-center">
             <p className="pt-10 pl-10 flex items-center text-2xl font-bold text-default-700">
               <span>
                 <IoWater className="size-8" />
               </span>
               Agua
             </p>
-            <LiquidFillChart />
+            <div className="flex items-center justify-center">
+              <LiquidFillChart />
+            </div>
+            
 
             <div className="flex flex-wrap mx-10">
               <div className="w-1/2">
@@ -53,7 +56,7 @@ export const Services = () => {
         </div>
 
         <div className="w-1/2 flex justify-center items-center">
-          <div className="w-[70%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md">
+          <div className="w-[70%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800">
             <p className="pt-10 pl-10 flex items-center text-2xl font-bold text-default-700">
               <span>
                 <IoFlash className="size-8" />
