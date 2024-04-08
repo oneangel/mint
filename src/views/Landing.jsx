@@ -28,9 +28,9 @@ export const Landing = () => {
       <Header />
       <div className="h-screen overflow-auto">
         {/* Inicio */}
-        <section id="home" className="h-screen w-full bg-white">
-          <div className="w-full flex flex-wrap h-full">
-            <div className="w-1/2">
+        <section id="home" className="h-screen w-full bg-white ">
+          <div className="w-full h-full grid md:grid-cols-2">
+            <div className="bg-red-400 lg:col-span-1 md:col-span-2">
               <div className="mt-64 ml-20 bg-default-200 w-80 rounded-full p-2 flex flex-wrap items-center">
                 <Chip
                   variant="shadow"
@@ -74,7 +74,7 @@ export const Landing = () => {
               </div>
             </div>
 
-            <div className="w-1/2 flex items-center justify-center">
+            <div className="items-center justify-center bg-red-600 lg:col-span-1 lg:block hidden">
               <div className="flex items-center justify-center h-full">
                 <img src={Analytics} alt="Mint" className="w-2/3" />
               </div>
@@ -84,24 +84,11 @@ export const Landing = () => {
 
         {/* Nosotros */}
         <section id="nosotros" className="h-screen w-full bg-white flex">
-          <div className="h-[90%] w-[70%] my-auto mx-auto flex flex-col justify-center">
-            <div className="w-full h-72 bg-blue-500 rounded-3xl flex flex-col">
-              <span className="ml-10">
-                <IoLockClosed />
-              </span>
-              <h1 className="text-5xl ml-10 text-white font-semibold my-auto">
-                Seguridad y Confianza
-              </h1>
-            </div>
-            <div className="w-full flex mt-4 gap-4 justify-center">
-              <div className="w-1/2">
-                <div className="bg-blue-500 w-full h-96 rounded-3xl"></div>
-              </div>
-              <div className="w-1/2 flex flex-col gap-y-4 max-h-96">
-                <div className="bg-purple-500 w-full h-48 rounded-3xl"></div>
-                <div className="bg-orange-500 w-full h-48 rounded-3xl"></div>
-              </div>
-            </div>
+          <div className="h-[90%] w-[70%] my-auto mx-auto justify-center grid lg:grid-cols-2 md:grid-cols-1 gap-4">
+            <div className="bg-red-400 col-span-2 rounded-3xl"></div>
+            <div className="bg-blue-400 lg:col-span-1 md:col-span-2 sm:md:col-span-2 row-span-2 rounded-3xl"></div>
+            <div className="bg-orange-400 lg:col-span-1 md:col-span-2 sm:md:col-span-2  rounded-3xl"></div>
+            <div className="bg-green-400 lg:col-span-1 md:col-span-2 sm:md:col-span-2 rounded-3xl"></div>
           </div>
         </section>
 
