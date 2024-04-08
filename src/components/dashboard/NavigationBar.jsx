@@ -20,6 +20,8 @@ import {
   IoMenu,
   IoSettingsOutline,
   IoLogOutOutline,
+  IoMoon,
+  IoSunny,
 } from "react-icons/io5";
 import { MintIcon } from "../../icons/MintIcon";
 import { getClient } from "../../hooks/client.hooks";
@@ -32,9 +34,14 @@ export const NavigationBar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
   const { data, isLoading, isError } = useQuery("client", getClient);
-  
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") || "light"
+
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [themeIcon, setThemeIcon] = useState(
+    theme === "light" ? (
+      <IoMoon className="size-6" />
+    ) : (
+      <IoSunny className="size-6" />
+    )
   );
 
   useEffect(() => {
@@ -49,12 +56,13 @@ export const NavigationBar = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-  };  
-
-  const getThemeFromLocation = () => {
-    const params = new URLSearchParams(location.search);
-    const theme = params.get('theme');
-    return theme || 'light';
+    setThemeIcon(
+      newTheme === "light" ? (
+        <IoMoon className="size-6" />
+      ) : (
+        <IoSunny className="size-6" />
+      )
+    );
   };
 
   const toggleMenu = () => {
@@ -74,14 +82,13 @@ export const NavigationBar = () => {
   ];
 
   return (
-    <nav className="w-screen h-20 max-h-20 shadow-md fixed top-0 left-0 right-0 z-10 bg-white dark:bg-zinc-900">
-      <div className="flex justify-between items-center px-10 md:px-20 h-full">
+    <nav className="fixed top-0 left-0 right-0 z-10 w-screen h-20 bg-white shadow-md max-h-20 dark:bg-zinc-900">
+      <div className="flex items-center justify-between h-full px-10 md:px-20">
         <MintIcon className="h-10 dark:hidden" />
         <MintIconL className="hidden h-10 dark:block" />
-        
 
         {/* Ocultar enlaces en pantallas pequeñas */}
-        <ul className="hidden md:flex items-center py-6 font-normal text-xl">
+        <ul className="items-center hidden py-6 text-xl font-normal md:flex">
           {/* Map de los enlaces */}
           {navLinks.map((link, index) => (
             <li className="px-6" key={index}>
@@ -110,24 +117,18 @@ export const NavigationBar = () => {
         </ul>
 
         <div className="flex items-center">
-          <ul className="hidden md:flex items-center font-normal text-xl">
-            <li className="px-1">
-              <Switch
-                size="lg"
-                color="primary"
+          <ul className="items-center hidden text-xl font-normal md:flex">
+            <li className="flex items-center px-3">
+              <button
+                className="flex items-center justify-center w-10 h-10 rounded-full text-zinc-500 hover:text-zinc-800 dark:hover:text-white bg-zinc-200/80 dark:text-zinc-600"
                 onClick={handleChangeTheme}
-                thumbIcon={({ isSelected, className }) =>
-                  isSelected ? (
-                    <MoonIcon className={className} />
-                  ) : (
-                    <SunIcon className={className} />
-                  )
-                }
-              ></Switch>
+              >
+                {themeIcon}
+              </button>
             </li>
 
             <li className="px-3">
-              <div className="h-10 w-10 rounded-full bg-zinc-200/80 flex items-center justify-center">
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-zinc-200/80">
                 <IoNotifications className="text-zinc-600" />
               </div>
             </li>
@@ -135,18 +136,24 @@ export const NavigationBar = () => {
             <li className="px-3">
               <Dropdown>
                 <DropdownTrigger>
-                  <div className="h-10 w-10 rounded-full overflow-hidden">
+                  <div className="w-10 h-10 overflow-hidden rounded-full">
                     {!isLoading && (
                       <img
                         // src={`data:image/jpeg;base64,${data.data.avatar}`}
                         alt="Profile"
-                        className="h-full w-full object-cover"
+                        className="object-cover w-full h-full"
                       />
                     )}
                   </div>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
-                  <DropdownItem key="edit" onClick={handleProfile} startContent={<IoSettingsOutline />}>Editar perfil</DropdownItem>
+                  <DropdownItem
+                    key="edit"
+                    onClick={handleProfile}
+                    startContent={<IoSettingsOutline />}
+                  >
+                    Editar perfil
+                  </DropdownItem>
                   <DropdownItem
                     key="delete"
                     className="text-danger"
@@ -164,7 +171,7 @@ export const NavigationBar = () => {
           <div className="md:hidden">
             <IoMenu className="size-10" onClick={toggleMenu} />
             {showMenu && (
-              <ul className="absolute top-16 right-0 bg-white rounded-md shadow-lg py-2">
+              <ul className="absolute right-0 py-2 bg-white rounded-md shadow-lg top-16 dark:bg-zinc-900">
                 {/* Map de los enlaces */}
                 {navLinks.map((link, index) => (
                   <li className="px-4 py-2" key={index}>

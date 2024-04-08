@@ -86,9 +86,9 @@ export const Home = () => {
           </Skeleton>
         </div>
 
-        <div className="flex mt-8 mx-20 h-72">
+        <div className="mt-8 mx-20 h-72 grid lg:grid-cols-3 md:grid-cols-1 gap-2">
           {/* Gastos generales */}
-          <div className="w-1/4 flex items-center">
+          <div className="lg:col-span-1 flex items-center ">
             <div className="bg-white h-[280px] w-[418px] rounded-3xl shadow-md border-1 dark:bg-zinc-900 dark:border-zinc-800">
               <h1 className="p-4 text-lg font-semibold">Gastos Generales </h1>
 
@@ -115,7 +115,7 @@ export const Home = () => {
             </div>
           </div>
 
-          <div className="w-2/5 flex justify-center items-center">
+          <div className="lg:col-span-1 flex justify-center items-center ">
             <Skeleton
               isLoaded={!isLoadingBalance}
               className="rounded-3xl shadow-md border-1 dark:bg-zinc-900 dark:border-zinc-800"
@@ -124,7 +124,7 @@ export const Home = () => {
             </Skeleton>
           </div>
 
-          <div className="w-2/5 flex  justify-center">
+          <div className="lg:col-span-1 flex  justify-center">
             <div className="flex flex-col">
               {/* Abonos */}
               <div className="">

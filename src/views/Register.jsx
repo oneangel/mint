@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as UserServices from "../services/user.service";
 import * as ClientServices from "../services/client.service";
-import Header from "../components/Header";
-import { ButtonA } from "../components/ui/ButtonA";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { MintIcon } from "../icons/MintIcon";
+import { Link } from "react-router-dom";
+import { Button } from "@nextui-org/react";
 
 export const Register = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -74,14 +74,14 @@ export const Register = () => {
             )}
 
             {currentIndex === 2 ? (
-              <ButtonA type="submit">Crear cuenta</ButtonA>
+              <Button type="submit" className="text-white bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium rounded-2xl text-4xl px-5 shadow-md w-full py-8">Crear cuenta</Button>
             ) : (
               <></>
             )}
 
             <p className="text-center text-xl font-semibold pt-8">
               ¿Ya tiene cuenta?{" "}
-              <span className="text-sky-700 font-bold">Iniciar Sesión</span>
+              <Link className="text-sky-700 font-bold hover:text-sky-400" to="/login">Iniciar Sesión</Link>
             </p>
           </form>
         </div>

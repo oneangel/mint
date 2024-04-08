@@ -1,93 +1,139 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MintIcon } from "../../icons/MintIcon";
+import { MintIconL } from "../../icons/MintIconL";
+import { IoMenu, IoMoon, IoSunny } from "react-icons/io5";
+import { Button } from "@nextui-org/react";
 
 export const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  const [themeIcon, setThemeIcon] = useState(
+    theme === "light" ? (
+      <IoMoon className="size-6" />
+    ) : (
+      <IoSunny className="size-6" />
+    )
+  );
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
+  const handleChangeTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+    setThemeIcon(
+      newTheme === "light" ? (
+        <IoMoon className="size-6" />
+      ) : (
+        <IoSunny className="size-6" />
+      )
+    );
+  };
 
   const handleLogin = () => {
     navigate("/login");
   };
-  return (
-    <nav className="w-screen max-h-20 fixed top-0 left-0 right-0 z-10">
-      <div className="flex justify-between items-center px-10">
-        <ul className="flex flex-wrap items-center py-6 font-normal text-xl w-1/3">
-          <MintIcon className="h-10" />
-        </ul>
-        <ul className="flex flex-wrap items-center justify-center py-6 font-normal text-xl w-1/3">
-          
-          <li className="px-6 ">
-            <Link to="/">
-              <div
-                className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
-                  location.pathname === "/"
-                    ? "bg-sky-100 hover:bg-sky-200 scale-110"
-                    : ""
-                }`}
-              >
-                <div
-                  className={`flex items-center hover:text-sky-700 p-2 transition font-semibold ${
-                    location.pathname === "/"
-                      ? "text-sky-700"
-                      : "text-zinc-600"
-                  }`}
-                >
-                  <span>Inicio</span>
-                </div>
-              </div>
-            </Link>
-          </li>
-          <li className="px-6 ">
-            <Link to="/">
-              <div
-                className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
-                  location.pathname === "/transfer"
-                    ? "bg-sky-100 hover:bg-sky-200 scale-110"
-                    : ""
-                }`}
-              >
-                <div
-                  className={`flex items-center hover:text-sky-700 p-2 transition ${
-                    location.pathname === "/transfer"
-                      ? "text-sky-700"
-                      : "text-zinc-600"
-                  }`}
-                >
-                  <span>Nosotros</span>
-                </div>
-              </div>
-            </Link>
-          </li>
-          <li className="px-6 ">
-            <Link to="/">
-              <div
-                className={`flex items-center justify-center rounded-lg hover:bg-sky-100 hover:scale-110 transition ${
-                  location.pathname === "/wallet"
-                    ? "bg-sky-100 hover:bg-sky-200 scale-110"
-                    : ""
-                }`}
-              >
-                <div
-                  className={`flex items-center hover:text-sky-700 p-2 transition ${
-                    location.pathname === "/wallet"
-                      ? "text-sky-700"
-                      : "text-zinc-600"
-                  }`}
-                >
-                  <span>Contacto</span>
-                </div>
-              </div>
-            </Link>
-          </li>
-        </ul>
 
-        <ul className="flex flex-wrap items-center justify-end font-normal text-xl w-1/3">
-          <li className="px-3">
-            <button onClick={handleLogin} className="px-6 text-white bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium rounded-2xl text-2xl py-1.5 w-full">Iniciar Sesión</button>
-          </li>
-        </ul>
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-10 px-6 bg-white shadow dark:bg-zinc-900">
+      <div className="flex items-center justify-between h-16 mx-auto max-w-7xl ">
+        <button
+          onClick={toggleMenu}
+          className="flex p-1 -ml-1 transition-colors rounded md:hidden text-zinc-500 hover:bg-primary hover:text-slate-200 focus:ring-2 focus:ring-slate-200 dark:text-zinc-200"
+        >
+          <IoMenu className="size-8" />
+        </button>
+        <Link
+          to="/"
+          className="hidden transition duration-200 hover:rotate-6 hover:scale-110 md:flex"
+        >
+          <MintIcon className="size-8 dark:hidden" />
+          <MintIconL className="hidden size-8 dark:flex" />
+        </Link>
+        <div className="flex items-center -mr-4">
+          <Link
+            to="/"
+            className="flex transition duration-200 hover:rotate-6 hover:scale-110 md:hidden"
+          >
+            <MintIcon className="size-8 dark:hidden" />
+            <MintIconL className="hidden size-8 dark:flex" />
+          </Link>
+          <div className="hidden ml-8 space-x-8 md:flex">
+            <Link
+              className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
+                location.pathname === "/" ? "text-primary" : ""
+              }`}
+              to="/"
+            >
+              Inicio
+            </Link>
+            <Link
+              className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
+                location.pathname === "/nosotros" ? "text-primary" : ""
+              }`}
+              to="/nosotros"
+            >
+              Nosotros
+            </Link>
+            <Link
+              className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
+                location.pathname === "/contacto" ? "text-primary" : ""
+              }`}
+              to="/contacto"
+            >
+              Contacto
+            </Link>
+          </div>
+        </div>
+        <div className="flex gap-4">
+          <button
+            className="text-zinc-500 hover:text-zinc-800 dark:text-zinc-200 dark:hover:text-white"
+            onClick={handleChangeTheme}
+          >
+            {themeIcon}
+          </button>
+          <Button color="primary" onClick={handleLogin}>
+            Login
+          </Button>
+        </div>
       </div>
-    </nav>
+
+      {/* Links movil */}
+      {isMenuOpen && (
+        <div className="py-2 space-y-1 border-t md:hidden">
+          <Link
+            to="/"
+            className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
+          >
+            Inicio
+          </Link>
+          <Link
+            to="/nosotros"
+            className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
+          >
+            Nosotros
+          </Link>
+          <Link
+            to="/contacto"
+            className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
+          >
+            Contacto
+          </Link>
+        </div>
+      )}
+    </header>
   );
 };

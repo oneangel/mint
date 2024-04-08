@@ -1,6 +1,6 @@
 import { React, useState } from "react";
-import { Input, Label } from "../components/ui/ui-components";
 import { GoEye, GoEyeClosed } from "react-icons/go";
+import { Button, Input } from "@nextui-org/react";
 import { IoLockClosed } from "react-icons/io5";
 
 export const Step2 = ({ control, nextStep, previousStep }) => {
@@ -9,74 +9,84 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
 
   return (
     <>
-      <div className="mb-12">
-        <Label htmlFor="password">Contraseña</Label>
+      <div className="mb-8">
         <div className="relative text-3xl font-light">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <IoLockClosed className="text-sky-700" />
-          </div>
-          <input
+          <Input
+            isRequired
             type={showPassword ? "text" : "password"}
             name="password"
+            label="Contraseña"
             {...control("password")}
+            variant="bordered"
+            size="lg"
+            classNames={{ label: "text-2xl" }}
+            className="rounded-2xl bg-white"
+            startContent={
+              <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+            }
+            endContent={
+              showPassword ? (
+                <GoEyeClosed
+                  className="text-gray-400 mt-1"
+                  onClick={() => setShowPassword(false)}
+                />
+              ) : (
+                <GoEye
+                  className="text-gray-400 mt-1"
+                  onClick={() => setShowPassword(true)}
+                />
+              )
+            }
           />
-          <div className="absolute inset-y-0 end-5 flex items-center ps-3.5">
-            {showPassword ? (
-              <GoEyeClosed
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPassword(false)}
-              />
-            ) : (
-              <GoEye
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPassword(true)}
-              />
-            )}
-          </div>
         </div>
       </div>
 
-      <div className="mb-12">
-        <Label htmlFor="passwordC">Confirmar Contraseña</Label>
+      <div className="mb-8">
         <div className="relative text-3xl font-light">
-          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-            <IoLockClosed className="text-sky-700" />
-          </div>
-          <input
-            type={showPassword ? "text" : "password"}
+          <Input
+            isRequired
+            type={showPasswordC ? "text" : "password"}
             name="passwordC"
+            label="Confirmar Contraseña"
             {...control("passwordC")}
+            variant="bordered"
+            size="lg"
+            classNames={{ label: "text-2xl" }}
+            className="rounded-2xl bg-white"
+            startContent={
+              <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+            }
+            endContent={
+              showPasswordC ? (
+                <GoEyeClosed
+                  className="text-gray-400 mt-1"
+                  onClick={() => setShowPasswordC(false)}
+                />
+              ) : (
+                <GoEye
+                  className="text-gray-400 mt-1"
+                  onClick={() => setShowPasswordC(true)}
+                />
+              )
+            }
           />
-          <div className="absolute inset-y-0 end-5 flex items-center ps-3.5">
-            {showPasswordC ? (
-              <GoEyeClosed
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPasswordC(false)}
-              />
-            ) : (
-              <GoEye
-                className="text-gray-400 mt-1"
-                onClick={() => setShowPasswordC(true)}
-              />
-            )}
-          </div>
         </div>
       </div>
 
-      <div className="text-center mt-48 flex">
-        <button
-          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl px-20 py-3 w-1/2 flex justify-center mx-2"
+      <div className="text-center mt-48 flex gap-4">
+        <Button
+          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-1/2 shadow-lg"
           onClick={previousStep}
         >
           Anterior
-        </button>
-        <button
+        </Button>
+        <Button
           type="submit"
-          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl px-20 py-3 w-1/2 flex justify-center"
+          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-1/2 shadow-lg"
           onClick={nextStep}
         >
           Siguiente
-        </button>
+        </Button>
       </div>
     </>
   );

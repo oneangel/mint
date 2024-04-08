@@ -1,7 +1,6 @@
 import { React, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
-import { ButtonA, Label } from "../components/ui/ui-components";
 import { Button, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { IoMailSharp, IoLockClosed } from "react-icons/io5";
@@ -9,7 +8,9 @@ import { GoEye, GoEyeClosed } from "react-icons/go";
 import { userService } from "../services/services";
 import toast, { Toaster } from "react-hot-toast";
 import { MintIcon } from "../icons/MintIcon";
+import { MintIconL } from "../icons/MintIconL";
 import { useMutation, QueryCache } from "react-query";
+
 
 export const Login = () => {
   //Create an instance to use our global context
@@ -54,15 +55,16 @@ export const Login = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <section className="flex-grow grid grid-cols-2 gap-0">
+      <section className="grid grid-cols-2 lg:flex-grow">
         {/* Left Side */}
-        <div className="flex justify-center items-center">
-          <MintIcon className="w-96" />
+        <div className="flex items-center justify-center ">
+          <MintIcon className="hidden col-span-1 w-96 xl:flex dark:xl:hidden" />
+          <MintIconL className="hidden col-span-1 w-96 xl:flex dark:xl:flex" />
         </div>
 
         {/* Right Side / Form */}
-        <div className="bg-cyan-100/70 rounded-ss-[130px] rounded-es-[130px] py-28 max-h-screen">
-          <h1 className="text-6xl font-bold text-start mx-56 mb-10 text-gray-800 ">
+        <div className="bg-cyan-100 dark:bg-zinc-900 xl:rounded-ss-[130px] xl:rounded-es-[130px] py-28 max-h-screen col-span-2 xl:col-span-1">
+          <h1 className="mb-10 text-6xl font-bold text-center text-gray-800 dark:text-white ">
             INICIAR SESIÓN
           </h1>
           <form className="max-w-xl mx-auto" onSubmit={handleSubmit(onSubmit)}>
@@ -77,16 +79,11 @@ export const Login = () => {
                   {...register("username")}
                   size="lg"
                   classNames={{ label: "text-2xl" }}
-                  className="rounded-2xl bg-white"
+                  className="bg-white rounded-2xl dark:bg-zinc-800"
                   startContent={
-                    <IoMailSharp className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+                    <IoMailSharp className="flex-shrink-0 text-2xl pointer-events-none text-sky-700" />
                   }
                 />
-                {/* <input
-                  name="username"
-                  {...register("username")}
-                  className="bg-white border border-gray- text-gray-900 rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full ps-14 p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                /> */}
                 {errors.username && <p>Username is required.</p>}
               </div>
             </div>
@@ -100,13 +97,13 @@ export const Login = () => {
                   variant="bordered"
                   size="lg"
                   {...register("password")}
-                  className="rounded-2xl bg-white"
+                  className="bg-white rounded-2xl dark:bg-zinc-800"
                   classNames={{ label: "text-2xl" }}
                   startContent={
-                    <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+                    <IoLockClosed className="flex-shrink-0 text-2xl pointer-events-none text-sky-700" />
                   }
                   endContent={
-                    <button className="focus:outline-none my-auto">
+                    <button className="my-auto focus:outline-none">
                       {" "}
                       {showPassword ? (
                         <GoEyeClosed
@@ -125,10 +122,10 @@ export const Login = () => {
                 {errors.password && <p>Last name is required.</p>}
               </div>
 
-              <div className="text-end mt-3 mb-14">
+              <div className="mt-3 text-end mb-14">
                 <a
                   href="/forgotpassword"
-                  className="text-sky-700 text-xl font-bold"
+                  className="text-xl font-bold text-sky-700"
                 >
                   ¿Olvidó su contraseña?
                 </a>
@@ -138,26 +135,26 @@ export const Login = () => {
               <Button
                 size="lg"
                 type="submit"
-                className="bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium text-4xl w-full py-8 text-white shadow-lg"
+                className="w-full py-8 text-4xl font-medium text-white shadow-lg bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700"
               >
                 Iniciar Sesión
               </Button>
             </div>
-            <p className="text-center mt-10 font-bold">
+            <p className="mt-10 font-bold text-center">
               ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯{" "}
-              <span className="font-normal pl-1 text-2xl">o</span>{" "}
+              <span className="pl-1 text-2xl font-normal">o</span>{" "}
               ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
             </p>
 
-            <div className="text-center mt-10">
+            <div className="mt-10 text-center">
               <Button
                 onClick={handleRegisterClick}
-                className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg"
+                className="w-full py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
               >
                 Registrarse
               </Button>
             </div>
-            <p className="text-center text-xl font-semibold mt-6">
+            <p className="mt-6 text-xl font-semibold text-center">
               Registrándose en nuestros{" "}
               <span className="text-sky-700">Términos y Condiciones</span>
             </p>
