@@ -22,7 +22,8 @@ import {
   Tooltip,
   Chip,
 } from "@nextui-org/react";
-import { useGetGoalsList } from "../hooks/goal.hooks";
+import { useAddGoal, useDeleteGoal, useUpdateGoal } from "../hooks/goal.hooks";
+import { useGetGoalsList, useAddAmountGoal } from "../hooks/goal.hooks";
 import { transactionService } from "../services/services";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import { CurrentBalance } from "../components/dashboard/CurrentBalance";
@@ -31,7 +32,6 @@ import { FaPen } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
-import { useAddGoal, useDeleteGoal, useUpdateGoal } from "../hooks/goal.hooks";
 
 const statusColorMap = {
   true: "success",
@@ -68,6 +68,7 @@ export const Wallet = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [selectedItem, setSelectedItem] = useState({
+    amount: 0,
     description: "",
     amountGoal: "",
     finalDate: "0/0/0",
@@ -131,11 +132,24 @@ export const Wallet = () => {
     },
   });
 
+  const addAmountGoalMutation = useMutation(useAddAmountGoal, {
+    onSuccess: () => {
+      queryClient.refetchQueries("balance");
+      queryClient.refetchQueries("goals");
+    },
+    onError: () => {
+      console.error("¡Hubo un error en la operacion!");
+    },
+  });
+
   const onUpdate = (data) => {
-    console.log(selectedItemId);
-    console.log(data);
     updateGoalMutation.mutate({ selectedItemId, data });
     setShowEditModal(false);
+  };
+
+  const onAdd = (data) => {
+    addAmountGoalMutation.mutate({ selectedItemId, data });
+    setShowAddAmountModal(false);
   };
 
   const onDelete = (id) => {
@@ -371,6 +385,7 @@ export const Wallet = () => {
                       key={item.idGoal}
                       onClick={() => {
                         setSelectedGoal(item);
+                        setSelectedItemId(item._id);
                       }}
                     >
                       {(columnKey) => (
@@ -510,7 +525,14 @@ export const Wallet = () => {
                 <ModalHeader>Agregar Monto</ModalHeader>
                 <ModalBody>
                   <form action="">
-                    <Input type="number" label="Monto" className="mb-5" />
+                    <Input
+                      type="number"
+                      label="Monto"
+                      name="amount"
+                      className="mb-5"
+                      defaultValue={0}
+                      {...register("amount")}
+                    />
                   </form>
                 </ModalBody>
                 <ModalFooter>
@@ -521,10 +543,7 @@ export const Wallet = () => {
                   >
                     Cancelar
                   </Button>
-                  <Button
-                    color="primary"
-                    onPress={() => setShowAddAmountModal(false)}
-                  >
+                  <Button color="primary" onClick={handleSubmit(onAdd)}>
                     Guardar
                   </Button>
                 </ModalFooter>

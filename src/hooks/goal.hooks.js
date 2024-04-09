@@ -44,3 +44,14 @@ export const useUpdateGoal = async (id) => {
     console.log(error);
   }
 }
+
+export const useAddAmountGoal = async (data) => {
+  try {
+    console.log(data.selectedItemId);
+    const res = await goalService.addAmountGoal(data.selectedItemId, data.data, token);
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
