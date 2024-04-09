@@ -16,6 +16,7 @@ import {
   getTotalExpenseByDate,
 } from "../hooks/transaction.hooks";
 import { getTransactionsByRange } from "../utils/transaction.utils";
+import { useGetMeter } from "../hooks/meter.hooks";
 
 export const Home = () => {
   const [month, setMonth] = useState("");
@@ -55,6 +56,12 @@ export const Home = () => {
     isError: isErrorTotalExpense,
   } = useQuery("totalExpenses", getTotalExpenseByDate);
 
+  const {
+    data: meterData,
+    isLoading: isLoadingMeter,
+    isError: isErrorMeter,
+  } = useQuery("meter", useGetMeter);
+
   useEffect(() => {
     toast.success("¡Bienvenido!");
     const today = new Date();
@@ -76,7 +83,9 @@ export const Home = () => {
       <NavigationBar />
       <div className="">
         <div className="flex justify-between mx-20">
-          <h1 className="text-4xl font-semibold text-sky-700 mt-32 dark:text-white">Home</h1>
+          <h1 className="text-4xl font-semibold text-sky-700 mt-32 dark:text-white">
+            Home
+          </h1>
 
           <Skeleton
             isLoaded={!isLoadingcurr}
@@ -143,7 +152,9 @@ export const Home = () => {
               <div className="mt-8">
                 <h2 className="text-center text-xl font-semibold mb-2">
                   Gastos del Mes:{" "}
-                  <span className="text-neutral-600 capitalize dark:text-sky-400">{month}</span>
+                  <span className="text-neutral-600 capitalize dark:text-sky-400">
+                    {month}
+                  </span>
                 </h2>
                 <div className="bg-red-50 h-20 w-60 rounded-2xl flex flex-col justify-center items-center shadow-md border-1 dark:bg-red-950 dark:border-red-800">
                   <Skeleton isLoaded={!isLoadingTotalExpense}>
@@ -166,7 +177,7 @@ export const Home = () => {
               isLoaded={
                 !isLoadingcurr && !isLoadinglast && !isErrorcurr && !isErrorlast
               }
-              className="rounded-3xl shadow-md border-1 dark:bg-zinc-900 dark:border-zinc-800" 
+              className="rounded-3xl shadow-md border-1 dark:bg-zinc-900 dark:border-zinc-800"
             >
               <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
                 <AreaChart currentData={currWeekData} lastData={lastWeekData} />

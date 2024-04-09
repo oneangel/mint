@@ -384,13 +384,9 @@ export const Wallet = () => {
                               </Tooltip>
                               <div
                                 onClick={() => {
-                                  console.log(item);
                                   setSelectedItemId(item._id);
                                   setShowEditModal(true);
                                   setSelectedItem(item);
-                                  /* setSelectedItem(item);
-                                  setSelectedItemId(item._id);
-                                  setShowEditModal(true); */
                                 }}
                               >
                                 <Tooltip content="Editar">
@@ -506,7 +502,10 @@ export const Wallet = () => {
                 </ModalFooter>
               </ModalContent>
             </Modal>
-            <Modal isOpen={showAddAmountModal} onOpenChange={setShowAddAmountModal}>
+            <Modal
+              isOpen={showAddAmountModal}
+              onOpenChange={setShowAddAmountModal}
+            >
               <ModalContent>
                 <ModalHeader>Agregar Monto</ModalHeader>
                 <ModalBody>

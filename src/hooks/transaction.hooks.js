@@ -22,7 +22,6 @@ export const useAddTransaction = async (transaction) => {
 export const useDeleteTransaction = async (id) => {
 	try {
 		const res = await transactionService.deleteTransaction(id, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);

@@ -39,7 +39,6 @@ export const useUpdateGoal = async (id) => {
   try {
     console.log(id.selectedItemId);
     const res = await goalService.updateGoal(id.selectedItemId, id.data, token);
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);

@@ -3,7 +3,11 @@ import { NavigationBar } from "../components/dashboard/NavigationBar";
 import GaugeChart from "../components/charts/GaugeChart";
 import { IoFlash, IoWater } from "react-icons/io5";
 import LiquidFillChart from "../components/charts/LiquidFillChart";
-import { useMonthMeasure, useGetTariffCost } from "../hooks/service.hooks";
+import {
+  useMonthMeasure,
+  useGetTariffCost,
+  useGetTariffWCost,
+} from "../hooks/service.hooks";
 import { useQuery } from "react-query";
 import { useGetTariffs } from "../hooks/tariff.hooks";
 
@@ -21,10 +25,32 @@ export const Services = () => {
   } = useQuery("tariff", useGetTariffCost);
 
   const {
+    data: tariffWData,
+    isLoading: isLoadingTariffW,
+    isError: isErrorTariffW,
+  } = useQuery("tariffw", useGetTariffWCost);
+
+  const {
     data: tariffsData,
     isLoading: isLoadingTariffs,
     isError: isErrorTariffs,
   } = useQuery("tariffs", useGetTariffs);
+
+  if (isErrorMeasure) {
+    return <div>No hay medidores registrados</div>;
+  }
+
+  if (isErrorTariff) {
+    return <div>No hay medidores registrados</div>;
+  }
+
+  if (isErrorTariffW) {
+    return <div>No hay medidores registrados</div>;
+  }
+
+  if (isErrorTariffs) {
+    return <div>No hay medidores registrados</div>;
+  }
 
   return (
     <div className="h-screen bg-sky-50/50 dark:bg-zinc-950">
@@ -41,26 +67,32 @@ export const Services = () => {
               </span>
               Agua
             </p>
-            <div className="flex items-center justify-center">
-              <LiquidFillChart />
-            </div>
+            {!isLoadingTariffW && (
+              <div className="flex items-center justify-center">
+                <LiquidFillChart litros={tariffWData.data.measure} />
+              </div>
+            )}
 
             <div className="flex flex-wrap mx-10">
               <div className="w-1/2">
                 <p className="mt-10 text-xl font-semibold">
                   Total de litros:{" "}
-                  <span className="ml-2 text-default-400">000L</span>
-                </p>
-                <p className="mt-2 text-xl font-semibold">
-                  Litros gastados:{" "}
-                  <span className="ml-2 text-default-400">000L</span>
+                  {!isLoadingTariffW && !isErrorTariffW && (
+                    <span className="ml-2 text-default-400">
+                      {tariffWData.data.measure}L
+                    </span>
+                  )}
                 </p>
               </div>
 
               <div className="w-1/2 ">
                 <p className="text-center text-xl">Gastos</p>
                 <div className="bg-red-50 h-20 mt-2 rounded-3xl mx-4 flex items-center justify-center sha">
-                  <p className="text-2xl font-bold text-red-700">$000.00</p>
+                  {!isLoadingTariffW && !isErrorTariffW && (
+                    <p className="text-2xl font-bold text-red-700">
+                      ${tariffWData.data.totalPay.toFixed(2)}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -75,20 +107,25 @@ export const Services = () => {
               </span>
               Energia
             </p>
-            {!isLoadingMeasure && !isLoadingTariffs && !isLoadingTariff && (
-              <GaugeChart
-                kw={measureData.data.totalMeasure / 100}
-                basic={tariffsData.data.tariffs.basic.limit / 100}
-                middle={tariffsData.data.tariffs.middle.limit / 100}
-                excedent={tariffsData.data.tariffs.basic.limit / 0.3333 / 100}
-              />
-            )}
+            {!isLoadingMeasure &&
+              !isLoadingTariff &&
+              !isLoadingTariffs &&
+              !isErrorMeasure &&
+              !isErrorTariff &&
+              !isErrorTariffs && (
+                <GaugeChart
+                  kw={measureData.data.totalMeasure / 100}
+                  basic={tariffsData.data.tariffs.basic.limit / 100}
+                  middle={tariffsData.data.tariffs.middle.limit / 100}
+                  excedent={tariffsData.data.tariffs.basic.limit / 0.3333 / 100}
+                />
+              )}
 
             <div className="flex flex-wrap mx-10">
               <div className="w-1/2">
                 <p className="mt-10 text-xl font-semibold">
                   Total de kW:{" "}
-                  {!isLoadingMeasure && (
+                  {!isLoadingMeasure && !isErrorMeasure && (
                     <span className="ml-2 text-default-400">
                       {measureData.data.totalMeasure} kw
                     </span>
@@ -103,9 +140,9 @@ export const Services = () => {
               <div className="w-1/2 ">
                 <p className="text-center text-xl">Gastos</p>
                 <div className="bg-red-50 h-20 mt-2 rounded-3xl mx-4 flex items-center justify-center sha">
-                  {!isLoadingTariff && (
+                  {!isLoadingTariff && !isErrorTariff && (
                     <p className="text-2xl font-bold text-red-700">
-                      ${tariffData.data.total}
+                      ${tariffData.data.total.toFixed(2)}
                     </p>
                   )}
                 </div>

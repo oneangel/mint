@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import * as echarts from "echarts";
 import "echarts-liquidfill";
 
-function LiquidFillChart() {
+function LiquidFillChart({ litros }) {
   useEffect(() => {
     // Inicializar el gráfico
     const chart = echarts.init(document.getElementById("liquidfill-chart"));
@@ -12,7 +12,7 @@ function LiquidFillChart() {
       series: [
         {
           type: "liquidFill",
-          data: [0.6], // Porcentaje de llenado (0.6 = 60%)
+          data: [litros / 340687.06056], // Porcentaje de llenado (0.6 = 60%)
           radius: "80%", // Tamaño del gráfico
           color: ["#2C7AD6"], // Color del agua
           outline: {

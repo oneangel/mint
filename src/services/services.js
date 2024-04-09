@@ -4,5 +4,6 @@ import * as transactionService from "./transaction.service";
 import * as serviceService from "./service.service";
 import * as goalService from "./goal.service";
 import * as tariffService from "./tariff.service";
+import * as meterService from "./meter.service";
 
-export { userService, clientService, transactionService, serviceService, goalService, tariffService };
+export { userService, clientService, transactionService, serviceService, goalService, tariffService, meterService };
