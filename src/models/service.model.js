@@ -19,11 +19,17 @@ const serviceSchema = new mongoose.Schema({
     required: true,
   },
 
+  type: {
+    type: String,
+    required: true
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
     validate: validator.isDate
   },
+
 });
 
 //Es para especificarle a mongoose cual es nuestro modelo

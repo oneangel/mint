@@ -1,10 +1,5 @@
 import mongoose from "mongoose";
 import validator from "validator";
-import fs from "fs";
-import path from "path";
-
-const defaultAvatarPath = path.join("/home/ricardo/Documents/UTD/Mint/sesionApp/src/assets/images/", 'user.jpg');
-const defaultAvatar = fs.readFileSync(defaultAvatarPath);
 
 const clientSchema = new mongoose.Schema({
   username: {
@@ -68,8 +63,8 @@ const clientSchema = new mongoose.Schema({
   },
 
   avatar: {
-    type: Buffer,
-    default: defaultAvatar
+    type: String,
+    default: "https://static.vecteezy.com/system/resources/previews/008/442/086/non_2x/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
   }
 });
 

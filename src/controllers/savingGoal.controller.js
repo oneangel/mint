@@ -3,10 +3,12 @@ import { User, SavingsGoal } from "../models/models.js";
 //Create a new savingGoals
 export const registerSavingGoals = async (req, res) => {
   console.log(req.body);
-  const { idGoal, description, createdAt, finalDate, amount, amountGoal, username, state } =
+  const { description, createdAt, finalDate, amount, amountGoal, username, state } =
     req.body;
 
   try {
+
+    const idGoal = Math.random().toString(36).slice(2, 10 + 2);
 
     const existingUser = await User.findOne({ username });
 
@@ -30,12 +32,13 @@ export const deleteSavingGoals = async (req, res) => {
   try {
     const { code } = req.params;
 
-    const existingsavingGoals = await SavingsGoal.findOneAndDelete({ idGoal: code });
+    const existingsavingGoals = await SavingsGoal.findOne({ _id: code });
 
-    if (!existingsavingGoals) {
+    if (!existingsavingGoals || existingsavingGoals.state === "false") {
       return res.status(404).send("Savings Goal not found");
     }
 
+    existingsavingGoals.state = false;
     const updatedsavingGoals = await existingsavingGoals.save();
     res.send(updatedsavingGoals);
   } catch (error) {
@@ -46,26 +49,52 @@ export const deleteSavingGoals = async (req, res) => {
 //Update an existing savingGoals
 export const updateSavingGoals = async (req, res) => {
   const { code } = req.params;
-  const { name, createdAt, amount } =
+  const { description, finalDate, amountGoal } =
     req.body;
 
   try {
-    const existingsavingGoals = await SavingsGoal.findOne({ idGoal: code });
+    const existingsavingGoals = await SavingsGoal.findOne({ _id: code });
 
     if (!existingsavingGoals) {
       return res.status(404).send("savingGoals not found");
     }
 
-    existingsavingGoals.name = name;
-    existingsavingGoals.createdAt = createdAt;
-    existingsavingGoals.amount = amount;
+    existingsavingGoals.description = description;
+    existingsavingGoals.finalDate = finalDate;
+    existingsavingGoals.amountGoal = amountGoal;
 
     const updatedsavingGoals = await existingsavingGoals.save();
 
     res.send(updatedsavingGoals);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Savings Goal cannot be updated");
+    res.status(500).send(error);
+  }
+};
+
+export const addAmountGoal = async (req, res) => {
+  const { code } = req.params;
+  const { amount } = req.body;
+
+  try {
+    const existingsavingGoals = await SavingsGoal.findOne({ _id: code });
+
+    if (!existingsavingGoals) {
+      return res.status(404).send("savingGoals not found");
+    }
+
+    existingsavingGoals.amount += amount;
+
+    if (existingsavingGoals.amount >= existingsavingGoals.amountGoal) {
+      existingsavingGoals.state = false;
+    }
+
+    const updatedsavingGoals = await existingsavingGoals.save();
+
+    res.send(updatedsavingGoals);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
   }
 };
 
@@ -73,7 +102,7 @@ export const updateSavingGoals = async (req, res) => {
 export const getsavingGoals = async (req, res) => {
   const { code } = req.params;
   try {
-    const existingsavingGoals = await SavingsGoal.find({ username: code });
+    const existingsavingGoals = await SavingsGoal.find({ username: code, state: true });
 
     if (!existingsavingGoals) {
       return res.status(404).send("Saving Goals not found");

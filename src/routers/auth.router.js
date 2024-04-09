@@ -5,7 +5,9 @@ import {
   TransactionController,
   SavingsGoal,
   MeterController,
-  ServiceController
+  ServiceController,
+  TariffController,
+  TariffWController
 } from "../controllers/controllers.js";
 
 import authMiddleware from "../middlewares/auth.middleware.js";
@@ -27,8 +29,8 @@ router.get('/verify/user/:token', ClientController.verifyAccount);
 
 //Transaction
 router.post('/register/transaction/:code', authMiddleware, TransactionController.registerTransaction);
-router.put('/delete/transaction/:code', authMiddleware, TransactionController.deleteTransaction);
-router.put('/update/transaction/:code', authMiddleware, TransactionController.updateTransaction);
+router.put('/delete/transaction/:code', TransactionController.deleteTransaction);
+router.put('/update/transaction/:code', TransactionController.updateTransaction);
 router.get('/get/transaction/:code', authMiddleware, TransactionController.getTransaction);
 router.get('/get/user/transactions/:code', authMiddleware, TransactionController.getUserTransactionsList);
 router.post('/get/transactions/bydate/:code', authMiddleware, TransactionController.getUserTransactionsByDateRange);
@@ -40,16 +42,27 @@ router.get('/get/transaction/last-ones/:code', authMiddleware, TransactionContro
 
 //Savings Goal
 router.post('/register/goal', SavingsGoal.registerSavingGoals);
-router.put('/delete/goal/:code', authMiddleware, SavingsGoal.deleteSavingGoals);
+router.put('/delete/goal/:code', SavingsGoal.deleteSavingGoals);
 router.put('/update/goal/:code', authMiddleware, SavingsGoal.updateSavingGoals);
 router.get('/get/goals/:code', authMiddleware, SavingsGoal.getsavingGoals);
+router.put('/add/amount/goal/:code', authMiddleware, SavingsGoal.addAmountGoal);
 
 //Meter
 router.post('/register/meter', MeterController.registerMeter);
-router.post('/get/meter', MeterController.getMeter);
+router.get('/get/meter/:code', MeterController.getMeter);
 
 //Service
 router.post('/register/service', ServiceController.registerService);
-router.post('/get/totalMonthMeasure/:code', ServiceController.getTotalMonthMeasure);
+router.post('/get/totalMonthMeasure/:code', ServiceController.getTotalEMonthMeasure);
+router.post('/get/tariff/cost/:code', ServiceController.getTarrifCost);
+router.post('/get/tariff/water/cost/:code', ServiceController.getTarrifWaterCost);
+
+//Tariff electricity
+router.post('/register/tariff', TariffController.registerTariff);
+router.get('/get/tariff/:code', TariffController.getTariff);
+
+//Tariff water
+router.post('/register/tariff/water', TariffWController.registerTariffW);
+router.get('/get/tariff/water/:code', TariffWController.getTariffW)
 
 export default router;

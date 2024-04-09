@@ -26,9 +26,9 @@ export const registerMeter = async (req, res) => {
 
 //gets an existing meter
 export const getMeter = async (req, res) => {
-  const { username, serial, type } = req.body;
+  const { code } = req.params;
   try {
-    const existingMeter = await Meter.findOne({ user: username, serial, type });
+    const existingMeter = await Meter.findOne({ user: code });
 
     if (!existingMeter || existingMeter.status === false) {
       return res.status(404).send("Meter not found");

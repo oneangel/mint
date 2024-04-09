@@ -31,7 +31,7 @@ export const deleteTransaction = async (req, res) => {
   try {
     const { code } = req.params;
 
-    const existingTransaction = await Transaction.findOne({ idTransaction: code });
+    const existingTransaction = await Transaction.findOne({ _id: code });
 
     if (!existingTransaction || existingTransaction.status === "false") {
       return res.status(404).send("Transaction not found");
@@ -48,31 +48,28 @@ export const deleteTransaction = async (req, res) => {
 //Updates an existing Transaction
 export const updateTransaction = async (req, res) => {
   const { code } = req.params;
-  const { createdAt, description, amount, origin, destination, type, state, status } =
+  const { description, amount, destination } =
     req.body;
 
   try {
-    const existingTransaction = await Transaction.findOne({ idTransaction: code });
+    const existingTransaction = await Transaction.findOne({ _id: code });
 
-    if (!existingTransaction) {
+    if (!existingTransaction || existingTransaction.status === "false") {
       return res.status(404).send("Transaction not found");
     }
 
-    existingTransaction.createdAt = createdAt;
+    console.log(description);
     existingTransaction.description = description;
     existingTransaction.amount = amount;
-    existingTransaction.origin = origin;
     existingTransaction.destination = destination;
-    existingTransaction.type = type;
-    existingTransaction.state = state;
-    existingTransaction.status = status;
+    existingTransaction.type = amount > 0 ? "income" : "expense";
 
     const updatedTransaction = await existingTransaction.save();
 
     res.send(updatedTransaction);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Transaction cannot be updated");
+    res.status(500).send(error);
   }
 };
 
@@ -98,7 +95,7 @@ export const getLastTransactions = async (req, res) => {
   try {
     const { code } = req.params;
 
-    const transactions = await Transaction.find({ username: code }).sort({ createdAt: -1 }).limit(3);
+    const transactions = await Transaction.find({ username: code, status: true }).sort({ createdAt: -1 }).limit(3);
     res.json(transactions)
   } catch (error) {
     console.log(error);
@@ -111,7 +108,7 @@ export const getUserTransactionsList = async (req, res) => {
   const { code } = req.params;
 
   try {
-    const transactionList = await Transaction.find({ username: code });
+    const transactionList = await Transaction.find({ username: code, status: true });
 
     if (!transactionList) {
       return res.json(null);
@@ -133,6 +130,7 @@ export const getUserTransactionsByDateRange = async (req, res) => {
       {
         $match: {
           username: code,
+          status: true,
           createdAt: {
             $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
             $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
@@ -164,6 +162,7 @@ export const getExpensesByRangeTotal = async (req, res) => {
       {
         $match: {
           username: code,
+          status: true,
           type: "expense",
           createdAt: {
             $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
@@ -198,6 +197,7 @@ export const getExpensesTotal = async (req, res) => {
       {
         $match: {
           username: code,
+          status: true,
           type: "expense",
         },
       },
@@ -228,6 +228,7 @@ export const getIncomesTotal = async (req, res) => {
       {
         $match: {
           username: code,
+          status: true,
           type: "income",
         },
       },
@@ -258,6 +259,7 @@ export const getBalanceAccount = async (req, res) => {
       {
         $match: {
           username: code,
+          status: true
         }
       },
       {
@@ -267,7 +269,10 @@ export const getBalanceAccount = async (req, res) => {
         }
       }
     ])
-    res.json(balance[0]);
+
+    const total = balance.length > 0 ? balance[0].balance : 0;
+
+    res.json({ balance: total });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Server error' });
