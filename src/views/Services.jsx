@@ -3,8 +3,9 @@ import { NavigationBar } from "../components/dashboard/NavigationBar";
 import GaugeChart from "../components/charts/GaugeChart";
 import { IoFlash, IoWater } from "react-icons/io5";
 import LiquidFillChart from "../components/charts/LiquidFillChart";
-import { useMonthMeasure } from "../hooks/service.hooks";
+import { useMonthMeasure, useGetTariffCost } from "../hooks/service.hooks";
 import { useQuery } from "react-query";
+import { useGetTariffs } from "../hooks/tariff.hooks";
 
 export const Services = () => {
   const {
@@ -12,6 +13,18 @@ export const Services = () => {
     isLoading: isLoadingMeasure,
     isError: isErrorMeasure,
   } = useQuery("measure", useMonthMeasure);
+
+  const {
+    data: tariffData,
+    isLoading: isLoadingTariff,
+    isError: isErrorTariff,
+  } = useQuery("tariff", useGetTariffCost);
+
+  const {
+    data: tariffsData,
+    isLoading: isLoadingTariffs,
+    isError: isErrorTariffs,
+  } = useQuery("tariffs", useGetTariffs);
 
   return (
     <div className="h-screen bg-sky-50/50 dark:bg-zinc-950">
@@ -31,7 +44,6 @@ export const Services = () => {
             <div className="flex items-center justify-center">
               <LiquidFillChart />
             </div>
-            
 
             <div className="flex flex-wrap mx-10">
               <div className="w-1/2">
@@ -63,8 +75,13 @@ export const Services = () => {
               </span>
               Energia
             </p>
-            {!isLoadingMeasure && (
-              <GaugeChart kw={measureData.data.totalMeasure / 100} />
+            {!isLoadingMeasure && !isLoadingTariffs && !isLoadingTariff && (
+              <GaugeChart
+                kw={measureData.data.totalMeasure / 100}
+                basic={tariffsData.data.tariffs.basic.limit / 100}
+                middle={tariffsData.data.tariffs.middle.limit / 100}
+                excedent={tariffsData.data.tariffs.basic.limit / 0.3333 / 100}
+              />
             )}
 
             <div className="flex flex-wrap mx-10">
@@ -86,7 +103,11 @@ export const Services = () => {
               <div className="w-1/2 ">
                 <p className="text-center text-xl">Gastos</p>
                 <div className="bg-red-50 h-20 mt-2 rounded-3xl mx-4 flex items-center justify-center sha">
-                  <p className="text-2xl font-bold text-red-700">$000.00</p>
+                  {!isLoadingTariff && (
+                    <p className="text-2xl font-bold text-red-700">
+                      ${tariffData.data.total}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

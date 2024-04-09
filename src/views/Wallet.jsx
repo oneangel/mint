@@ -29,6 +29,9 @@ import { CurrentBalance } from "../components/dashboard/CurrentBalance";
 import { IoAddCircle, IoSearch, IoTrash } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "react-query";
+import { useAddGoal, useDeleteGoal, useUpdateGoal } from "../hooks/goal.hooks";
 
 const statusColorMap = {
   true: "success",
@@ -52,15 +55,23 @@ const columns = [
     key: "state",
     label: "Estado",
   },
-
   {
     key: "acciones",
     label: "Acciones",
   },
 ];
+
 export const Wallet = () => {
+  const { register, handleSubmit } = useForm();
+  const queryClient = useQueryClient();
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedItem, setSelectedItem] = useState({
+    description: "",
+    amountGoal: "",
+    finalDate: "0/0/0",
+  });
 
   const getBalance = async () => {
     try {
@@ -85,9 +96,55 @@ export const Wallet = () => {
     isError: isErrorGoals,
   } = useQuery("goals", useGetGoalsList);
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
+
+  const addGoalMutation = useMutation(useAddGoal, {
+    onSuccess: () => {
+      onClose();
+      queryClient.refetchQueries("balance");
+      queryClient.refetchQueries("goals");
+    },
+    onError: () => {
+      console.error("Hubo un error en la operacion");
+    },
+  });
+
+  const deleteGoalMutation = useMutation(useDeleteGoal, {
+    onSuccess: () => {
+      queryClient.refetchQueries("balance");
+      queryClient.refetchQueries("goals");
+    },
+    onError: () => {
+      console.error("¡Hubo un error en la operacion!");
+    },
+  });
+
+  const updateGoalMutation = useMutation(useUpdateGoal, {
+    onSuccess: () => {
+      queryClient.refetchQueries("balance");
+      queryClient.refetchQueries("goals");
+    },
+    onError: () => {
+      console.error("¡Hubo un error en la operacion!");
+    },
+  });
+
+  const onUpdate = (data) => {
+    console.log(selectedItemId);
+    console.log(data);
+    updateGoalMutation.mutate({ selectedItemId, data });
+    setShowEditModal(false);
+  };
+
+  const onDelete = (id) => {
+    deleteGoalMutation.mutate(id);
+  };
+
+  const onSubmit = (data) => {
+    addGoalMutation.mutate(data);
+  };
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -133,24 +190,30 @@ export const Wallet = () => {
                     Fecha de inicio:
                     {!isLoadingGoals && !isErrorGoals && (
                       <span className="ml-2 text-default-700 font-normal">
-                      {new Date(selectedGoal.finalDate).toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
+                        {new Date(selectedGoal.finalDate).toLocaleDateString(
+                          undefined,
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
+                      </span>
                     )}
                   </p>
                   <p className="font-semibold text-default-800 mt-4">
                     Fecha límite:
                     {!isLoadingGoals && !isErrorGoals && (
                       <span className="ml-2 text-default-700 font-normal">
-                      {new Date(selectedGoal.finalDate).toLocaleDateString(undefined, {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
+                        {new Date(selectedGoal.finalDate).toLocaleDateString(
+                          undefined,
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
+                      </span>
                     )}
                   </p>
                   {!isLoadingGoals && !isErrorGoals && (
@@ -226,18 +289,28 @@ export const Wallet = () => {
                         Crear nueva meta
                       </ModalHeader>
                       <ModalBody>
-                        <form action="">
+                        <form onSubmit={handleSubmit(onSubmit)}>
                           <Input
                             type="text"
                             label="Descripción"
+                            name="description"
                             className="mb-5"
+                            {...register("description")}
                           />
-                          <Input type="number" label="Meta" className="mb-5" />
+                          <Input
+                            type="number"
+                            name="amountGoal"
+                            label="Meta"
+                            className="mb-5"
+                            {...register("amountGoal")}
+                          />
                           <Input
                             type="date"
+                            name="finalDate"
                             label="Fecha de meta"
                             placeholder="dd/mm/aaaa"
                             className="mb-5"
+                            {...register("finalDate")}
                           />
                         </form>
                       </ModalBody>
@@ -247,7 +320,7 @@ export const Wallet = () => {
                         </Button>
                         <Button
                           color="primary"
-                          onPress={onClose}
+                          onPress={handleSubmit(onSubmit)}
                           className="bg-sky-700 text-white"
                         >
                           Crear
@@ -290,7 +363,6 @@ export const Wallet = () => {
                       key={item.idGoal}
                       onClick={() => {
                         setSelectedGoal(item);
-                        console.log(selectedGoal);
                       }}
                     >
                       {(columnKey) => (
@@ -302,7 +374,17 @@ export const Wallet = () => {
                                   <MdOutlineRemoveRedEye />
                                 </span>
                               </Tooltip>
-                              <div onClick={() => setShowEditModal(true)}>
+                              <div
+                                onClick={() => {
+                                  console.log(item);
+                                  setSelectedItemId(item._id);
+                                  setShowEditModal(true);
+                                  setSelectedItem(item);
+                                  /* setSelectedItem(item);
+                                  setSelectedItemId(item._id);
+                                  setShowEditModal(true); */
+                                }}
+                              >
                                 <Tooltip content="Editar">
                                   <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
                                     <FaPen />
@@ -310,7 +392,12 @@ export const Wallet = () => {
                                 </Tooltip>
                               </div>
 
-                              <div onClick={() => setShowDeleteModal(true)}>
+                              <div
+                                onClick={() => {
+                                  setSelectedItemId(item._id);
+                                  setShowDeleteModal(true);
+                                }}
+                              >
                                 <Tooltip color="danger" content="Eliminar">
                                   <span className="text-xl text-danger cursor-pointer active:opacity-50">
                                     <IoTrash />
@@ -341,14 +428,33 @@ export const Wallet = () => {
               <ModalContent>
                 <ModalHeader>Editar Meta</ModalHeader>
                 <ModalBody>
-                  <form action="">
-                    <Input type="text" label="Descripción" className="mb-5" />
-                    <Input type="number" label="Meta" className="mb-5" />
+                  <form onSubmit={handleSubmit(onUpdate)}>
+                    <Input
+                      type="text"
+                      label="Descripción"
+                      name="description"
+                      className="mb-5"
+                      defaultValue={selectedItem.description}
+                      {...register("description")}
+                    />
+                    <Input
+                      type="number"
+                      name="amountGoal"
+                      label="Meta"
+                      className="mb-5"
+                      defaultValue={selectedItem.amountGoal}
+                      {...register("amountGoal")}
+                    />
                     <Input
                       type="date"
+                      name="finalDate"
                       label="Fecha de meta"
                       placeholder="dd/mm/aaaa"
                       className="mb-5"
+                      defaultValue={
+                        selectedItem.finalDate.toString().split("T")[0]
+                      }
+                      {...register("finalDate")}
                     />
                   </form>
                 </ModalBody>
@@ -360,10 +466,7 @@ export const Wallet = () => {
                   >
                     Cancelar
                   </Button>
-                  <Button
-                    color="primary"
-                    onPress={() => setShowEditModal(false)}
-                  >
+                  <Button color="primary" onClick={handleSubmit(onUpdate)}>
                     Guardar cambios
                   </Button>
                 </ModalFooter>
@@ -374,7 +477,7 @@ export const Wallet = () => {
             <Modal isOpen={showDeleteModal} onOpenChange={setShowDeleteModal}>
               <ModalContent>
                 <ModalHeader>Eliminar Meta</ModalHeader>
-                <ModalBody>¿Estas seguro de eliminar esta Meta?</ModalBody>
+                <ModalBody>¿Estás seguro de eliminar esta Meta?</ModalBody>
                 <ModalFooter>
                   <Button
                     color="primary"
@@ -385,7 +488,10 @@ export const Wallet = () => {
                   </Button>
                   <Button
                     color="danger"
-                    onPress={() => setShowDeleteModal(false)}
+                    onPress={() => {
+                      onDelete(selectedItemId);
+                      setShowDeleteModal(false);
+                    }}
                   >
                     Eliminar
                   </Button>

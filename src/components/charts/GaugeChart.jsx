@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-const GaugeChart = ({ kw }) => {
+const GaugeChart = ({ kw, basic, middle, excedent }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -15,17 +15,17 @@ const GaugeChart = ({ kw }) => {
           center: ["50%", "75%"],
           radius: "90%",
           min: 0,
-          max: 4.5,
+          max: excedent,
           splitNumber: 2, // Solo 3 grados
           axisLine: {
             lineStyle: {
               width: 6,
               color: [
                 [0, "#0D9488"], // Primer grado
-                [0.33, "#0D9488"], // Primer grado
-                [0.33, "#FDDD60"], // Segundo grado
-                [0.66, "#FDDD60"], // Segundo grado
-                [0.66, "#B91C1C"], // Tercer grado
+                [0.3333, "#0D9488"], // Primer grado
+                [0.3333, "#FDDD60"], // Segundo grado
+                [0.6666, "#FDDD60"], // Segundo grado
+                [0.6666, "#B91C1C"], // Tercer grado
                 [1, "#B91C1C"], // Tercer grado
               ],
             },
@@ -59,11 +59,13 @@ const GaugeChart = ({ kw }) => {
             distance: -60,
             rotate: "tangential",
             formatter: function (value) {
-              if (value === 0) {
+              console.log("Formatter");
+              console.log(value);
+              if (value <= basic) {
                 return "Basica";
-              } else if (value === 2.25) {
+              } else if (value > basic && value < middle + basic) {
                 return "Intermedia";
-              } else if (value === 4.5) {
+              } else if (value > basic + middle) {
                 return "Excesiva";
               }
               return "";
