@@ -158,23 +158,25 @@ export const Wallet = () => {
     amountGoal: 0,
   });
 
+  const [showAddAmountModal, setShowAddAmountModal] = useState(false);
+
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
-      <h1 className="text-4xl font-semibold pl-20 text-sky-700 pt-32 dark:text-white">
+      <h1 className="pt-32 pl-20 text-4xl font-semibold text-sky-700 dark:text-white">
         Cartera
       </h1>
 
       <div className="flex flex-wrap mx-20">
-        <div className="w-2/5 flex flex-col pt-10 ">
+        <div className="flex flex-col w-2/5 pt-10 ">
           <Skeleton isLoaded={!isLoadingBalance}>
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
           </Skeleton>
 
           <Skeleton isLoaded={!isLoadingGoals} className="rounded-3xl">
             <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-[480px] dark:bg-zinc-900 dark:border-zinc-800">
-              <div className="mt-4 w-3/4 text-center">
-                <p className="text-xl font-semibold text-start ml-8">
+              <div className="w-3/4 mt-4 text-center">
+                <p className="ml-8 text-xl font-semibold text-start">
                   Meta Seleccionada:{" "}
                   {!isLoadingGoals && !isErrorGoals && (
                     <span className="ml-2 font-normal text-default-700">
@@ -184,12 +186,12 @@ export const Wallet = () => {
                 </p>
               </div>
 
-              <div className="flex flex-wrap mx-8 mb-5 mt-10 items-center">
+              <div className="flex flex-wrap items-center mx-8 mt-10 mb-5">
                 <div className="flex flex-col w-4/5 mx-auto">
                   <p className="font-semibold text-default-800 ">
                     Fecha de inicio:
                     {!isLoadingGoals && !isErrorGoals && (
-                      <span className="ml-2 text-default-700 font-normal">
+                      <span className="ml-2 font-normal text-default-700">
                         {new Date(selectedGoal.finalDate).toLocaleDateString(
                           undefined,
                           {
@@ -201,10 +203,10 @@ export const Wallet = () => {
                       </span>
                     )}
                   </p>
-                  <p className="font-semibold text-default-800 mt-4">
+                  <p className="mt-4 font-semibold text-default-800">
                     Fecha límite:
                     {!isLoadingGoals && !isErrorGoals && (
-                      <span className="ml-2 text-default-700 font-normal">
+                      <span className="ml-2 font-normal text-default-700">
                         {new Date(selectedGoal.finalDate).toLocaleDateString(
                           undefined,
                           {
@@ -217,7 +219,7 @@ export const Wallet = () => {
                     )}
                   </p>
                   {!isLoadingGoals && !isErrorGoals && (
-                    <p className="mt-10 text-4xl text-center text-teal-600 font-semibold">
+                    <p className="mt-10 text-4xl font-semibold text-center text-teal-600">
                       ${selectedGoal.amount}
                     </p>
                   )}
@@ -229,7 +231,7 @@ export const Wallet = () => {
                         maxValue={selectedGoal.amountGoal}
                         color="success"
                         formatOptions={{ style: "currency", currency: "mxn" }}
-                        className="max-w-md w-64"
+                        className="w-64 max-w-md"
                         classNames={{
                           value: "text-default-500",
                           indicator: "bg-teal-600",
@@ -237,6 +239,12 @@ export const Wallet = () => {
                       />
                     </div>
                   )}
+                  <Button
+                    className="mt-6 bg-sky-700"
+                    onPress={() => setShowAddAmountModal(true)}
+                  >
+                    Agregar monto
+                  </Button>
                 </div>
               </div>
             </div>
@@ -272,9 +280,9 @@ export const Wallet = () => {
               />
             </div>
 
-            <div className="w-1/4 flex justify-end">
+            <div className="flex justify-end w-1/4">
               <Button
-                className="w-56 h-14 text-xl text-white bg-sky-700"
+                className="w-56 text-xl text-white h-14 bg-sky-700"
                 startContent={<IoAddCircle className="text-white size-6" />}
                 onPress={onOpen}
               >
@@ -321,7 +329,7 @@ export const Wallet = () => {
                         <Button
                           color="primary"
                           onPress={handleSubmit(onSubmit)}
-                          className="bg-sky-700 text-white"
+                          className="text-white bg-sky-700"
                         >
                           Crear
                         </Button>
@@ -366,11 +374,11 @@ export const Wallet = () => {
                       }}
                     >
                       {(columnKey) => (
-                        <TableCell className="text-xl pt-8">
+                        <TableCell className="pt-8 text-xl">
                           {columnKey === "acciones" ? (
                             <div className="relative flex items-center gap-2 ml-4">
                               <Tooltip content="Detalles">
-                                <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
+                                <span className="pt-1 text-2xl cursor-pointer text-default-400 active:opacity-50">
                                   <MdOutlineRemoveRedEye />
                                 </span>
                               </Tooltip>
@@ -386,7 +394,7 @@ export const Wallet = () => {
                                 }}
                               >
                                 <Tooltip content="Editar">
-                                  <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
+                                  <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
                                     <FaPen />
                                   </span>
                                 </Tooltip>
@@ -399,7 +407,7 @@ export const Wallet = () => {
                                 }}
                               >
                                 <Tooltip color="danger" content="Eliminar">
-                                  <span className="text-xl text-danger cursor-pointer active:opacity-50">
+                                  <span className="text-xl cursor-pointer text-danger active:opacity-50">
                                     <IoTrash />
                                   </span>
                                 </Tooltip>
@@ -498,11 +506,35 @@ export const Wallet = () => {
                 </ModalFooter>
               </ModalContent>
             </Modal>
-
+            <Modal isOpen={showAddAmountModal} onOpenChange={setShowAddAmountModal}>
+              <ModalContent>
+                <ModalHeader>Agregar Monto</ModalHeader>
+                <ModalBody>
+                  <form action="">
+                    <Input type="number" label="Monto" className="mb-5" />
+                  </form>
+                </ModalBody>
+                <ModalFooter>
+                  <Button
+                    color="primary"
+                    variant="light"
+                    onPress={() => setShowAddAmountModal(false)}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    color="primary"
+                    onPress={() => setShowAddAmountModal(false)}
+                  >
+                    Guardar
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
             {!isLoadingGoals && (
               <Pagination
                 showControls
-                className="justify-end flex mt-2"
+                className="flex justify-end mt-2"
                 total={Math.ceil(goalsData.data.length / itemsPerPage)}
                 current={currentPage}
                 onChange={handlePageChange}
