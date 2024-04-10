@@ -32,6 +32,22 @@ export const deleteSavingGoals = async (req, res) => {
   try {
     const { code } = req.params;
 
+    const existingSavingGoal = await SavingsGoal.findOneAndDelete({ _id: code });
+
+    if (!existingSavingGoal) {
+      return res.status(404).send("Savings Goal not found");
+    }
+
+    res.send(existingSavingGoal);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error deleting Savings Goal");
+  }
+};
+/* export const deleteSavingGoals = async (req, res) => {
+  try {
+    const { code } = req.params;
+
     const existingsavingGoals = await SavingsGoal.findOne({ _id: code });
 
     if (!existingsavingGoals || existingsavingGoals.state === "false") {
@@ -44,7 +60,7 @@ export const deleteSavingGoals = async (req, res) => {
   } catch (error) {
     res.status(500).send("savingGoals cannot be deleted")
   }
-}
+} */
 
 //Update an existing savingGoals
 export const updateSavingGoals = async (req, res) => {
@@ -102,7 +118,7 @@ export const addAmountGoal = async (req, res) => {
 export const getsavingGoals = async (req, res) => {
   const { code } = req.params;
   try {
-    const existingsavingGoals = await SavingsGoal.find({ username: code, state: true });
+    const existingsavingGoals = await SavingsGoal.find({ username: code });
 
     if (!existingsavingGoals) {
       return res.status(404).send("Saving Goals not found");

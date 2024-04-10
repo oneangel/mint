@@ -2,22 +2,30 @@ import { Service, TariffE, TariffW } from "../models/models.js";
 
 //Creates a new user
 export const registerService = async (req, res) => {
-  console.log(req.body);
   const { id, serial, measurement, type, createdAt } =
     req.body;
 
   try {
-    const newService = new Service({
-      id,
-      serial,
-      measurement,
-      type,
-      createdAt
-    });
 
-    const saveService = await newService.save();
-    res.send(saveService);
+    const existingService = await Service.findOne({ serial, createdAt, type });
 
+    if (!existingService) {
+      const newService = new Service({
+        id,
+        serial,
+        measurement,
+        type,
+        createdAt
+      });
+
+      const saveService = await newService.save();
+      res.send(saveService);
+    } else {
+      existingService.measurement += measurement;
+
+      const updatedService = await existingService.save();
+      res.send(updatedService)
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -28,6 +36,11 @@ export const getTotalEMonthMeasure = async (req, res) => {
   try {
     const { code } = req.params;
     const { startDate, endDate } = req.body;
+
+    const existingService = await Service.findOne({ serial: code });
+    if (!existingService) {
+      res.send(null);
+    }
 
     const totalMeasure = await Service.aggregate([
       {

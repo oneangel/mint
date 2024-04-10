@@ -42,7 +42,7 @@ router.get('/get/transaction/last-ones/:code', authMiddleware, TransactionContro
 
 //Savings Goal
 router.post('/register/goal', SavingsGoal.registerSavingGoals);
-router.put('/delete/goal/:code', SavingsGoal.deleteSavingGoals);
+router.delete('/delete/goal/:code', SavingsGoal.deleteSavingGoals);
 router.put('/update/goal/:code', authMiddleware, SavingsGoal.updateSavingGoals);
 router.get('/get/goals/:code', authMiddleware, SavingsGoal.getsavingGoals);
 router.put('/add/amount/goal/:code', authMiddleware, SavingsGoal.addAmountGoal);
@@ -52,7 +52,7 @@ router.post('/register/meter', MeterController.registerMeter);
 router.get('/get/meter/:code', MeterController.getMeter);
 
 //Service
-router.post('/register/service', ServiceController.registerService);
+router.put('/register/service', ServiceController.registerService);
 router.post('/get/totalMonthMeasure/:code', ServiceController.getTotalEMonthMeasure);
 router.post('/get/tariff/cost/:code', ServiceController.getTarrifCost);
 router.post('/get/tariff/water/cost/:code', ServiceController.getTarrifWaterCost);
