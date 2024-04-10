@@ -32,6 +32,7 @@ import { FaPen } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
+import { SearchBar } from "../components/dashboard/SearchBar";
 
 const statusColorMap = {
   true: "success",
@@ -64,6 +65,8 @@ const columns = [
 export const Wallet = () => {
   const { register, handleSubmit } = useForm();
   const queryClient = useQueryClient();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -96,6 +99,19 @@ export const Wallet = () => {
     isLoading: isLoadingGoals,
     isError: isErrorGoals,
   } = useQuery("goals", useGetGoalsList);
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setFilteredData(
+      goalsData?.data.filter((item) =>
+        Object.values(item).some(
+          (value) =>
+            typeof value === "string" &&
+            value.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
+    );
+  };
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [currentPage, setCurrentPage] = useState(1);
@@ -173,7 +189,11 @@ export const Wallet = () => {
   });
 
   const [showAddAmountModal, setShowAddAmountModal] = useState(false);
-
+  useEffect(() => {
+    if (!isLoadingGoals && goalsData) {
+      setFilteredData(goalsData.data);
+    }
+  }, [isLoadingGoals, goalsData]);
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
@@ -268,29 +288,9 @@ export const Wallet = () => {
         <div className="w-3/5 max-h-[400px] mt-10">
           <div className="flex flex-wrap">
             <div className="w-3/4">
-              <Input
-                type="text"
-                variant="bordered"
-                placeholder="Buscar..."
-                className="bg-white rounded-3xl"
-                classNames={{
-                  input: [
-                    "text-black/90 dark:text-white/90 text-xl",
-                    "placeholder:text-default-700/50 dark:placeholder:text-white/60",
-                  ],
-                  innerWrapper: "bg-white dark:bg-zinc-900",
-                  inputWrapper: [
-                    "dark:bg-zinc-900",
-                    "backdrop-blur-xl",
-                    "backdrop-saturate-200",
-                    "dark:hover:border-zinc-500",
-                    "group-data-[focused=true]:bg-default-200/50",
-                    "dark:group-data-[focused=true]:bg-default/60",
-                    "!cursor-text",
-                    "text-2xl",
-                  ],
-                }}
-                startContent={<IoSearch className="text-sky-700" />}
+              <SearchBar
+                searchTerm={searchTerm}
+                handleSearchChange={handleSearchChange}
               />
             </div>
 
@@ -374,7 +374,7 @@ export const Wallet = () => {
                   )}
                 </TableHeader>
                 <TableBody
-                  items={goalsData.data.slice(
+                  items={filteredData.slice(
                     (currentPage - 1) * itemsPerPage,
                     currentPage * itemsPerPage
                   )}
@@ -431,7 +431,7 @@ export const Wallet = () => {
                               size="sm"
                               variant="flat"
                             >
-                              {item.state ? "Activo" : "Inactivo"}
+                              {item.state ? "Activo" : "Finalizada"}
                             </Chip>
                           ) : (
                             getKeyValue(item, columnKey)

@@ -12,7 +12,7 @@ export function addGoal(goal, token) {
 }
 
 export function deleteGoal(id, token) {
-  return axios.put(`${URL_API}/delete/goal/${id}`, { headers: { Authorization: token } })
+  return axios.delete(`${URL_API}/delete/goal/${id}`, { headers: { Authorization: token } })
 }
 
 export function updateGoal(id, goal, token) {

@@ -101,53 +101,52 @@ export const Services = () => {
 
         <div className="w-1/2 flex justify-center items-center">
           <div className="w-[70%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800">
-            <p className="pt-10 pl-10 flex items-center text-2xl font-bold text-default-700">
-              <span>
-                <IoFlash className="size-8" />
-              </span>
-              Energia
-            </p>
-            {!isLoadingMeasure &&
+            {!measureData &&
+              !isLoadingMeasure &&
               !isLoadingTariff &&
               !isLoadingTariffs &&
-              !isErrorMeasure &&
-              !isErrorTariff &&
-              !isErrorTariffs && (
+              !isLoadingTariffW && <p>Hola</p>}
+
+            {measureData && tariffData && tariffsData && tariffWData && (
+              <>
+                <p className="pt-10 pl-10 flex items-center text-2xl font-bold text-default-700">
+                  <span>
+                    <IoFlash className="size-8" />
+                  </span>
+                  Energia
+                </p>
                 <GaugeChart
                   kw={measureData.data.totalMeasure / 100}
                   basic={tariffsData.data.tariffs.basic.limit / 100}
                   middle={tariffsData.data.tariffs.middle.limit / 100}
                   excedent={tariffsData.data.tariffs.basic.limit / 0.3333 / 100}
                 />
-              )}
 
-            <div className="flex flex-wrap mx-10">
-              <div className="w-1/2">
-                <p className="mt-10 text-xl font-semibold">
-                  Total de kW:{" "}
-                  {!isLoadingMeasure && !isErrorMeasure && (
-                    <span className="ml-2 text-default-400">
-                      {measureData.data.totalMeasure} kw
-                    </span>
-                  )}
-                </p>
-                <p className="mt-2 text-xl font-semibold">
-                  Consumo de kWh:{" "}
-                  <span className="ml-2 text-default-400">Bajo</span>
-                </p>
-              </div>
-
-              <div className="w-1/2 ">
-                <p className="text-center text-xl">Gastos</p>
-                <div className="bg-red-50 h-20 mt-2 rounded-3xl mx-4 flex items-center justify-center sha">
-                  {!isLoadingTariff && !isErrorTariff && (
-                    <p className="text-2xl font-bold text-red-700">
-                      ${tariffData.data.total.toFixed(2)}
+                <div className="flex flex-wrap mx-10">
+                  <div className="w-1/2">
+                    <p className="mt-10 text-xl font-semibold">
+                      Total de kW:{" "}
+                      <span className="ml-2 text-default-400">
+                        {measureData.data.totalMeasure} kw
+                      </span>
                     </p>
-                  )}
+                    <p className="mt-2 text-xl font-semibold">
+                      Consumo de kWh:{" "}
+                      <span className="ml-2 text-default-400">Bajo</span>
+                    </p>
+                  </div>
+
+                  <div className="w-1/2 ">
+                    <p className="text-center text-xl">Gastos</p>
+                    <div className="bg-red-50 h-20 mt-2 rounded-3xl mx-4 flex items-center justify-center sha">
+                      <p className="text-2xl font-bold text-red-700">
+                        ${tariffData.data.total.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </>
+            )}
           </div>
         </div>
       </div>

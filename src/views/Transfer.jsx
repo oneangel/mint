@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import {
@@ -31,6 +31,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
+import { isWithinInterval } from "date-fns";
 
 const columns = [
   {
@@ -84,6 +85,7 @@ export const Transfer = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
   const itemsPerPage = 7;
 
   const handlePageChange = (page) => {
@@ -99,15 +101,33 @@ export const Transfer = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+    setFilteredData(
+      transactionListData?.data.filter((item) =>
+        Object.values(item).some(
+          (value) =>
+            typeof value === "string" &&
+            value.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      )
+    );
   };
 
-  const filteredData = transactionListData?.data.filter((item) =>
-    Object.values(item).some(
-      (value) =>
-        typeof value === "string" &&
-        value.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const handleFilterByDate = (startDate, endDate) => {
+    console.log("startDate:", startDate);
+    console.log("endDate:", endDate);
+
+    if (startDate && endDate) {
+      const filteredData = transactionListData?.data.filter((item) =>
+        isWithinInterval(new Date(item.createdAt), {
+          start: new Date(startDate),
+          end: new Date(endDate),
+        })
+      );
+      setFilteredData(filteredData);
+    } else {
+      setFilteredData(transactionListData?.data);
+    }
+  };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -160,6 +180,12 @@ export const Transfer = () => {
     updateTransactionMutation.mutate({ id, transaction });
   };
 
+  useEffect(() => {
+    if (!isLoadingTransactionList && transactionListData) {
+      setFilteredData(transactionListData.data);
+    }
+  }, [isLoadingTransactionList, transactionListData]);
+
   return (
     <div className="h-screen bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
@@ -188,7 +214,13 @@ export const Transfer = () => {
                   }}
                 >
                   {animals.map((animal) => (
-                    <SelectItem key={animal.value} value={animal.value}>
+                    <SelectItem
+                      key={animal.value}
+                      value={animal.value}
+                      onClick={() =>
+                        handleFilterByDate(animal.startDate, animal.endDate)
+                      }
+                    >
                       {animal.label}
                     </SelectItem>
                   ))}
@@ -255,7 +287,11 @@ export const Transfer = () => {
                     </form>
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="light" onPress={onClose} aria-label="Cerrar">
+                    <Button
+                      variant="light"
+                      onPress={onClose}
+                      aria-label="Cerrar"
+                    >
                       Cerrar
                     </Button>
                     <Button
@@ -331,13 +367,12 @@ export const Transfer = () => {
           <div className="bg-white border-1 m-auto w-3/5 h-[450px] rounded-3xl shadow-md dark:bg-zinc-900 dark:border-zinc-800">
             <div className="pt-6 flex justify-center">
               <IoPieChart className="m-0.5 mr-4 text-2xl" />
-              <p className="text-xl text-center font-semibold">
-                Comparacion de Abonos y Cargos
-              </p>
+              <p className="text-xl text-center font-semibold"></p>
+              Comparacion de Abonos y Cargos
             </div>
 
             <div>
-              {!isLoadingTotalExpense && (
+              {!isLoadingTotalExpense && !isLoadingTotalIncome && (
                 <PieChart2
                   expenses={totalExpenseData.data.expenseTotal}
                   incomes={totalIncomeData.data.incomeTotal}

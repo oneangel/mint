@@ -59,8 +59,6 @@ const GaugeChart = ({ kw, basic, middle, excedent }) => {
             distance: -60,
             rotate: "tangential",
             formatter: function (value) {
-              console.log("Formatter");
-              console.log(value);
               if (value <= basic) {
                 return "Basica";
               } else if (value > basic && value < middle + basic) {
