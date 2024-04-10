@@ -82,21 +82,21 @@ export const EditProfile = () => {
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
-      <div className="w-full h-full flex flex-col items-center">
+      <div className="flex flex-col items-center w-full h-full">
         <div className="mt-40 w-[700px]">
-          <div className="w-full flex flex-wrap bg-white p-2 border-2 rounded-3xl shadow-sm dark:bg-zinc-900 dark:border-zinc-800">
-            <div className="w-1/4 items-center justify-center flex">
-              <div className="size-40 rounded-full overflow-hidden">
+          <div className="flex flex-wrap w-full p-2 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+            <div className="flex items-center justify-center w-1/4 p-4">
+              <div className="overflow-hidden rounded-full size-36">
                 {!isLoading && (
                   <img
-                    // src={`data:image/jpeg;base64,${data.data.avatar}`}
+                    src={`${data.data.avatar}`}
                     alt="Profile"
-                    className="h-full w-full object-cover"
+                    className="object-cover w-full h-full"
                   />
                 )}
               </div>
             </div>
-            <div className="w-3/4 flex flex-col pl-10 pt-8">
+            <div className="flex flex-col w-3/4 pt-8 pl-10">
               <Button
                 color="default"
                 variant="ghost"
@@ -104,20 +104,20 @@ export const EditProfile = () => {
               >
                 Subir nueva Imagen
               </Button>
-              <p className="text-sm mt-5 text-default-700">
+              <p className="mt-5 text-sm text-default-700">
                 Se recomienda agregar una imagen de 800x800 px o menos se
                 recomienda en formato JPG o PNG.
               </p>
             </div>
           </div>
 
-          <div className="mt-10 bg-white p-6 border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+          <div className="p-6 mt-10 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
             {fields.map((field, index) => (
-              <div key={index} className="mb-5 flex flex-wrap">
+              <div key={index} className="flex flex-wrap mb-5">
                 <div className="w-[90%]">
                   <Input
                     isDisabled
-                    startContent={<field.icon className="text-sky-700 mb-1" />}
+                    startContent={<field.icon className="mb-1 text-sky-700" />}
                     label={field.label}
                     type="text"
                     defaultValue={field.defaultValue}
@@ -128,9 +128,9 @@ export const EditProfile = () => {
                   <Tooltip content="Editar">
                     <span
                       onClick={() => toggleModal(field.index)}
-                      className="size-10 bg-primary flex items-center justify-center rounded-md"
+                      className="flex items-center justify-center rounded-md size-10 bg-primary"
                     >
-                      <BsPencilSquare className="size-6 text-white" />
+                      <BsPencilSquare className="text-white size-6" />
                     </span>
                   </Tooltip>
 
@@ -185,7 +185,7 @@ export const EditProfile = () => {
                                 setModals(newModals);
                               }}
                               endContent={
-                                <button className="focus:outline-none my-auto">
+                                <button className="my-auto focus:outline-none">
                                   {" "}
                                   {showPassword ? (
                                     <GoEyeClosed
@@ -215,7 +215,7 @@ export const EditProfile = () => {
                                 setModals(newModals);
                               }}
                               endContent={
-                                <button className="focus:outline-none my-auto">
+                                <button className="my-auto focus:outline-none">
                                   {" "}
                                   {showPasswordC ? (
                                     <GoEyeClosed

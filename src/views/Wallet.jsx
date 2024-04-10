@@ -194,6 +194,7 @@ export const Wallet = () => {
       setFilteredData(goalsData.data);
     }
   }, [isLoadingGoals, goalsData]);
+
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
@@ -222,36 +223,41 @@ export const Wallet = () => {
 
               <div className="flex flex-wrap items-center mx-8 mt-10 mb-5">
                 <div className="flex flex-col w-4/5 mx-auto">
-                  <p className="font-semibold text-default-800 ">
+                  <p className="font-semibold text-default-800">
                     Fecha de inicio:
-                    {!isLoadingGoals && !isErrorGoals && (
-                      <span className="ml-2 font-normal text-default-700">
-                        {new Date(selectedGoal.finalDate).toLocaleDateString(
-                          undefined,
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )}
-                      </span>
-                    )}
+                    {!isLoadingGoals &&
+                      !isErrorGoals &&
+                      selectedGoal.finalDate && (
+                        <span className="ml-2 font-normal text-default-700">
+                          {new Date(selectedGoal.finalDate).toLocaleDateString(
+                            undefined,
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </span>
+                      )}
                   </p>
                   <p className="mt-4 font-semibold text-default-800">
                     Fecha límite:
-                    {!isLoadingGoals && !isErrorGoals && (
-                      <span className="ml-2 font-normal text-default-700">
-                        {new Date(selectedGoal.finalDate).toLocaleDateString(
-                          undefined,
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )}
-                      </span>
-                    )}
+                    {!isLoadingGoals &&
+                      !isErrorGoals &&
+                      selectedGoal.finalDate && (
+                        <span className="ml-2 font-normal text-default-700">
+                          {new Date(selectedGoal.finalDate).toLocaleDateString(
+                            undefined,
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )}
+                        </span>
+                      )}
                   </p>
+
                   {!isLoadingGoals && !isErrorGoals && (
                     <p className="mt-10 text-4xl font-semibold text-center text-teal-600">
                       ${selectedGoal.amount}
@@ -275,6 +281,7 @@ export const Wallet = () => {
                   )}
                   <Button
                     className="mt-6 bg-sky-700"
+                    color="primary"
                     onPress={() => setShowAddAmountModal(true)}
                   >
                     Agregar monto
@@ -303,7 +310,7 @@ export const Wallet = () => {
                 Crear Meta
               </Button>
 
-              <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+              <Modal isOpen={isOpen} onOpenChange={onOpenChange} aria-label="Crear nueva meta" >
                 <ModalContent>
                   {(onClose) => (
                     <>
@@ -356,94 +363,105 @@ export const Wallet = () => {
           </div>
 
           <div className="mt-4">
-            {!isLoadingGoals && (
-              <Table
-                className="max-h-[600px]"
-                selectionMode="single"
-                aria-label="Goals"
-                defaultSelectedKeys={["1"]}
+          {!isLoadingGoals && (
+        <Table
+          className="max-h-[600px]"
+          selectionMode="single"
+          aria-label="Lista de Metas" 
+          defaultSelectedKeys={["1"]}
+        >
+          <TableHeader columns={columns}>
+            {(column) => (
+              <TableColumn
+                key={column.key}
+                className="text-xl text-neutral-800 dark:text-neutral-200"
               >
-                <TableHeader columns={columns}>
-                  {(column) => (
-                    <TableColumn
-                      key={column.key}
-                      className="text-xl text-neutral-800 dark:text-neutral-200"
-                    >
-                      {column.label}
-                    </TableColumn>
-                  )}
-                </TableHeader>
-                <TableBody
-                  items={filteredData.slice(
-                    (currentPage - 1) * itemsPerPage,
-                    currentPage * itemsPerPage
-                  )}
-                  emptyContent={"No metas aún."}
-                >
-                  {(item) => (
-                    <TableRow
-                      key={item.idGoal}
-                      onClick={() => {
-                        setSelectedGoal(item);
-                        setSelectedItemId(item._id);
-                      }}
-                    >
-                      {(columnKey) => (
-                        <TableCell className="pt-8 text-xl">
-                          {columnKey === "acciones" ? (
-                            <div className="relative flex items-center gap-2 ml-4">
-                              <Tooltip content="Detalles">
-                                <span className="pt-1 text-2xl cursor-pointer text-default-400 active:opacity-50">
-                                  <MdOutlineRemoveRedEye />
-                                </span>
-                              </Tooltip>
-                              <div
-                                onClick={() => {
-                                  setSelectedItemId(item._id);
-                                  setShowEditModal(true);
-                                  setSelectedItem(item);
-                                }}
-                              >
-                                <Tooltip content="Editar">
-                                  <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
-                                    <FaPen />
-                                  </span>
-                                </Tooltip>
-                              </div>
-
-                              <div
-                                onClick={() => {
-                                  setSelectedItemId(item._id);
-                                  setShowDeleteModal(true);
-                                }}
-                              >
-                                <Tooltip color="danger" content="Eliminar">
-                                  <span className="text-xl cursor-pointer text-danger active:opacity-50">
-                                    <IoTrash />
-                                  </span>
-                                </Tooltip>
-                              </div>
-                            </div>
-                          ) : columnKey === "state" ? (
-                            <Chip
-                              className="capitalize"
-                              color={statusColorMap[item.state]}
-                              size="sm"
-                              variant="flat"
-                            >
-                              {item.state ? "Activo" : "Finalizada"}
-                            </Chip>
-                          ) : (
-                            getKeyValue(item, columnKey)
-                          )}
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
+                {column.label}
+              </TableColumn>
             )}
-            <Modal isOpen={showEditModal} onOpenChange={setShowEditModal}>
+          </TableHeader>
+          <TableBody
+            items={filteredData.slice(
+              (currentPage - 1) * itemsPerPage,
+              currentPage * itemsPerPage
+            )}
+            emptyContent={"No metas aún."}
+          >
+            {(item) => (
+              <TableRow
+                key={item.idGoal}
+                onClick={() => {
+                  setSelectedGoal(item);
+                  setSelectedItemId(item._id);
+                }}
+              >
+                {(columnKey) => (
+                  <TableCell className="pt-8 text-xl">
+                    {columnKey === "acciones" ? (
+                      <div className="relative flex items-center gap-2 ml-4">
+                        <Tooltip content="Detalles">
+                          <span className="pt-1 text-2xl cursor-pointer text-default-400 active:opacity-50">
+                            <MdOutlineRemoveRedEye />
+                          </span>
+                        </Tooltip>
+                        <div
+                          onClick={() => {
+                            setSelectedItemId(item._id);
+                            setShowEditModal(true);
+                            setSelectedItem(item);
+                          }}
+                        >
+                          <Tooltip content="Editar" aria-label="Editar" >
+                            <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
+                              <FaPen />
+                            </span>
+                          </Tooltip>
+                        </div>
+
+                        <div
+                          onClick={() => {
+                            setSelectedItemId(item._id);
+                            setShowDeleteModal(true);
+                          }}
+                        >
+                          <Tooltip color="danger" content="Eliminar">
+                            <span className="text-xl cursor-pointer text-danger active:opacity-50">
+                              <IoTrash />
+                            </span>
+                          </Tooltip>
+                        </div>
+                      </div>
+                    ) : columnKey === "state" ? (
+                      <Chip
+                        className="capitalize"
+                        color={statusColorMap[item.state]}
+                        size="sm"
+                        aria-label="Estado" 
+                        variant="flat"
+                      >
+                        {item.state ? "Activo" : "Finalizada"}
+                      </Chip>
+                    ) : columnKey === "finalDate" ? (
+                      item.finalDate ? (
+                        <span className="ml-2 font-normal text-default-700">
+                          {new Date(item.finalDate).toLocaleDateString(undefined, {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </span>
+                      ) : null
+                    ) : (
+                      getKeyValue(item, columnKey)
+                    )}
+                  </TableCell>
+                )}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      )}
+            <Modal isOpen={showEditModal} onOpenChange={setShowEditModal} aria-label="Actualizar meta" >
               <ModalContent>
                 <ModalHeader>Editar Meta</ModalHeader>
                 <ModalBody>
@@ -493,7 +511,7 @@ export const Wallet = () => {
             </Modal>
 
             {/* Modal de eliminación */}
-            <Modal isOpen={showDeleteModal} onOpenChange={setShowDeleteModal}>
+            <Modal isOpen={showDeleteModal} onOpenChange={setShowDeleteModal} aria-label="eliminar Meta" >
               <ModalContent>
                 <ModalHeader>Eliminar Meta</ModalHeader>
                 <ModalBody>¿Estás seguro de eliminar esta Meta?</ModalBody>

@@ -2,7 +2,7 @@ import { React, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useForm } from "react-hook-form";
 import { Button, Input } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoMailSharp, IoLockClosed } from "react-icons/io5";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { userService } from "../services/services";
@@ -10,7 +10,6 @@ import toast, { Toaster } from "react-hot-toast";
 import { MintIcon } from "../icons/MintIcon";
 import { MintIconL } from "../icons/MintIconL";
 import { useMutation, QueryCache } from "react-query";
-
 
 export const Login = () => {
   //Create an instance to use our global context
@@ -53,17 +52,25 @@ export const Login = () => {
     navigate("/register");
   };
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      <section className="grid grid-cols-2 lg:flex-grow">
-        {/* Left Side */}
-        <div className="flex items-center justify-center ">
-          <MintIcon className="hidden col-span-1 w-96 xl:flex dark:xl:hidden" />
-          <MintIconL className="hidden col-span-1 w-96 xl:flex dark:xl:flex" />
-        </div>
+  const handleHome = () => {
+    navigate("/");
+  };
 
-        {/* Right Side / Form */}
-        <div className="bg-cyan-100 dark:bg-zinc-900 xl:rounded-ss-[130px] xl:rounded-es-[130px] py-28 max-h-screen col-span-2 xl:col-span-1">
+  return (
+    <div className="grid h-screen grid-cols-2 bg-zinc-700">
+      <div className="flex flex-col col-span-1 bg-[#3E70A1]">
+        <header className="flex items-center mx-auto h-36"><Link to="/" className="transition duration-200 hover:rotate-6 hover:scale-110"><MintIconL className="w-16"/></Link></header>
+        <div className="flex flex-col max-w-3xl mx-auto my-auto bg-white h-[400px] rounded-3xl">
+          <h1 className="mx-10 mt-6 text-5xl font-semibold text-sky-700">Alcanza tus metas financieras más rápido</h1>
+          <p className="mx-10 mt-16 text-2xl">Utiliza Mint y controla tus finanzas de forma ágil y sencilla.</p>
+          <Button color="primary" size="lg" className="w-40 mx-10 mt-10 bg-sky-600" onClick={handleHome}>
+            Leer más
+          </Button>
+        </div>
+        <p className="max-w-3xl mx-auto mb-20 text-xl text-white">Analizar tus gastos anteriores garantiza una mejor retroalimentacion y control al tomar una decisión financiera. </p>
+      </div>
+      <div className="flex flex-col col-span-1 bg-sky-50">
+        <div className="my-auto">
           <h1 className="mb-10 text-6xl font-bold text-center text-gray-800 dark:text-white ">
             INICIAR SESIÓN
           </h1>
@@ -160,7 +167,8 @@ export const Login = () => {
             </p>
           </form>
         </div>
-      </section>
+      </div>
+
       <Toaster />
     </div>
   );

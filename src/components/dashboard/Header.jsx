@@ -60,42 +60,42 @@ export const Header = () => {
           to="/"
           className="hidden transition duration-200 hover:rotate-6 hover:scale-110 md:flex"
         >
-          <MintIcon className="size-8 dark:hidden" />
-          <MintIconL className="hidden size-8 dark:flex" />
+          <MintIcon className="w-8 dark:hidden" />
+          <MintIconL className="hidden w-8 dark:flex" />
         </Link>
         <div className="flex items-center -mr-4">
-          <Link
-            to="/"
+          <a
+            href="#home"
             className="flex transition duration-200 hover:rotate-6 hover:scale-110 md:hidden"
           >
             <MintIcon className="size-8 dark:hidden" />
             <MintIconL className="hidden size-8 dark:flex" />
-          </Link>
+          </a>
           <div className="hidden ml-8 space-x-8 md:flex">
-            <Link
+            <a
               className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
-                location.pathname === "/" ? "text-primary" : ""
+                location.hash === "#home" ? "text-sky-500" : ""
               }`}
-              to="/"
+              href="#home"
             >
               Inicio
-            </Link>
-            <Link
+            </a>
+            <a
               className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
-                location.pathname === "/nosotros" ? "text-primary" : ""
+                location.hash === "#nosotros" ? "text-sky-500" : ""
               }`}
-              to="/nosotros"
+              href="#nosotros"
             >
               Nosotros
-            </Link>
-            <Link
+            </a>
+            <a
               className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
-                location.pathname === "/contacto" ? "text-primary" : ""
+                location.hash === "#contacto" ? "text-sky-500" : ""
               }`}
-              to="/contacto"
+              href="#contacto"
             >
               Contacto
-            </Link>
+            </a>
           </div>
         </div>
         <div className="flex gap-4">
@@ -114,24 +114,24 @@ export const Header = () => {
       {/* Links movil */}
       {isMenuOpen && (
         <div className="py-2 space-y-1 border-t md:hidden">
-          <Link
-            to="/"
+          <a
+            href="#home"
             className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
           >
             Inicio
-          </Link>
-          <Link
-            to="/nosotros"
+          </a>
+          <a
+            href="#nosotros"
             className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
           >
             Nosotros
-          </Link>
-          <Link
-            to="/contacto"
+          </a>
+          <a
+            href="#contacto"
             className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
           >
             Contacto
-          </Link>
+          </a>
         </div>
       )}
     </header>
