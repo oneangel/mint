@@ -35,6 +35,7 @@ router.get('/get/transaction/:code', authMiddleware, TransactionController.getTr
 router.get('/get/user/transactions/:code', authMiddleware, TransactionController.getUserTransactionsList);
 router.post('/get/transactions/bydate/:code', authMiddleware, TransactionController.getUserTransactionsByDateRange);
 router.post('/get/expensesTotal/bydate/:code', TransactionController.getExpensesByRangeTotal);
+router.post('/get/incomesTotal/bydate/:code', TransactionController.getIncomesByRangeTotal);
 router.get('/get/expensesTotal/:code', TransactionController.getExpensesTotal);
 router.get('/get/incomesTotal/:code', TransactionController.getIncomesTotal);
 router.get('/get/transaction/balance/:code', authMiddleware, TransactionController.getBalanceAccount);
