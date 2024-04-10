@@ -4,7 +4,7 @@ import authRoute from "./routers/auth.router.js";
 import cors from "cors";
 
 const app = express();
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: '*' }));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use("/api", authRoute);
