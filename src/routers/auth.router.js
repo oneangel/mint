@@ -51,6 +51,7 @@ router.put('/add/amount/goal/:code', authMiddleware, SavingsGoal.addAmountGoal);
 //Meter
 router.post('/register/meter', MeterController.registerMeter);
 router.get('/get/meter/:code', MeterController.getMeter);
+router.put('/link/meter', MeterController.linkMeter);
 
 //Service
 router.put('/register/service', ServiceController.registerService);

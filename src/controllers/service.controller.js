@@ -78,6 +78,10 @@ export const getTarrifCost = async (req, res) => {
 
     const tariff = await TariffE.findOne({ month });
 
+    if (!tariff) {
+      return res.status(404).send("Tariff not found");
+    }
+
     const totalMeasure = await Service.aggregate([
       {
         $match: {
@@ -140,17 +144,23 @@ export const getTarrifWaterCost = async (req, res) => {
         }
       },
     ]);
-    console.log(totalMeasure);
-    const cubicMeters = totalMeasure[0].totalMeasure / 1000;
 
-    const tariff = await TariffW.findOne({
-      range_from: { $lte: cubicMeters },
-      range_to: { $gte: cubicMeters }
-    });
+    const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
+    const cubicMeters = 0;
 
-    const totalPay = cubicMeters * tariff.percentage;
+    if (total > 0) {
+      cubicMeters = totalMeasure[0].totalMeasure / 1000;
+      const tariff = await TariffW.findOne({
+        range_from: { $lte: cubicMeters },
+        range_to: { $gte: cubicMeters }
+      });
 
-    res.json({ totalPay, measure: totalMeasure[0].totalMeasure });
+      const totalPay = cubicMeters * tariff.percentage;
+
+      res.json({ totalPay, measure: totalMeasure[0].totalMeasure });
+    } else {
+      res.json({ totalPay: 0, measure: 0 });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Server error' })

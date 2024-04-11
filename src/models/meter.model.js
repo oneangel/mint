@@ -10,12 +10,6 @@ const meterSchema = new mongoose.Schema({
     validate: validator.isAlphanumeric
   },
 
-  type: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-
   status: {
     type: Boolean,
     default: true
@@ -26,11 +20,6 @@ const meterSchema = new mongoose.Schema({
     default: Date.now,
     validate: validator.isDate
   },
-
-  user: {
-    type: String,
-    default: ""
-  }
 });
 
 //Es para especificarle a mongoose cual es nuestro modelo
