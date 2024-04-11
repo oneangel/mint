@@ -37,6 +37,13 @@ export const Login = () => {
     onError: (error) => {
       console.log(error);
     },
+    onMutate: () => {
+      toast.loading("Iniciando sesion...");
+    },
+    onSettled: () => {
+      toast.dismiss();
+      toast.success("Sesion iniciada");
+    },
   });
 
   const onSubmit = async (data) => {

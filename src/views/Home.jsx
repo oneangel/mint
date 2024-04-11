@@ -63,7 +63,6 @@ export const Home = () => {
   } = useQuery("totalIncomes", getTotalIncomeByDate);
 
   useEffect(() => {
-    toast.success("¡Bienvenido!");
     const today = new Date();
     setMonth(format(today, "MMMM", { locale: es }));
   }, []);

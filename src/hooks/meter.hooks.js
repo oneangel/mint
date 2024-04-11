@@ -5,9 +5,9 @@ export const useGetMeter = async () => {
     const username = localStorage.getItem("username");
     const token = localStorage.getItem("token");
     const res = await meterService.getMeter(username, token);
-    const serial = res.data.serial;
+    console.log(res);
     if (localStorage.getItem('serial') === null) {
-      localStorage.setItem("serial", serial);
+      localStorage.setItem("serial", res.data.serial);
     }
     return res;
   } catch (error) {
