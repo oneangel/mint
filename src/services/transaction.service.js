@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL_API = "http://localhost:3000/api";
+const URL_API = "https://mint-j4lg.onrender.com/api";
 
 export function getTransactionByDate(user, range, token) {
 	return axios.post(`${URL_API}/get/transactions/bydate/${user}`, range, {
