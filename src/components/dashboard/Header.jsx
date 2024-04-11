@@ -106,7 +106,7 @@ export const Header = () => {
             {themeIcon}
           </button>
           <Button color="primary" onClick={handleLogin}>
-            Login
+            Iniciar Sesión
           </Button>
         </div>
       </div>

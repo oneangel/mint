@@ -10,6 +10,7 @@ const token = localStorage.getItem("token");
 const startDate = startOfMonth(new Date());
 const endDate = endOfMonth(new Date());
 
+
 export const useMonthMeasure = async () => {
   try {
     const res = await serviceService.getMonthMeasure(serialUp, {

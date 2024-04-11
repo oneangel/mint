@@ -6,23 +6,24 @@ import { Link } from "react-router-dom";
 
 export const TransactionHistory = ({ transactions, isLoading }) => {
   return (
-    <Skeleton
-      isLoaded={!isLoading}
-      className="rounded-3xl shadow-md w-[95%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800"
-    >
-      <div className="bg-white rounded-3xl border-1 border-gray-200 h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
-        <div className="flex justify-between pt-6 px-6">
+    <div className=" shadow-md w-full dark:border-zinc-800bg-white rounded-3xl border-1 border-gray-200 h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
+      <div className="flex justify-between px-6 pt-6">
+        <Skeleton isLoaded={!isLoading} className="rounded-3xl">
           <h1 className="text-xl font-semibold">Historial de Transacciones</h1>
+        </Skeleton>
+        <Skeleton isLoaded={!isLoading} className="rounded-3xl">
           <Link
-            className="text-medium font-semibold text-sky-700 dark:text-sky-400"
+            className="font-semibold text-medium text-sky-700 dark:text-sky-400"
             to="/transfer"
           >
             Ver Todos
           </Link>
-        </div>
+        </Skeleton>
+      </div>
 
-        {transactions.map((transaction, index) => (
-          <div key={index} className="flex flex-wrap px-6 py-3 mt-6">
+      {transactions.map((transaction, index) => (
+        <Skeleton isLoaded={!isLoading} className="mx-auto my-3 rounded-3xl">
+          <div key={index} className="flex flex-wrap px-6 mt-6">
             <div className="flex items-center w-1/3">
               <div
                 className={`flex items-center justify-center mr-4 ${
@@ -43,7 +44,7 @@ export const TransactionHistory = ({ transactions, isLoading }) => {
               </div>
             </div>
 
-            <div className="w-1/3 justify-center flex items-center">
+            <div className="flex items-center justify-center w-1/3">
               <p>{transaction.description}</p>
             </div>
             <div className="flex items-center justify-end w-1/3">
@@ -61,8 +62,8 @@ export const TransactionHistory = ({ transactions, isLoading }) => {
               </div>
             </div>
           </div>
-        ))}
-      </div>
-    </Skeleton>
+        </Skeleton>
+      ))}
+    </div>
   );
 };

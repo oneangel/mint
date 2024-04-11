@@ -1,8 +1,32 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { Button, Input } from "@nextui-org/react";
-import { Link } from "react-router-dom";
 
 export const Step3 = ({ control, previousStep }) => {
+  const [name, setName] = useState("");
+  const [nameIsTouched, setNameIsTouched] = useState(false);
+  const [lastName, setLastName] = useState("");
+  const [lastNameIsTouched, setLastNameIsTouched] = useState(false);
+
+  const isNameInvalid = React.useMemo(() => {
+    if (name === "" || !nameIsTouched) return false;
+    return false; 
+  }, [name, nameIsTouched]);
+
+  const isLastNameInvalid = React.useMemo(() => {
+    if (lastName === "" || !lastNameIsTouched) return false;
+    return false;
+  }, [lastName, lastNameIsTouched]);
+
+  const isFormValid = React.useMemo(() => {
+    const isAnyFieldTouched = nameIsTouched || lastNameIsTouched;
+    return (
+      isAnyFieldTouched &&
+      (!nameIsTouched || !isNameInvalid) &&
+      (!lastNameIsTouched || !isLastNameInvalid)
+    );
+  }, [nameIsTouched, lastNameIsTouched, isNameInvalid, isLastNameInvalid]);
+
   return (
     <>
       <div className="mb-12">
@@ -16,7 +40,13 @@ export const Step3 = ({ control, previousStep }) => {
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
-            className="rounded-2xl bg-white"
+            className="bg-white rounded-2xl"
+            onValueChange={(value) => {
+              setName(value);
+              setNameIsTouched(true);
+            }}
+            isInvalid={nameIsTouched && isNameInvalid}
+            errorMessage={nameIsTouched && isNameInvalid && "El nombre no es válido."}
           />
         </div>
       </div>
@@ -31,17 +61,22 @@ export const Step3 = ({ control, previousStep }) => {
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
-            className="rounded-2xl bg-white"
+            className="bg-white rounded-2xl"
+            onValueChange={(value) => {
+              setLastName(value);
+              setLastNameIsTouched(true);
+            }}
+            isInvalid={lastNameIsTouched && isLastNameInvalid}
+            errorMessage={lastNameIsTouched && isLastNameInvalid && "Los apellidos no son válidos."}
           />
         </div>
-        <p className="text-xl font-light mt-3">
-          Asegurese de que su nombre y sus apellidos coincidan con los de su identificación oficial.
+        <p className="mt-3 text-xl font-light">
+          Asegúrese de que su nombre y sus apellidos coincidan con los de su identificación oficial.
         </p>
       </div>
-
-      <div className="text-center pt-20">
+      <div className="pt-20 text-center">
         <Button
-          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-full shadow-lg mb-5"
+          className="w-full py-8 mb-5 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={previousStep}
         >
           Anterior

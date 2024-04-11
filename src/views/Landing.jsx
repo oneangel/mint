@@ -94,7 +94,7 @@ export const Landing = () => {
         </section>
 
         {/* Nosotros */}
-        <section id="nosotros" className="flex w-full h-screen">
+        <section id="nosotros" className="flex w-full min-h-screen">
           <div className="h-[90%] w-[70%] my-auto mx-auto justify-center grid md:grid-cols-2 grid-cols-1 gap-4">
             <div className="flex flex-col col-span-2 bg-blue-400 md:col-span-2 rounded-3xl ">
               <div className="my-auto ml-10">

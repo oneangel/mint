@@ -1,11 +1,36 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { Button, Input } from "@nextui-org/react";
-import { IoLockClosed } from "react-icons/io5";
 
 export const Step2 = ({ control, nextStep, previousStep }) => {
+  const [password, setPassword] = useState("");
+  const [passwordC, setPasswordC] = useState("");
+  const [passwordIsTouched, setPasswordIsTouched] = useState(false);
+  const [passwordCIsTouched, setPasswordCIsTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordC, setShowPasswordC] = useState(false);
+
+  const isPasswordInvalid = React.useMemo(() => {
+    if (password === "" || !passwordIsTouched) return false;
+    const hasNumber = /\d/.test(password);
+    const hasLetter = /[a-zA-Z]/.test(password);
+    const isLongEnough = password.length >= 8;
+    return !(hasNumber && hasLetter && isLongEnough);
+  }, [password, passwordIsTouched]);
+
+  const isPasswordCInvalid = React.useMemo(() => {
+    if (passwordC === "" || !passwordCIsTouched) return false;
+    return passwordC !== password;
+  }, [passwordC, passwordCIsTouched, password]);
+
+  const isFormValid = React.useMemo(() => {
+    const isAnyFieldTouched = passwordIsTouched || passwordCIsTouched;
+    return (
+      isAnyFieldTouched &&
+      (!passwordIsTouched || !isPasswordInvalid) &&
+      (!passwordCIsTouched || !isPasswordCInvalid)
+    );
+  }, [passwordIsTouched, passwordCIsTouched, isPasswordInvalid, isPasswordCInvalid]);
 
   return (
     <>
@@ -20,19 +45,26 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
-            className="rounded-2xl bg-white"
-            startContent={
-              <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
+            className="bg-white rounded-2xl"
+            onValueChange={(value) => {
+              setPassword(value);
+              setPasswordIsTouched(true);
+            }}
+            isInvalid={passwordIsTouched && isPasswordInvalid}
+            errorMessage={
+              passwordIsTouched &&
+              isPasswordInvalid &&
+              "La contraseña debe tener al menos 8 caracteres, un número y una letra."
             }
             endContent={
               showPassword ? (
                 <GoEyeClosed
-                  className="text-gray-400 mt-1"
+                  className="mt-1 text-gray-400"
                   onClick={() => setShowPassword(false)}
                 />
               ) : (
                 <GoEye
-                  className="text-gray-400 mt-1"
+                  className="mt-1 text-gray-400"
                   onClick={() => setShowPassword(true)}
                 />
               )
@@ -40,7 +72,6 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
           />
         </div>
       </div>
-
       <div className="mb-8">
         <div className="relative text-3xl font-light">
           <Input
@@ -52,19 +83,22 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
-            className="rounded-2xl bg-white"
-            startContent={
-              <IoLockClosed className="text-2xl text-sky-700 pointer-events-none flex-shrink-0" />
-            }
+            className="bg-white rounded-2xl"
+            onValueChange={(value) => {
+              setPasswordC(value);
+              setPasswordCIsTouched(true);
+            }}
+            isInvalid={passwordCIsTouched && isPasswordCInvalid}
+            errorMessage={passwordCIsTouched && isPasswordCInvalid && "Las contraseñas no coinciden."}
             endContent={
               showPasswordC ? (
                 <GoEyeClosed
-                  className="text-gray-400 mt-1"
+                  className="mt-1 text-gray-400"
                   onClick={() => setShowPasswordC(false)}
                 />
               ) : (
                 <GoEye
-                  className="text-gray-400 mt-1"
+                  className="mt-1 text-gray-400"
                   onClick={() => setShowPasswordC(true)}
                 />
               )
@@ -72,18 +106,18 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
           />
         </div>
       </div>
-
-      <div className="text-center mt-48 flex gap-4">
+      <div className="flex gap-4 mt-48 text-center">
         <Button
-          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-1/2 shadow-lg"
+          className="w-1/2 py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={previousStep}
         >
           Anterior
         </Button>
         <Button
           type="submit"
-          className="text-sky-700 border border-sky-700 bg-white font-medium rounded-2xl text-4xl py-8 w-1/2 shadow-lg"
+          className="w-1/2 py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={nextStep}
+          disabled={!isFormValid}
         >
           Siguiente
         </Button>

@@ -5,8 +5,8 @@ import * as ClientServices from "../services/client.service";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
-import { MintIcon } from "../icons/MintIcon";
-import { Link } from "react-router-dom";
+import { MintIconL } from "../icons/MintIconL";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 
 export const Register = () => {
@@ -47,17 +47,47 @@ export const Register = () => {
       console.log(error);
     }
   };
+  const navigate = useNavigate();
+
+  const handleHome = () => {
+    navigate("/");
+  };
 
   return (
-    <div className="flex flex-col min-h-screen ">
-      <section className="flex-grow grid grid-cols-2 gap-0">
-        {/* Left Side */}
-        <div className="flex justify-center items-center">
-          <MintIcon className="w-96" />
+    <div className="grid h-screen grid-cols-1 lg:grid-cols-2 bg-zinc-700">
+      <div className="flex-col col-span-1 lg:flex hidden bg-[#3E70A1]">
+        <header className="flex items-center mx-auto h-36">
+          <Link
+            to="/"
+            className="transition duration-200 hover:rotate-6 hover:scale-110"
+          >
+            <MintIconL className="w-16" />
+          </Link>
+        </header>
+        <div className="flex flex-col max-w-3xl mx-auto my-auto bg-white h-[400px] dark:bg-zinc-800 rounded-3xl">
+          <h1 className="mx-10 mt-6 text-5xl font-semibold text-sky-700 dark:text-sky-400">
+            Alcanza tus metas financieras más rápido
+          </h1>
+          <p className="mx-10 mt-16 text-2xl">
+            Utiliza Mint y controla tus finanzas de forma ágil y sencilla.
+          </p>
+          <Button
+            color="primary"
+            size="lg"
+            className="w-40 mx-10 mt-10 bg-sky-600"
+            onClick={handleHome}
+          >
+            Leer más
+          </Button>
         </div>
-
-        <div className="bg-cyan-100/70 rounded-ss-[130px] rounded-es-[130px] py-10 max-h-screen">
-          <h1 className="text-6xl font-bold mb-10 text-center text-gray-800">
+        <p className="max-w-3xl mx-auto mb-20 text-xl text-white">
+          Analizar tus gastos anteriores garantiza una mejor retroalimentacion y
+          control al tomar una decisión financiera.{" "}
+        </p>
+      </div>
+      <div className="flex flex-col col-span-2 bg-white md:col-span-1 dark:bg-zinc-900">
+        <div className="my-auto">
+          <h1 className="mb-10 text-6xl font-bold text-center text-gray-800">
             REGISTRARSE
           </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl mx-auto">
@@ -74,18 +104,28 @@ export const Register = () => {
             )}
 
             {currentIndex === 2 ? (
-              <Button type="submit" className="text-white bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 font-medium rounded-2xl text-4xl px-5 shadow-md w-full py-8">Crear cuenta</Button>
+              <Button
+                type="submit"
+                className="w-full px-5 py-8 text-4xl font-medium text-white shadow-md bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 rounded-2xl"
+              >
+                Crear cuenta
+              </Button>
             ) : (
               <></>
             )}
 
-            <p className="text-center text-xl font-semibold pt-8">
+            <p className="pt-8 text-xl font-semibold text-center">
               ¿Ya tiene cuenta?{" "}
-              <Link className="text-sky-700 font-bold hover:text-sky-400" to="/login">Iniciar Sesión</Link>
+              <Link
+                className="font-bold text-sky-700 hover:text-sky-400"
+                to="/login"
+              >
+                Iniciar Sesión
+              </Link>
             </p>
           </form>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

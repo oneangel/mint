@@ -83,10 +83,10 @@ export const EditProfile = () => {
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
       <div className="flex flex-col items-center w-full h-full">
-        <div className="mt-40 w-[700px]">
+        <div className="mt-40 max-w-[700px]">
           <div className="flex flex-wrap w-full p-2 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
             <div className="flex items-center justify-center w-1/4 p-4">
-              <div className="overflow-hidden rounded-full size-36">
+              <div className="overflow-hidden rounded-full size-24 md:size-36">
                 {!isLoading && (
                   <img
                     src={`${data.data.avatar}`}
@@ -100,7 +100,7 @@ export const EditProfile = () => {
               <Button
                 color="default"
                 variant="ghost"
-                className="w-56 font-semibold"
+                className="w-40 font-semibold md:w-56"
               >
                 Subir nueva Imagen
               </Button>

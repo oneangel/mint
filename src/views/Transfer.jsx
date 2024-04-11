@@ -187,202 +187,216 @@ export const Transfer = () => {
   }, [isLoadingTransactionList, transactionListData]);
 
   return (
-    <div className="h-screen bg-sky-50/50 dark:bg-zinc-950">
-      <NavigationBar />
-      <h1 className="text-4xl pl-20 font-semibold text-sky-700 pt-32 dark:text-white">
-        Transacciones
-      </h1>
-
-      <div className="flex flex-wrap mx-20">
-        {/* left side / table */}
-        <div className="w-1/2">
-          <div className="flex h-16 mt-10 gap-4">
-            <div className="w-1/4">
-              <Skeleton
-                isLoaded={!isLoadingTransactionList}
-                className="rounded-xl max-w-xs"
-              >
-                <Select
-                  variant="bordered"
-                  startContent={<IoCalendarOutline className="text-sky-700" />}
-                  defaultSelectedKeys={["esta-semana"]}
-                  className="max-w-xs text-2xl text-sky-600 bg-white dark:bg-zinc-900"
-                  classNames={{
-                    value: [
-                      "placeholder:text-default-700/50 dark:placeholder:text-white text-xl",
-                    ],
-                  }}
-                >
-                  {animals.map((animal) => (
-                    <SelectItem
-                      key={animal.value}
-                      value={animal.value}
-                      onClick={() =>
-                        handleFilterByDate(animal.startDate, animal.endDate)
+    <>
+      <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-zinc-950">
+        <NavigationBar />
+        <div className="mt-20 md:mt-32">
+          <h1 className="hidden pl-20 text-4xl font-semibold md:flex text-sky-700 dark:text-white">
+            Transacciones
+          </h1>
+          <div className="grid grid-cols-1 gap-4 mx-4 md:mx-20 md:pt-0 xl:grid-cols-2">
+            {/* left side / table */}
+            <div className="flex flex-col items-start col-span-1">
+              <div className="grid w-full grid-cols-2 gap-4 mt-10 lg:grid-cols-4">
+                <div className="col-span-1 lg:col-span-1">
+                  <Skeleton
+                    isLoaded={!isLoadingTransactionList}
+                    className="max-w-xs rounded-xl"
+                  >
+                    <Select
+                      variant="bordered"
+                      startContent={
+                        <IoCalendarOutline className="text-sky-700" />
                       }
+                      defaultSelectedKeys={["esta-semana"]}
+                      className="max-w-xs text-2xl bg-white text-sky-600 dark:bg-zinc-900"
+                      classNames={{
+                        value: [
+                          "placeholder:text-default-700/50 dark:placeholder:text-white text-xl",
+                        ],
+                      }}
                     >
-                      {animal.label}
-                    </SelectItem>
-                  ))}
-                </Select>
-              </Skeleton>
+                      {animals.map((animal) => (
+                        <SelectItem
+                          key={animal.value}
+                          value={animal.value}
+                          onClick={() =>
+                            handleFilterByDate(animal.startDate, animal.endDate)
+                          }
+                        >
+                          {animal.label}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                  </Skeleton>
+                </div>
+
+                <div className="col-span-1 lg:col-span-2">
+                  <Skeleton
+                    isLoaded={!isLoadingTransactionList}
+                    className="w-full rounded-xl"
+                  >
+                    <SearchBar
+                      searchTerm={searchTerm}
+                      handleSearchChange={handleSearchChange}
+                    />
+                  </Skeleton>
+                </div>
+
+                <div className="col-span-2 lg:col-span-1">
+                  <Button
+                    className="w-full text-xl text-white h-14 bg-sky-700"
+                    startContent={<IoAddCircle className="text-white size-6" />}
+                    onPress={onOpen}
+                    aria-label="Agregar"
+                  >
+                    Agregar
+                  </Button>
+
+                  <Modal isOpen={isOpen} onClose={onClose}>
+                    <ModalContent>
+                      <ModalHeader className="flex flex-col gap-1">
+                        Agregar Transacción
+                      </ModalHeader>
+                      <ModalBody>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <Input
+                            type="text"
+                            label="Descripción"
+                            name="description"
+                            className="mb-5"
+                            {...register("description")}
+                          />
+                          <Input
+                            type="number"
+                            label="Cantidad"
+                            name="amount"
+                            className="mb-5"
+                            {...register("amount")}
+                          />
+                          <Input
+                            type="text"
+                            label="Destinatario"
+                            name="destination"
+                            className="mb-5"
+                            description="*A quien esta dirigido el monto"
+                            {...register("destination")}
+                          />
+                          <Input
+                            type="date"
+                            className="mb-5"
+                            {...register("createdAt")}
+                          />
+                        </form>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button
+                          variant="light"
+                          onPress={onClose}
+                          aria-label="Cerrar"
+                        >
+                          Cerrar
+                        </Button>
+                        <Button
+                          color="primary"
+                          onPress={handleSubmit(onSubmit)}
+                          className="text-white bg-sky-700"
+                          aria-label="Agregar Transfer"
+                        >
+                          Agregar
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+                </div>
+              </div>
+
+              <div className="w-full col-span-1 mt-4">
+                {!isLoadingTransactionList && (
+                  <TableCustom
+                    onDelete={onDelete}
+                    onUpdate={onUpdate}
+                    columns={columns}
+                    data={getPaginatedRows(filteredData)}
+                  />
+                )}
+
+                {!isLoadingTransactionList && (
+                  <Pagination
+                    showControls
+                    className="flex justify-end mt-2"
+                    total={Math.ceil(
+                      (filteredData?.length || 0) / itemsPerPage
+                    )}
+                    current={currentPage}
+                    onChange={handlePageChange}
+                  />
+                )}
+              </div>
             </div>
 
-            <div className="w-2/4">
-              <Skeleton
-                isLoaded={!isLoadingTransactionList}
-                className="rounded-xl w-full"
-              >
-                <SearchBar
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
-                />
-              </Skeleton>
+            {/* Right side / total-graphs */}
+            <div className="items-center col-span-1">
+              <div className="flex flex-wrap justify-center gap-4">
+                {/* Abonos */}
+                {!isLoadingTotalIncome && (
+                  <div className="flex flex-col items-center">
+                    <h2 className="mb-4 text-2xl font-semibold text-center">
+                      Total de Abonos
+                    </h2>
+                    <div className="flex flex-col items-center justify-center h-24 shadow-md w-52 bg-green-50 md:w-60 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
+                      <span className="text-4xl font-semibold text-teal-600 ">
+                        ${totalIncomeData.data.incomeTotal}
+                      </span>
+                      <p className="text-lg text-center">
+                        {" "}
+                        a partir de Marzo 25, 2024{" "}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Cargos */}
+                {!isLoadingTotalExpense && (
+                  <div className="flex flex-col items-center">
+                    <h2 className="mb-4 text-2xl font-semibold text-center">
+                      Total de Cargos
+                    </h2>
+                    <div className="flex flex-col items-center justify-center h-24 shadow-md w-52 bg-red-50 md:w-60 rounded-2xl border-1 dark:bg-red-950 dark:border-red-800">
+                      <span className="text-4xl font-semibold text-red-700 dark:text-red-400">
+                        ${totalExpenseData.data.expenseTotal}
+                      </span>
+                      <p className="text-lg text-center">
+                        {" "}
+                        a partir de Marzo 18, 2024{" "}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="w-full bg-white border-1 m-auto max-w-xl h-[450px] rounded-3xl shadow-md dark:bg-zinc-900 dark:border-zinc-800 mt-20">
+                <div className="flex justify-center pt-6">
+                  <IoPieChart className="m-0.5 mr-4 text-2xl" />
+                  <p className="text-xl font-semibold text-center"></p>
+                  Comparacion de Abonos y Cargos
+                </div>
+
+                <div>
+                  {!isLoadingTotalExpense && !isLoadingTotalIncome && (
+                    <PieChart2
+                      expenses={totalExpenseData.data.expenseTotal}
+                      incomes={totalIncomeData.data.incomeTotal}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
-
-            <div className="w-1/4">
-              <Button
-                className="w-full h-14 text-xl text-white bg-sky-700"
-                startContent={<IoAddCircle className="text-white size-6" />}
-                onPress={onOpen}
-                aria-label="Agregar"
-              >
-                Agregar
-              </Button>
-
-              <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalContent>
-                  <ModalHeader className="flex flex-col gap-1">
-                    Agregar Transacción
-                  </ModalHeader>
-                  <ModalBody>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      <Input
-                        type="text"
-                        label="Descripción"
-                        name="description"
-                        className="mb-5"
-                        {...register("description")}
-                      />
-                      <Input
-                        type="number"
-                        label="Cantidad"
-                        name="amount"
-                        className="mb-5"
-                        {...register("amount")}
-                      />
-                      <Input
-                        type="text"
-                        label="Destinatario"
-                        name="destination"
-                        className="mb-5"
-                        description="*A quien esta dirigido el monto"
-                        {...register("destination")}
-                      />
-                      <Input
-                        type="date"
-                        className="mb-5"
-                        {...register("createdAt")}
-                      />
-                    </form>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button
-                      variant="light"
-                      onPress={onClose}
-                      aria-label="Cerrar"
-                    >
-                      Cerrar
-                    </Button>
-                    <Button
-                      color="primary"
-                      onPress={handleSubmit(onSubmit)}
-                      className="bg-sky-700 text-white"
-                      aria-label="Agregar Transfer"
-                    >
-                      Agregar
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-            </div>
-          </div>
-
-          <div className="mt-4">
-            {!isLoadingTransactionList && (
-              <TableCustom
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-                columns={columns}
-                data={getPaginatedRows(filteredData)}
-              />
-            )}
-
-            {!isLoadingTransactionList && (
-              <Pagination
-                showControls
-                className="justify-end flex mt-2"
-                total={Math.ceil((filteredData?.length || 0) / itemsPerPage)}
-                current={currentPage}
-                onChange={handlePageChange}
-              />
-            )}
           </div>
         </div>
 
-        {/* Right side / total-graphs */}
-        <div className="w-1/2">
-          <div className="flex flex-wrap">
-            {/* Abonos */}
-            {!isLoadingTotalIncome && (
-              <div className="w-1/2 h-52">
-                <h2 className="text-center text-2xl font-semibold mb-4">
-                  Total de Abonos
-                </h2>
-                <div className="bg-green-50 m-auto h-32 w-80 rounded-3xl flex flex-col justify-center items-center shadow-md border-1 dark:bg-teal-950 dark:border-teal-800">
-                  <span className="text-4xl font-semibold text-teal-600 ">
-                    ${totalIncomeData.data.incomeTotal}
-                  </span>
-                  <p className="text-lg"> a partir de Marzo 25, 2024 </p>
-                </div>
-              </div>
-            )}
-
-            {/* Cargos */}
-            {!isLoadingTotalExpense && (
-              <div className="w-1/2 h-52">
-                <h2 className="text-center text-2xl font-semibold mb-4">
-                  Total de Cargos
-                </h2>
-                <div className="bg-red-50 m-auto h-32 w-80 rounded-3xl flex flex-col justify-center items-center shadow-md border-1 dark:bg-red-950 dark:border-red-800">
-                  <span className="text-4xl font-semibold text-red-700 dark:text-red-400">
-                    ${totalExpenseData.data.expenseTotal}
-                  </span>
-                  <p className="text-lg"> a partir de Marzo 18, 2024 </p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className="bg-white border-1 m-auto w-3/5 h-[450px] rounded-3xl shadow-md dark:bg-zinc-900 dark:border-zinc-800">
-            <div className="pt-6 flex justify-center">
-              <IoPieChart className="m-0.5 mr-4 text-2xl" />
-              <p className="text-xl text-center font-semibold"></p>
-              Comparacion de Abonos y Cargos
-            </div>
-
-            <div>
-              {!isLoadingTotalExpense && !isLoadingTotalIncome && (
-                <PieChart2
-                  expenses={totalExpenseData.data.expenseTotal}
-                  incomes={totalIncomeData.data.incomeTotal}
-                />
-              )}
-            </div>
-          </div>
-        </div>
+        <Toaster />
       </div>
-      <Toaster />
-    </div>
+    </>
   );
 };

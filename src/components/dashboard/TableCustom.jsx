@@ -66,15 +66,15 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={data} emptyContent={"No transacciones aún."}>
+        <TableBody items={data} emptyContent={"No existen transacciones registradas aún."}>
           {(item) => (
             <TableRow key={item._id}>
               {(columnKey) => (
-                <TableCell className="text-xl pt-8">
+                <TableCell className="pt-8 text-xl">
                   {columnKey === "acciones" ? (
                     <div className="relative flex items-center gap-2 ml-4">
                       <Tooltip content="Detalles">
-                        <span className="text-2xl pt-1 text-default-400 cursor-pointer active:opacity-50">
+                        <span className="pt-1 text-2xl cursor-pointer text-default-400 active:opacity-50">
                           <MdOutlineRemoveRedEye />
                         </span>
                       </Tooltip>
@@ -86,7 +86,7 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
                         }}
                       >
                         <Tooltip content="Editar">
-                          <span className="text-xl text-default-400 cursor-pointer active:opacity-50">
+                          <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
                             <FaPen />
                           </span>
                         </Tooltip>
@@ -99,7 +99,7 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
                         }}
                       >
                         <Tooltip color="danger" content="Eliminar">
-                          <span className="text-xl text-danger cursor-pointer active:opacity-50">
+                          <span className="text-xl cursor-pointer text-danger active:opacity-50">
                             <IoTrash />
                           </span>
                         </Tooltip>
