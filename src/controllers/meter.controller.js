@@ -24,7 +24,10 @@ export const registerMeter = async (req, res) => {
 export const getMeter = async (req, res) => {
   const { code } = req.params;
   try {
-    const existingMeter = await Meter.findOne({ serial: code });
+    const existingClient = await Client.findOne({ username: code });
+    const serial = existingClient.meter;
+
+    const existingMeter = await Meter.findOne({ serial });
 
     if (!existingMeter || existingMeter.status === false) {
       return res.status(404).send("Meter not found");
