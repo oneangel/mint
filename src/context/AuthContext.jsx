@@ -1,17 +1,23 @@
-import React from "react";
-import { createContext } from "react";
-import { useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
-export const AuthContext = createContext({});
+export const AuthContext = createContext();
 
-export default function AuthContextProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !localStorage.getItem("token") ? false : true
+  );
 
-  const login = () => {
+  useEffect(() => {
+    setIsAuthenticated(!localStorage.getItem("token") ? false : true);
+  }, []);
+
+  const login = (token) => {
+    localStorage.setItem("token", token);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
+    localStorage.clear();
     setIsAuthenticated(false);
   };
 
@@ -20,4 +26,4 @@ export default function AuthContextProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-}
+};

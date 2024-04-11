@@ -60,8 +60,8 @@ export const Transfer = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({ mode: "onTouched" });
 
   const queryClient = useQueryClient();
 
@@ -134,6 +134,7 @@ export const Transfer = () => {
   const addTransactionMutation = useMutation(useAddTransaction, {
     onSuccess: () => {
       onClose();
+      toast.success("Transaccion agregada con exito");
       queryClient.refetchQueries("transactionList");
       queryClient.refetchQueries("totalIncome");
       queryClient.refetchQueries("totalExpense");
@@ -265,14 +266,18 @@ export const Transfer = () => {
                             label="Descripción"
                             name="description"
                             className="mb-5"
-                            {...register("description")}
+                            {...register("description", {
+                              required: "el campo es onligatorio",
+                            })}
                           />
                           <Input
                             type="number"
                             label="Cantidad"
                             name="amount"
                             className="mb-5"
-                            {...register("amount")}
+                            {...register("amount", {
+                              required: "el campo es onligatorio",
+                            })}
                           />
                           <Input
                             type="text"
@@ -280,12 +285,16 @@ export const Transfer = () => {
                             name="destination"
                             className="mb-5"
                             description="*A quien esta dirigido el monto"
-                            {...register("destination")}
+                            {...register("destination", {
+                              required: "el campo es onligatorio",
+                            })}
                           />
                           <Input
                             type="date"
                             className="mb-5"
-                            {...register("createdAt")}
+                            {...register("createdAt", {
+                              required: "el campo es onligatorio",
+                            })}
                           />
                         </form>
                       </ModalBody>
@@ -302,6 +311,7 @@ export const Transfer = () => {
                           onPress={handleSubmit(onSubmit)}
                           className="text-white bg-sky-700"
                           aria-label="Agregar Transfer"
+                          disabled={!isValid}
                         >
                           Agregar
                         </Button>

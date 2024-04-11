@@ -109,26 +109,26 @@ export const NavigationBar = () => {
           </a>
           <div className="hidden ml-8 space-x-8 md:flex">
             {navLinks.map((link, index) => (
-                <Link to={link.path}>
+              <Link to={link.path} key={index}>
+                <div
+                  className={`flex items-center justify-center rounded-lg hover:bg-sky-100 dark:hover:bg-sky-600 hover:scale-110 transition ${
+                    location.pathname === link.path
+                      ? "bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 scale-110"
+                      : ""
+                  }`}
+                >
                   <div
-                    className={`flex items-center justify-center rounded-lg hover:bg-sky-100 dark:hover:bg-sky-600 hover:scale-110 transition ${
+                    className={`flex items-center hover:text-sky-700 p-2 transition ${
                       location.pathname === link.path
-                        ? "bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 scale-110"
-                        : ""
+                        ? "text-sky-700 dark:text-sky-100"
+                        : "text-zinc-600 dark:text-white"
                     }`}
                   >
-                    <div
-                      className={`flex items-center hover:text-sky-700 p-2 transition ${
-                        location.pathname === link.path
-                          ? "text-sky-700 dark:text-sky-100"
-                          : "text-zinc-600 dark:text-white"
-                      }`}
-                    >
-                      {link.icon && <span className="mr-2">{link.icon}</span>}
-                      <span>{link.text}</span>
-                    </div>
+                    {link.icon && <span className="mr-2">{link.icon}</span>}
+                    <span>{link.text}</span>
                   </div>
-                </Link>
+                </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -177,27 +177,27 @@ export const NavigationBar = () => {
       {isMenuOpen && (
         <div className="py-2 space-y-1 border-t md:hidden">
           {navLinks.map((link, index) => (
-                <Link to={link.path}>
-                  <div
-                    className={`flex items-center rounded-lg hover:bg-sky-100 dark:hover:bg-sky-600 hover:scale-110 transition ${
-                      location.pathname === link.path
-                        ? "bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 "
-                        : ""
-                    }`}
-                  >
-                    <div
-                      className={`flex items-center hover:text-sky-700 p-2 transition ${
-                        location.pathname === link.path
-                          ? "text-sky-700 dark:text-sky-100"
-                          : "text-zinc-600 dark:text-white"
-                      }`}
-                    >
-                      {link.icon && <span className="mr-2">{link.icon}</span>}
-                      <span>{link.text}</span>
-                    </div>
-                  </div>
-                </Link>
-            ))}
+            <Link to={link.path}>
+              <div
+                className={`flex items-center rounded-lg hover:bg-sky-100 dark:hover:bg-sky-600 hover:scale-110 transition ${
+                  location.pathname === link.path
+                    ? "bg-sky-100 dark:bg-sky-800 hover:bg-sky-200 "
+                    : ""
+                }`}
+              >
+                <div
+                  className={`flex items-center hover:text-sky-700 p-2 transition ${
+                    location.pathname === link.path
+                      ? "text-sky-700 dark:text-sky-100"
+                      : "text-zinc-600 dark:text-white"
+                  }`}
+                >
+                  {link.icon && <span className="mr-2">{link.icon}</span>}
+                  <span>{link.text}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       )}
     </nav>

@@ -19,6 +19,10 @@ export function getTotalExpenseByDate(user, range) {
 	return axios.post(`${URL_API}/get/expensesTotal/bydate/${user}`, range)
 }
 
+export function getTotalIncomeByDate(user, range) {
+	return axios.post(`${URL_API}/get/incomesTotal/bydate/${user}`, range)
+}
+
 export function getTotalExpense(user) {
 	return axios.get(`${URL_API}/get/expensesTotal/${user}`)
 }

@@ -22,7 +22,11 @@ export const TransactionHistory = ({ transactions, isLoading }) => {
       </div>
 
       {transactions.map((transaction, index) => (
-        <Skeleton isLoaded={!isLoading} className="mx-auto my-3 rounded-3xl">
+        <Skeleton
+          isLoaded={!isLoading}
+          key={index}
+          className="mx-auto my-3 rounded-3xl"
+        >
           <div key={index} className="flex flex-wrap px-6 mt-6">
             <div className="flex items-center w-1/3">
               <div

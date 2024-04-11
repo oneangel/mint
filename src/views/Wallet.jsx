@@ -63,7 +63,12 @@ const columns = [
 ];
 
 export const Wallet = () => {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({ mode: "onTouched" });
+
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -327,14 +332,18 @@ export const Wallet = () => {
                               label="Descripción"
                               name="description"
                               className="mb-5"
-                              {...register("description")}
+                              {...register("description", {
+                                required: "el campo es obligatorio",
+                              })}
                             />
                             <Input
                               type="number"
                               name="amountGoal"
                               label="Meta"
                               className="mb-5"
-                              {...register("amountGoal")}
+                              {...register("amountGoal", {
+                                required: "el campo es obligatorio",
+                              })}
                             />
                             <Input
                               type="date"
@@ -342,7 +351,9 @@ export const Wallet = () => {
                               label="Fecha de meta"
                               placeholder="dd/mm/aaaa"
                               className="mb-5"
-                              {...register("finalDate")}
+                              {...register("finalDate", {
+                                required: "el campo es obligatorio",
+                              })}
                             />
                           </form>
                         </ModalBody>
@@ -352,6 +363,7 @@ export const Wallet = () => {
                           </Button>
                           <Button
                             color="primary"
+                            disabled={!isValid}
                             onPress={handleSubmit(onSubmit)}
                             className="text-white bg-sky-700"
                           >
@@ -556,7 +568,7 @@ export const Wallet = () => {
                 <ModalContent>
                   <ModalHeader>Agregar Monto</ModalHeader>
                   <ModalBody>
-                    <form action="">
+                    <form action="" onSubmit={handleSubmit(onAdd)}>
                       <Input
                         type="number"
                         label="Monto"

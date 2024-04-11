@@ -36,8 +36,8 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({ mode: "onTouched" });
 
   const onSubmit = (data) => {
     setShowEditModal(false);
@@ -61,12 +61,18 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
       <Table className="max-h-[600px]">
         <TableHeader columns={columns}>
           {(column) => (
-            <TableColumn key={column.key} className="text-xl text-neutral-800 dark:text-neutral-200">
+            <TableColumn
+              key={column.key}
+              className="text-xl text-neutral-800 dark:text-neutral-200"
+            >
               {column.label}
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody items={data} emptyContent={"No existen transacciones registradas aún."}>
+        <TableBody
+          items={data}
+          emptyContent={"No existen transacciones registradas aún."}
+        >
           {(item) => (
             <TableRow key={item._id}>
               {(columnKey) => (

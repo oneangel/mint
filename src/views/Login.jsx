@@ -30,8 +30,7 @@ export const Login = () => {
   const loginMutation = useMutation(userService.login, {
     onSuccess: (res) => {
       console.log(res);
-      auth.login();
-      localStorage.setItem("token", res.data.token);
+      auth.login(res.data.token);
       localStorage.setItem("username", res.data.username);
       navigate("/home");
     },
@@ -59,15 +58,34 @@ export const Login = () => {
   return (
     <div className="grid h-screen grid-cols-1 lg:grid-cols-2 bg-zinc-700">
       <div className="flex-col col-span-1 lg:flex hidden bg-[#3E70A1]">
-        <header className="flex items-center mx-auto h-36"><Link to="/" className="transition duration-200 hover:rotate-6 hover:scale-110"><MintIconL className="w-16"/></Link></header>
+        <header className="flex items-center mx-auto h-36">
+          <Link
+            to="/"
+            className="transition duration-200 hover:rotate-6 hover:scale-110"
+          >
+            <MintIconL className="w-16" />
+          </Link>
+        </header>
         <div className="flex flex-col max-w-3xl mx-auto my-auto bg-white h-[400px] dark:bg-zinc-800 rounded-3xl">
-          <h1 className="mx-10 mt-6 text-5xl font-semibold text-sky-700 dark:text-sky-400">Alcanza tus metas financieras más rápido</h1>
-          <p className="mx-10 mt-16 text-2xl">Utiliza Mint y controla tus finanzas de forma ágil y sencilla.</p>
-          <Button color="primary" size="lg" className="w-40 mx-10 mt-10 bg-sky-600" onClick={handleHome}>
+          <h1 className="mx-10 mt-6 text-5xl font-semibold text-sky-700 dark:text-sky-400">
+            Alcanza tus metas financieras más rápido
+          </h1>
+          <p className="mx-10 mt-16 text-2xl">
+            Utiliza Mint y controla tus finanzas de forma ágil y sencilla.
+          </p>
+          <Button
+            color="primary"
+            size="lg"
+            className="w-40 mx-10 mt-10 bg-sky-600"
+            onClick={handleHome}
+          >
             Leer más
           </Button>
         </div>
-        <p className="max-w-3xl mx-auto mb-20 text-xl text-white">Analizar tus gastos anteriores garantiza una mejor retroalimentacion y control al tomar una decisión financiera. </p>
+        <p className="max-w-3xl mx-auto mb-20 text-xl text-white">
+          Analizar tus gastos anteriores garantiza una mejor retroalimentacion y
+          control al tomar una decisión financiera.{" "}
+        </p>
       </div>
       <div className="flex flex-col col-span-2 bg-white md:col-span-1 dark:bg-zinc-900">
         <div className="my-auto">

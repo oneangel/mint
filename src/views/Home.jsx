@@ -14,9 +14,9 @@ import {
   getBalance,
   getLastTransactions,
   getTotalExpenseByDate,
+  getTotalIncomeByDate,
 } from "../hooks/transaction.hooks";
 import { getTransactionsByRange } from "../utils/transaction.utils";
-import { useGetMeter } from "../hooks/meter.hooks";
 
 export const Home = () => {
   const [month, setMonth] = useState("");
@@ -57,10 +57,10 @@ export const Home = () => {
   } = useQuery("totalExpenses", getTotalExpenseByDate);
 
   const {
-    data: meterData,
-    isLoading: isLoadingMeter,
-    isError: isErrorMeter,
-  } = useQuery("meter", useGetMeter);
+    data: totalIncomeData,
+    isLoading: isLoadingTotalIncome,
+    isError: isErrorTotalIncome,
+  } = useQuery("totalIncomes", getTotalIncomeByDate);
 
   useEffect(() => {
     toast.success("¡Bienvenido!");
@@ -95,7 +95,12 @@ export const Home = () => {
           </div>
 
           {/* General Balance */}
-          {!isLoadingBalance && <CurrentBalance balance={balanceData} isLoadingBalance={isLoadingBalance}/>}
+          {!isLoadingBalance && (
+            <CurrentBalance
+              balance={balanceData}
+              isLoadingBalance={isLoadingBalance}
+            />
+          )}
 
           {/* Abonos */}
           <div className="flex justify-center col-span-1">
@@ -105,9 +110,11 @@ export const Home = () => {
                   Total de Abonos
                 </h2>
                 <div className="flex flex-col items-center justify-center w-48 h-20 shadow-md bg-green-50 md:w-60 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
-                  <span className="text-3xl font-semibold text-teal-600">
-                    $239.00
-                  </span>
+                  {!isLoadingTotalIncome && totalIncomeData && (
+                    <span className="text-3xl font-semibold text-teal-600">
+                      ${totalIncomeData.data.incomeTotal}
+                    </span>
+                  )}
                   <p className="text-sm"> a partir de Marzo 25, 2024 </p>
                 </div>
               </div>

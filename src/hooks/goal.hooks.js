@@ -1,11 +1,9 @@
 import { goalService } from "../services/services";
 
-const username = localStorage.getItem("username");
-const token = localStorage.getItem("token");
-
-
 export const useGetGoalsList = async () => {
   try {
+    const username = localStorage.getItem("username");
+    const token = localStorage.getItem("token");
     const res = await goalService.getGoals(username, token);
     return res;
   } catch (error) {
@@ -15,6 +13,8 @@ export const useGetGoalsList = async () => {
 
 export const useAddGoal = async (goal) => {
   try {
+    const username = localStorage.getItem("username");
+    const token = localStorage.getItem("token");
     const finalGoal = {
       ...goal,
       username: username,
@@ -28,6 +28,7 @@ export const useAddGoal = async (goal) => {
 
 export const useDeleteGoal = async (id) => {
   try {
+    const token = localStorage.getItem("token");
     const res = await goalService.deleteGoal(id, token);
     return res;
   } catch (error) {
@@ -37,7 +38,7 @@ export const useDeleteGoal = async (id) => {
 
 export const useUpdateGoal = async (id) => {
   try {
-    console.log(id.selectedItemId);
+    const token = localStorage.getItem("token");
     const res = await goalService.updateGoal(id.selectedItemId, id.data, token);
     return res;
   } catch (error) {
@@ -47,6 +48,7 @@ export const useUpdateGoal = async (id) => {
 
 export const useAddAmountGoal = async (data) => {
   try {
+    const token = localStorage.getItem("token");
     console.log(data.selectedItemId);
     const res = await goalService.addAmountGoal(data.selectedItemId, data.data, token);
     console.log(res);
