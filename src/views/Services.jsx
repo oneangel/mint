@@ -21,7 +21,9 @@ import {
 import { useQuery, useMutation } from "react-query";
 import { useGetTariffs } from "../hooks/tariff.hooks";
 import { useForm } from "react-hook-form";
-import { useGetMeter, useLinkMeter } from "../hooks/meter.hooks";
+import { useLinkMeter } from "../hooks/meter.hooks";
+import { useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export const Services = () => {
   const {
@@ -29,12 +31,6 @@ export const Services = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: "onTouched" });
-
-  const {
-    data: meterData,
-    isLoading: isLoadingMeter,
-    isError: isErrorMeter,
-  } = useQuery("meter", useGetMeter);
 
   const serial = localStorage.getItem("serial");
 
@@ -200,9 +196,19 @@ export const Services = () => {
               {!isLoadingMeasure && !isLoadingTariffs && (
                 <GaugeChart
                   kw={measureData ? measureData.data.totalMeasure / 100 : 0}
-                  basic={tariffsData.data.tariffs.basic.limit / 100}
-                  middle={tariffsData.data.tariffs.middle.limit / 100}
-                  excedent={tariffsData.data.tariffs.basic.limit / 0.3333 / 100}
+                  basic={
+                    tariffsData ? tariffsData.data.tariffs.basic.limit / 100 : 0
+                  }
+                  middle={
+                    tariffsData
+                      ? tariffsData.data.tariffs.middle.limit / 100
+                      : 0
+                  }
+                  excedent={
+                    tariffsData
+                      ? tariffsData.data.tariffs.basic.limit / 0.3333 / 100
+                      : 0
+                  }
                 />
               )}
 
@@ -237,6 +243,7 @@ export const Services = () => {
           </div>
         )}
       </div>
+      <Toaster />
     </div>
   );
 };

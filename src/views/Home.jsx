@@ -5,7 +5,7 @@ import {
   NavigationBar,
   TransactionHistory,
 } from "../components/dashboard/dashboard-components";
-import toast, { Toaster } from "react-hot-toast";
+import { useGetMeter } from "../hooks/meter.hooks";
 import { Skeleton, CircularProgress } from "@nextui-org/react";
 import { PieChart, AreaChart } from "../components/charts/charts";
 import { format } from "date-fns";
@@ -26,6 +26,12 @@ export const Home = () => {
       getTransactionsByRange(weeksAgo)
     );
   };
+
+  const {
+    data: meterData,
+    isLoading: isLoadingMeter,
+    isError: isErrorMeter,
+  } = useQuery("meter", useGetMeter);
 
   const {
     data: currWeekData,
@@ -164,7 +170,6 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      <Toaster />
     </div>
   );
 };

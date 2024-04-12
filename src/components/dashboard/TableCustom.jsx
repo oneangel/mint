@@ -79,11 +79,6 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
                 <TableCell className="pt-8 text-xl">
                   {columnKey === "acciones" ? (
                     <div className="relative flex items-center gap-2 ml-4">
-                      <Tooltip content="Detalles">
-                        <span className="pt-1 text-2xl cursor-pointer text-default-400 active:opacity-50">
-                          <MdOutlineRemoveRedEye />
-                        </span>
-                      </Tooltip>
                       <div
                         onClick={() => {
                           setSelectedItem(item);

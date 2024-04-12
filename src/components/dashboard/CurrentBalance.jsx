@@ -48,17 +48,22 @@ export const CurrentBalance = ({ balance, isLoadingBalance }) => {
 
         <div className="my-auto">
           <div className="flex flex-col justify-center h-full">
-            <Skeleton isLoaded={!isLoadingBalance} className="mx-auto mb-5 rounded-3xl">
+            <Skeleton
+              isLoaded={!isLoadingBalance}
+              className="mx-auto mb-5 rounded-3xl"
+            >
               <h1 className="text-5xl font-semibold text-center text-teal-600 md:text-6xl">
                 ${balance.data.balance.toFixed(2)}
               </h1>
             </Skeleton>
-            <Skeleton isLoaded={!isLoadingBalance} className="mx-auto rounded-3xl">
-             <p className="text-lg text-center text-zinc-500">
-              {daysOfWeek[currentDay]} •<span> {formattedTime} PM</span>
-            </p> 
+            <Skeleton
+              isLoaded={!isLoadingBalance}
+              className="mx-auto rounded-3xl"
+            >
+              <p className="text-lg text-center text-zinc-500">
+                {daysOfWeek[currentDay]} •<span> {formattedTime} PM</span>
+              </p>
             </Skeleton>
-            
           </div>
         </div>
       </div>
