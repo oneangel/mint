@@ -15,15 +15,11 @@ const ProtectedRoute = ({ children }) => {
     }
   }, [state]);
 
-  if (isAuthenticated === null || !state.online) {
+  if (isAuthenticated === null) {
     return <Navigate to="/login" replace />;
   }
 
-  return isAuthenticated || !state.online ? (
-    children
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

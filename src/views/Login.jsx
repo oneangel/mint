@@ -32,18 +32,11 @@ export const Login = () => {
       console.log(res);
       auth.login(res.data.token);
       localStorage.setItem("username", res.data.username);
-      navigate("/home");
+      navigate("/dashboard");
     },
     onError: (error) => {
       toast.error("Credenciales incorrectas");
       console.log(error);
-    },
-    onMutate: () => {
-      toast.loading("Iniciando sesion...");
-    },
-    onSettled: () => {
-      toast.dismiss();
-      toast.success("Sesion iniciada");
     },
   });
 
@@ -100,7 +93,7 @@ export const Login = () => {
           <h1 className="mb-10 text-6xl font-bold text-center text-gray-800 dark:text-white ">
             INICIAR SESIÓN
           </h1>
-          <form className="max-w-xl mx-auto" action="">
+          <form className="max-w-xl mx-auto" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-12">
               <div className="">
                 <Input
@@ -136,7 +129,7 @@ export const Login = () => {
                     <IoLockClosed className="flex-shrink-0 text-2xl pointer-events-none text-sky-700" />
                   }
                   endContent={
-                    <button className="my-auto focus:outline-none">
+                    <div className="my-auto focus:outline-none">
                       {" "}
                       {showPassword ? (
                         <GoEyeClosed
@@ -149,7 +142,7 @@ export const Login = () => {
                           onClick={() => setShowPassword(true)}
                         />
                       )}
-                    </button>
+                    </div>
                   }
                 />
                 {errors.password && <p>Last name is required.</p>}
@@ -169,7 +162,9 @@ export const Login = () => {
                 size="lg"
                 type="submit"
                 className="w-full py-8 text-4xl font-medium text-white transition shadow-lg bg-sky-700 hover:bg-sky-600 hover:scale-110"
-                onClick={handleSubmit(onSubmit)}
+                onClick={() => {
+                  handleSubmit(onSubmit);
+                }}
               >
                 Iniciar Sesión
               </Button>
