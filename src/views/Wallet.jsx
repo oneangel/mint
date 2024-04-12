@@ -210,9 +210,7 @@ export const Wallet = () => {
 
         <div className="grid flex-wrap grid-cols-1 gap-10 mx-4 xl:grid-cols-3 md:mx-20">
           <div className="flex flex-col pt-10 lg:col-span-1">
-            <Skeleton isLoaded={!isLoadingBalance} className="">
-              {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
-            </Skeleton>
+            {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
 
             <Skeleton isLoaded={!isLoadingGoals} className="rounded-3xl">
               <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-full dark:bg-zinc-900 dark:border-zinc-800">

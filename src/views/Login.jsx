@@ -32,7 +32,7 @@ export const Login = () => {
       console.log(res);
       auth.login(res.data.token);
       localStorage.setItem("username", res.data.username);
-      navigate("/home");
+      navigate("/#/home");
     },
     onError: (error) => {
       console.log(error);
