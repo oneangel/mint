@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import {
   EditProfile,
   ErrorPage,
@@ -23,7 +23,7 @@ export default function App() {
     <>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <BrowserRouter>
+          <HashRouter>
             <Routes>
               <Route path="/" element={<Landing />}></Route>
               <Route path="/login" element={<Login />}></Route>
@@ -72,7 +72,7 @@ export default function App() {
               ></Route>
               <Route path="*" element={<ErrorPage />} />
             </Routes>
-          </BrowserRouter>
+          </HashRouter>
         </AuthProvider>
       </QueryClientProvider>
     </>

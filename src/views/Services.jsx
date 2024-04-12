@@ -30,15 +30,15 @@ export const Services = () => {
     formState: { errors, isValid },
   } = useForm({ mode: "onTouched" });
 
-  const serial = localStorage.getItem("serial");
-
-  const [showModal, setShowModal] = useState(false);
-
   const {
     data: meterData,
     isLoading: isLoadingMeter,
     isError: isErrorMeter,
   } = useQuery("meter", useGetMeter);
+
+  const serial = localStorage.getItem("serial");
+
+  const [showModal, setShowModal] = useState(false);
 
   const {
     data: measureData,
