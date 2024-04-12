@@ -32,9 +32,10 @@ export const Login = () => {
       console.log(res);
       auth.login(res.data.token);
       localStorage.setItem("username", res.data.username);
-      navigate("/#/home");
+      navigate("/home");
     },
     onError: (error) => {
+      toast.error("Credenciales incorrectas");
       console.log(error);
     },
     onMutate: () => {
@@ -99,7 +100,7 @@ export const Login = () => {
           <h1 className="mb-10 text-6xl font-bold text-center text-gray-800 dark:text-white ">
             INICIAR SESIÓN
           </h1>
-          <form className="max-w-xl mx-auto" onSubmit={handleSubmit(onSubmit)}>
+          <form className="max-w-xl mx-auto" action="">
             <div className="mb-12">
               <div className="">
                 <Input
@@ -168,6 +169,7 @@ export const Login = () => {
                 size="lg"
                 type="submit"
                 className="w-full py-8 text-4xl font-medium text-white transition shadow-lg bg-sky-700 hover:bg-sky-600 hover:scale-110"
+                onClick={handleSubmit(onSubmit)}
               >
                 Iniciar Sesión
               </Button>
