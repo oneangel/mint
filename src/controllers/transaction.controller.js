@@ -147,6 +147,33 @@ export const getIncomesList = async (req, res) => {
   }
 }
 
+export const getExpensesList = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const expenseList = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          status: true,
+          type: "expense"
+        }
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          total: { $sum: "$amount" }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ])
+    res.json(expenseList);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' })
+  }
+}
+
 //Gets user's transactions by date range
 export const getUserTransactionsByDateRange = async (req, res) => {
   try {
