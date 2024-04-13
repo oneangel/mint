@@ -10,7 +10,7 @@ export const Step3 = ({ control, previousStep }) => {
 
   const isNameInvalid = React.useMemo(() => {
     if (name === "" || !nameIsTouched) return false;
-    return false; 
+    return false;
   }, [name, nameIsTouched]);
 
   const isLastNameInvalid = React.useMemo(() => {
@@ -36,7 +36,7 @@ export const Step3 = ({ control, previousStep }) => {
             type="text"
             name="name"
             label="Nombre o Nombres Legales"
-            {...control("firstname")}
+            {...control("firstname", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
@@ -46,7 +46,9 @@ export const Step3 = ({ control, previousStep }) => {
               setNameIsTouched(true);
             }}
             isInvalid={nameIsTouched && isNameInvalid}
-            errorMessage={nameIsTouched && isNameInvalid && "El nombre no es válido."}
+            errorMessage={
+              nameIsTouched && isNameInvalid && "El nombre no es válido."
+            }
           />
         </div>
       </div>
@@ -57,7 +59,7 @@ export const Step3 = ({ control, previousStep }) => {
             type="text"
             name="lastname"
             label="Apellidos Legales"
-            {...control("lastname")}
+            {...control("lastname", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
@@ -67,11 +69,16 @@ export const Step3 = ({ control, previousStep }) => {
               setLastNameIsTouched(true);
             }}
             isInvalid={lastNameIsTouched && isLastNameInvalid}
-            errorMessage={lastNameIsTouched && isLastNameInvalid && "Los apellidos no son válidos."}
+            errorMessage={
+              lastNameIsTouched &&
+              isLastNameInvalid &&
+              "Los apellidos no son válidos."
+            }
           />
         </div>
         <p className="mt-3 text-xl font-light">
-          Asegúrese de que su nombre y sus apellidos coincidan con los de su identificación oficial.
+          Asegúrese de que su nombre y sus apellidos coincidan con los de su
+          identificación oficial.
         </p>
       </div>
       <div className="pt-20 text-center">

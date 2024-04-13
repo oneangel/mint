@@ -15,6 +15,16 @@ export function getTransactionsList(user, token) {
 		{ headers: { Authorization: token } });
 }
 
+export function getIncomesList(user, token) {
+	return axios.get(`${URL_API}/get/incomes/list/${user}`,
+		{ headers: { Authorization: token } })
+}
+
+export function getExpensesList(user, token) {
+	return axios.get(`${URL_API}/get/expenses/list/${user}`,
+		{ headers: { Authorization: token } })
+}
+
 export function getTotalExpenseByDate(user, range) {
 	return axios.post(`${URL_API}/get/expensesTotal/bydate/${user}`, range)
 }

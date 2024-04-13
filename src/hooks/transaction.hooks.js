@@ -49,6 +49,30 @@ export const getTransactionList = async () => {
 	}
 };
 
+export const useGetIncomesList = async () => {
+	try {
+		const username = localStorage.getItem("username");
+		const token = localStorage.getItem("token");
+		const res = await transactionService.getIncomesList(username, token);
+		console.log(res);
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+export const useGetExpensesList = async () => {
+	try {
+		const username = localStorage.getItem("username");
+		const token = localStorage.getItem("token");
+		const res = await transactionService.getExpensesList(username, token);
+		console.log(res);
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 export const getBalance = async () => {
 	try {
 		const username = localStorage.getItem("username");

@@ -14,9 +14,19 @@ import {
   SelectItem,
   Skeleton,
   useDisclosure,
+  Card,
+  CardHeader,
+  CardBody,
+  ButtonGroup,
 } from "@nextui-org/react";
 import { animals } from "./data";
-import { IoCalendarOutline, IoPieChart, IoAddCircle } from "react-icons/io5";
+import {
+  IoCalendarOutline,
+  IoPieChart,
+  IoAddCircle,
+  IoCaretDownCircle,
+  IoCaretUpCircle,
+} from "react-icons/io5";
 import PieChart2 from "../components/charts/PieChart2";
 import { TableCustom } from "../components/dashboard/TableCustom";
 import { SearchBar } from "../components/dashboard/SearchBar";
@@ -27,11 +37,14 @@ import {
   useAddTransaction,
   useDeleteTransaction,
   useUpdateTransaction,
+  useGetIncomesList,
+  useGetExpensesList,
 } from "../hooks/transaction.hooks"; // Asumiendo que tienes estas funciones en transaction.hooks.js
 
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { isWithinInterval } from "date-fns";
+import LargeAreaChart from "../components/charts/LargeAreaChart";
 
 const columns = [
   {
@@ -72,6 +85,18 @@ export const Transfer = () => {
   } = useQuery("transactionList", getTransactionList);
 
   const {
+    data: incomeListData,
+    isLoading: isLoadingIncomeList,
+    isError: isErrorIncomeList,
+  } = useQuery("incomeList", useGetIncomesList);
+
+  const {
+    data: expenseListData,
+    isLoading: isLoadingExpenseList,
+    isError: isErrorExpenseList,
+  } = useQuery("expenseList", useGetExpensesList);
+
+  const {
     data: totalExpenseData,
     isLoading: isLoadingTotalExpense,
     isError: isErrorTotalExpense,
@@ -86,7 +111,8 @@ export const Transfer = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const itemsPerPage = 7;
+  const [transactionType, setTransactionType] = useState(true);
+  const itemsPerPage = 4;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -138,6 +164,7 @@ export const Transfer = () => {
       queryClient.refetchQueries("transactionList");
       queryClient.refetchQueries("totalIncome");
       queryClient.refetchQueries("totalExpense");
+      queryClient.refetchQueries("incomeList");
     },
 
     onError: () => {
@@ -154,6 +181,7 @@ export const Transfer = () => {
       queryClient.refetchQueries("transactionList");
       queryClient.refetchQueries("totalIncome");
       queryClient.refetchQueries("totalExpense");
+      queryClient.refetchQueries("incomeList");
     },
 
     onError: () => {
@@ -170,6 +198,7 @@ export const Transfer = () => {
       queryClient.refetchQueries("transactionList");
       queryClient.refetchQueries("totalIncome");
       queryClient.refetchQueries("totalExpense");
+      queryClient.refetchQueries("incomeList");
     },
 
     onError: () => {
@@ -198,6 +227,47 @@ export const Transfer = () => {
           <div className="grid grid-cols-1 gap-4 mx-4 md:mx-20 md:pt-0 xl:grid-cols-2">
             {/* left side / table */}
             <div className="flex flex-col items-start col-span-1">
+              <div className="flex flex-wrap justify-center gap-20 w-full mt-6">
+                {/* Abonos */}
+                {!isLoadingTotalIncome && (
+                  <Card className="w-80 flex flex-col items-center">
+                    <CardHeader className="flex gap-3">
+                      <IoCaretUpCircle className="w-10 h-10" />
+                      <div className="flex flex-col">
+                        <p className="text-md">Total de Abonos</p>
+                        <p className="text-small text-default-500">
+                          24 de marzo
+                        </p>
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <p className="text-4xl mb-4 font-semibold">
+                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
+                      </p>
+                    </CardBody>
+                  </Card>
+                )}
+
+                {/* Cargos */}
+                {!isLoadingTotalExpense && (
+                  <Card className="w-80 h-40 flex flex-col items-center">
+                    <CardHeader className="flex gap-4">
+                      <IoCaretDownCircle className="w-10 h-10" />
+                      <div className="flex flex-col">
+                        <p className="text-md">Total de cargos</p>
+                        <p className="text-small text-default-500">
+                          24 de marzo
+                        </p>
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <p className="text-4xl mb-4 font-semibold">
+                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
+                      </p>
+                    </CardBody>
+                  </Card>
+                )}
+              </div>
               <div className="grid w-full grid-cols-2 gap-4 mt-10 lg:grid-cols-4">
                 <div className="col-span-1 lg:col-span-1">
                   <Skeleton
@@ -245,14 +315,21 @@ export const Transfer = () => {
                 </div>
 
                 <div className="col-span-2 lg:col-span-1">
-                  <Button
-                    className="w-full text-xl text-white h-14 bg-sky-700"
-                    startContent={<IoAddCircle className="text-white size-6" />}
-                    onPress={onOpen}
-                    aria-label="Agregar"
+                  <Skeleton
+                    className="w-full rounded-xl"
+                    isLoaded={!isLoadingTransactionList}
                   >
-                    Agregar
-                  </Button>
+                    <Button
+                      className="w-full text-xl text-white h-14 bg-sky-700"
+                      startContent={
+                        <IoAddCircle className="text-white size-6" />
+                      }
+                      onPress={onOpen}
+                      aria-label="Agregar"
+                    >
+                      Agregar
+                    </Button>
+                  </Skeleton>
 
                   <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalContent>
@@ -311,7 +388,7 @@ export const Transfer = () => {
                           onPress={handleSubmit(onSubmit)}
                           className="text-white bg-sky-700"
                           aria-label="Agregar Transfer"
-                          disabled={!isValid}
+                          isDisabled={!isValid}
                         >
                           Agregar
                         </Button>
@@ -323,12 +400,19 @@ export const Transfer = () => {
 
               <div className="w-full col-span-1 mt-4">
                 {!isLoadingTransactionList && (
-                  <TableCustom
-                    onDelete={onDelete}
-                    onUpdate={onUpdate}
-                    columns={columns}
-                    data={getPaginatedRows(filteredData)}
-                  />
+                  <Card>
+                    <CardHeader>
+                      <p>Lista de las transacciones</p>
+                    </CardHeader>
+                    <CardBody>
+                      <TableCustom
+                        onDelete={onDelete}
+                        onUpdate={onUpdate}
+                        columns={columns}
+                        data={getPaginatedRows(filteredData)}
+                      />
+                    </CardBody>
+                  </Card>
                 )}
 
                 {!isLoadingTransactionList && (
@@ -346,62 +430,48 @@ export const Transfer = () => {
             </div>
 
             {/* Right side / total-graphs */}
-            <div className="items-center col-span-1">
-              <div className="flex flex-wrap justify-center gap-4">
-                {/* Abonos */}
-                {!isLoadingTotalIncome && (
-                  <div className="flex flex-col items-center">
-                    <h2 className="mb-4 text-2xl font-semibold text-center">
-                      Total de Abonos
-                    </h2>
-                    <div className="flex flex-col items-center justify-center h-24 shadow-md w-52 bg-green-50 md:w-60 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
-                      <span className="text-4xl font-semibold text-teal-600 ">
-                        ${totalIncomeData.data.incomeTotal}
-                      </span>
-                      <p className="text-lg text-center">
-                        {" "}
-                        a partir de Marzo 25, 2024{" "}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Cargos */}
-                {!isLoadingTotalExpense && (
-                  <div className="flex flex-col items-center">
-                    <h2 className="mb-4 text-2xl font-semibold text-center">
-                      Total de Cargos
-                    </h2>
-                    <div className="flex flex-col items-center justify-center h-24 shadow-md w-52 bg-red-50 md:w-60 rounded-2xl border-1 dark:bg-red-950 dark:border-red-800">
-                      <span className="text-4xl font-semibold text-red-700 dark:text-red-400">
-                        ${totalExpenseData.data.expenseTotal}
-                      </span>
-                      <p className="text-lg text-center">
-                        {" "}
-                        a partir de Marzo 18, 2024{" "}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="w-full bg-white border-1 m-auto max-w-xl h-[450px] rounded-3xl shadow-md dark:bg-zinc-900 dark:border-zinc-800 mt-20">
-                <div className="flex justify-center pt-6">
-                  <IoPieChart className="m-0.5 mr-4 text-2xl" />
-                  <p className="text-xl font-semibold text-center"></p>
-                  Comparacion de Abonos y Cargos
+            <Card className="items-center col-span-1">
+              <CardHeader className="flex justify-center pt-6">
+                <IoPieChart className="w-10 h-10" />
+                <div className="flex flex-col">
+                  <p className="text-md">Abonos y cargos</p>
+                  <p className="text-small text-default-500">Comparacion</p>
                 </div>
-
-                <div>
-                  {!isLoadingTotalExpense && !isLoadingTotalIncome && (
-                    <PieChart2
-                      expenses={totalExpenseData.data.expenseTotal}
-                      incomes={totalIncomeData.data.incomeTotal}
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
+                <ButtonGroup className="ml-8">
+                  <Button
+                    color="success"
+                    onClick={() => {
+                      if (!transactionType) {
+                        setTransactionType(!transactionType);
+                      }
+                    }}
+                  >
+                    Ingresos
+                  </Button>
+                  <Button
+                    color="danger"
+                    onClick={() => {
+                      if (transactionType) {
+                        setTransactionType(!transactionType);
+                      }
+                    }}
+                  >
+                    Gastos
+                  </Button>
+                </ButtonGroup>
+              </CardHeader>
+              <CardBody>
+                {!isLoadingIncomeList && incomeListData && (
+                  <LargeAreaChart
+                    data={
+                      transactionType
+                        ? incomeListData.data
+                        : expenseListData.data
+                    }
+                  />
+                )}
+              </CardBody>
+            </Card>
           </div>
         </div>
 

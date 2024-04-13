@@ -30,7 +30,12 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
       (!passwordIsTouched || !isPasswordInvalid) &&
       (!passwordCIsTouched || !isPasswordCInvalid)
     );
-  }, [passwordIsTouched, passwordCIsTouched, isPasswordInvalid, isPasswordCInvalid]);
+  }, [
+    passwordIsTouched,
+    passwordCIsTouched,
+    isPasswordInvalid,
+    isPasswordCInvalid,
+  ]);
 
   return (
     <>
@@ -41,7 +46,7 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
             type={showPassword ? "text" : "password"}
             name="password"
             label="Contraseña"
-            {...control("password")}
+            {...control("password", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
@@ -79,7 +84,7 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
             type={showPasswordC ? "text" : "password"}
             name="passwordC"
             label="Confirmar Contraseña"
-            {...control("passwordC")}
+            {...control("passwordC", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
@@ -89,7 +94,11 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
               setPasswordCIsTouched(true);
             }}
             isInvalid={passwordCIsTouched && isPasswordCInvalid}
-            errorMessage={passwordCIsTouched && isPasswordCInvalid && "Las contraseñas no coinciden."}
+            errorMessage={
+              passwordCIsTouched &&
+              isPasswordCInvalid &&
+              "Las contraseñas no coinciden."
+            }
             endContent={
               showPasswordC ? (
                 <GoEyeClosed
@@ -117,7 +126,7 @@ export const Step2 = ({ control, nextStep, previousStep }) => {
           type="submit"
           className="w-1/2 py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={nextStep}
-          disabled={!isFormValid}
+          isDisabled={!isFormValid}
         >
           Siguiente
         </Button>

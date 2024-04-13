@@ -6,7 +6,7 @@ import {
   TransactionHistory,
 } from "../components/dashboard/dashboard-components";
 import { useGetMeter } from "../hooks/meter.hooks";
-import { Skeleton, CircularProgress } from "@nextui-org/react";
+import { Skeleton, Card, CardHeader, CardBody } from "@nextui-org/react";
 import { PieChart, AreaChart } from "../components/charts/charts";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -17,6 +17,8 @@ import {
   getTotalIncomeByDate,
 } from "../hooks/transaction.hooks";
 import { getTransactionsByRange } from "../utils/transaction.utils";
+import { Toaster } from "react-hot-toast";
+import { IoCaretDownCircle } from "react-icons/io5";
 
 export const Home = () => {
   const [month, setMonth] = useState("");
@@ -100,49 +102,80 @@ export const Home = () => {
           </div>
 
           {/* General Balance */}
-          {!isLoadingBalance && (
-            <CurrentBalance
-              balance={balanceData}
-              isLoadingBalance={isLoadingBalance}
-            />
-          )}
+          <Skeleton
+            isLoaded={!isLoadingBalance}
+            className="max-w-full max-h-full border-gray-200 shadow-md rounded-3xl border-1 dark:bg-zinc-900 dark:border-zinc-800"
+          >
+            {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
+          </Skeleton>
 
           {/* Abonos */}
           <div className="flex justify-center col-span-1">
             <div className="flex flex-wrap gap-5 md:flex-col">
-              <div className="flex flex-col items-center">
-                <h2 className="mb-2 text-xl font-semibold text-center">
-                  Total de Abonos
-                </h2>
-                <div className="flex flex-col items-center justify-center w-48 h-20 shadow-md bg-green-50 md:w-60 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
-                  {!isLoadingTotalIncome && totalIncomeData && (
-                    <span className="text-3xl font-semibold text-teal-600">
-                      ${totalIncomeData.data.incomeTotal}
-                    </span>
-                  )}
-                  <p className="text-sm"> a partir de Marzo 25, 2024 </p>
-                </div>
-              </div>
+              <Skeleton
+                isLoaded={!isLoadingTotalIncome}
+                className="rounded-3xl"
+              >
+                {!isLoadingTotalIncome && (
+                  <Card className="w-80 h-30 flex flex-col items-center shadow-md bg-white md:w-100 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
+                    <CardHeader className="flex gap-4">
+                      <IoCaretDownCircle className="w-10 h-10" />
+                      <div className="flex flex-col">
+                        <p className="text-md">Total de cargos</p>
+                        <p className="text-small text-default-500">
+                          24 de marzo
+                        </p>
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <p className="text-4xl mb-4 font-semibold">
+                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
+                      </p>
+                    </CardBody>
+                  </Card>
+                )}
+              </Skeleton>
 
               {/* Cargos */}
-              <div className="flex flex-col items-center md:mt-8">
-                <h2 className="mb-2 text-xl font-semibold text-center">
-                  Gastos del Mes:{" "}
-                  <span className="capitalize text-neutral-600 dark:text-sky-400">
-                    {month}
-                  </span>
-                </h2>
-                <div className="flex flex-col items-center justify-center w-48 h-20 shadow-md bg-red-50 md:w-60 rounded-2xl border-1 dark:bg-red-950 dark:border-red-800">
-                  <Skeleton isLoaded={!isLoadingTotalExpense}>
+              <Skeleton
+                isLoaded={!isLoadingTotalExpense}
+                className="rounded-3xl"
+              >
+                {!isLoadingTotalExpense && (
+                  <Card className="w-80 h-30 flex flex-col items-center shadow-md bg-white md:w-100 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
+                    <CardHeader className="flex gap-4">
+                      <IoCaretDownCircle className="w-10 h-10" />
+                      <div className="flex flex-col">
+                        <p className="text-md">Total de cargos</p>
+                        <p className="text-small text-default-500">
+                          24 de marzo
+                        </p>
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <p className="text-4xl mb-4 font-semibold">
+                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
+                      </p>
+                    </CardBody>
+                  </Card>
+                )}
+                {/* <div className="flex flex-col items-center md:mt-8">
+                  <h2 className="mb-2 text-xl font-semibold text-center">
+                    Gastos del Mes:{" "}
+                    <span className="capitalize text-neutral-600 dark:text-sky-400">
+                      {month}
+                    </span>
+                  </h2>
+                  <div className="flex flex-col items-center justify-center w-48 h-20 shadow-md bg-red-50 md:w-60 rounded-2xl border-1 dark:bg-red-950 dark:border-red-800">
                     {!isLoadingTotalExpense && (
                       <span className="text-3xl font-semibold text-red-700 dark:text-red-400">
                         ${totalExpenseData.data.expenseTotal}
                       </span>
                     )}
-                  </Skeleton>
-                  <p className="text-sm"> a partir de Marzo 18, 2024 </p>
-                </div>
-              </div>
+                    <p className="text-sm"> a partir de Marzo 18, 2024 </p>
+                  </div>
+                </div> */}
+              </Skeleton>
             </div>
           </div>
         </div>
@@ -160,16 +193,23 @@ export const Home = () => {
               </div>
             </Skeleton>
           </div>
-          <div className="flex items-center col-span-1 lg:col-span-1">
-            {!isLoadingLastTransactions && (
-              <TransactionHistory
-                transactions={lastTransactionsData.data}
-                isLoading={isLoadingLastTransactions}
-              />
-            )}
-          </div>
+
+          <Skeleton
+            isLoaded={!isLoadingLastTransactions}
+            className="rounded-3xl"
+          >
+            <div className="flex items-center col-span-1 lg:col-span-1 bg-white">
+              {!isLoadingLastTransactions && (
+                <TransactionHistory
+                  transactions={lastTransactionsData.data}
+                  isLoading={isLoadingLastTransactions}
+                />
+              )}
+            </div>
+          </Skeleton>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

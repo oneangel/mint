@@ -17,8 +17,8 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({ mode: "onTouched" });
 
   //Define states
   const [showPassword, setShowPassword] = useState(false);
@@ -29,20 +29,28 @@ export const Login = () => {
   in the localstorage */
   const loginMutation = useMutation(userService.login, {
     onSuccess: (res) => {
-      console.log(res);
       auth.login(res.data.token);
       localStorage.setItem("username", res.data.username);
+      toast.dismiss();
+      toast.success("Bienvenido");
       navigate("/home");
     },
     onError: (error) => {
+      toast.dismiss();
       toast.error("Credenciales incorrectas");
       console.log(error);
+    },
+    onMutate: () => {
+      toast.loading("Iniciando sesion...");
     },
   });
 
   const onSubmit = async (data) => {
     try {
       loginMutation.mutate(data);
+      if (loginMutation.isLoading && !loginMutation.isSuccess) {
+        toast.success("Bienvenido");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -97,12 +105,13 @@ export const Login = () => {
             <div className="mb-12">
               <div className="">
                 <Input
-                  isRequired
                   type="text"
                   name="username"
                   label="Usuario"
                   variant="bordered"
-                  {...register("username")}
+                  {...register("username", {
+                    required: "el campo es obligatorio",
+                  })}
                   size="lg"
                   classNames={{ label: "text-2xl" }}
                   className="bg-white rounded-2xl dark:bg-zinc-800"
@@ -110,19 +119,19 @@ export const Login = () => {
                     <IoMailSharp className="flex-shrink-0 text-2xl pointer-events-none text-sky-700" />
                   }
                 />
-                {errors.username && <p>Username is required.</p>}
               </div>
             </div>
             <div className="mb-12">
               <div className="">
                 <Input
-                  isRequired
                   type={showPassword ? "text" : "password"}
                   name="password"
                   label="Contraseña"
                   variant="bordered"
                   size="lg"
-                  {...register("password")}
+                  {...register("password", {
+                    required: "el campo es obligatorio",
+                  })}
                   className="bg-white rounded-2xl dark:bg-zinc-800"
                   classNames={{ label: "text-2xl" }}
                   startContent={
@@ -145,7 +154,6 @@ export const Login = () => {
                     </div>
                   }
                 />
-                {errors.password && <p>Last name is required.</p>}
               </div>
 
               <div className="mt-3 text-end mb-14">
@@ -165,6 +173,7 @@ export const Login = () => {
                 onClick={() => {
                   handleSubmit(onSubmit);
                 }}
+                isDisabled={!isValid}
               >
                 Iniciar Sesión
               </Button>

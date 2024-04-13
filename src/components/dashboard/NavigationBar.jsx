@@ -9,12 +9,14 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Avatar,
 } from "@nextui-org/react";
 import { MoonIcon } from "../../icons/MoonIcon";
 import { SunIcon } from "../../icons/SunIcon";
 import {
   IoHome,
   IoNotifications,
+  IoPersonSharp,
   IoSwapVerticalOutline,
   IoWallet,
   IoSpeedometerSharp,
@@ -143,10 +145,13 @@ export const NavigationBar = () => {
             <DropdownTrigger>
               <div className="w-10 h-10 overflow-hidden rounded-full">
                 {!isLoading && (
-                  <img
+                  <Avatar
                     src={`${data.data.avatar}`}
-                    alt="Profile"
                     className="object-cover w-full h-full"
+                    showFallback
+                    fallback={
+                      <IoPersonSharp className="w-6 h-6 text-default-500" />
+                    }
                   />
                 )}
               </div>

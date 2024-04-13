@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { useLinkMeter } from "../hooks/meter.hooks";
 import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import LargeAreaChart from "../components/charts/LargeAreaChart";
 
 export const Services = () => {
   const {
@@ -138,8 +139,8 @@ export const Services = () => {
         )}
 
         {serial && (
-          <div className="w-1/2 flex justify-center items-center">
-            <div className="w-[70%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800 items-center">
+          <div className="w-1/3 flex justify-center items-center">
+            <div className="w-[90%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800 items-center">
               <p className="pt-10 pl-10 flex items-center text-2xl font-bold text-default-700">
                 <span>
                   <IoWater className="size-8" />
@@ -183,6 +184,12 @@ export const Services = () => {
             </div>
           </div>
         )}
+
+        {/* <div className="w-1/2 flex justify-center items-center">
+          <div className="w-[100%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800">
+            <LargeAreaChart />
+          </div>
+        </div> */}
 
         {serial && (
           <div className="w-1/2 flex justify-center items-center">

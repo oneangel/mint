@@ -14,8 +14,8 @@ export const Register = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isValid },
+  } = useForm({ mode: "onTouched" });
 
   const nextStep = () => {
     console.log("hola");
@@ -106,6 +106,7 @@ export const Register = () => {
             {currentIndex === 2 ? (
               <Button
                 type="submit"
+                isDisabled={!isValid}
                 className="w-full px-5 py-8 text-4xl font-medium text-white shadow-md bg-gradient-to-r from-cyan-700 to-cyan-500 hover:to-cyan-700 rounded-2xl"
               >
                 Crear cuenta

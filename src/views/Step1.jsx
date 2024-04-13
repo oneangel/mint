@@ -19,14 +19,22 @@ export const Step1 = ({ control, nextStep }) => {
   }, [value, emailIsTouched]);
 
   const isFormValid = React.useMemo(() => {
-    const isAnyFieldTouched = usernameIsTouched || phoneIsTouched || emailIsTouched;
+    const isAnyFieldTouched =
+      usernameIsTouched || phoneIsTouched || emailIsTouched;
     return (
       isAnyFieldTouched &&
       (username !== "" || !usernameIsTouched) &&
       (phone !== "" || !phoneIsTouched) &&
       (!emailIsTouched || !isEmailInvalid)
     );
-  }, [username, phone, isEmailInvalid, usernameIsTouched, phoneIsTouched, emailIsTouched]);
+  }, [
+    username,
+    phone,
+    isEmailInvalid,
+    usernameIsTouched,
+    phoneIsTouched,
+    emailIsTouched,
+  ]);
 
   const handleNextStep = () => {
     if (!isFormValid) {
@@ -45,7 +53,7 @@ export const Step1 = ({ control, nextStep }) => {
             type="text"
             name="username"
             label="Nombre de Usuario"
-            {...control("username")}
+            {...control("username", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
             onValueChange={(value) => {
@@ -53,7 +61,11 @@ export const Step1 = ({ control, nextStep }) => {
               setUsernameIsTouched(true);
             }}
             isInvalid={usernameIsTouched && username === ""}
-            errorMessage={usernameIsTouched && username === "" && "Por favor ingresa un nombre de usuario"}
+            errorMessage={
+              usernameIsTouched &&
+              username === "" &&
+              "Por favor ingresa un nombre de usuario"
+            }
           />
         </div>
       </div>
@@ -66,9 +78,11 @@ export const Step1 = ({ control, nextStep }) => {
             type="email"
             label="Correo Electronico"
             variant="bordered"
-            {...control("email")}
+            {...control("email", { required: "el campo es obligatorio" })}
             isInvalid={isEmailInvalid}
-            errorMessage={isEmailInvalid && "Por favor ingresa un correo valido"}
+            errorMessage={
+              isEmailInvalid && "Por favor ingresa un correo valido"
+            }
             onValueChange={(value) => {
               setValue(value);
               setEmailIsTouched(true);
@@ -85,7 +99,7 @@ export const Step1 = ({ control, nextStep }) => {
             type="text"
             name="phone"
             label="Número de telefono"
-            {...control("phone")}
+            {...control("phone", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
             onValueChange={(value) => {
@@ -93,11 +107,16 @@ export const Step1 = ({ control, nextStep }) => {
               setPhoneIsTouched(true);
             }}
             isInvalid={phoneIsTouched && phone === ""}
-            errorMessage={phoneIsTouched && phone === "" && "Por favor ingresa un número de teléfono"}
+            errorMessage={
+              phoneIsTouched &&
+              phone === "" &&
+              "Por favor ingresa un número de teléfono"
+            }
           />
         </div>
         <p className="mt-3 text-2xl font-light">
-          Al continuar, confirma que está autorizado para utilizar este número de teléfono y acepta recibir mensajes de texto.
+          Al continuar, confirma que está autorizado para utilizar este número
+          de teléfono y acepta recibir mensajes de texto.
         </p>
       </div>
 
@@ -105,6 +124,7 @@ export const Step1 = ({ control, nextStep }) => {
         <Button
           className="w-full py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={handleNextStep}
+          isDisabled={!isFormValid}
         >
           Siguiente
         </Button>
