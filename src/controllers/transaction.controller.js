@@ -120,6 +120,33 @@ export const getUserTransactionsList = async (req, res) => {
   }
 };
 
+export const getIncomesList = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const incomesList = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          status: true,
+          type: "income"
+        }
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          total: { $sum: "$amount" }
+        }
+      },
+      { $sort: { "_id": 1 } }
+    ])
+    res.json(incomesList);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' })
+  }
+}
+
 //Gets user's transactions by date range
 export const getUserTransactionsByDateRange = async (req, res) => {
   try {

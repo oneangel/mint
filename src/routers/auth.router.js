@@ -40,6 +40,7 @@ router.get('/get/expensesTotal/:code', TransactionController.getExpensesTotal);
 router.get('/get/incomesTotal/:code', TransactionController.getIncomesTotal);
 router.get('/get/transaction/balance/:code', authMiddleware, TransactionController.getBalanceAccount);
 router.get('/get/transaction/last-ones/:code', authMiddleware, TransactionController.getLastTransactions);
+router.get('/get/incomes/list/:code', TransactionController.getIncomesList);
 
 //Savings Goal
 router.post('/register/goal', SavingsGoal.registerSavingGoals);

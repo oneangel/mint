@@ -34,18 +34,6 @@ const clientSchema = new mongoose.Schema({
     required: true,
   },
 
-  totalExpense: {
-    type: Number,
-    default: 0,
-    //validate: validator.isFloat
-  },
-
-  totalIncome: {
-    type: Number,
-    default: 0,
-    //validate: validator.isFloat
-  },
-
   status: {
     type: Boolean,
     default: true
