@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
 import TransferList from "../components/TransferList";
 import LastestTrans from "../components/LastestTrans";
+import GeneralBalance from "../components/GeneralBalance";
 
 
 const HomeScreen = () => {
@@ -25,6 +26,7 @@ const HomeScreen = () => {
         />
         <Text style={styles.h1}>Hola, Lalito!</Text>
         <Text style={styles.h2}>Aqui esta tu balance general.</Text>
+        <GeneralBalance />
       </View>
     </View>
   );

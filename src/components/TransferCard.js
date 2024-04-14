@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from '@expo/vector-icons';
 
 const TransferCard = ({ id, type, description, date, amount }) => {
   // Determina el color del icono y del monto según el tipo de transferencia
@@ -8,12 +8,12 @@ const TransferCard = ({ id, type, description, date, amount }) => {
   const amountColor = type === "ingreso" ? "lightgreen" : "#465568";
 
   // Determina el nombre del icono según el tipo de transferencia
-  const iconName = type === "ingreso" ? "chevron-up" : "chevron-down";
+  const iconName = type === "ingreso" ? "caretup" : "caretdown";
 
   return (
     <View style={styles.container}>
       <View style={[styles.iconBackground, { backgroundColor: iconColor }]}>
-        <FontAwesome
+        <AntDesign
           name={iconName}
           size={15}
           color="white" // Color del icono blanco

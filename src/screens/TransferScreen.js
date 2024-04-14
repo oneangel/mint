@@ -11,6 +11,7 @@ const TransferScreen = () => {
           resizeMode="contain"
         />
       <Text style={styles.title}>Grafiquita 😋</Text>
+
       <TransferList />
     </View>
   );

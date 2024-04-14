@@ -125,6 +125,40 @@ const Tabs = () => {
           },
         }}
       />
+      <Tab.Screen
+        name="Services"
+        component={ServicesScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  top: 5,
+                }}
+              >
+                <Image
+                  source={require("../../assets/Icons/services.png")}
+                  resizeMode="contain"
+                  style={{
+                    width: 25,
+                    height: 25,
+                    tintColor: focused ? "#3E70A1" : "grey",
+                  }}
+                />
+                <Text
+                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 12 }}
+                >
+                  Servicios
+                </Text>
+              </View>
+            );
+          },
+        }}
+      />
+      
     </Tab.Navigator>
   );
 };
