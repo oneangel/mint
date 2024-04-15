@@ -1,5 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { Skeleton, Tooltip } from "@nextui-org/react";
+import {
+  Skeleton,
+  Tooltip,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+} from "@nextui-org/react";
 import React from "react";
 import { useState, useEffect } from "react";
 import { getDay, format } from "date-fns";
@@ -35,29 +42,30 @@ export const CurrentBalance = ({ balance }) => {
   };
   return (
     <Tooltip content="Presiona para ver mas detalle" color="primary">
-      <div
+      <Card
         onClick={handleBalance}
-        className="flex flex-col col-span-1 py-10 max-w-full max-h-full bg-white"
+        className="flex flex-col col-span-1 py-10 max-w-full max-h-full bg-white max-h-full border-gray-200 shadow-md"
       >
-        <div className="w-48 ml-10 rounded-3xl mb-8">
+        <CardHeader className="w-48 ml-10 rounded-3xl mb-8">
           <p className="text-xl font-semibold">Balance general</p>
-        </div>
+        </CardHeader>
 
-        <div className="my-auto">
-          <div className="flex flex-col justify-center h-full">
-            <div className="mx-auto mb-5 rounded-3xl">
-              <h1 className="text-5xl font-semibold text-center text-teal-600 md:text-6xl">
-                ${balance.data.balance.toFixed(2)}
-              </h1>
-            </div>
-            <div className="mx-auto rounded-3xl">
-              <p className="text-lg text-center text-zinc-500">
-                {daysOfWeek[currentDay]} •<span> {formattedTime} PM</span>
-              </p>
-            </div>
+        <CardBody className="my-auto">
+          <div className="mx-auto mb-5 rounded-3xl">
+            <h1 className="text-5xl font-semibold text-center text-teal-600 md:text-6xl">
+              ${balance.data.balance.toFixed(2)}
+            </h1>
           </div>
-        </div>
-      </div>
+        </CardBody>
+
+        <CardFooter>
+          <div className="mx-auto rounded-3xl flex flex-col justify-center h-full">
+            <p className="text-lg text-center text-zinc-500">
+              {daysOfWeek[currentDay]} •<span> {formattedTime} PM</span>
+            </p>
+          </div>
+        </CardFooter>
+      </Card>
     </Tooltip>
   );
 };

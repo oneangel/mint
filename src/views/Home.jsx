@@ -104,7 +104,7 @@ export const Home = () => {
           {/* General Balance */}
           <Skeleton
             isLoaded={!isLoadingBalance}
-            className="max-w-full max-h-full border-gray-200 shadow-md rounded-3xl border-1 dark:bg-zinc-900 dark:border-zinc-800"
+            className="rounded-3xl border-1 dark:bg-zinc-900 dark:border-zinc-800"
           >
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
           </Skeleton>

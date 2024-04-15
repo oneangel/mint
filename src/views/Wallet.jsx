@@ -21,6 +21,11 @@ import {
   getKeyValue,
   Tooltip,
   Chip,
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  Image,
 } from "@nextui-org/react";
 import { useAddGoal, useDeleteGoal, useUpdateGoal } from "../hooks/goal.hooks";
 import { useGetGoalsList, useAddAmountGoal } from "../hooks/goal.hooks";
@@ -33,6 +38,7 @@ import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { SearchBar } from "../components/dashboard/SearchBar";
+import Percentage from "../components/charts/Percentage";
 
 const statusColorMap = {
   true: "success",
@@ -75,6 +81,7 @@ export const Wallet = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [isFollowed, setIsFollowed] = useState(false);
   const [selectedItem, setSelectedItem] = useState({
     amount: 0,
     description: "",
@@ -211,86 +218,64 @@ export const Wallet = () => {
         <div className="grid flex-wrap grid-cols-1 gap-10 mx-4 xl:grid-cols-3 md:mx-20">
           <div className="flex flex-col pt-10 lg:col-span-1">
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
-
             <Skeleton isLoaded={!isLoadingGoals} className="rounded-3xl">
-              <div className="bg-white h-[340px] shadow-md mt-8 rounded-3xl border-2 w-full dark:bg-zinc-900 dark:border-zinc-800">
-                <div className="w-3/4 mt-4 text-center">
-                  <p className="ml-8 text-xl font-semibold text-start">
-                    Meta Seleccionada:{" "}
-                    {!isLoadingGoals && !isErrorGoals && (
-                      <span className="ml-2 font-normal text-default-700">
-                        {selectedGoal.description}
-                      </span>
-                    )}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center mx-8 mt-10 mb-5">
-                  <div className="flex flex-col w-4/5 mx-auto">
-                    <p className="font-semibold text-default-800">
-                      Fecha de inicio:
-                      {!isLoadingGoals &&
-                        !isErrorGoals &&
-                        selectedGoal.finalDate && (
-                          <span className="ml-2 font-normal text-default-700">
-                            {new Date(
-                              selectedGoal.finalDate
-                            ).toLocaleDateString(undefined, {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
-                          </span>
-                        )}
+              <Card className="h-[340px] shadow-md mt-8 rounded-3xl border-2 w-full dark:bg-zinc-900 dark:border-zinc-800">
+                {!isLoadingGoals && selectedGoal.description == "Ninguna" && (
+                  <CardBody className="flex flex-wrap justify-center gap-5 w-full">
+                    <p className="text-xl text-center">
+                      No hay ninguna meta seleccionada
                     </p>
-                    <p className="mt-4 font-semibold text-default-800">
-                      Fecha límite:
-                      {!isLoadingGoals &&
-                        !isErrorGoals &&
-                        selectedGoal.finalDate && (
-                          <span className="ml-2 font-normal text-default-700">
-                            {new Date(
-                              selectedGoal.finalDate
-                            ).toLocaleDateString(undefined, {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            })}
-                          </span>
-                        )}
-                    </p>
-
-                    {!isLoadingGoals && !isErrorGoals && (
-                      <p className="mt-10 text-4xl font-semibold text-center text-teal-600">
-                        ${selectedGoal.amount}
-                      </p>
-                    )}
-                    {!isLoadingGoals && !isErrorGoals && (
-                      <div className="flex mt-4">
-                        <Progress
-                          size="md"
-                          value={selectedGoal.amount}
-                          maxValue={selectedGoal.amountGoal}
-                          color="success"
-                          formatOptions={{ style: "currency", currency: "mxn" }}
-                          className="w-64 max-w-md"
-                          classNames={{
-                            value: "text-default-500",
-                            indicator: "bg-teal-600",
-                          }}
-                        />
+                  </CardBody>
+                )}
+                {!isLoadingGoals && selectedGoal.description != "Ninguna" && (
+                  <>
+                    <CardHeader className="flex gap-3">
+                      <Image
+                        alt="nextui logo"
+                        height={40}
+                        radius="sm"
+                        src="https://res.cloudinary.com/dko2qqtae/image/upload/v1713070509/fcyuvxzpbyqhejtkjxdy.png"
+                        width={40}
+                      />
+                      <div className="flex flex-col">
+                        <p className="text-md">Meta seleccionada</p>
+                        <p className="text-small text-default-500">
+                          {selectedGoal.description}
+                        </p>
                       </div>
-                    )}
-                    <Button
-                      className="mt-6 bg-sky-700"
-                      color="primary"
-                      onPress={() => setShowAddAmountModal(true)}
-                    >
-                      Agregar monto
-                    </Button>
-                  </div>
-                </div>
-              </div>
+                      <Button
+                        color="primary"
+                        radius="full"
+                        size="sm"
+                        variant="solid"
+                        onPress={() => setShowAddAmountModal(true)}
+                      >
+                        Abonar
+                      </Button>
+                    </CardHeader>
+
+                    <CardBody className="flex flex-wrap justify-center gap-5 w-full">
+                      <div className="w-40 flex flex-col items-left">
+                        <Percentage value={200} max={selectedGoal.amountGoal} />
+                      </div>
+                      <div className="w-90 flex flex-col">
+                        <div className="w-60">
+                          <p className="text-md text-default-500">
+                            •Monto actual:
+                          </p>
+                          <p className="text-2xl">${selectedGoal.amount}</p>
+                          <p>Ultimo abono de 30%</p>
+                        </div>
+                        <div className="w-60 mt-4">
+                          <p className="text-md text-default-500">•Meta:</p>
+                          <p className="text-2xl">${selectedGoal.amountGoal}</p>
+                          <p>Ultimo abono de 30%</p>
+                        </div>
+                      </div>
+                    </CardBody>
+                  </>
+                )}
+              </Card>
             </Skeleton>
           </div>
 
