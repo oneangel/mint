@@ -128,7 +128,7 @@ export const Home = () => {
                     <CardHeader className="flex gap-4">
                       <IoCaretDownCircle className="w-10 h-10" />
                       <div className="flex flex-col">
-                        <p className="text-md">Total de cargos</p>
+                        <p className="text-md">Total de ingresos</p>
                         <p className="text-small text-default-500">
                           24 de marzo
                         </p>
