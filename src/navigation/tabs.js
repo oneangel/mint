@@ -1,12 +1,29 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import TransferScreen from "../screens/TransferScreen";
 import WalletScreen from "../screens/WalletScreen";
 import ServicesScreen from "../screens/ServicesScreen";
+import LoginScreen from "../screens/LoginScreen";
+import LandingScreen from "../screens/LandingScreen";
+import RegisterScreen from "../screens/RegisterScreen";
 
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const MainStackNavigator = () => {
+  return (
+    <Stack.Navigator initialRouteName="Landing" headerMode="none">
+      <Stack.Screen name="Landing" component={LandingScreen}/>
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Main" component={Tabs} />
+    </Stack.Navigator>
+  );
+};
+
 
 const Tabs = () => {
   return (
@@ -175,4 +192,4 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
 });
-export default Tabs;
+export default MainStackNavigator;

@@ -15,7 +15,7 @@ const LastestTrans = () => {
 
   return (
     <View style={styles.transferListContainer}>
-      <Text style={styles.h3}>Últimas transferencias</Text>
+      <Text style={styles.h3}>Transacciones Recientes</Text>
       <View style={styles.flashListContainer}>
         <FlashList
           data={lastThreeTransfers}

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import TransferList from "../components/TransferList";
 import LastestTrans from "../components/LastestTrans";
@@ -9,6 +9,22 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.lowerContainer}>
+      <Text style={styles.h3}>Ahorros Recientes</Text>
+
+        <View style={styles.horizontalScrollViewContainer}>
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+
+            <View style={styles.card}>
+              <Text style={styles.cardText}>Tarjeta 1</Text>
+            </View>
+            <View style={styles.card}>
+              <Text style={styles.cardText}>Tarjeta 2</Text>
+            </View>
+            <View style={styles.card}>
+              <Text style={styles.cardText}>Tarjeta 3</Text>
+            </View>
+          </ScrollView>
+        </View>
         <LastestTrans />
       </View>
       <View style={styles.upperContainer}>
@@ -43,6 +59,19 @@ const styles = StyleSheet.create({
     zIndex: 1,
     position: "relative",
     color: "#fff",
+  },
+  lowerContainer: {
+    flex: 2,
+    backgroundColor: "#F9FDFE",
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    overflow: "hidden",
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 0,
+    top: "35%",
+    zIndex: 2,
   },
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
@@ -80,19 +109,6 @@ const styles = StyleSheet.create({
     tintColor: "#fff",
     zIndex: 2,
   },
-  lowerContainer: {
-    flex: 2,
-    backgroundColor: "#F9FDFE",
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
-    overflow: "hidden",
-    position: "absolute",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    top: "35%",
-    zIndex: 2,
-  },
   transferListContainer: {
     flex: 1,
     justifyContent: "flex-end",
@@ -100,6 +116,23 @@ const styles = StyleSheet.create({
   flashListContainer: {
     flex: 1,
     paddingHorizontal: 10,
+  },
+  horizontalScrollViewContainer: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  card: {
+    backgroundColor: "#ECF6FF",
+    width: 180,
+    height: 80,
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+  cardText: {
+    color: "#000",
+    fontWeight: "bold",
   },
 });
 
