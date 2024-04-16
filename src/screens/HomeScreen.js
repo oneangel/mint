@@ -3,17 +3,16 @@ import React from "react";
 import LastestTrans from "../components/LastestTrans";
 import GeneralBalance from "../components/GeneralBalance";
 
-
 const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.lowerContainer}>
-      <Text style={styles.h3}>Ahorros Recientes</Text>
+        <Text style={styles.h3}>Servicios</Text>
 
         <View style={styles.horizontalScrollViewContainer}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-
-           
+            <View style={styles.waterContainer}><Text>Agua</Text></View>
+            <View style={styles.energyContainer}><Text>Electricidad</Text></View>
           </ScrollView>
         </View>
         <LastestTrans />
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    top: "40%",
+    top: "38%",
     zIndex: 2,
   },
   backgroundImage: {
@@ -109,6 +108,25 @@ const styles = StyleSheet.create({
   horizontalScrollViewContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
+  },
+  waterContainer: {
+    width: 240,
+    height: 90,
+    backgroundColor: "#ECF6FF",
+    borderWidth: 1,
+    borderColor: "#D3DFE7",
+    borderRadius: 25,
+    padding: 5,
+  },
+  energyContainer: {
+    width: 200,
+    height: 90,
+    backgroundColor: "#ECF6FF",
+    borderWidth: 1,
+    borderColor: "#D3DFE7",
+    borderRadius: 25,
+    padding: 5,
+    marginLeft: 20
   },
 });
 

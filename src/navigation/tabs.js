@@ -65,7 +65,7 @@ const Tabs = () => {
           elevation: 0,
           backgroundColor: "#fff",
           borderRadius: 30,
-          height: 70,
+          height: 60,
           ...styles.shadow,
         },
       }}
@@ -93,11 +93,6 @@ const Tabs = () => {
                     tintColor: focused ? "#3E70A1" : "grey",
                   }}
                 />
-                <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
-                >
-                  Inicio
-                </Text>
               </View>
             );
           },
@@ -126,11 +121,6 @@ const Tabs = () => {
                     tintColor: focused ? "#3E70A1" : "grey",
                   }}
                 />
-                <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
-                >
-                  Transferencias
-                </Text>
               </View>
             );
           },
@@ -159,11 +149,7 @@ const Tabs = () => {
                     tintColor: focused ? "#3E70A1" : "grey",
                   }}
                 />
-                <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
-                >
-                  Cartera
-                </Text>
+
               </View>
             );
           },
@@ -192,11 +178,7 @@ const Tabs = () => {
                     tintColor: focused ? "#3E70A1" : "grey",
                   }}
                 />
-                <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
-                >
-                  Servicios
-                </Text>
+
               </View>
             );
           },
@@ -225,11 +207,6 @@ const Tabs = () => {
                     tintColor: focused ? "#3E70A1" : "grey",
                   }}
                 />
-                <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
-                >
-                  Perfil
-                </Text>
               </View>
             );
           },

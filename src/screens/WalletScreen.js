@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import * as Progress from "react-native-progress";
 import React, { useState, useEffect } from "react";
+import GoalList from "../components/GoalList";
 
 const WalletScreen = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -61,6 +62,9 @@ const WalletScreen = () => {
             </View>
           </View>
         </View>
+        <View style={styles.goalListContainer}>
+          <GoalList />
+        </View>
       </View>
     </>
   );
@@ -73,6 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#f1f1f1",
   },
   background: {
     position: "absolute",
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
   metaContainer: {
     position: "absolute",
     top: "35%",
-    width: "80%",
+    width: "90%",
     backgroundColor: "#fff",
     borderRadius: 10,
     justifyContent: "center",
@@ -127,6 +132,14 @@ const styles = StyleSheet.create({
   },
   metaSelected: {
     alignItems: "center",
-    marginVertical: 10
+    marginVertical: 10,
+  },
+  goalListContainer: {
+    height: 220,
+    backgroundColor: "#fff",
+    width: "90%",
+    height: 220,
+    borderRadius: 10,
+    top: 160,
   },
 });

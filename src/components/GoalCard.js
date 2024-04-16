@@ -1,28 +1,14 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { AntDesign } from '@expo/vector-icons';
 
-const TransferCard = ({ id, type, description, date, amount }) => {
-  const iconColor = type === "ingreso" ? "lightgreen" : "#465568";
-  const amountColor = type === "ingreso" ? "lightgreen" : "#465568";
-
-  const iconName = type === "ingreso" ? "caretup" : "caretdown";
-
+const GoalCard = ({ id,description, date, goal }) => {
   return (
     <View style={styles.container}>
-      <View style={[styles.iconBackground, { backgroundColor: iconColor }]}>
-        <AntDesign
-          name={iconName}
-          size={15}
-          color="white"
-          style={styles.icon}
-        />
-      </View>
       <View style={styles.textContainer}>
         <Text style={styles.boldText}>{description}</Text>
         <Text style={styles.lightText}>{date}</Text>
       </View>
-      <Text style={[styles.number, { color: amountColor }]}>${amount}</Text>
+      <Text style={styles.number}>${goal}</Text>
     </View>
   );
 };
@@ -31,8 +17,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 29,
-    marginTop: 20,
+    marginTop: 10,
   },
   iconBackground: {
     borderRadius: 50,
@@ -46,14 +31,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   boldText: {
+    color: "#606060",
     fontWeight: "bold",
   },
   lightText: {
+    color: "#606060",
     fontWeight: "200",
   },
   number: {
+    color: "#606060",
     fontWeight: "bold",
   },
 });
 
-export default TransferCard;
+export default GoalCard;

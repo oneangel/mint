@@ -1,7 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import TransferCardE from "./TransferCardE";
-import { Ionicons } from "@expo/vector-icons"; 
 
 export const DATA = [
   {
@@ -79,12 +78,7 @@ export const DATA = [
 const TransferList = () => {
   return (
     <View style={styles.transferListContainer}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.h3}>Transacciones</Text>
-        <TouchableOpacity style={styles.addButton}>
-          <Ionicons name="add" size={20} color="white" />
-        </TouchableOpacity>
-      </View>
+      
       <ScrollView style={{ maxHeight: 300, minHeight: 300 }}>
         <View style={styles.flashListContainer}>
           <FlashList

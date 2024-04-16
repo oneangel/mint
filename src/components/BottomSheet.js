@@ -7,7 +7,6 @@ const BottomSheet = ({ setStatus }) => {
 
 
     const slideUp = () => {
-        // Will change slide up the bottom sheet
         Animated.timing(slide, {
           toValue: 0,
           duration: 800,
@@ -16,7 +15,6 @@ const BottomSheet = ({ setStatus }) => {
       };
     
       const slideDown = () => {
-        // Will slide down the bottom sheet
         Animated.timing(slide, {
           toValue: 300,
           duration: 800,
@@ -44,21 +42,15 @@ const BottomSheet = ({ setStatus }) => {
         <Pressable onPress={ closeModal } style={styles.backdrop}>
             <Pressable style={{ width: '100%', height: '40%', }}>
                 <Animated.View style={[styles.bottomSheet, { transform: [{ translateY: slide }] }]}>
-                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Login / SignUp</Text>
+                    <Text style={{ fontSize: 25, fontWeight: 'bold' }}>Asociar Medidor</Text>
                     <View style={{ marginTop: 20 }}>
                         <TextInput 
-                            placeholder='Enter Username'
+                            placeholder='Ingresa el serial'
                             style={ styles.input }
                         />
 
-                        <TextInput 
-                            placeholder='Enter Password'
-                            style={ styles.input }
-                            secureTextEntry={ true }
-                        /> 
-
                         <TouchableOpacity style={ styles.button }>
-                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>Login</Text>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>Vincular</Text>
                         </TouchableOpacity>
                     </View>
                 </Animated.View>
