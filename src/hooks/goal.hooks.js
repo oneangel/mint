@@ -5,7 +5,6 @@ export const useGetGoalsList = async () => {
     const username = localStorage.getItem("username");
     const token = localStorage.getItem("token");
     const res = await goalService.getGoals(username, token);
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);
@@ -52,7 +51,6 @@ export const useAddAmountGoal = async (data) => {
     const token = localStorage.getItem("token");
     console.log(data.selectedItemId);
     const res = await goalService.addAmountGoal(data.selectedItemId, data.data, token);
-    console.log(res);
     return res;
   } catch (error) {
     console.log(error);

@@ -39,6 +39,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { SearchBar } from "../components/dashboard/SearchBar";
 import Percentage from "../components/charts/Percentage";
+import toast, { Toaster } from "react-hot-toast";
 
 const statusColorMap = {
   true: "success",
@@ -131,42 +132,70 @@ export const Wallet = () => {
 
   const addGoalMutation = useMutation(useAddGoal, {
     onSuccess: () => {
+      toast.dismiss();
+      toast.success("Meta añadida correctamente");
       onClose();
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
     },
     onError: () => {
-      console.error("Hubo un error en la operacion");
+      toast.dismiss();
+      toast.error("¡Hubo un error en la operacion!");
+    },
+
+    onMutate: () => {
+      toast.loading("Añadiendo meta...");
     },
   });
 
   const deleteGoalMutation = useMutation(useDeleteGoal, {
     onSuccess: () => {
+      toast.dismiss();
+      toast.success("Meta eliminada correctamente");
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
     },
     onError: () => {
+      toast.dismiss();
+      toast.error("¡Hubo un error en la operacion!");
       console.error("¡Hubo un error en la operacion!");
+    },
+    onMutate: () => {
+      toast.loading("Eliminando meta...");
     },
   });
 
   const updateGoalMutation = useMutation(useUpdateGoal, {
     onSuccess: () => {
+      toast.dismiss();
+      toast.success("Meta actualizada correctamente");
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
     },
     onError: () => {
+      toast.dismiss();
+      toast.error("¡Hubo un error en la operacion!");
       console.error("¡Hubo un error en la operacion!");
+    },
+    onMutate: () => {
+      toast.loading("Actualizando meta...");
     },
   });
 
   const addAmountGoalMutation = useMutation(useAddAmountGoal, {
     onSuccess: () => {
+      toast.dismiss();
+      toast.success("Monto agregado correctamente");
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
     },
     onError: () => {
+      toast.dismiss();
+      toast.error("¡Hubo un error en la operacion!");
       console.error("¡Hubo un error en la operacion!");
+    },
+    onMutate: () => {
+      toast.loading("Agregando monto...");
     },
   });
 
@@ -584,6 +613,7 @@ export const Wallet = () => {
           </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

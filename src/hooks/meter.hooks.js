@@ -5,8 +5,7 @@ export const useGetMeter = async () => {
     const username = localStorage.getItem("username");
     const token = localStorage.getItem("token");
     const res = await meterService.getMeter(username, token);
-    console.log(res);
-    if (localStorage.getItem('serial') === null) {
+    if (localStorage.getItem('serial') === null || localStorage.getItem('serial') === undefined) {
       localStorage.setItem("serial", res.data.serial);
     }
     return res;
@@ -24,10 +23,8 @@ export const useLinkMeter = async (data) => {
     }
     const token = localStorage.getItem("token");
     const res = await meterService.linkMeter(finalData, token);
-    console.log('Pepeeeeeeee');
-    console.log(res);
-    if (localStorage.getItem('serial') === null) {
-      localStorage.setItem("serial", res.serial);
+    if (localStorage.getItem('serial') === null || localStorage.getItem('serial') === undefined) {
+      localStorage.setItem("serial", res.data.meter);
     }
     return res;
   } catch (error) {

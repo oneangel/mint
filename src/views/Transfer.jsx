@@ -160,6 +160,7 @@ export const Transfer = () => {
   const addTransactionMutation = useMutation(useAddTransaction, {
     onSuccess: () => {
       onClose();
+      toast.dismiss();
       toast.success("Transaccion agregada con exito");
       queryClient.refetchQueries("transactionList");
       queryClient.refetchQueries("totalIncome");
@@ -168,7 +169,12 @@ export const Transfer = () => {
     },
 
     onError: () => {
+      toast.dismiss();
       toast.error("Hubo un error en la operacion");
+    },
+
+    onMutate: () => {
+      toast.loading("Agregando transaccion...");
     },
   });
 
@@ -182,10 +188,17 @@ export const Transfer = () => {
       queryClient.refetchQueries("totalIncome");
       queryClient.refetchQueries("totalExpense");
       queryClient.refetchQueries("incomeList");
+      toast.dismiss();
+      toast.success("Transaccion eliminada con exito");
     },
 
     onError: () => {
+      toast.dismiss();
       toast.error("¡Hubo un error en la operacion!");
+    },
+
+    onMutate: () => {
+      toast.loading("Eliminando transaccion...");
     },
   });
 
@@ -199,10 +212,17 @@ export const Transfer = () => {
       queryClient.refetchQueries("totalIncome");
       queryClient.refetchQueries("totalExpense");
       queryClient.refetchQueries("incomeList");
+      toast.dismiss();
+      toast.success("Transaccion actualizada con exito");
     },
 
     onError: () => {
+      toast.dismiss();
       toast.error("¡Hubo un error en la operacion!");
+    },
+
+    onMutate: () => {
+      toast.loading("Actualizando transaccion...");
     },
   });
 
@@ -232,8 +252,8 @@ export const Transfer = () => {
                 {!isLoadingTotalIncome && (
                   <Card className="w-80 flex flex-col items-center">
                     <CardHeader className="flex gap-3">
-                      <IoCaretUpCircle className="w-10 h-10" />
                       <div className="flex flex-col">
+                        <IoCaretUpCircle className="w-10 h-10" />
                         <p className="text-md">Total de Abonos</p>
                         <p className="text-small text-default-500">
                           24 de marzo

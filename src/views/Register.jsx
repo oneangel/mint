@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as UserServices from "../services/user.service";
-import * as ClientServices from "../services/client.service";
+import { userService, clientService } from "../services/services";
 import { Step1 } from "./Step1";
 import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { MintIconL } from "../icons/MintIconL";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@nextui-org/react";
+import { useMutation } from "react-query";
+import toast, { Toaster } from "react-hot-toast";
 
 export const Register = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -34,15 +35,40 @@ export const Register = () => {
     }
   };
 
+  const registerUserMutation = useMutation(userService.registerUser, {
+    onError: (error) => {
+      toast.dismiss();
+      toast.error("Hubo un error en el registro");
+      console.log(error);
+    },
+    onMutate: () => {
+      toast.loading("Registrando...");
+    },
+  });
+
+  const registerClientMutation = useMutation(clientService.registerClient, {
+    onSuccess: () => {
+      toast.dismiss();
+      toast.success("Registro exitoso");
+    },
+    onError: (error) => {
+      toast.dismiss();
+      toast.error("Hubo un error en el registro");
+      console.log(error);
+    },
+  });
+
   const onSubmit = async (data) => {
     try {
-      const resUser = await UserServices.registerUser({
-        username: data.username,
-        password: data.password,
+      console.log(data);
+      registerUserMutation.mutateAsync(data).then(() => {
+        registerClientMutation.mutate(data);
+        /* if (registerUserMutation.isSuccess) {
+          return registerClientMutation.mutate(data);
+        } else {
+          console.log("Hubo un error");
+        } */
       });
-      const resClient = await ClientServices.registerClient(data);
-      console.log(resUser);
-      console.log(resClient);
     } catch (error) {
       console.log(error);
     }
@@ -127,6 +153,7 @@ export const Register = () => {
           </form>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

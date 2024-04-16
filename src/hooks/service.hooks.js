@@ -17,6 +17,7 @@ export const useMonthMeasure = async () => {
         startDate,
         endDate
       }, token);
+      console.log(res);
       return res;
     }
     else {

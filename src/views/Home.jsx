@@ -17,7 +17,7 @@ import {
   getTotalIncomeByDate,
 } from "../hooks/transaction.hooks";
 import { getTransactionsByRange } from "../utils/transaction.utils";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { IoCaretDownCircle } from "react-icons/io5";
 
 export const Home = () => {
@@ -75,6 +75,12 @@ export const Home = () => {
     setMonth(format(today, "MMMM", { locale: es }));
   }, []);
 
+  useEffect(() => {
+    if (isErrorMeter && localStorage.getItem("serial") === null) {
+      toast.error("No hay un medidor asociado a la cuenta.");
+    }
+  }, [meterData]);
+
   const settings = {
     dots: true,
     infinite: true,
@@ -88,6 +94,7 @@ export const Home = () => {
   return (
     <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
+
       <div className="mt-20 md:mt-32">
         <div className="justify-between hidden mx-20 md:flex">
           <h1 className="text-4xl font-semibold text-sky-700 dark:text-white">
@@ -159,22 +166,6 @@ export const Home = () => {
                     </CardBody>
                   </Card>
                 )}
-                {/* <div className="flex flex-col items-center md:mt-8">
-                  <h2 className="mb-2 text-xl font-semibold text-center">
-                    Gastos del Mes:{" "}
-                    <span className="capitalize text-neutral-600 dark:text-sky-400">
-                      {month}
-                    </span>
-                  </h2>
-                  <div className="flex flex-col items-center justify-center w-48 h-20 shadow-md bg-red-50 md:w-60 rounded-2xl border-1 dark:bg-red-950 dark:border-red-800">
-                    {!isLoadingTotalExpense && (
-                      <span className="text-3xl font-semibold text-red-700 dark:text-red-400">
-                        ${totalExpenseData.data.expenseTotal}
-                      </span>
-                    )}
-                    <p className="text-sm"> a partir de Marzo 18, 2024 </p>
-                  </div>
-                </div> */}
               </Skeleton>
             </div>
           </div>

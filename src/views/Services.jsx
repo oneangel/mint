@@ -22,9 +22,9 @@ import { useQuery, useMutation } from "react-query";
 import { useGetTariffs } from "../hooks/tariff.hooks";
 import { useForm } from "react-hook-form";
 import { useLinkMeter } from "../hooks/meter.hooks";
-import { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import LargeAreaChart from "../components/charts/LargeAreaChart";
+import { useQueryClient } from "react-query";
 
 export const Services = () => {
   const {
@@ -32,6 +32,8 @@ export const Services = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: "onTouched" });
+
+  const queryClient = useQueryClient();
 
   const serial = localStorage.getItem("serial");
 
@@ -75,7 +77,6 @@ export const Services = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     linkMeterMutation.mutate(data);
     setShowModal(false);
   };
@@ -184,12 +185,6 @@ export const Services = () => {
             </div>
           </div>
         )}
-
-        {/* <div className="w-1/2 flex justify-center items-center">
-          <div className="w-[100%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800">
-            <LargeAreaChart />
-          </div>
-        </div> */}
 
         {serial && (
           <div className="w-1/2 flex justify-center items-center">

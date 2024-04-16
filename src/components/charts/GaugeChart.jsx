@@ -97,7 +97,7 @@ const GaugeChart = ({ kw, basic, middle, excedent }) => {
     return () => {
       myChart.dispose();
     };
-  }, []);
+  }, [kw, basic, middle, excedent]);
 
   return <div ref={chartRef} style={{ width: "100%", height: "400px" }}></div>;
 };

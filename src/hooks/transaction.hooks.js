@@ -54,7 +54,6 @@ export const useGetIncomesList = async () => {
 		const username = localStorage.getItem("username");
 		const token = localStorage.getItem("token");
 		const res = await transactionService.getIncomesList(username, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -66,7 +65,6 @@ export const useGetExpensesList = async () => {
 		const username = localStorage.getItem("username");
 		const token = localStorage.getItem("token");
 		const res = await transactionService.getExpensesList(username, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);

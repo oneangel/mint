@@ -32,7 +32,6 @@ export const Login = () => {
       auth.login(res.data.token);
       localStorage.setItem("username", res.data.username);
       toast.dismiss();
-      toast.success("Bienvenido");
       navigate("/home");
     },
     onError: (error) => {
