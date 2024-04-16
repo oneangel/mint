@@ -130,11 +130,11 @@ const AreaChart = ({ currentData, lastData }) => {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: "rgb(0, 221, 255)",
+                color: "rgb(255, 250, 0)",
               },
               {
                 offset: 1,
-                color: "rgb(77, 119, 255)",
+                color: "rgb(255, 252, 77)",
               },
             ]),
           },
