@@ -1,17 +1,28 @@
 import { Service, TariffE, TariffW } from "../models/models.js";
+import { startOfDay, endOfDay, parseISO, formatISO } from "date-fns";
 
 //Creates a new user
 export const registerService = async (req, res) => {
-  const { id, serial, measurement, type, createdAt } =
+  const { serial, measurement, type, createdAt } =
     req.body;
 
   try {
+    const searchDate = parseISO(createdAt);
+    const startOfDayDate = startOfDay(searchDate);
+    const endOfDayDate = endOfDay(searchDate);
 
-    const existingService = await Service.findOne({ serial, createdAt, type });
+    const existingService = await Service.findOne({
+      serial, type, createdAt: {
+        $gte: formatISO(startOfDayDate),
+        $lte: formatISO(endOfDayDate)
+      }
+    });
 
+    console.log(searchDate);
+    console.log(startOfDayDate);
+    console.log(endOfDayDate);
     if (!existingService) {
       const newService = new Service({
-        id,
         serial,
         measurement,
         type,

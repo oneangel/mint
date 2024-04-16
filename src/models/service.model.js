@@ -2,12 +2,6 @@ import mongoose from "mongoose";
 import validator from "validator";
 
 const serviceSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true,
-    required: true
-  },
-
   serial: {
     type: String,
     required: true,

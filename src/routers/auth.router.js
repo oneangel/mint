@@ -9,7 +9,6 @@ import {
   TariffController,
   TariffWController
 } from "../controllers/controllers.js";
-
 import authMiddleware from "../middlewares/auth.middleware.js";
 const router = Router();
 
