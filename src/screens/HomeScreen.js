@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
-import TransferList from "../components/TransferList";
 import LastestTrans from "../components/LastestTrans";
 import GeneralBalance from "../components/GeneralBalance";
 
@@ -14,27 +13,17 @@ const HomeScreen = () => {
         <View style={styles.horizontalScrollViewContainer}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
 
-            <View style={styles.card}>
-              <Text style={styles.cardText}>Tarjeta 1</Text>
-            </View>
-            <View style={styles.card}>
-              <Text style={styles.cardText}>Tarjeta 2</Text>
-            </View>
-            <View style={styles.card}>
-              <Text style={styles.cardText}>Tarjeta 3</Text>
-            </View>
+           
           </ScrollView>
         </View>
         <LastestTrans />
       </View>
       <View style={styles.upperContainer}>
-        {/* Imagen de fondo del upperContainer */}
         <Image
           source={require("../../assets/bg.jpg")}
           style={styles.backgroundImage}
           resizeMode="cover"
         />
-        {/* Imagen de la izquierda */}
         <Image
           source={require("../../assets/Icons/mint1.png")}
           style={styles.headerImage}
@@ -70,7 +59,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    top: "35%",
+    top: "40%",
     zIndex: 2,
   },
   backgroundImage: {
@@ -82,7 +71,7 @@ const styles = StyleSheet.create({
   h1: {
     color: "#fff",
     fontSize: 25,
-    marginTop: "30%",
+    marginTop: 90,
     marginLeft: "5%",
     fontWeight: "bold",
   },
@@ -120,19 +109,6 @@ const styles = StyleSheet.create({
   horizontalScrollViewContainer: {
     marginTop: 20,
     paddingHorizontal: 20,
-  },
-  card: {
-    backgroundColor: "#ECF6FF",
-    width: 180,
-    height: 80,
-    marginRight: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 10,
-  },
-  cardText: {
-    color: "#000",
-    fontWeight: "bold",
   },
 });
 

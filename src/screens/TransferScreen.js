@@ -16,8 +16,6 @@ const TransferScreen = () => {
         style={styles.headerImage}
         resizeMode="contain"
       />
-      <Text style={styles.title}>Grafiquita 😋</Text>
-
       <View style={styles.optionsContainer}>
         <TouchableOpacity onPress={() => handleOptionChange("ingresos")}>
           <Text style={[styles.optionText, selectedOption === "ingresos" && styles.selectedOption]}>
@@ -33,17 +31,17 @@ const TransferScreen = () => {
 
       {selectedOption === "ingresos" ? (
         <View>
-          {/* Aquí renderiza el contenido de los ingresos */}
-          <Text style={{marginLeft:20}}>Grafica ingresos 😴</Text>
+          <Text style={{marginLeft:20}}>Grafica....📊</Text>
         </View>
       ) : (
         <View>
-          {/* Aquí renderiza el contenido de los gastos */}
-          <Text style={{marginLeft:20}}>grafica de gastos 😴</Text>
+          <Text style={{marginLeft:20}}>Grafica....📊</Text>
         </View>
       )}
-
-      <TransferList />
+      <View style={{ height: 500 }}>
+        <TransferList />
+      </View>
+      
     </View>
   );
 };
@@ -66,21 +64,22 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     tintColor: "#3E70A1",
+    alignSelf: "center",
     top: 20,
-    left: 20,
   },
   optionsContainer: {
     flexDirection: "row",
     marginHorizontal:20,
-    marginVertical: 20,
+    marginVertical: 10,
     gap: 20
   },
   optionText: {
     fontSize: 18,
-    color: "#363636",
+    color: "gray",
   },
   selectedOption: {
     fontWeight: "bold",
+    color: "#000",
     textDecorationLine: "underline",
   },
 });

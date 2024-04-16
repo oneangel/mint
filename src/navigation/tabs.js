@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { useState, useEffect } from "react";
+import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
@@ -9,30 +10,56 @@ import ServicesScreen from "../screens/ServicesScreen";
 import LoginScreen from "../screens/LoginScreen";
 import LandingScreen from "../screens/LandingScreen";
 import RegisterScreen from "../screens/RegisterScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Landing" headerMode="none">
-      <Stack.Screen name="Landing" component={LandingScreen}/>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Main" component={Tabs} />
+    <Stack.Navigator initialRouteName="Landing" >
+      <Stack.Screen name="Landing" component={LandingScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
+      <Stack.Screen name="Main" component={Tabs} options={{headerShown: false}} />
     </Stack.Navigator>
   );
 };
 
 
 const Tabs = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Image
+          source={require("../../assets/Icons/mint2.png")}
+          style={{
+          width: 200,
+          height: 200,
+          alignSelf: "center",
+          tintColor: "#3E70A1",}}
+          resizeMode="contain"
+        />
+        <ActivityIndicator size="large" color="#3E70A1" />
+      </View>
+    );
+  }
   return (
     <Tab.Navigator
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: {
           position: "absolute",
-          bottom: 25,
+          bottom: 10,
           left: 20,
           right: 20,
           elevation: 0,
@@ -67,7 +94,7 @@ const Tabs = () => {
                   }}
                 />
                 <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 12 }}
+                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
                 >
                   Inicio
                 </Text>
@@ -100,7 +127,7 @@ const Tabs = () => {
                   }}
                 />
                 <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 12 }}
+                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
                 >
                   Transferencias
                 </Text>
@@ -133,7 +160,7 @@ const Tabs = () => {
                   }}
                 />
                 <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 12 }}
+                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
                 >
                   Cartera
                 </Text>
@@ -166,9 +193,42 @@ const Tabs = () => {
                   }}
                 />
                 <Text
-                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 12 }}
+                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
                 >
                   Servicios
+                </Text>
+              </View>
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ focused }) => {
+            return (
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  top: 5,
+                }}
+              >
+                <Image
+                  source={require("../../assets/Icons/profile.png")}
+                  resizeMode="contain"
+                  style={{
+                    width: 25,
+                    height: 25,
+                    tintColor: focused ? "#3E70A1" : "grey",
+                  }}
+                />
+                <Text
+                  style={{ color: focused ? "#3E70A1" : "grey", fontSize: 10 }}
+                >
+                  Perfil
                 </Text>
               </View>
             );

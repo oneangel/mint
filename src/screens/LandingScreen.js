@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    top: "50%",
+    top: "40%",
     zIndex: 2,
     alignItems: "center",
   },
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     width: 380,
     alignSelf: "center",
     height: 230,
-    top: "30%",
+    top: "20%",
   },
   buttonContainer: {
     flexDirection: "row",

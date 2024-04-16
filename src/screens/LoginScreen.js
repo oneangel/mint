@@ -12,7 +12,7 @@ export default function App() {
     return (
       <Svg
       width={500}
-      height={324}
+      height={350}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -90,11 +90,12 @@ const styles = StyleSheet.create({
   },
   containerSVG: {
     width: width,
+    marginTop: -100,
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
   titulo: {
-    fontSize: 60,
+    fontSize: 50,
     color: '#34434D',
     fontWeight: 'bold',
     marginTop: 20,
