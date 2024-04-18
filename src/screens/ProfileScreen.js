@@ -115,6 +115,9 @@ const ProfileScreen = () => {
             <Text style={styles.buttonText}>Editar</Text>
           </TouchableOpacity>
         )}
+        <TouchableOpacity style={styles.logOutButton}>
+            <Text style={styles.buttonText}>Cerrar Sesión</Text>
+          </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -182,6 +185,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: "center",
+  },
+  logOutButton: {
+    backgroundColor: "#971C1C",
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: "center",
+    marginTop: 10
   },
   buttonText: {
     color: "#fff",

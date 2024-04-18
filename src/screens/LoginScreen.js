@@ -6,7 +6,7 @@ import ButtonGradient from '../components/ButtonGradient';
 
 const { width, height } = Dimensions.get('window')
 
-export default function App() {
+export default function LoginScreen() {
 
   function SvgTop() {
     return (
@@ -70,7 +70,7 @@ export default function App() {
           secureTextEntry={true}
         />
         <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
-        <ButtonGradient/>
+        <ButtonGradient title="Iniciar Sesión" route="Main"/>
         <Text style={styles.forgotPassword}>¿No tienes una cuenta?</Text>
         <StatusBar style="auto" />
       </View>

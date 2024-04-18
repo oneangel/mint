@@ -3,22 +3,21 @@ import { StyleSheet, Text, TouchableOpacity} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from "@react-navigation/native";
 
-export default function  ButtonGradient () {
+export default function  ButtonGradient ({title, route}) {
     const navigation = useNavigation();
-
+    const ruta = route === "Main"? "Main":  "Login";
     const handleLoginPress = () => {
-        navigation.navigate("Main");
+        navigation.navigate(ruta);
       };
     return (
         <TouchableOpacity style={styles.container} onPress={handleLoginPress}>
             <LinearGradient
-                // Button Linear Gradient
                 colors={['#32BBE7', '#3E70A1']}
                 start={{x: 0, y: 0}}
                 end={{x: 1, y: 1}}    
                 style={styles.button}
             >
-                <Text style={styles.text}>Iniciar Sesión</Text>
+                <Text style={styles.text}>{title}</Text>
             </LinearGradient>
         </TouchableOpacity>
     );
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         width: "90%",
-        marginTop: 60,
+        marginTop: 40,
     },
 
     text: {

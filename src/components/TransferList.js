@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   transferListContainer: {
     flex: 1,
     justifyContent: "flex-start",
-    height: 300, // Adjust the height as needed
+    height: 300, 
   },
   flashListContainer: {
     flex: 1,

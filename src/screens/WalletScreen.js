@@ -4,9 +4,12 @@ import React, { useState, useEffect } from "react";
 import GoalList from "../components/GoalList";
 import { ScrollView } from "react-native-gesture-handler";
 import { FontAwesome5 } from "@expo/vector-icons";
+import GoalSheet from "../components/GoalSheet";
 
 const WalletScreen = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
+  const [status, setStatus] = useState(false);
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,7 +70,7 @@ const WalletScreen = () => {
         <View style={styles.goalListContainer}>
           <View style={styles.headerContainer}>
             <Text style={styles.goalText}>Transacciones</Text>
-            <TouchableOpacity style={styles.addButton}>
+            <TouchableOpacity style={styles.addButton}  onPress={() => setStatus(true)}>
               <FontAwesome5 name="piggy-bank" size={15} color="white" />
             </TouchableOpacity>
           </View>
@@ -75,6 +78,7 @@ const WalletScreen = () => {
             <GoalList />
           </ScrollView>
         </View>
+        {status && <GoalSheet setStatus={setStatus} />}
       </View>
     </>
   );

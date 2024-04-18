@@ -10,23 +10,9 @@ const HomeScreen = () => {
       <View style={styles.lowerContainer}>
         <Text style={styles.h3}>Servicios</Text>
 
-        <View style={styles.horizontalScrollViewContainer}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.waterContainer}>
-              <Text style={styles.textContainer}>Agua</Text>
-              <View style={{ flexDirection: "row", alignItems: "center", paddingLeft: 10, paddingTop: 5 }}>
-                <Ionicons name="water" size={24} color="blue" />
-                <Text style={styles.subititle}>$2.00</Text>
-              </View>
-            </View>
-            <View style={styles.energyContainer}>
-              <Text style={styles.textContainer}>Electricidad</Text>
-              <View style={{ flexDirection: "row", alignItems: "center", paddingLeft: 10, paddingTop: 5 }}>
-                <Ionicons name="flash" size={24} color="orange" />
-                <Text style={styles.subititle}>$2.00</Text>
-              </View>
-            </View>
-          </ScrollView>
+        <View style={{flexDirection: "row" , justifyContent: 'start', marginLeft: 20, marginTop: 20,}}>
+          <View style={styles.waterContainer}><Ionicons name="water-sharp" size={20} color="#000"/><Text>Agua</Text></View>
+          <View style={styles.energyContainer}><Ionicons name="flash-sharp" size={20} color="#000"/><Text>Agua</Text></View>
         </View>
         <LastestTrans />
       </View>
@@ -123,21 +109,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   waterContainer: {
-    width: 240,
-    height: 90,
-    backgroundColor: "#ECF6FF",
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: "#B8D3ED",
     borderWidth: 1,
-    borderColor: "#D3DFE7",
-    borderRadius: 25,
+    borderColor: "#7797B7",
+    borderRadius: 10,
     padding: 5,
   },
   energyContainer: {
-    width: 200,
-    height: 90,
-    backgroundColor: "#ECF6FF",
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: "#FBE0B8",
     borderWidth: 1,
-    borderColor: "#D3DFE7",
-    borderRadius: 25,
+    borderColor: "#E3B775",
+    borderRadius: 10,
     padding: 5,
     marginLeft: 20,
   },

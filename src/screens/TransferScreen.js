@@ -8,32 +8,12 @@ import SheetTransfer from "../components/SheetTransfer";
 
 const TransferScreen = () => {
   const [selectedOption, setSelectedOption] = useState("ingresos");
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [descripcion, setDescripcion] = useState("");
-  const [cantidad, setCantidad] = useState("");
-  const [destinatario, setDestinatario] = useState("");
-  const [fecha, setFecha] = useState("");
   const [status, setStatus] = useState(false);
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
   };
 
-  const handleAddButtonPress = () => {
-    setShowAddForm(true);
-  };
-
-  const handleSaveButtonPress = () => {
-    setDescripcion("");
-    setCantidad("");
-    setDestinatario("");
-    setFecha("");
-    setShowAddForm(false);
-  };
-
-  const handleCloseButtonPress = () => {
-    setShowAddForm(false);
-  };
 
   return (
     <View style={styles.container}>

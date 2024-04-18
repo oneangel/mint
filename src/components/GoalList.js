@@ -2,11 +2,7 @@ import { FlashList } from "@shopify/flash-list";
 import {
   View,
   StyleSheet,
-  ScrollView,
-  Text,
-  TouchableOpacity,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
 import GoalCard from "./GoalCard";
 
 export const DATA = [

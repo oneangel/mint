@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import BottomSheet from "../components/BottomSheet";
 
 const TransferCardE = ({ id, type, description, date, amount }) => {
-  const [status, setStatus] = React.useState(false);
-
   const iconColor = type === "ingreso" ? "lightgreen" : "#465568";
   const amountColor = type === "ingreso" ? "lightgreen" : "#465568";
   const iconName = type === "ingreso" ? "caretup" : "caretdown";
