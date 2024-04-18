@@ -11,28 +11,77 @@ import LoginScreen from "../screens/LoginScreen";
 import LandingScreen from "../screens/LandingScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import { Ionicons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainStackNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="Landing" >
-      <Stack.Screen name="Landing" component={LandingScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}}/>
-      <Stack.Screen name="Main" component={Tabs} options={{headerShown: false}} />
+    <Stack.Navigator initialRouteName="Landing">
+      <Stack.Screen
+        name="Landing"
+        component={LandingScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Main"
+        component={Tabs}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };
 
+const TabArr = [
+  {
+    name: "Inicio",
+    component: HomeScreen,
+    icon: "home",
+    tabBarColor: "#3E70A1",
+  },
+  {
+    name: "Transacciones",
+    component: TransferScreen,
+    icon: "swap-horizontal",
+    tabBarColor: "#3E8FA1",
+  },
+  {
+    name: "Cartera",
+    component: WalletScreen,
+    icon: "wallet",
+    tabBarColor: "#3EA189",
+  },
+  {
+    name: "Servicios",
+    component: ServicesScreen,
+    icon: "layers",
+    tabBarColor: "#583EA1",
+  },
+  {
+    name: "Perfil",
+    component: ProfileScreen,
+    icon: "person-circle",
+    tabBarColor: "#A13E3E",
+  },
+];
 
 const Tabs = () => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -43,10 +92,11 @@ const Tabs = () => {
         <Image
           source={require("../../assets/Icons/mint2.png")}
           style={{
-          width: 200,
-          height: 200,
-          alignSelf: "center",
-          tintColor: "#3E70A1",}}
+            width: 200,
+            height: 200,
+            alignSelf: "center",
+            tintColor: "#3E70A1",
+          }}
           resizeMode="contain"
         />
         <ActivityIndicator size="large" color="#3E70A1" />
@@ -54,165 +104,32 @@ const Tabs = () => {
     );
   }
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          position: "absolute",
-          bottom: 10,
-          left: 20,
-          right: 20,
-          elevation: 0,
-          backgroundColor: "#fff",
-          borderRadius: 30,
-          height: 60,
-          ...styles.shadow,
-        },
-      }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => {
-            return (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  top: 5,
-                }}
-              >
-                <Image
-                  source={require("../../assets/Icons/home.png")}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                    tintColor: focused ? "#3E70A1" : "grey",
-                  }}
-                />
-              </View>
-            );
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Transfer"
-        component={TransferScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => {
-            return (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  top: 5,
-                }}
-              >
-                <Image
-                  source={require("../../assets/Icons/transfer.png")}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                    tintColor: focused ? "#3E70A1" : "grey",
-                  }}
-                />
-              </View>
-            );
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Wallet"
-        component={WalletScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => {
-            return (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  top: 5,
-                }}
-              >
-                <Image
-                  source={require("../../assets/Icons/wallet.png")}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                    tintColor: focused ? "#3E70A1" : "grey",
-                  }}
-                />
-
-              </View>
-            );
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Services"
-        component={ServicesScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => {
-            return (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  top: 5,
-                }}
-              >
-                <Image
-                  source={require("../../assets/Icons/services.png")}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                    tintColor: focused ? "#3E70A1" : "grey",
-                  }}
-                />
-
-              </View>
-            );
-          },
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => {
-            return (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                  top: 5,
-                }}
-              >
-                <Image
-                  source={require("../../assets/Icons/profile.png")}
-                  resizeMode="contain"
-                  style={{
-                    width: 25,
-                    height: 25,
-                    tintColor: focused ? "#3E70A1" : "grey",
-                  }}
-                />
-              </View>
-            );
-          },
-        }}
-      />
-      
+    <Tab.Navigator>
+      {TabArr.map((item, index) => (
+        <Tab.Screen
+          key={index}
+          name={item.name}
+          component={item.component}
+          options={{
+            headerShown: false,
+            tabBarActiveTintColor: "#fff",
+            tabBarInactiveTintColor: "#ABABAB",
+            tabBarStyle: {
+              backgroundColor: "#3E70A1",
+              position: "absolute",
+              height: 60,
+              paddingBottom: 5,
+            },
+            tabBarIcon: ({ focused }) => (
+              <Ionicons
+                name={item.icon}
+                size={24}
+                color={focused ? "#fff" : "#ABABAB"}
+              />
+            ),
+          }}
+        />
+      ))}
     </Tab.Navigator>
   );
 };

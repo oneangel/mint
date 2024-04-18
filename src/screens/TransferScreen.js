@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, Image, TouchableOpacity, TextInput } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import TransferList from "../components/TransferList";
+import { ScrollView } from "react-native-gesture-handler";
+import SheetTransfer from "../components/SheetTransfer";
 
 
 const TransferScreen = () => {
@@ -11,6 +13,7 @@ const TransferScreen = () => {
   const [cantidad, setCantidad] = useState("");
   const [destinatario, setDestinatario] = useState("");
   const [fecha, setFecha] = useState("");
+  const [status, setStatus] = useState(false);
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
@@ -21,9 +24,6 @@ const TransferScreen = () => {
   };
 
   const handleSaveButtonPress = () => {
-    // Aquí puedes manejar la lógica para guardar los datos ingresados en el formulario
-    // por ejemplo, puedes enviarlos a una función de guardado o a un servicio API
-    // Luego, puedes limpiar los campos del formulario y ocultar el formulario de nuevo
     setDescripcion("");
     setCantidad("");
     setDestinatario("");
@@ -32,7 +32,6 @@ const TransferScreen = () => {
   };
 
   const handleCloseButtonPress = () => {
-    // Aquí simplemente ocultamos el formulario
     setShowAddForm(false);
   };
 
@@ -58,59 +57,23 @@ const TransferScreen = () => {
 
       {selectedOption === "ingresos" ? (
         <View>
-          <Text style={{ marginLeft: 20 }}>Grafica....📊</Text>
+          <Text style={{ marginLeft: 20 }}>Grafica 1....📊</Text>
         </View>
       ) : (
         <View>
-          <Text style={{ marginLeft: 20 }}>Grafica....📊</Text>
+          <Text style={{ marginLeft: 20 }}>Grafica 2....📊</Text>
         </View>
       )}
       <View style={styles.headerContainer}>
         <Text style={styles.h3}>Transacciones</Text>
-        <TouchableOpacity style={styles.addButton} onPress={handleAddButtonPress}>
+        <TouchableOpacity style={styles.addButton} onPress={() => setStatus(true)}>
           <Ionicons name="add" size={20} color="white" />
         </TouchableOpacity>
       </View>
-      {showAddForm && (
-        <View style={styles.formContainer}>
-          <TextInput
-            style={styles.input}
-            value={descripcion}
-            onChangeText={(text) => setDescripcion(text)}
-            placeholder="Descripción"
-          />
-          <TextInput
-            style={styles.input}
-            value={cantidad}
-            onChangeText={(text) => setCantidad(text)}
-            placeholder="Cantidad"
-            keyboardType="numeric"
-          />
-          <TextInput
-            style={styles.input}
-            value={destinatario}
-            onChangeText={(text) => setDestinatario(text)}
-            placeholder="Destinatario"
-          />
-          <TextInput
-            style={styles.input}
-            value={fecha}
-            onChangeText={(text) => setFecha(text)}
-            placeholder="Fecha"
-          />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.saveButton} onPress={handleSaveButtonPress}>
-              <Text style={styles.buttonText}>Guardar</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeButton} onPress={handleCloseButtonPress}>
-              <Text style={styles.buttonText}>Cerrar</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-      <View style={{ height: 500 }}>
-        <TransferList />
-      </View>
+      <ScrollView style={{ height: 500 }}>
+         <TransferList />
+      </ScrollView>
+      {status && <SheetTransfer setStatus={setStatus} />}
     </View>
   );
 };

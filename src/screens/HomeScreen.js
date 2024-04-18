@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import React from "react";
 import LastestTrans from "../components/LastestTrans";
 import GeneralBalance from "../components/GeneralBalance";
+import { Ionicons } from "@expo/vector-icons";
 
 const HomeScreen = () => {
   return (
@@ -11,8 +12,20 @@ const HomeScreen = () => {
 
         <View style={styles.horizontalScrollViewContainer}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <View style={styles.waterContainer}><Text>Agua</Text></View>
-            <View style={styles.energyContainer}><Text>Electricidad</Text></View>
+            <View style={styles.waterContainer}>
+              <Text style={styles.textContainer}>Agua</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", paddingLeft: 10, paddingTop: 5 }}>
+                <Ionicons name="water" size={24} color="blue" />
+                <Text style={styles.subititle}>$2.00</Text>
+              </View>
+            </View>
+            <View style={styles.energyContainer}>
+              <Text style={styles.textContainer}>Electricidad</Text>
+              <View style={{ flexDirection: "row", alignItems: "center", paddingLeft: 10, paddingTop: 5 }}>
+                <Ionicons name="flash" size={24} color="orange" />
+                <Text style={styles.subititle}>$2.00</Text>
+              </View>
+            </View>
           </ScrollView>
         </View>
         <LastestTrans />
@@ -40,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#334050",
+    backgroundColor: "#3E70A1",
   },
   upperContainer: {
     flex: 1,
@@ -126,7 +139,20 @@ const styles = StyleSheet.create({
     borderColor: "#D3DFE7",
     borderRadius: 25,
     padding: 5,
-    marginLeft: 20
+    marginLeft: 20,
+  },
+  textContainer: {
+    color: "gray",
+    fontSize: 20,
+    paddingTop: 5,
+    paddingLeft: 5,
+    fontWeight: "bold",
+  },
+  subititle: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: 20,
+    paddingLeft: 5,
   },
 });
 

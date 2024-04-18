@@ -39,17 +39,7 @@ export const DATA = [
 const GoalList = () => {
   return (
     <View style={styles.transferListContainer}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.goalText}>Transacciones</Text>
-        <TouchableOpacity style={styles.addButton}>
-          <FontAwesome5
-            name="piggy-bank"
-            size={15}
-            color="white"
-          />
-        </TouchableOpacity>
-      </View>
-      <ScrollView style={{ maxHeight: 160, minHeight: 160 }}>
+      
         <View style={styles.flashListContainer}>
           <FlashList
             data={DATA}
@@ -57,7 +47,6 @@ const GoalList = () => {
             estimatedItemSize={200}
           />
         </View>
-      </ScrollView>
     </View>
   );
 };

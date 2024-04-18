@@ -1,7 +1,9 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as Progress from "react-native-progress";
 import React, { useState, useEffect } from "react";
 import GoalList from "../components/GoalList";
+import { ScrollView } from "react-native-gesture-handler";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const WalletScreen = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
@@ -63,7 +65,15 @@ const WalletScreen = () => {
           </View>
         </View>
         <View style={styles.goalListContainer}>
-          <GoalList />
+          <View style={styles.headerContainer}>
+            <Text style={styles.goalText}>Transacciones</Text>
+            <TouchableOpacity style={styles.addButton}>
+              <FontAwesome5 name="piggy-bank" size={15} color="white" />
+            </TouchableOpacity>
+          </View>
+          <ScrollView style={{ maxHeight: 160, minHeight: 160 }}>
+            <GoalList />
+          </ScrollView>
         </View>
       </View>
     </>
@@ -141,5 +151,27 @@ const styles = StyleSheet.create({
     height: 220,
     borderRadius: 10,
     top: 160,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    marginTop: 10,
+  },
+  addButton: {
+    backgroundColor: "#3E70A1",
+    borderRadius: 25,
+    padding: 8
+    ,
+  },
+  goalText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 10,
+    marginLeft: 10,
+    top: 10,
   },
 });
