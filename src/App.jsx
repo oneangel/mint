@@ -14,6 +14,7 @@ import {
 import "./index.css";
 import {} from "@nextui-org/react";
 import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
+import SesionRoute from "./components/auth/SesionRoute.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { QueryClient, QueryClientProvider } from "react-query";
 

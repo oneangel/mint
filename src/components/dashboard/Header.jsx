@@ -40,7 +40,9 @@ export const Header = () => {
   };
 
   const handleLogin = () => {
-    navigate("/login");
+    localStorage.getItem("token") != null
+      ? navigate("/home")
+      : navigate("/login");
   };
 
   const toggleMenu = () => {
@@ -106,7 +108,9 @@ export const Header = () => {
             {themeIcon}
           </button>
           <Button color="primary" onClick={handleLogin}>
-            Iniciar Sesión
+            {localStorage.getItem("token") != null
+              ? "Dashboard"
+              : "Iniciar Sesíon"}
           </Button>
         </div>
       </div>

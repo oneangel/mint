@@ -114,7 +114,10 @@ export const Landing = () => {
                 <p className="mt-6 text-5xl font-semibold text-black">
                   Fácil acceso a tus ingresos
                 </p>
-                <p className="w-2/3 mt-5 text-2xl">Acceso rápido y sencillo a tus ingreos para una mejor visualización, análisis y control.</p>
+                <p className="w-2/3 mt-5 text-2xl">
+                  Acceso rápido y sencillo a tus ingreos para una mejor
+                  visualización, análisis y control.
+                </p>
               </div>
             </div>
             <div className="flex col-span-2 bg-black md:col-span-1 rounded-3xl">

@@ -3,16 +3,17 @@ import React, { createContext, useState, useEffect } from "react";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    !localStorage.getItem("token") ? false : true
-  );
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsAuthenticated(!localStorage.getItem("token") ? false : true);
+    // Verifica si hay un token en el localStorage al cargar el componente
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+    setIsLoading(false);
   }, []);
 
-  const login = (token) => {
-    localStorage.setItem("token", token);
+  const login = async () => {
     setIsAuthenticated(true);
   };
 
@@ -22,7 +23,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
