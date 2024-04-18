@@ -66,6 +66,9 @@ router.get('/get/tariff/:code', TariffController.getTariff);
 
 //Tariff water
 router.post('/register/tariff/water', TariffWController.registerTariffW);
-router.get('/get/tariff/water/:code', TariffWController.getTariffW)
+router.get('/get/tariff/water/:code', TariffWController.getTariffW);
+
+//Verify token
+router.get('/verify-token', authMiddleware, (req, res) => { res.json({ message: 'Acceso permitido' }) })
 
 export default router;
