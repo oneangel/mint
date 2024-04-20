@@ -11,9 +11,11 @@
   },
   "dependencies": {
     "@emotion/styled": "^11.11.0",
+    "@jdion/tilt-react": "^1.0.0",
     "@mui/x-charts": "^6.19.5",
     "@nextui-org/react": "^2.2.9",
     "@splinetool/react-spline": "^2.2.6",
+    "atropos": "^2.0.2",
     "axios": "^1.6.7",
     "chart.js": "^4.4.2",
     "date-fns": "^3.6.0",

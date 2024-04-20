@@ -44,9 +44,9 @@ export const CurrentBalance = ({ balance }) => {
     <Tooltip content="Presiona para ver mas detalle" color="primary">
       <Card
         onClick={handleBalance}
-        className="flex flex-col col-span-1 py-10 max-w-full max-h-full bg-white max-h-full border-gray-200 shadow-md"
+        className="flex flex-col max-w-full max-h-full col-span-1 py-10 bg-white border-gray-200 shadow-md border-1 dark:bg-zinc-900 dark:border-zinc-800 rounded-3xl"
       >
-        <CardHeader className="w-48 ml-10 rounded-3xl mb-8">
+        <CardHeader className="w-48 mb-8 ml-10 rounded-3xl">
           <p className="text-xl font-semibold">Balance general</p>
         </CardHeader>
 
@@ -59,7 +59,7 @@ export const CurrentBalance = ({ balance }) => {
         </CardBody>
 
         <CardFooter>
-          <div className="mx-auto rounded-3xl flex flex-col justify-center h-full">
+          <div className="flex flex-col justify-center h-full mx-auto rounded-3xl">
             <p className="text-lg text-center text-zinc-500">
               {daysOfWeek[currentDay]} •<span> {formattedTime} PM</span>
             </p>

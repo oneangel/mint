@@ -109,7 +109,7 @@ export const Header = () => {
           </button>
           <Button color="primary" onClick={handleLogin}>
             {localStorage.getItem("token") != null
-              ? "Dashboard"
+              ? "Iniciar Sesíon"
               : "Iniciar Sesíon"}
           </Button>
         </div>

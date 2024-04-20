@@ -1,19 +1,19 @@
 import React from "react";
 import Spline from "@splinetool/react-spline";
-import {
-  IoArrowForwardOutline,
-  IoArrowUpCircle,
-  IoCall,
-  IoCash,
-  IoLockClosed,
-  IoLogoAndroid,
-  IoShieldCheckmark,
-  IoShieldHalfSharp,
-} from "react-icons/io5";
+import { IoArrowForwardOutline, IoLogoAndroid } from "react-icons/io5";
 import { Header } from "../components/dashboard/Header";
 import { useNavigate } from "react-router-dom";
-import { Avatar, Button, Chip } from "@nextui-org/react";
+import {
+  Button,
+  Chip,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+} from "@nextui-org/react";
 import Analytics from "../assets/img/Analytics.png";
+import { Tilt } from "@jdion/tilt-react";
 
 const personas = [
   { nombre: "Ricardo López", rol: "Rol de la persona" },
@@ -95,51 +95,24 @@ export const Landing = () => {
 
         {/* Nosotros */}
         <section id="nosotros" className="flex w-full min-h-screen">
-          <div className="h-[90%] w-[70%] my-auto mx-auto justify-center grid md:grid-cols-2 grid-cols-1 gap-4">
-            <div className="flex flex-col col-span-2 bg-blue-400 md:col-span-2 rounded-3xl ">
-              <div className="my-auto ml-10">
-                <span className="text-4xl text-orange-400 md:text-6xl">
-                  <IoLockClosed />
-                </span>
-                <p className="text-4xl font-semibold text-white md:mt-10 md:text-6xl ">
-                  Seguridad y Confianza
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col col-span-2 row-span-2 bg-blue-200 md:col-span-1 rounded-3xl">
-              <div className="my-auto ml-10">
-                <span className="text-5xl text-purple-600">
-                  <IoArrowUpCircle />
-                </span>
-                <p className="mt-6 text-5xl font-semibold text-black">
-                  Fácil acceso a tus ingresos
-                </p>
-                <p className="w-2/3 mt-5 text-2xl">
-                  Acceso rápido y sencillo a tus ingreos para una mejor
-                  visualización, análisis y control.
-                </p>
-              </div>
-            </div>
-            <div className="flex col-span-2 bg-black md:col-span-1 rounded-3xl">
-              <div className="my-auto ml-10">
-                <span className="text-5xl text-green-400">
-                  <IoShieldHalfSharp />
-                </span>
-                <p className="mt-6 text-4xl font-semibold text-white">
-                  Tus ingresos están protegidos
-                </p>
-              </div>
-            </div>
-            <div className="flex col-span-2 bg-zinc-200 md:col-span-1 rounded-3xl">
-              <div className="my-auto ml-10">
-                <span className="text-5xl text-blue-600">
-                  <IoCall />
-                </span>
-                <p className="mt-6 text-4xl font-semibold text-black">
-                  Estamos aquí para ayudarte
-                </p>
-              </div>
-            </div>
+          <div className="flex gap-10 mx-auto my-auto bg-green-500">
+            <Tilt>
+              <Card className="py-4">
+                <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
+                  <p className="font-bold uppercase text-tiny">Daily Mix</p>
+                  <small className="text-default-500">12 Tracks</small>
+                  <h4 className="font-bold text-large">Frontend Radio</h4>
+                </CardHeader>
+                <CardBody className="py-2 overflow-visible">
+                  <Image
+                    alt="Card background"
+                    className="object-cover rounded-xl"
+                    src="https://www.wdeportes.com/resizer/v2/KIXYSM4HX5FF5KO74CRHVZEWDM.jpeg?auth=987c262ca632ea5cb0cf73b438d34aca62a935353b94ddb66e7e1516821826fd&width=768&height=576&quality=70&smart=true"
+                    width={200}
+                  />
+                </CardBody>
+              </Card>
+            </Tilt>
           </div>
         </section>
 

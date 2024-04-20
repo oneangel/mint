@@ -24,7 +24,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  CardFooter,
   Image,
 } from "@nextui-org/react";
 import { useAddGoal, useDeleteGoal, useUpdateGoal } from "../hooks/goal.hooks";
@@ -34,7 +33,7 @@ import { NavigationBar } from "../components/dashboard/NavigationBar";
 import { CurrentBalance } from "../components/dashboard/CurrentBalance";
 import { IoAddCircle, IoSearch, IoTrash } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
+import { FaPiggyBank } from "react-icons/fa6";
 import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { SearchBar } from "../components/dashboard/SearchBar";
@@ -247,65 +246,60 @@ export const Wallet = () => {
         <div className="grid flex-wrap grid-cols-1 gap-10 mx-4 xl:grid-cols-3 md:mx-20">
           <div className="flex flex-col pt-10 lg:col-span-1">
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
-            <Skeleton isLoaded={!isLoadingGoals} className="rounded-3xl">
-              <Card className="h-[340px] shadow-md mt-8 rounded-3xl border-2 w-full dark:bg-zinc-900 dark:border-zinc-800">
-                {!isLoadingGoals && selectedGoal.description == "Ninguna" && (
-                  <CardBody className="flex flex-wrap justify-center gap-5 w-full">
-                    <p className="text-xl text-center">
-                      No hay ninguna meta seleccionada
-                    </p>
-                  </CardBody>
-                )}
-                {!isLoadingGoals && selectedGoal.description != "Ninguna" && (
-                  <>
-                    <CardHeader className="flex gap-3">
-                      <Image
-                        alt="nextui logo"
-                        height={40}
-                        radius="sm"
-                        src="https://res.cloudinary.com/dko2qqtae/image/upload/v1713070509/fcyuvxzpbyqhejtkjxdy.png"
-                        width={40}
-                      />
-                      <div className="flex flex-col">
-                        <p className="text-md">Meta seleccionada</p>
-                        <p className="text-small text-default-500">
-                          {selectedGoal.description}
-                        </p>
-                      </div>
-                      <Button
-                        color="primary"
-                        radius="full"
-                        size="sm"
-                        variant="solid"
-                        onPress={() => setShowAddAmountModal(true)}
-                      >
-                        Abonar
-                      </Button>
-                    </CardHeader>
+            <Card className="h-[340px] shadow-md mt-8 rounded-3xl border-1 w-full dark:bg-zinc-900 dark:border-zinc-800">
+              {!isLoadingGoals && selectedGoal.description == "Ninguna" && (
+                <CardBody className="flex flex-wrap justify-center w-full gap-5">
+                  <p className="text-xl text-center">
+                    No hay ninguna meta seleccionada
+                  </p>
+                </CardBody>
+              )}
+              {!isLoadingGoals && selectedGoal.description != "Ninguna" && (
+                <>
+                  <CardHeader className="flex gap-3">
+                    <span className="text-5xl">
+                      <FaPiggyBank />
+                    </span>
+                    <div className="flex flex-col">
+                      <p className="text-md">Meta seleccionada</p>
+                      <p className="text-small text-default-500">
+                        {selectedGoal.description}
+                      </p>
+                    </div>
+                    <Button
+                      color="primary"
+                      radius="full"
+                      size="sm"
+                      variant="solid"
+                      className="ml-5 bg-sky-700"
+                      onPress={() => setShowAddAmountModal(true)}
+                    >
+                      Abonar
+                    </Button>
+                  </CardHeader>
 
-                    <CardBody className="flex flex-wrap justify-center gap-5 w-full">
-                      <div className="w-40 flex flex-col items-left">
-                        <Percentage value={200} max={selectedGoal.amountGoal} />
+                  <CardBody className="flex flex-wrap items-center justify-center w-full gap-5">
+                    <div className="flex flex-col w-40 items-left">
+                      <Percentage value={200} max={selectedGoal.amountGoal} />
+                    </div>
+                    <div className="flex flex-col w-90">
+                      <div className="w-60">
+                        <p className="text-md text-default-500">
+                          •Monto actual:
+                        </p>
+                        <p className="text-2xl">${selectedGoal.amount}</p>
+                        <p>Ultimo abono de 30%</p>
                       </div>
-                      <div className="w-90 flex flex-col">
-                        <div className="w-60">
-                          <p className="text-md text-default-500">
-                            •Monto actual:
-                          </p>
-                          <p className="text-2xl">${selectedGoal.amount}</p>
-                          <p>Ultimo abono de 30%</p>
-                        </div>
-                        <div className="w-60 mt-4">
-                          <p className="text-md text-default-500">•Meta:</p>
-                          <p className="text-2xl">${selectedGoal.amountGoal}</p>
-                          <p>Ultimo abono de 30%</p>
-                        </div>
+                      <div className="mt-4 w-60">
+                        <p className="text-md text-default-500">•Meta:</p>
+                        <p className="text-2xl">${selectedGoal.amountGoal}</p>
+                        <p>Ultimo abono de 30%</p>
                       </div>
-                    </CardBody>
-                  </>
-                )}
-              </Card>
-            </Skeleton>
+                    </div>
+                  </CardBody>
+                </>
+              )}
+            </Card>
           </div>
 
           <div className="max-h-[400px] mt-10 lg:col-span-2">

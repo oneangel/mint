@@ -109,24 +109,19 @@ export const Home = () => {
           </div>
 
           {/* General Balance */}
-          <Skeleton
-            isLoaded={!isLoadingBalance}
-            className="rounded-3xl border-1 dark:bg-zinc-900 dark:border-zinc-800"
-          >
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
-          </Skeleton>
 
           {/* Abonos */}
           <div className="flex justify-center col-span-1">
-            <div className="flex flex-wrap gap-5 md:flex-col">
+            <div className="flex flex-wrap justify-center gap-5 md:flex-col">
               <Skeleton
                 isLoaded={!isLoadingTotalIncome}
-                className="rounded-3xl"
+                className="p-1 rounded-3xl"
               >
                 {!isLoadingTotalIncome && (
-                  <Card className="w-80 h-30 flex flex-col items-center shadow-md bg-white md:w-100 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
+                  <Card className="flex flex-col items-center bg-white shadow-md w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-teal-950 dark:border-teal-800">
                     <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="w-10 h-10" />
+                      <IoCaretDownCircle className="text-teal-600 dark:text-white size-10" />
                       <div className="flex flex-col">
                         <p className="text-md">Total de ingresos</p>
                         <p className="text-small text-default-500">
@@ -135,7 +130,7 @@ export const Home = () => {
                       </div>
                     </CardHeader>
                     <CardBody>
-                      <p className="text-4xl mb-4 font-semibold">
+                      <p className="mb-4 text-4xl font-semibold">
                         ${totalIncomeData.data.incomeTotal.toFixed(2)}
                       </p>
                     </CardBody>
@@ -146,12 +141,12 @@ export const Home = () => {
               {/* Cargos */}
               <Skeleton
                 isLoaded={!isLoadingTotalExpense}
-                className="rounded-3xl"
+                className="p-1 rounded-3xl"
               >
                 {!isLoadingTotalExpense && (
-                  <Card className="w-80 h-30 flex flex-col items-center shadow-md bg-white md:w-100 rounded-2xl border-1 dark:bg-teal-950 dark:border-teal-800">
+                  <Card className="flex flex-col items-center bg-white shadow-md w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-red-950 dark:border-red-800">
                     <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="w-10 h-10" />
+                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-white" />
                       <div className="flex flex-col">
                         <p className="text-md">Total de cargos</p>
                         <p className="text-small text-default-500">
@@ -160,7 +155,7 @@ export const Home = () => {
                       </div>
                     </CardHeader>
                     <CardBody>
-                      <p className="text-4xl mb-4 font-semibold">
+                      <p className="mb-4 text-4xl font-semibold">
                         ${totalExpenseData.data.expenseTotal.toFixed(2)}
                       </p>
                     </CardBody>
@@ -177,19 +172,14 @@ export const Home = () => {
               isLoaded={
                 !isLoadingcurr && !isLoadinglast && !isErrorcurr && !isErrorlast
               }
-              className="shadow-md rounded-3xl border-1 dark:bg-zinc-900 dark:border-zinc-800"
+              className="shadow-md rounded-3xl"
             >
-              <div className="bg-white rounded-3xl border-gray-200 w-[100%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
+              <div className="bg-white rounded-3xl border-1 border-gray-200 w-[100%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
                 <AreaChart currentData={currWeekData} lastData={lastWeekData} />
               </div>
             </Skeleton>
           </div>
-
-          <Skeleton
-            isLoaded={!isLoadingLastTransactions}
-            className="rounded-3xl"
-          >
-            <div className="flex items-center col-span-1 lg:col-span-1 bg-white">
+            <div className="flex items-center col-span-1 lg:col-span-1">
               {!isLoadingLastTransactions && (
                 <TransactionHistory
                   transactions={lastTransactionsData.data}
@@ -197,7 +187,6 @@ export const Home = () => {
                 />
               )}
             </div>
-          </Skeleton>
         </div>
       </div>
       <Toaster />

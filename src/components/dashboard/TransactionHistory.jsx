@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export const TransactionHistory = ({ transactions, isLoading }) => {
   return (
-    <div className=" shadow-md w-full dark:border-zinc-800bg-white rounded-3xl border-1 border-gray-200 h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
+    <div className=" shadow-md w-full dark:border-zinc-800bg-white rounded-3xl border-1 border-gray-200 h-[400px] bg-white dark:bg-zinc-900 dark:border-zinc-800">
       <div className="flex justify-between px-6 pt-6">
         <Skeleton isLoaded={!isLoading} className="rounded-3xl">
           <h1 className="text-xl font-semibold">Historial de Transacciones</h1>

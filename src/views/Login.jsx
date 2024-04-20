@@ -158,7 +158,6 @@ export const Login = () => {
                       }
                       endContent={
                         <div className="my-auto focus:outline-none">
-                          {" "}
                           {showPassword ? (
                             <GoEyeClosed
                               className="text-2xl text-default-400"
