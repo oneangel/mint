@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 import Analytics from "../assets/img/Analytics.png";
 import { Tilt } from "@jdion/tilt-react";
+import { TypeAnimation } from "react-type-animation";
 
 const personas = [
   { nombre: "Ricardo López", rol: "Rol de la persona" },
@@ -54,13 +55,29 @@ export const Landing = () => {
                 </p>
               </div>
               <div className="mt-4">
-                <h1 className="text-5xl font-bold md:text-7xl text-pretty">
+                <h1 className="text-5xl font-bold md:text-6xl text-pretty">
                   Ahorra fresco, vive sin límites 🍃
                 </h1>
-                <p className="mt-10 text-2xl md:text-3xl text-default-700">
+                <p className="mt-10 mb-5 text-2xl md:text-3xl text-default-700">
                   Mint te ayuda a controlar tus finanzas de una manera ágil y
                   sencilla para mantener una salud financiera.
                 </p>
+                <TypeAnimation
+                  sequence={[
+                    "Control de ingresos 💵",
+                    1000,
+                    "Control de gastos 📊",
+                    1000,
+                    "Interfaz intuitiva 🎨",
+                    1000,
+                    "Establecete metas 🏁",
+                    1000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  className="mt-10 text-2xl font-bold text-primary"
+                  repeat={Infinity}
+                />
                 <div className="flex flex-wrap gap-3 mt-6">
                   <Button
                     color="primary"
@@ -95,15 +112,66 @@ export const Landing = () => {
 
         {/* Nosotros */}
         <section id="nosotros" className="flex w-full min-h-screen">
-          <div className="flex gap-10 mx-auto my-auto bg-green-500">
+          <div className="grid grid-cols-1 gap-10 mx-auto my-auto bg-green-500 md:grid-cols-3">
             <Tilt>
-              <Card className="py-4">
+              <Card className="py-4 max-w-[300px] h-[340px] col-span-1">
                 <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
-                  <p className="font-bold uppercase text-tiny">Daily Mix</p>
-                  <small className="text-default-500">12 Tracks</small>
+                  <p className="font-bold uppercase text-tiny">
+                    Fácil acceso a tus ingresos{" "}
+                  </p>
+                  <small className="text-default-500 text-tiny">
+                    Acceso rápido y sencillo a tus ingreos para una mejor
+                    visualización, análisis y control.
+                  </small>
                   <h4 className="font-bold text-large">Frontend Radio</h4>
                 </CardHeader>
-                <CardBody className="py-2 overflow-visible">
+                <CardBody className="items-center py-2 overflow-visible">
+                  <Image
+                    alt="Card background"
+                    className="object-cover rounded-xl"
+                    src="https://www.wdeportes.com/resizer/v2/KIXYSM4HX5FF5KO74CRHVZEWDM.jpeg?auth=987c262ca632ea5cb0cf73b438d34aca62a935353b94ddb66e7e1516821826fd&width=768&height=576&quality=70&smart=true"
+                    width={200}
+                  />
+                </CardBody>
+              </Card>
+            </Tilt>
+
+            <Tilt>
+              <Card className="py-4 max-w-[300px] h-[340px] col-span-1">
+                <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
+                  <p className="font-bold uppercase text-tiny">
+                    Fácil acceso a tus ingresos{" "}
+                  </p>
+                  <small className="text-default-500 text-tiny">
+                    Acceso rápido y sencillo a tus ingreos para una mejor
+                    visualización, análisis y control.
+                  </small>
+                  <h4 className="font-bold text-large">Frontend Radio</h4>
+                </CardHeader>
+                <CardBody className="items-center py-2 overflow-visible">
+                  <Image
+                    alt="Card background"
+                    className="object-cover rounded-xl"
+                    src="https://www.wdeportes.com/resizer/v2/KIXYSM4HX5FF5KO74CRHVZEWDM.jpeg?auth=987c262ca632ea5cb0cf73b438d34aca62a935353b94ddb66e7e1516821826fd&width=768&height=576&quality=70&smart=true"
+                    width={200}
+                  />
+                </CardBody>
+              </Card>
+            </Tilt>
+
+            <Tilt>
+              <Card className="py-4 max-w-[300px] h-[340px]  col-span-1">
+                <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
+                  <p className="font-bold uppercase text-tiny">
+                    Fácil acceso a tus ingresos{" "}
+                  </p>
+                  <small className="text-default-500 text-tiny">
+                    Acceso rápido y sencillo a tus ingreos para una mejor
+                    visualización, análisis y control.
+                  </small>
+                  <h4 className="font-bold text-large">Frontend Radio</h4>
+                </CardHeader>
+                <CardBody className="items-center py-2 overflow-visible">
                   <Image
                     alt="Card background"
                     className="object-cover rounded-xl"

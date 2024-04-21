@@ -66,13 +66,13 @@ export const Header = () => {
           <MintIconL className="hidden w-8 dark:flex" />
         </Link>
         <div className="flex items-center -mr-4">
-          <a
-            href="#home"
+          <Link
+            to="/"
             className="flex transition duration-200 hover:rotate-6 hover:scale-110 md:hidden"
           >
-            <MintIcon className="size-8 dark:hidden" />
-            <MintIconL className="hidden size-8 dark:flex" />
-          </a>
+            <MintIcon className="w-8 dark:hidden" />
+            <MintIconL className="hidden w-8 dark:flex" />
+          </Link>
           <div className="hidden ml-8 space-x-8 md:flex">
             <a
               className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${

@@ -143,14 +143,14 @@ export const NavigationBar = () => {
           </button>
           <Dropdown>
             <DropdownTrigger>
-              <div className="w-10 h-10 overflow-hidden rounded-full">
+              <div className="overflow-hidden rounded-full size-8">
                 {!isLoading && (
                   <Avatar
                     src={`${data.data.avatar}`}
                     className="object-cover w-full h-full"
                     showFallback
                     fallback={
-                      <IoPersonSharp className="w-6 h-6 text-default-500" />
+                      <IoPersonSharp className="size-6 text-default-500" />
                     }
                   />
                 )}

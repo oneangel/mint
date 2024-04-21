@@ -18,7 +18,7 @@ import {
 } from "../hooks/transaction.hooks";
 import { getTransactionsByRange } from "../utils/transaction.utils";
 import toast, { Toaster } from "react-hot-toast";
-import { IoCaretDownCircle } from "react-icons/io5";
+import { IoCaretDownCircle, IoCaretUpCircle } from "react-icons/io5";
 
 export const Home = () => {
   const [month, setMonth] = useState("");
@@ -119,9 +119,9 @@ export const Home = () => {
                 className="p-1 rounded-3xl"
               >
                 {!isLoadingTotalIncome && (
-                  <Card className="flex flex-col items-center bg-white shadow-md w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-teal-950 dark:border-teal-800">
+                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-teal-950 dark:border-teal-800">
                     <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="text-teal-600 dark:text-white size-10" />
+                      <IoCaretUpCircle  Circle className="text-teal-600 dark:text-white size-10" />
                       <div className="flex flex-col">
                         <p className="text-md">Total de ingresos</p>
                         <p className="text-small text-default-500">
@@ -144,7 +144,7 @@ export const Home = () => {
                 className="p-1 rounded-3xl"
               >
                 {!isLoadingTotalExpense && (
-                  <Card className="flex flex-col items-center bg-white shadow-md w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-red-950 dark:border-red-800">
+                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-red-950 dark:border-red-800">
                     <CardHeader className="flex gap-4">
                       <IoCaretDownCircle className="text-red-500 size-10 dark:text-white" />
                       <div className="flex flex-col">
@@ -174,7 +174,7 @@ export const Home = () => {
               }
               className="shadow-md rounded-3xl"
             >
-              <div className="bg-white rounded-3xl border-1 border-gray-200 w-[100%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800">
+              <div className="bg-white rounded-3xl border-1 border-gray-200 w-[100%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800 transition">
                 <AreaChart currentData={currWeekData} lastData={lastWeekData} />
               </div>
             </Skeleton>

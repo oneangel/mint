@@ -494,7 +494,6 @@ export const Transfer = () => {
             </Card>
           </div>
         </div>
-
         <Toaster />
       </div>
     </>
