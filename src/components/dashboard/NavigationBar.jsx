@@ -86,8 +86,8 @@ export const NavigationBar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-10 px-6 bg-white shadow dark:bg-zinc-900">
-      <div className="flex items-center justify-between h-16 mx-auto max-w-7xl ">
+    <nav className="fixed top-0 left-0 right-0 z-40 px-6 bg-white shadow dark:bg-zinc-900">
+      <div className="flex items-center justify-between h-16 mx-auto max-w-7xl">
         <button
           onClick={toggleMenu}
           className="flex p-1 -ml-1 transition-colors rounded md:hidden text-zinc-500 hover:bg-primary hover:text-slate-200 focus:ring-2 focus:ring-slate-200 dark:text-zinc-200"

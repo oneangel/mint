@@ -50,7 +50,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-10 px-6 bg-white shadow dark:bg-zinc-900">
+    <header className="fixed top-0 left-0 right-0 z-40 px-6 bg-white shadow dark:bg-zinc-900">
       <div className="flex items-center justify-between h-16 mx-auto max-w-7xl ">
         <button
           onClick={toggleMenu}

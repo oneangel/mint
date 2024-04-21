@@ -82,7 +82,7 @@ export const Login = () => {
 
       {!showLoading && (
         <div className="grid h-screen grid-cols-1 lg:grid-cols-2 bg-zinc-700">
-          <div className="flex-col col-span-1 lg:flex hidden bg-[#3E70A1]">
+          <div className="flex-col col-span-1 xl:flex hidden bg-[#3E70A1]">
             <header className="flex items-center mx-auto h-36">
               <Link
                 to="/"
@@ -112,7 +112,7 @@ export const Login = () => {
               retroalimentacion y control al tomar una decisión financiera.{" "}
             </p>
           </div>
-          <div className="flex flex-col col-span-2 bg-white md:col-span-1 dark:bg-zinc-900">
+          <div className="flex flex-col col-span-2 bg-white xl:col-span-1 dark:bg-zinc-900">
             <div className="my-auto">
               <h1 className="mb-10 text-6xl font-bold text-center text-gray-800 dark:text-white ">
                 INICIAR SESIÓN
@@ -151,7 +151,7 @@ export const Login = () => {
                       {...register("password", {
                         required: "el campo es obligatorio",
                       })}
-                      className="bg-white rounded-2xl dark:bg-zinc-800"
+                      className="bg-white rounded-2xl dark:bg-zinc-800 "
                       classNames={{ label: "text-2xl" }}
                       startContent={
                         <IoLockClosed className="flex-shrink-0 text-2xl pointer-events-none text-sky-700" />
