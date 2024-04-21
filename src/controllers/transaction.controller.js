@@ -206,6 +206,70 @@ export const getUserTransactionsByDateRange = async (req, res) => {
   }
 };
 
+export const getIncomesByDateRange = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const { startDate, endDate } = req.body;
+
+    const transactionList = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          status: true,
+          type: "income",
+          createdAt: {
+            $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+            $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+          }
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          totalAmount: { $sum: "$amount" }
+        }
+      },
+      { $sort: { "_id": 1 } } //To sort them ascendant
+    ])
+    res.json(transactionList);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' })
+  }
+};
+
+export const getExpensesByDateRange = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const { startDate, endDate } = req.body;
+
+    const transactionList = await Transaction.aggregate([
+      {
+        $match: {
+          username: code,
+          status: true,
+          type: "expense",
+          createdAt: {
+            $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+            $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+          }
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          totalAmount: { $sum: "$amount" }
+        }
+      },
+      { $sort: { "_id": 1 } } //To sort them ascendant
+    ])
+    res.json(transactionList);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' })
+  }
+};
+
 // Gets user's expenses by range
 export const getExpensesByRangeTotal = async (req, res) => {
   try {

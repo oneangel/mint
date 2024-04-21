@@ -33,6 +33,8 @@ router.put('/update/transaction/:code', TransactionController.updateTransaction)
 router.get('/get/transaction/:code', authMiddleware, TransactionController.getTransaction);
 router.get('/get/user/transactions/:code', authMiddleware, TransactionController.getUserTransactionsList);
 router.post('/get/transactions/bydate/:code', authMiddleware, TransactionController.getUserTransactionsByDateRange);
+router.post('/get/incomes/bydate/:code', authMiddleware, TransactionController.getIncomesByDateRange);
+router.post('/get/expenses/bydate/:code', authMiddleware, TransactionController.getExpensesByDateRange);
 router.post('/get/expensesTotal/bydate/:code', TransactionController.getExpensesByRangeTotal);
 router.post('/get/incomesTotal/bydate/:code', TransactionController.getIncomesByRangeTotal);
 router.get('/get/expensesTotal/:code', TransactionController.getExpensesTotal);
