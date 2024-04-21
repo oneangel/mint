@@ -18,9 +18,6 @@ export const registerService = async (req, res) => {
       }
     });
 
-    console.log(searchDate);
-    console.log(startOfDayDate);
-    console.log(endOfDayDate);
     if (!existingService) {
       const newService = new Service({
         serial,
@@ -32,7 +29,7 @@ export const registerService = async (req, res) => {
       const saveService = await newService.save();
       res.send(saveService);
     } else {
-      existingService.measurement += measurement;
+      existingService.measurement = measurement;
 
       const updatedService = await existingService.save();
       res.send(updatedService)
