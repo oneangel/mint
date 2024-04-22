@@ -22,7 +22,7 @@ export const registerTransaction = async (req, res) => {
     const saveTransaction = await newTransaction.save();
     res.send(saveTransaction);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error });
   }
 };
 
