@@ -40,9 +40,7 @@ export const Header = () => {
   };
 
   const handleLogin = () => {
-    localStorage.getItem("token") != null
-      ? navigate("/home")
-      : navigate("/login");
+    navigate("/login");
   };
 
   const toggleMenu = () => {
@@ -109,8 +107,8 @@ export const Header = () => {
           </button>
           <Button className="text-white bg-sky-700" onClick={handleLogin}>
             {localStorage.getItem("token") != null
-              ? "Iniciar Sesíon"
-              : "Iniciar Sesíon"}
+              ? "Dashboard"
+              : "Iniciar Sesión"}
           </Button>
         </div>
       </div>
