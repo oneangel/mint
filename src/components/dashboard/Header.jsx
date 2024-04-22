@@ -51,7 +51,7 @@ export const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 px-6 bg-white shadow dark:bg-zinc-900">
-      <div className="flex items-center justify-between h-16 mx-auto max-w-7xl ">
+      <div className="flex items-center justify-between h-16 mx-auto lg:px-20 ">
         <button
           onClick={toggleMenu}
           className="flex p-1 -ml-1 transition-colors rounded md:hidden text-zinc-500 hover:bg-primary hover:text-slate-200 focus:ring-2 focus:ring-slate-200 dark:text-zinc-200"
@@ -62,16 +62,16 @@ export const Header = () => {
           to="/"
           className="hidden transition duration-200 hover:rotate-6 hover:scale-110 md:flex"
         >
-          <MintIcon className="w-8 dark:hidden" />
-          <MintIconL className="hidden w-8 dark:flex" />
+          <MintIcon className="w-10 dark:hidden" />
+          <MintIconL className="hidden w-10 dark:flex" />
         </Link>
         <div className="flex items-center -mr-4">
           <Link
             to="/"
             className="flex transition duration-200 hover:rotate-6 hover:scale-110 md:hidden"
           >
-            <MintIcon className="w-8 dark:hidden" />
-            <MintIconL className="hidden w-8 dark:flex" />
+            <MintIcon className="w-10 dark:hidden" />
+            <MintIconL className="hidden w-10 dark:flex" />
           </Link>
           <div className="hidden ml-8 space-x-8 md:flex">
             <a
@@ -107,7 +107,7 @@ export const Header = () => {
           >
             {themeIcon}
           </button>
-          <Button color="primary" onClick={handleLogin}>
+          <Button className="text-white bg-sky-700" onClick={handleLogin}>
             {localStorage.getItem("token") != null
               ? "Iniciar Sesíon"
               : "Iniciar Sesíon"}

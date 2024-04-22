@@ -1,18 +1,15 @@
 import React from "react";
-import Spline from "@splinetool/react-spline";
 import { IoArrowForwardOutline, IoLogoAndroid } from "react-icons/io5";
+import {
+  TbCalculatorFilled,
+  TbChartAreaFilled,
+  TbCoins,
+  TbDeviceHeartMonitorFilled,
+} from "react-icons/tb";
 import { Header } from "../components/dashboard/Header";
 import { useNavigate } from "react-router-dom";
-import {
-  Button,
-  Chip,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-} from "@nextui-org/react";
-import Analytics from "../assets/img/Analytics.png";
+import { Button, Chip } from "@nextui-org/react";
+import bg2 from "../assets/img/mint-movil.png";
 import { Tilt } from "@jdion/tilt-react";
 import { TypeAnimation } from "react-type-animation";
 
@@ -27,19 +24,45 @@ const personas = [
 ];
 
 export const Landing = () => {
+  const navigate = useNavigate();
   const handleRegPage = () => {
     navigate("/register");
   };
 
-  const navigate = useNavigate();
+  const caracteristicas = [
+    {
+      icono: <TbCalculatorFilled className="size-10" />,
+      titulo: "Control de gastos",
+      texto:
+        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+    },
+    {
+      icono: <TbChartAreaFilled className="size-10" />,
+      titulo: "Analisis financiero",
+      texto:
+        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+    },
+    {
+      icono: <TbCoins className="size-10" />,
+      titulo: "Control de ingresos",
+      texto:
+        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+    },
+    {
+      icono: <TbDeviceHeartMonitorFilled className="size-10" />,
+      titulo: "Sevicios basicos",
+      texto:
+        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+    },
+  ];
   return (
     <div className="">
       <Header />
       <div className="h-screen overflow-auto bg-white dark:bg-zinc-950">
         {/* Inicio */}
-        <section id="home" className="w-full h-screen ">
-          <div className="grid h-full gap-2 mx-auto space-x-5 max-w-7xl md:grid-cols-2">
-            <div className="p-10 my-auto lg:col-span-1 md:col-span-2">
+        <section id="home" className="w-full max-h-screen ">
+          <div className="grid h-full gap-2 mx-auto space-x-5 md:grid-cols-2">
+            <div className="p-10 my-auto md:px-20 lg:col-span-1 md:col-span-2">
               <div className="flex flex-wrap items-center p-2 rounded-full bg-default-200 w-80">
                 <Chip
                   variant="shadow"
@@ -55,13 +78,9 @@ export const Landing = () => {
                 </p>
               </div>
               <div className="mt-4">
-                <h1 className="text-5xl font-bold md:text-6xl text-pretty">
+                <h1 className="mb-3 text-5xl font-bold md:text-7xl text-pretty">
                   Ahorra fresco, vive sin límites 🍃
                 </h1>
-                <p className="mt-10 mb-5 text-2xl md:text-3xl text-default-700">
-                  Mint te ayuda a controlar tus finanzas de una manera ágil y
-                  sencilla para mantener una salud financiera.
-                </p>
                 <TypeAnimation
                   sequence={[
                     "Control de ingresos 💵",
@@ -75,15 +94,19 @@ export const Landing = () => {
                   ]}
                   wrapper="span"
                   speed={50}
-                  className="mt-10 text-2xl font-bold text-primary"
+                  className="text-2xl font-bold text-sky-700"
                   repeat={Infinity}
                 />
+                <p className="mt-5 text-2xl text-default-700">
+                  Mint te ayuda a controlar tus finanzas de una manera ágil y
+                  sencilla para mantener una salud financiera.
+                </p>
+
                 <div className="flex flex-wrap gap-3 mt-6">
                   <Button
-                    color="primary"
                     size="lg"
                     onClick={handleRegPage}
-                    className="text-xs size-44 md:w-56 md:text-lg"
+                    className="text-xs text-white transition size-44 md:w-56 md:text-lg bg-sky-700 hover:scale-110"
                     endContent={<IoArrowForwardOutline />}
                   >
                     Comienza gratis
@@ -104,83 +127,35 @@ export const Landing = () => {
 
             <div className="items-center hidden justify-cemter lg:col-span-1 lg:block">
               <div className="flex items-center justify-center h-full">
-                <img src={Analytics} alt="Mint" className="" />
+                <img src={bg2} alt="Mint" className="" />
               </div>
             </div>
           </div>
         </section>
 
         {/* Nosotros */}
-        <section id="nosotros" className="flex w-full min-h-screen">
-          <div className="grid grid-cols-1 gap-10 mx-auto my-auto bg-green-500 md:grid-cols-3">
-            <Tilt>
-              <Card className="py-4 max-w-[300px] h-[340px] col-span-1">
-                <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
-                  <p className="font-bold uppercase text-tiny">
-                    Fácil acceso a tus ingresos{" "}
-                  </p>
-                  <small className="text-default-500 text-tiny">
-                    Acceso rápido y sencillo a tus ingreos para una mejor
-                    visualización, análisis y control.
-                  </small>
-                  <h4 className="font-bold text-large">Frontend Radio</h4>
-                </CardHeader>
-                <CardBody className="items-center py-2 overflow-visible">
-                  <Image
-                    alt="Card background"
-                    className="object-cover rounded-xl"
-                    src="https://www.wdeportes.com/resizer/v2/KIXYSM4HX5FF5KO74CRHVZEWDM.jpeg?auth=987c262ca632ea5cb0cf73b438d34aca62a935353b94ddb66e7e1516821826fd&width=768&height=576&quality=70&smart=true"
-                    width={200}
-                  />
-                </CardBody>
-              </Card>
-            </Tilt>
-
-            <Tilt>
-              <Card className="py-4 max-w-[300px] h-[340px] col-span-1">
-                <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
-                  <p className="font-bold uppercase text-tiny">
-                    Fácil acceso a tus ingresos{" "}
-                  </p>
-                  <small className="text-default-500 text-tiny">
-                    Acceso rápido y sencillo a tus ingreos para una mejor
-                    visualización, análisis y control.
-                  </small>
-                  <h4 className="font-bold text-large">Frontend Radio</h4>
-                </CardHeader>
-                <CardBody className="items-center py-2 overflow-visible">
-                  <Image
-                    alt="Card background"
-                    className="object-cover rounded-xl"
-                    src="https://www.wdeportes.com/resizer/v2/KIXYSM4HX5FF5KO74CRHVZEWDM.jpeg?auth=987c262ca632ea5cb0cf73b438d34aca62a935353b94ddb66e7e1516821826fd&width=768&height=576&quality=70&smart=true"
-                    width={200}
-                  />
-                </CardBody>
-              </Card>
-            </Tilt>
-
-            <Tilt>
-              <Card className="py-4 max-w-[300px] h-[340px]  col-span-1">
-                <CardHeader className="flex-col items-start px-4 pt-2 pb-0">
-                  <p className="font-bold uppercase text-tiny">
-                    Fácil acceso a tus ingresos{" "}
-                  </p>
-                  <small className="text-default-500 text-tiny">
-                    Acceso rápido y sencillo a tus ingreos para una mejor
-                    visualización, análisis y control.
-                  </small>
-                  <h4 className="font-bold text-large">Frontend Radio</h4>
-                </CardHeader>
-                <CardBody className="items-center py-2 overflow-visible">
-                  <Image
-                    alt="Card background"
-                    className="object-cover rounded-xl"
-                    src="https://www.wdeportes.com/resizer/v2/KIXYSM4HX5FF5KO74CRHVZEWDM.jpeg?auth=987c262ca632ea5cb0cf73b438d34aca62a935353b94ddb66e7e1516821826fd&width=768&height=576&quality=70&smart=true"
-                    width={200}
-                  />
-                </CardBody>
-              </Card>
-            </Tilt>
+        <section id="nosotros" className="flex flex-col w-full min-h-screen">
+          <div className="grid w-screen grid-cols-1 h-[700px] lg:grid-cols-3">
+            <div className="col-span-1">
+              <h2>Seguridad y Confianza</h2>
+            </div>
+            <div className="grid grid-cols-1 col-span-2 gap-4 p-16 shadow lg:grid-cols-2 bg-gradient-to-b from-sky-200 to-sky-50 rounded-s-3xl">
+              {caracteristicas.map((caracteristica, index) => (
+                <Tilt>
+                  <div key={index} className="col-span-1 lg:col-span-1">
+                    <div className="flex flex-wrap items-center gap-3 mb-4">
+                      <span className="p-1 bg-white text-sky-700 rounded-xl">
+                        {caracteristica.icono}
+                      </span>
+                      <h2 className="text-2xl font-semibold">
+                        {caracteristica.titulo}
+                      </h2>
+                    </div>
+                    <p>{caracteristica.texto}</p>
+                  </div>
+                </Tilt>
+              ))}
+            </div>
           </div>
         </section>
 

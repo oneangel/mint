@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@nextui-org/react";
 import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
+import secureimg from '../assets/img/secure.png'
 
 export const Register = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -90,26 +91,10 @@ export const Register = () => {
             <MintIconL className="w-16" />
           </Link>
         </header>
-        <div className="flex flex-col max-w-3xl mx-auto my-auto bg-white h-[400px] dark:bg-zinc-800 rounded-3xl">
-          <h1 className="mx-10 mt-6 text-5xl font-semibold text-sky-700 dark:text-sky-400">
-            Alcanza tus metas financieras más rápido
-          </h1>
-          <p className="mx-10 mt-16 text-2xl">
-            Utiliza Mint y controla tus finanzas de forma ágil y sencilla.
-          </p>
-          <Button
-            color="primary"
-            size="lg"
-            className="w-40 mx-10 mt-10 bg-sky-600"
-            onClick={handleHome}
-          >
-            Leer más
-          </Button>
+        <div className="flex flex-wrap items-center justify-center max-w-3xl p-10 py-20 mx-auto my-auto bg-white dark:bg-zinc-800 rounded-3xl">
+          <h1 className="text-5xl font-semibold w-80 text-sky-700">Tus ingresos están protegidos</h1>
+          <img src={secureimg} alt="" />
         </div>
-        <p className="max-w-3xl mx-auto mb-20 text-xl text-white">
-          Analizar tus gastos anteriores garantiza una mejor retroalimentacion y
-          control al tomar una decisión financiera.{" "}
-        </p>
       </div>
       <div className="flex flex-col col-span-2 bg-white md:col-span-1 dark:bg-zinc-900">
         <div className="my-auto">

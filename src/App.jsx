@@ -17,6 +17,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 import SesionRoute from "./components/auth/SesionRoute.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { CheckScreen } from "./views/check.jsx";
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
               <Route path="/" element={<Landing />}></Route>
               <Route path="/login" element={<Login />}></Route>
               <Route path="/register" element={<Register />} />
+              <Route path="/verificate" element={<CheckScreen />} />
               <Route
                 path="/home"
                 element={

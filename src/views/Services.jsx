@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
+import { Link } from "react-router-dom";
 import GaugeChart from "../components/charts/GaugeChart";
 import { IoFlash, IoWater, IoAddCircle } from "react-icons/io5";
 import LiquidFillChart from "../components/charts/LiquidFillChart";
@@ -84,65 +85,62 @@ export const Services = () => {
   return (
     <div className="h-screen bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
-      <h1 className="text-4xl font-semibold pl-20 text-sky-700 pt-32 dark:text-white">
-        Servicios
-      </h1>
-      <div className="mx-20 flex flex-wrap h-[700px]">
-        {!serial && (
-          <>
-            <h1 className="text-6xl font-semibold pl-20 text-sky-700 pt-20 dark:text-white">
-              ¡No hay un medidor asociado!
-            </h1>
-            <Button
-              className="w-full text-xl text-white h-14 bg-sky-700"
-              startContent={<IoAddCircle className="text-white size-6" />}
-              aria-label="Agregar"
-              onClick={() => setShowModal(true)}
-            >
-              Agregar
-            </Button>
 
-            <Modal isOpen={showModal} onOpenChange={setShowModal}>
-              <ModalContent>
-                <ModalHeader>Asociar medidor</ModalHeader>
-                <form action="" onSubmit={handleSubmit(onSubmit)}>
-                  <ModalBody>
-                    <Input
-                      type="text"
-                      label="Número serial"
-                      name="serial"
-                      className="mb-5"
-                      {...register("serial", {
-                        required: "El campo es requerido",
-                      })}
-                    />
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button
-                      disabled={!isValid}
-                      color="primary"
-                      onPress={handleSubmit(onSubmit)}
-                    >
-                      Guardar cambios
-                    </Button>
-                    <Button
-                      color="danger"
-                      variant="light"
-                      onPress={() => setShowModal(false)}
-                    >
-                      Cancelar
-                    </Button>
-                  </ModalFooter>
-                </form>
-              </ModalContent>
-            </Modal>
-          </>
-        )}
+      <div className="grid h-screen grid-cols-2">
+        <div className="flex flex-wrap col-span-2 gap-20 mx-auto my-auto">
+          {!serial && (
+            <>
+              <h1 className="pt-20 pl-20 text-6xl font-semibold text-sky-700 dark:text-white">
+                ¡No hay un medidor asociado!
+              </h1>
+              <Button
+                className="w-full text-xl text-white h-14 bg-sky-700"
+                startContent={<IoAddCircle className="text-white size-6" />}
+                aria-label="Agregar"
+                onClick={() => setShowModal(true)}
+              >
+                Agregar
+              </Button>
 
-        {serial && (
-          <div className="w-1/3 flex justify-center items-center">
-            <div className="w-[90%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800 items-center">
-              <p className="pt-10 pl-10 flex items-center text-2xl font-bold text-default-700">
+              <Modal isOpen={showModal} onOpenChange={setShowModal}>
+                <ModalContent>
+                  <ModalHeader>Asociar medidor</ModalHeader>
+                  <form action="" onSubmit={handleSubmit(onSubmit)}>
+                    <ModalBody>
+                      <Input
+                        type="text"
+                        label="Número serial"
+                        name="serial"
+                        className="mb-5"
+                        {...register("serial", {
+                          required: "El campo es requerido",
+                        })}
+                      />
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        disabled={!isValid}
+                        color="primary"
+                        onPress={handleSubmit(onSubmit)}
+                      >
+                        Guardar cambios
+                      </Button>
+                      <Button
+                        color="danger"
+                        variant="light"
+                        onPress={() => setShowModal(false)}
+                      >
+                        Cancelar
+                      </Button>
+                    </ModalFooter>
+                  </form>
+                </ModalContent>
+              </Modal>
+            </>
+          )}
+          {serial && (
+            <div className="items-center p-5 bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
+              <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                 <span>
                   <IoWater className="size-8" />
                 </span>
@@ -152,7 +150,7 @@ export const Services = () => {
                 {!isLoadingTariffW && (
                   <div className="flex items-center justify-center">
                     <LiquidFillChart
-                      litros={measureData ? tariffWData.data.measure : 0}
+                    // litros={measureData ? tariffWData.data.measure : 0}
                     />
                   </div>
                 )}
@@ -164,32 +162,29 @@ export const Services = () => {
                     Total de litros:{" "}
                     {!isLoadingTariffW && (
                       <span className="ml-2 text-default-400">
-                        {tariffData ? tariffData.data.measure : 0}L
+                        {tariffData ? tariffData.data.measure : 0}
                       </span>
                     )}
                   </p>
                 </div>
 
                 <div className="w-1/2 ">
-                  <p className="text-center text-xl">Gastos</p>
-                  <div className="bg-red-50 h-20 mt-2 rounded-3xl mx-4 flex items-center justify-center sha">
+                  <p className="text-xl text-center">Gastos</p>
+                  <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 rounded-3xl sha">
                     {!isLoadingTariffW && !isErrorTariffW && (
                       <p className="text-2xl font-bold text-red-700">
                         $
-                        {tariffWData ? tariffWData.data.totalPay.toFixed(2) : 0}
+                        {/* {tariffWData ? tariffWData.data.totalPay.toFixed(2) : 0} */}
                       </p>
                     )}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
-
-        {serial && (
-          <div className="w-1/2 flex justify-center items-center">
-            <div className="w-[70%] bg-white h-[90%] rounded-3xl border-1 border-default-300 shadow-md dark:bg-zinc-900 dark:border-zinc-800">
-              <p className="pt-10 pl-10 flex items-center text-2xl font-bold text-default-700">
+          )}
+          {serial && (
+            <div className="items-center p-5 bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
+              <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                 <span>
                   <IoFlash className="size-8" />
                 </span>
@@ -231,8 +226,8 @@ export const Services = () => {
                 </div>
 
                 <div className="w-1/2 ">
-                  <p className="text-center text-xl">Gastos</p>
-                  <div className="bg-red-50 h-20 mt-2 rounded-3xl mx-4 flex items-center justify-center sha">
+                  <p className="text-xl text-center">Gastos</p>
+                  <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 rounded-3xl sha">
                     {!isLoadingTariff && (
                       <p className="text-2xl font-bold text-red-700">
                         ${tariffData ? tariffData.data.total.toFixed(2) : 0}
@@ -242,9 +237,10 @@ export const Services = () => {
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+
       <Toaster />
     </div>
   );
