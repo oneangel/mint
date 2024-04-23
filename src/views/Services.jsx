@@ -88,7 +88,7 @@ export const Services = () => {
   };
 
   return (
-    <div className="h-screen bg-sky-50/50 dark:bg-zinc-950">
+    <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-zinc-950">
       <NavigationBar />
 
       {!serial && (
@@ -149,7 +149,7 @@ export const Services = () => {
               <Tabs
                 aria-label="Options"
                 color="primary"
-                classNames={{cursor: "bg-sky-700"}}
+                classNames={{ cursor: "bg-sky-700" }}
                 variant="bordered"
                 onSelectionChange={setSelectedOption}
                 selectedKey={selectedOption}
@@ -163,7 +163,7 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <div className="items-center w-[600px] p-5 bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
+                  <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
                     <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                       <span>
                         <IoWater className="size-8" />
@@ -194,9 +194,9 @@ export const Services = () => {
 
                       <div className="w-1/2 ">
                         <p className="text-xl text-center">Gastos</p>
-                        <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 rounded-3xl sha">
+                        <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
                           {!isLoadingTariffW && !isErrorTariffW && (
-                            <p className="text-2xl font-bold text-red-700">
+                            <p className="text-2xl font-bold text-red-700 dark:text-white">
                               $
                               {/* {tariffWData ? tariffWData.data.totalPay.toFixed(2) : 0} */}
                             </p>
@@ -215,40 +215,44 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <div className="items-center w-[600px] p-5 bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
+                  <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
                     <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                       <span>
                         <IoFlash className="size-8" />
                       </span>
-                      Energia
+                      Electricidad
                     </p>
                     {!isLoadingMeasure && !isLoadingTariffs && (
-                      <GaugeChart
-                        kw={
-                          measureData ? measureData.data.totalMeasure / 100 : 0
-                        }
-                        basic={
-                          tariffsData
-                            ? tariffsData.data.tariffs.basic.limit / 100
-                            : 0
-                        }
-                        middle={
-                          tariffsData
-                            ? tariffsData.data.tariffs.middle.limit / 100
-                            : 0
-                        }
-                        excedent={
-                          tariffsData
-                            ? tariffsData.data.tariffs.basic.limit /
-                              0.3333 /
-                              100
-                            : 0
-                        }
-                      />
+                      <div className="flex items-center justify-center">
+                        <GaugeChart
+                          kw={
+                            measureData
+                              ? measureData.data.totalMeasure / 100
+                              : 0
+                          }
+                          basic={
+                            tariffsData
+                              ? tariffsData.data.tariffs.basic.limit / 100
+                              : 0
+                          }
+                          middle={
+                            tariffsData
+                              ? tariffsData.data.tariffs.middle.limit / 100
+                              : 0
+                          }
+                          excedent={
+                            tariffsData
+                              ? tariffsData.data.tariffs.basic.limit /
+                                0.3333 /
+                                100
+                              : 0
+                          }
+                        />
+                      </div>
                     )}
 
-                    <div className="flex flex-wrap mx-10">
-                      <div className="w-1/2">
+                    <div className="grid grid-cols-2 mx-10">
+                      <div className="col-span-2 md:col-span-1">
                         <p className="mt-10 text-xl font-semibold">
                           Total de kW:{" "}
                           {!isLoadingMeasure && (
@@ -264,11 +268,11 @@ export const Services = () => {
                         </p>
                       </div>
 
-                      <div className="w-1/2 ">
+                      <div className="col-span-2 md:col-span-1">
                         <p className="text-xl text-center">Gastos</p>
-                        <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 rounded-3xl sha">
+                        <div className="flex items-center justify-center h-20 mx-auto w-[70%] mt-6 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
                           {!isLoadingTariff && (
-                            <p className="text-2xl font-bold text-red-700">
+                            <p className="text-2xl font-bold text-red-700 dark:text-white">
                               $
                               {tariffData
                                 ? tariffData.data.total.toFixed(2)
