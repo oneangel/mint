@@ -44,7 +44,7 @@ function LiquidFillChart({ litros }) {
   return (
     <div
       id="liquidfill-chart"
-      style={{ width: "400px", height: "400px" }}
+      className="w-[400px] h-[400px]"
     ></div>
   );
 }

@@ -3,19 +3,14 @@ import { AuthContext } from "../../context/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import {
-  Switch,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button,
   Avatar,
 } from "@nextui-org/react";
-import { MoonIcon } from "../../icons/MoonIcon";
-import { SunIcon } from "../../icons/SunIcon";
 import {
   IoHome,
-  IoNotifications,
   IoPersonSharp,
   IoSwapVerticalOutline,
   IoWallet,
@@ -147,7 +142,7 @@ export const NavigationBar = () => {
                 {!isLoading && (
                   <Avatar
                     src={`${data.data.avatar}`}
-                    className="object-cover w-full h-full"
+                    className="object-cover w-full h-full cursor-pointer"
                     showFallback
                     fallback={
                       <IoPersonSharp className="size-6 text-default-500" />
