@@ -26,7 +26,6 @@ const clientSchema = new mongoose.Schema({
   firstname: {
     type: String,
     required: true,
-    validate: validator.isAlphanumeric
   },
 
   lastname: {
