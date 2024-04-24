@@ -45,7 +45,7 @@ export const getTotalEMonthMeasure = async (req, res) => {
 
     const existingService = await Service.findOne({ serial: code });
     if (!existingService) {
-      res.send(null);
+      return res.send(null);
     }
 
     const totalMeasure = await Service.aggregate([
