@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ModalPortal } from "react-native-modals";
 import { AlertNotificationRoot } from "react-native-alert-notification";
-
+import { NativeBaseProvider } from "native-base";
 
 const queryClient = new QueryClient();
 
@@ -39,13 +39,15 @@ export default function App() {
   }
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <AlertNotificationRoot>
-        <NavigationContainer>
-          <MainStackNavigator />
-        </NavigationContainer>
-      </AlertNotificationRoot>
-      <ModalPortal />
-    </QueryClientProvider>
+    <NativeBaseProvider>
+      <QueryClientProvider client={queryClient}>
+        <AlertNotificationRoot>
+          <NavigationContainer>
+            <MainStackNavigator />
+          </NavigationContainer>
+        </AlertNotificationRoot>
+        <ModalPortal />
+      </QueryClientProvider>
+    </NativeBaseProvider>
   );
 }

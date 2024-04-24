@@ -1,16 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity, TextInput, Pressable } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Pressable,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import TransferList from "../components/TransferList";
 import { useQuery } from "react-query";
-import { useGetTL, useGetIBD, useGetEBD, useDT, useUT } from "../hooks/transaction.hooks";
+import {
+  useGetTL,
+  useGetIBD,
+  useGetEBD,
+  useDT,
+  useUT,
+} from "../hooks/transaction.hooks";
 import { BarChart } from "../components/charts/BarChart";
 import CustomModal from "../components/CustomModal";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { useAddT } from "../hooks/transaction.hooks";
 import { useQueryClient } from "react-query";
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import {
+  ALERT_TYPE,
+  Dialog,
+  AlertNotificationRoot,
+  Toast,
+} from "react-native-alert-notification";
 import DeleteModal from "../components/DeleteModal";
 import UpdateModal from "../components/UpdateModal";
 
@@ -20,26 +39,26 @@ const TransferScreen = () => {
   const {
     data: transactionList,
     isLoading: isLoadingTransactionList,
-    isError: isErrorTransactionList
+    isError: isErrorTransactionList,
   } = useQuery("transactionList", useGetTL);
 
   const {
     data: incomeList,
     isLoading: isLoadingIncomeList,
-    isError: isErrorIncomeList
+    isError: isErrorIncomeList,
   } = useQuery("incomeList", useGetIBD);
 
   const {
     data: expenseList,
     isLoading: isLoadingExpenseList,
-    isError: isErrorExpenseList
+    isError: isErrorExpenseList,
   } = useQuery("expenseList", useGetEBD);
 
   const {
     register,
     handleSubmit,
     setValue,
-    formState: { errors, isValid }
+    formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
 
   const [selectedOption, setSelectedOption] = useState("ingresos");
@@ -52,11 +71,11 @@ const TransferScreen = () => {
     onSuccess: () => {
       Dialog.show({
         type: ALERT_TYPE.SUCCESS,
-        title: 'Transacción agregada',
-        textBody: 'La transaccion fue agregada exitosamente',
-        button: 'Aceptar',
+        title: "Transacción agregada",
+        textBody: "La transaccion fue agregada exitosamente",
+        button: "Aceptar",
         onPressButton: () => Dialog.hide(),
-      })
+      });
       queryClient.refetchQueries("expenseList");
       queryClient.refetchQueries("incomeList");
       queryClient.refetchQueries("transactionList");
@@ -65,23 +84,23 @@ const TransferScreen = () => {
       console.log(error);
       Dialog.show({
         type: ALERT_TYPE.DANGER,
-        title: '¡Ocurrio un error inesperado!',
-        textBody: 'Por favor, Intenta nuevamente',
-        button: 'Aceptar',
+        title: "¡Ocurrio un error inesperado!",
+        textBody: "Por favor, Intenta nuevamente",
+        button: "Aceptar",
         onPressButton: () => Dialog.hide(),
-      })
-    }
+      });
+    },
   });
 
   const deleteTransactionMutation = useMutation(useDT, {
     onSuccess: () => {
       Dialog.show({
         type: ALERT_TYPE.SUCCESS,
-        title: 'Transacción Eliminada',
-        textBody: 'La transaccion fue eliminada exitosamente',
-        button: 'Aceptar',
+        title: "Transacción Eliminada",
+        textBody: "La transaccion fue eliminada exitosamente",
+        button: "Aceptar",
         onPressButton: () => Dialog.hide(),
-      })
+      });
       queryClient.refetchQueries("expenseList");
       queryClient.refetchQueries("incomeList");
       queryClient.refetchQueries("transactionList");
@@ -91,11 +110,11 @@ const TransferScreen = () => {
       console.log(error);
       Dialog.show({
         type: ALERT_TYPE.DANGER,
-        title: '¡Ocurrio un error inesperado!',
-        textBody: 'Por favor, Intenta nuevamente',
-        button: 'Aceptar',
+        title: "¡Ocurrio un error inesperado!",
+        textBody: "Por favor, Intenta nuevamente",
+        button: "Aceptar",
         onPressButton: () => Dialog.hide(),
-      })
+      });
     },
   });
 
@@ -103,11 +122,11 @@ const TransferScreen = () => {
     onSuccess: () => {
       Dialog.show({
         type: ALERT_TYPE.SUCCESS,
-        title: 'Transacción Actualizada',
-        textBody: 'La transaccion fue actualizada exitosamente',
-        button: 'Aceptar',
+        title: "Transacción Actualizada",
+        textBody: "La transaccion fue actualizada exitosamente",
+        button: "Aceptar",
         onPressButton: () => Dialog.hide(),
-      })
+      });
       queryClient.refetchQueries("expenseList");
       queryClient.refetchQueries("incomeList");
       queryClient.refetchQueries("transactionList");
@@ -117,11 +136,11 @@ const TransferScreen = () => {
       console.log(error);
       Dialog.show({
         type: ALERT_TYPE.DANGER,
-        title: '¡Ocurrio un error inesperado!',
-        textBody: 'Por favor, Intenta nuevamente',
-        button: 'Aceptar',
+        title: "¡Ocurrio un error inesperado!",
+        textBody: "Por favor, Intenta nuevamente",
+        button: "Aceptar",
         onPressButton: () => Dialog.hide(),
-      })
+      });
     },
   });
 
@@ -143,16 +162,16 @@ const TransferScreen = () => {
   };
 
   const onDelete = (id) => {
-    setSelectedItem({})
+    setSelectedItem({});
     toggleDeleteModal();
     deleteTransactionMutation.mutate(id);
   };
 
   const onUpdate = (data) => {
-    setSelectedItem({})
+    setSelectedItem({});
     toggleUpdateModal();
     updateTransactionMutation.mutate(data);
-  }
+  };
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
@@ -160,26 +179,53 @@ const TransferScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../assets/Icons/mint1.png")}
-        style={styles.headerImage}
-        resizeMode="contain"
-      />
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          top: 20,
+          paddingHorizontal: 20,
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 25, fontWeight: "bold", color: "#3E70A1" }}>Transacciones</Text>
+        <Image
+          source={require("../../assets/Icons/mint1.png")}
+          style={styles.headerImage}
+          resizeMode="contain"
+        />
+      </View>
+
       <View style={styles.optionsContainer}>
         <TouchableOpacity onPress={() => handleOptionChange("ingresos")}>
-          <Text style={[styles.optionText, selectedOption === "ingresos" && styles.selectedOption]}>
+          <Text
+            style={[
+              styles.optionText,
+              selectedOption === "ingresos" && styles.selectedOption,
+            ]}
+          >
             Ingresos
           </Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleOptionChange("gastos")}>
-          <Text style={[styles.optionText, selectedOption === "gastos" && styles.selectedOption]}>
+          <Text
+            style={[
+              styles.optionText,
+              selectedOption === "gastos" && styles.selectedOption,
+            ]}
+          >
             Gastos
           </Text>
         </TouchableOpacity>
       </View>
 
       <View>
-        {!isLoadingIncomeList && !isLoadingExpenseList && (<BarChart type={selectedOption === "ingresos" ? "incomes" : "expenses"} data={selectedOption === "ingresos" ? incomeList : expenseList} />)}
+        {!isLoadingIncomeList && !isLoadingExpenseList && (
+          <BarChart
+            type={selectedOption === "ingresos" ? "incomes" : "expenses"}
+            data={selectedOption === "ingresos" ? incomeList : expenseList}
+          />
+        )}
       </View>
 
       <View style={styles.headerContainer}>
@@ -189,12 +235,33 @@ const TransferScreen = () => {
         </TouchableOpacity>
       </View>
       {!isLoadingTransactionList && (
-        <TransferList data={transactionList.data} toggleModal={toggleDeleteModal} toggleModalUp={toggleUpdateModal} setItem={setSelectedItem} />
+        <TransferList
+          data={transactionList.data}
+          toggleModal={toggleDeleteModal}
+          toggleModalUp={toggleUpdateModal}
+          setItem={setSelectedItem}
+        />
       )}
 
-      <CustomModal setValue={setValue} isVisible={isVisible} toggleModal={toggleModal} onSubmit={handleSubmit(onSubmit)} />
-      <DeleteModal isVisible={isVisibleDelete} toggleModal={toggleDeleteModal} onDelete={() => onDelete(selectedItem._id)} />
-      <UpdateModal isVisible={isVisibleUpdate} setItem={setSelectedItem} toggleModal={toggleUpdateModal} onUpdate={onUpdate} item={selectedItem} setValue={setValue} />
+      <CustomModal
+        setValue={setValue}
+        isVisible={isVisible}
+        toggleModal={toggleModal}
+        onSubmit={handleSubmit(onSubmit)}
+      />
+      <DeleteModal
+        isVisible={isVisibleDelete}
+        toggleModal={toggleDeleteModal}
+        onDelete={() => onDelete(selectedItem._id)}
+      />
+      <UpdateModal
+        isVisible={isVisibleUpdate}
+        setItem={setSelectedItem}
+        toggleModal={toggleUpdateModal}
+        onUpdate={onUpdate}
+        item={selectedItem}
+        setValue={setValue}
+      />
     </View>
   );
 };
@@ -218,7 +285,7 @@ const styles = StyleSheet.create({
     height: 80,
     tintColor: "#3E70A1",
     alignSelf: "center",
-    top: 20,
+    top: 4
   },
   optionsContainer: {
     flexDirection: "row",

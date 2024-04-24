@@ -1,20 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity } from 'react-native';
-import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg"
-import ButtonGradient from '../components/ButtonGradient';
-import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
-import { useLogin } from '../hooks/user.hooks';
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Dimensions,
+  Pressable,
+} from "react-native";
+import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
+import ButtonGradient from "../components/ButtonGradient";
+import { useForm } from "react-hook-form";
+import { useMutation } from "react-query";
+import { useLogin } from "../hooks/user.hooks";
 import { useNavigation } from "@react-navigation/native";
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
-import LoadingScreen from './LoadingScreen';
+import {
+  ALERT_TYPE,
+  Dialog,
+  AlertNotificationRoot,
+  Toast,
+} from "react-native-alert-notification";
+import LoadingScreen from "./LoadingScreen";
+import { Input, Stack, Icon } from "native-base";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-const { width, height } = Dimensions.get('window')
+const { width, height } = Dimensions.get("window");
 
 export default function LoginScreen() {
+  const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, setValue, formState: { errors, isValid } } = useForm({ mode: "onChange" });
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm({ mode: "onChange" });
   const navigation = useNavigation();
 
   const onSubmit = (data) => {
@@ -31,16 +51,17 @@ export default function LoginScreen() {
       setIsLoading(false);
       Dialog.show({
         type: ALERT_TYPE.DANGER,
-        title: '¡Credenciales incorrectas!',
-        textBody: 'Por favor, ingresa credenciales validas. Si no tienes cuenta registrate',
-        button: 'Aceptar',
+        title: "¡Credenciales incorrectas!",
+        textBody:
+          "Por favor, ingresa credenciales validas. Si no tienes cuenta registrate",
+        button: "Aceptar",
         onPressButton: () => Dialog.hide(),
-      })
+      });
     },
     onMutate: () => {
       setIsLoading(true);
-    }
-  })
+    },
+  });
 
   function SvgTop() {
     return (
@@ -84,11 +105,11 @@ export default function LoginScreen() {
           </LinearGradient>
         </Defs>
       </Svg>
-    )
+    );
   }
 
   if (isLoading) {
-    return <LoadingScreen text="Iniciando sesion..." />
+    return <LoadingScreen text="Iniciando sesion..." />;
   }
 
   if (!isLoading) {
@@ -101,69 +122,107 @@ export default function LoginScreen() {
           <View style={styles.container}>
             <Text style={styles.titulo}>Hola otra vez!</Text>
             <Text style={styles.subTitle}>Inicia sesión con tu cuenta</Text>
-            <TextInput
-              placeholder="Nombre de usuario"
-              onChangeText={text => setValue('username', text)}
-              style={styles.textInput}
-            />
-            <TextInput
-              placeholder="Contraseña"
-              onChangeText={text => setValue('password', text)}
-              style={styles.textInput}
-              secureTextEntry={true}
-            />
+            <Stack space={4} w="100%" alignItems="center" paddingTop={10}>
+              <Input
+                onChangeText={(text) => setValue("username", text)}
+                variant="rounded"
+                bg="white"
+                w={{
+                  base: "80%",
+                  md: "25%",
+                }}
+                h={{ base: "12" }}
+                InputLeftElement={
+                  <Icon
+                    as={<MaterialIcons name="person" />}
+                    size={5}
+                    ml="2"
+                    color="muted.400"
+                  />
+                }
+                placeholder="Name"
+              />
+              <Input
+                onChangeText={(text) => setValue("password", text)}
+                w={{
+                  base: "80%",
+                  md: "25%",
+                }}
+                h={{ base: "12" }}
+                type={show ? "text" : "password"}
+                variant="rounded"
+                bg="white"
+                InputRightElement={
+                  <Pressable onPress={() => setShow(!show)}>
+                    <Icon
+                      as={
+                        <MaterialIcons
+                          name={show ? "visibility" : "visibility-off"}
+                        />
+                      }
+                      size={5}
+                      mr="2"
+                      color="muted.400"
+                    />
+                  </Pressable>
+                }
+                placeholder="Password"
+              />
+            </Stack>
             <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
-            <ButtonGradient onSubmit={handleSubmit(onSubmit)} title="Iniciar Sesión" valid={!isValid} route="Main" />
+            <ButtonGradient
+              onSubmit={handleSubmit(onSubmit)}
+              title="Iniciar Sesión"
+              valid={!isValid}
+              route="Main"
+            />
             <Text style={styles.forgotPassword}>¿No tienes una cuenta?</Text>
             <StatusBar style="auto" />
           </View>
         </View>
-      </ AlertNotificationRoot>
+      </AlertNotificationRoot>
     );
   }
 }
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: '#f1f1f1',
+    backgroundColor: "#f1f1f1",
     flex: 1,
   },
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   containerSVG: {
     width: width,
     marginTop: -100,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   titulo: {
     fontSize: 50,
-    color: '#34434D',
-    fontWeight: 'bold',
+    color: "#34434D",
+    fontWeight: "bold",
     marginTop: 20,
   },
   subTitle: {
     fontSize: 20,
-    color: 'gray',
+    color: "gray",
   },
   textInput: {
     padding: 10,
     paddingStart: 30,
-    width: '80%',
+    width: "80%",
     height: 50,
     marginTop: 20,
     borderRadius: 30,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   forgotPassword: {
     fontSize: 14,
-    color: 'gray',
-    marginTop: 20
+    color: "gray",
+    marginTop: 20,
   },
-  button: {
-
-  },
-
+  button: {},
 });

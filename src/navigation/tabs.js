@@ -13,6 +13,7 @@ import RegisterScreen from "../screens/RegisterScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
 import LoadingScreen from "../screens/LoadingScreen";
+import { Avatar } from "native-base";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,7 +73,16 @@ const TabArr = [
   {
     name: "Perfil",
     component: ProfileScreen,
-    icon: "person-circle",
+    icon: () => (
+      <Avatar
+        bg="white"
+        p="0.5"
+        size="sm"
+        source={{
+          uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+        }}
+      />
+    ),
     tabBarColor: "#A13E3E",
   },
 ];
@@ -110,13 +120,28 @@ const Tabs = () => {
               height: 60,
               paddingBottom: 5,
             },
-            tabBarIcon: ({ focused }) => (
-              <Ionicons
-                name={item.icon}
-                size={30}
-                color={focused ? "#fff" : "#ABABAB"}
-              />
-            ),
+            tabBarIcon: ({ focused }) => {
+              if (typeof item.icon === 'string') {
+                return (
+                  <Ionicons
+                    name={item.icon}
+                    size={30}
+                    color={focused ? "#fff" : "#ABABAB"}
+                  />
+                );
+              } else {
+                return (
+                  <Avatar
+                    bg="white"
+                    size='sm'
+                    source={{
+                      uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80"
+                    }}
+                    p={focused ? 0.5 : undefined}
+                  />
+                );
+              }
+            },
           }}
         />
       ))}

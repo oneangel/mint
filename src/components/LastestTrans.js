@@ -1,14 +1,20 @@
 import { FlashList } from "@shopify/flash-list";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import TransferCard from "./TransferCard";
+import { useNavigation } from "@react-navigation/native";
+
 
 const LastestTrans = ({ data }) => {
+  const navigation = useNavigation();
 
+  const handleTransfer = () => {
+    navigation.navigate("Transacciones");
+  };
   return (
     <View style={styles.transferListContainer}>
       <View style={styles.row}>
         <Text style={styles.h3}>Transacciones Recientes</Text>
-        <Text style={styles.h3}>Ver todos</Text>
+        <TouchableOpacity style={styles.link} onPress={handleTransfer}><Text style={styles.link}>Ver todos</Text></TouchableOpacity>
       </View>
 
       <View style={styles.flashListContainer}>
@@ -24,7 +30,14 @@ const LastestTrans = ({ data }) => {
 
 const styles = StyleSheet.create({
   h3: {
-    color: "#363636",
+    color: "#000",
+    fontSize: 16,
+    marginTop: "5%",
+    marginLeft: "5%",
+    fontWeight: "bold",
+  },
+  link: {
+    color: "#3E70A1",
     fontSize: 16,
     marginTop: "5%",
     marginLeft: "5%",
