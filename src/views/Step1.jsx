@@ -2,10 +2,16 @@ import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Button, Input } from "@nextui-org/react";
 
-export const Step1 = ({ control, nextStep }) => {
-  const [username, setUsername] = React.useState("");
-  const [phone, setPhone] = React.useState("");
-  const [email, setEmail] = React.useState("");
+export const Step1 = ({
+  control,
+  nextStep,
+  username,
+  phone,
+  email,
+  setUsername,
+  setPhone,
+  setEmail,
+}) => {
   const [usernameError, setUsernameError] = React.useState("");
   const [phoneError, setPhoneError] = React.useState("");
   const [emailError, setEmailError] = React.useState("");
@@ -124,7 +130,9 @@ export const Step1 = ({ control, nextStep }) => {
         <Button
           className="w-full py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={handleNextStep}
-          disabled={!isFormValid}
+          isDisabled={
+            !isFormValid && !!phoneError && !!emailError && !!usernameError
+          }
         >
           Siguiente
         </Button>

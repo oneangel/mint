@@ -2,11 +2,19 @@ import React, { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { Button, Input } from "@nextui-org/react";
 
-export const Step2 = ({ control, nextStep, previousStep }) => {
-  const [password, setPassword] = useState("");
-  const [passwordC, setPasswordC] = useState("");
-  const [passwordIsTouched, setPasswordIsTouched] = useState(false);
-  const [passwordCIsTouched, setPasswordCIsTouched] = useState(false);
+export const Step2 = ({
+  control,
+  nextStep,
+  previousStep,
+  password,
+  passwordC,
+  setPassword,
+  setPasswordC,
+  passwordCIsTouched,
+  setPasswordCIsTouched,
+  passwordIsTouched,
+  setPasswordIsTouched,
+}) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordC, setShowPasswordC] = useState(false);
 

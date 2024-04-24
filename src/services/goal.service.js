@@ -20,5 +20,6 @@ export function updateGoal(id, goal, token) {
 }
 
 export function addAmountGoal(id, amount, token) {
-  return axios.put(`${URL_API}/add/amount/goal/${id}`, amount, { headers: { Authorization: token } })
+  console.log('Aqui mi monto' + amount);
+  return axios.put(`${URL_API}/add/amount/goal/${id}`, { "amount": amount }, { headers: { Authorization: token } })
 }

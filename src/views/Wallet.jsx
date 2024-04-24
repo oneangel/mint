@@ -204,7 +204,7 @@ export const Wallet = () => {
   };
 
   const onAdd = (data) => {
-    addAmountGoalMutation.mutate({ selectedItemId, data });
+    addAmountGoalMutation.mutate({ selectedItemId, amount: data });
     setShowAddAmountModal(false);
   };
 
@@ -584,31 +584,41 @@ export const Wallet = () => {
                 onOpenChange={setShowAddAmountModal}
               >
                 <ModalContent>
-                  <ModalHeader>Agregar Monto</ModalHeader>
-                  <ModalBody>
-                    <form action="" onSubmit={handleSubmit(onAdd)}>
+                  <form onSubmit={handleSubmit(onAdd)}>
+                    <ModalHeader>Agregar Monto</ModalHeader>
+                    <ModalBody>
                       <Input
                         type="number"
                         label="Monto"
                         name="amount"
                         className="mb-5"
                         defaultValue={0}
-                        {...register("amount")}
+                        onChange={(e) => {
+                          setSelectedItem({
+                            ...selectedItem,
+                            amount: parseFloat(e.target.value), // Convertir a número
+                          });
+                        }}
                       />
-                    </form>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button
-                      color="primary"
-                      variant="light"
-                      onPress={() => setShowAddAmountModal(false)}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button color="primary" onClick={handleSubmit(onAdd)}>
-                      Guardar
-                    </Button>
-                  </ModalFooter>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        color="primary"
+                        variant="light"
+                        onPress={() => setShowAddAmountModal(false)}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        isDisabled={selectedItem.amount <= 0}
+                        type="submit"
+                        color="primary"
+                        onPress={() => onAdd(selectedItem.amount)}
+                      >
+                        Guardar
+                      </Button>
+                    </ModalFooter>
+                  </form>
                 </ModalContent>
               </Modal>
               {!isLoadingGoals && (

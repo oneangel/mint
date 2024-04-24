@@ -30,7 +30,6 @@ export const Login = () => {
   in the localstorage */
   const loginMutation = useMutation(useLogin, {
     onSuccess: () => {
-      console.log("jalo");
       auth.login();
       setShowLoading(false);
       navigate("/home");
@@ -47,20 +46,6 @@ export const Login = () => {
     onMutate: () => {
       setShowLoading(true);
     },
-    /* onSuccess: () => {
-      auth.login();
-      setShowLoading(false);
-      navigate("/home");
-      console.log("Si paso");
-    },
-    onError: (error) => {
-      setShowLoading(false);
-      toast.error("Credenciales incorrectas");
-      console.log(error);
-    },
-    onMutate: () => {
-      setShowLoading(true);
-    }, */
   });
 
   const onSubmit = (data) => {

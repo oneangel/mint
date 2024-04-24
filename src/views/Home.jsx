@@ -104,9 +104,6 @@ export const Home = () => {
 
         <div className="grid grid-cols-1 gap-10 mx-4 mt-8 md:mx-20 lg:grid-cols-3">
           {/* Gastos generales */}
-          <div className="flex items-center w-full col-span-1 bg-white shadow-md rounded-3xl border-1 dark:bg-[#2C2F42] dark:border-zinc-800">
-            <div className="">...</div>
-          </div>
 
           {/* General Balance */}
           <Skeleton isLoaded={!isLoadingBalance} className="p-1 rounded-3xl">
@@ -184,7 +181,10 @@ export const Home = () => {
               </div>
             </Skeleton>
           </div>
-          <Skeleton isLoaded={!isLoadingLastTransactions} className="p-1 rounded-3xl">
+          <Skeleton
+            isLoaded={!isLoadingLastTransactions}
+            className="p-1 rounded-3xl"
+          >
             <div className="flex items-center col-span-1 lg:col-span-1">
               {!isLoadingLastTransactions && (
                 <TransactionHistory transactions={lastTransactionsData.data} />

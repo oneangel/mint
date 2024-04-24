@@ -49,8 +49,10 @@ export const useUpdateGoal = async (id) => {
 export const useAddAmountGoal = async (data) => {
   try {
     const token = localStorage.getItem("token");
+    console.log('Aquiii');
+    console.log(data);
     console.log(data.selectedItemId);
-    const res = await goalService.addAmountGoal(data.selectedItemId, data.data, token);
+    const res = await goalService.addAmountGoal(data.selectedItemId, data.amount, token);
     return res;
   } catch (error) {
     console.log(error);
