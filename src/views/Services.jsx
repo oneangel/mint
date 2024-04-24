@@ -103,7 +103,7 @@ export const Services = () => {
   };
 
   return (
-    <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-zinc-950">
+    <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-[#1A1A24]">
       <NavigationBar />
 
       {!serial && (
@@ -178,8 +178,8 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <div className="w-full flex">
-                    <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
+                  <div className="flex w-full">
+                    <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
                       <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                         <span>
                           <IoWater className="size-8" />
@@ -225,8 +225,8 @@ export const Services = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800 ml-4">
-                      <div className="flex items-center space-x-2 text-xl font-semibold ml-5 mt-10">
+                    <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
+                      <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
                         <IoCalendar />
                         <span>Seguimiento mensual</span>
                       </div>
@@ -248,8 +248,8 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <div className="w-full flex">
-                    <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800">
+                  <div className="flex w-full">
+                    <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
                       <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                         <span>
                           <IoFlash className="size-8" />
@@ -315,8 +315,8 @@ export const Services = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-zinc-900 dark:border-zinc-800 ml-4">
-                      <div className="flex items-center space-x-2 text-xl font-semibold ml-5 mt-10">
+                    <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
+                      <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
                         <IoCalendar />
                         <span>Seguimiento mensual</span>
                       </div>

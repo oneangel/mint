@@ -238,7 +238,7 @@ export const Transfer = () => {
 
   return (
     <>
-      <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-zinc-950">
+      <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-[#1A1A24]">
         <NavigationBar />
         <div className="mt-20 md:mt-32">
           <h1 className="hidden pl-20 text-4xl font-semibold md:flex text-sky-700 dark:text-white">
@@ -250,9 +250,9 @@ export const Transfer = () => {
               <div className="flex flex-wrap justify-center w-full gap-20 mt-6">
                 {/* Abonos */}
                 {!isLoadingTotalIncome && (
-                  <Card className="flex flex-col items-center h-40 w-80 border-1 dark:bg-teal-950 dark:border-teal-800">
+                  <Card className="flex flex-col items-center h-40 w-80 border-1 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
                     <CardHeader className="flex gap-3">
-                      <IoCaretUpCircle className="text-teal-600 size-10 dark:text-white" />
+                      <IoCaretUpCircle className="text-teal-600 size-10 dark:text-teal-400" />
                       <div className="flex flex-col">
                         <p className="text-md">Total de Abonos</p>
                         <p className="text-small text-default-500">
@@ -270,9 +270,9 @@ export const Transfer = () => {
 
                 {/* Cargos */}
                 {!isLoadingTotalExpense && (
-                  <Card className="flex flex-col items-center h-40 border-1 w-80 dark:bg-red-950 dark:border-red-800">
+                  <Card className="flex flex-col items-center h-40 border-1 w-80 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
                     <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-white" />
+                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
                       <div className="flex flex-col">
                         <p className="text-md">Total de cargos</p>
                         <p className="text-small text-default-500">
@@ -300,7 +300,7 @@ export const Transfer = () => {
                         <IoCalendarOutline className="text-sky-700" />
                       }
                       defaultSelectedKeys={["esta-semana"]}
-                      className="max-w-xs text-2xl bg-white text-sky-600 dark:bg-zinc-900"
+                      className="max-w-xs text-2xl bg-white text-sky-600 dark:bg-[#2C2F42]"
                       classNames={{
                         value: [
                           "placeholder:text-default-700/50 dark:placeholder:text-white text-xl",
@@ -420,7 +420,7 @@ export const Transfer = () => {
 
               <div className="w-full col-span-1 mt-4">
                 {!isLoadingTransactionList && (
-                  <Card>
+                  <Card className="dark:bg-[#2C2F42]">
                     <CardHeader>
                       <p>Lista de las transacciones</p>
                     </CardHeader>
@@ -439,6 +439,7 @@ export const Transfer = () => {
                   <Pagination
                     showControls
                     className="flex justify-end mt-2"
+                    classNames={{item: "dark:bg-[#2C2F42]", next: "dark:bg-[#2C2F42]", prev: "dark:bg-[#2C2F42]"}}
                     total={Math.ceil(
                       (filteredData?.length || 0) / itemsPerPage
                     )}
@@ -450,8 +451,8 @@ export const Transfer = () => {
             </div>
 
             {/* Right side / total-graphs */}
-            <Card className="items-center col-span-1">
-              <CardHeader className="flex justify-center pt-6">
+            <Card className="items-center col-span-1 dark:bg-[#2C2F42]">
+              <CardHeader className="flex justify-center pt-6 bg">
                 <IoPieChart className="size-10" />
                 <div className="flex flex-col ml-2">
                   <p className="text-md">Abonos y cargos</p>
