@@ -1,6 +1,7 @@
 import { User, Client } from "../models/models.js";
 import { sendEmail } from '../config/mailer.js';
 import { getToken, getTokenData } from "../config/jwt.config.js";
+import { uploadImage } from "../middlewares/cloudinary.middleware.js";
 
 //Create a new client
 export const registerClient = async (req, res) => {
@@ -138,5 +139,35 @@ export const getClient = async (req, res) => {
 	} catch (error) {
 		console.error(error);
 		res.status(500).send("Error getting client info");
+	}
+};
+
+//Update an existing user
+export const updateImage = async (req, res) => {
+	const { code } = req.params;
+
+	try {
+		const existingUser = await Client.findOne({ username: code });
+
+		if (!existingUser) {
+			return res.status(404).send("User not found");
+		}
+
+		if (req.files?.image) {
+			try {
+				const result = await uploadImage(req.files.image.tempFilePath);
+				console.log("Resultado de uploadImage:", result);
+				existingUser.avatar = result.secure_url;
+			} catch (error) {
+				console.error("Error al subir la imagen:", error);
+			}
+		}
+
+		const updatedUser = await existingUser.save();
+
+		res.send(updatedUser);
+	} catch (error) {
+		console.error(error);
+		res.status(500).send("User cannot be updated");
 	}
 };
