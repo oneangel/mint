@@ -17,6 +17,7 @@
     "@react-navigation/material-bottom-tabs": "^6.2.28",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/stack": "^6.3.29",
+    "@shipt/segmented-arc-for-react-native": "^1.1.1",
     "@shopify/flash-list": "1.6.3",
     "@shopify/react-native-skia": "0.1.221",
     "axios": "^1.6.8",
