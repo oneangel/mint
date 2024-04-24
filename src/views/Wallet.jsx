@@ -270,6 +270,9 @@ export const Wallet = () => {
                         </p>
                       </div>
                       <Button
+                        isDisabled={
+                          selectedGoal.amount == selectedGoal.amountGoal
+                        }
                         color="primary"
                         radius="full"
                         size="sm"
