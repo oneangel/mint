@@ -22,7 +22,7 @@ router.get("/get/user/:code", authMiddleware, UserController.getUser);
 //Client routes
 router.post("/register/client", ClientController.registerClient);
 router.put("/delete/client/:code", authMiddleware, ClientController.deleteClient);
-router.put("/update/client/:code", authMiddleware, ClientController.updateClient);
+router.put("/update/client/:code", ClientController.updateClient);
 router.get("/get/client/:code", authMiddleware, ClientController.getClient);
 router.get('/verify/user/:token', ClientController.verifyAccount);
 

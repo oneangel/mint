@@ -78,7 +78,6 @@ export const updateUser = async (req, res) => {
 
   try {
     const existingUser = await User.findOne({ username: code });
-    const passwordHash = await bcryptjs.hash(password, 10);
 
     if (!existingUser) {
       return res.status(404).send("User not found");
@@ -90,8 +89,13 @@ export const updateUser = async (req, res) => {
       return res.status(409).send("Username already exists.");
     }
 
+    let passwordHash = ""
+    if (password != null) {
+      passwordHash = await bcryptjs.hash(password, 10);
+      existingUser.password = passwordHash;
+    }
+
     existingUser.username = username;
-    existingUser.password = passwordHash;
 
     const updatedUser = await existingUser.save();
 
