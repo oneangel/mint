@@ -182,3 +182,23 @@ export const getTarrifWaterCost = async (req, res) => {
     res.status(500).json({ error: 'Server error' })
   }
 };
+
+export const getServicesList = async (req, res) => {
+  const { code } = req.params;
+  const { type, startDate, endDate } = req.body;
+
+  try {
+    const servicesList = await Service.find({
+      serial: code,
+      type,
+      createdAt: {
+        $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+        $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+      }
+    });
+
+    res.send(servicesList);
+  } catch (error) {
+    res.send(error);
+  }
+};

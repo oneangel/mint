@@ -61,6 +61,7 @@ router.put('/register/service', ServiceController.registerService);
 router.post('/get/totalMonthMeasure/:code', ServiceController.getTotalEMonthMeasure);
 router.post('/get/tariff/cost/:code', ServiceController.getTarrifCost);
 router.post('/get/tariff/water/cost/:code', ServiceController.getTarrifWaterCost);
+router.post('/get/services/list/:code', ServiceController.getServicesList);
 
 //Tariff electricity
 router.post('/register/tariff', TariffController.registerTariff);
