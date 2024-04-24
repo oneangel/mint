@@ -46,6 +46,24 @@ export const deleteTransaction = async (req, res) => {
   }
 }
 
+//Deletes an existing Transaction Forever
+export const deleteTransactionF = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const existingTransaction = await Transaction.findOne({ _id: code });
+
+    if (!existingTransaction || existingTransaction.status === "true") {
+      return res.status(404).send("Transaction not found");
+    }
+
+    const deletedUser = await existingTransaction.deleteOne();
+    res.send(deletedUser);
+  } catch (error) {
+    res.status(500).send("Transaction cannot be deleted")
+  }
+}
+
 //Recovers an existing Transaction
 export const recoverTransaction = async (req, res) => {
   try {
