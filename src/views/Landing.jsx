@@ -58,7 +58,7 @@ export const Landing = () => {
   return (
     <div className="">
       <Header />
-      <div className="h-screen overflow-auto bg-white dark:bg-zinc-950">
+      <div className="h-screen overflow-auto bg-white dark:bg-[#1A1A24]">
         {/* Inicio */}
         <section id="home" className="w-full max-h-screen ">
           <div className="grid h-full gap-2 mx-auto space-x-5 md:grid-cols-2">

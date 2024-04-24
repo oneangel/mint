@@ -81,11 +81,11 @@ export const EditProfile = () => {
   ];
 
   return (
-    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
+    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-[#1A1A24]">
       <NavigationBar />
       <div className="flex flex-col items-center w-full h-full">
         <div className="mt-40 max-w-[700px]">
-          <div className="flex flex-wrap w-full p-2 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+          <div className="flex flex-wrap w-full p-2 bg-white border-2 shadow-sm rounded-3xl dark:bg-[#2C2F42] dark:border-zinc-800">
             <div className="flex items-center justify-center w-1/4 p-4">
               <div className="overflow-hidden rounded-full size-24 md:size-36">
                 {selectedImageUrl ? ( // Si hay una imagen seleccionada, mostrarla
@@ -130,8 +130,8 @@ export const EditProfile = () => {
           </div>
 
           <div className="p-6 mt-10 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
-            {labels.map((label, index) => (
-              <div className="flex flex-wrap mb-5" key={index}>
+            {fields.map((field, index) => (
+              <div key={index} className="flex flex-wrap mb-5">
                 <div className="w-[90%]">
                   {!isLoading && (
                     <Input

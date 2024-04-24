@@ -15,9 +15,9 @@ export const SearchBar = ({ searchTerm, handleSearchChange }) => {
           "text-black/90 dark:text-white/90 text-xl",
           "placeholder:text-default-700/50 dark:placeholder:text-white/60",
         ],
-        innerWrapper: "bg-white dark:bg-zinc-900",
+        innerWrapper: "bg-white dark:bg-[#2C2F42]",
         inputWrapper: [
-          "dark:bg-zinc-900",
+          "dark:bg-[#2C2F42]",
           "backdrop-blur-xl",
           "backdrop-saturate-200",
           "dark:hover:border-zinc-500",

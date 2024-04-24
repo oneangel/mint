@@ -44,7 +44,7 @@ export const CurrentBalance = ({ balance }) => {
     <Tooltip content="Presiona para ver mas detalle" color="primary">
         <Card
           onClick={handleBalance}
-          className="flex flex-col max-w-full max-h-full col-span-1 py-10 bg-white border-gray-200 shadow cursor-pointer border-1 dark:bg-zinc-900 dark:border-zinc-800 rounded-3xl"
+          className="flex flex-col max-w-full max-h-full col-span-1 py-10 bg-white border-gray-200 shadow cursor-pointer border-1 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl"
         >
           <CardHeader className="w-48 mb-8 ml-10 rounded-3xl ">
             <p className="text-xl font-semibold">Balance general</p>
@@ -52,7 +52,7 @@ export const CurrentBalance = ({ balance }) => {
 
           <CardBody className="my-auto">
             <div className="mx-auto mb-5 rounded-3xl">
-              <h1 className="text-5xl font-semibold text-center text-teal-600 md:text-6xl">
+              <h1 className="text-5xl font-semibold text-center text-teal-600 dark:text-teal-500 md:text-6xl">
                 ${balance.data.balance.toFixed(2)}
               </h1>
             </div>

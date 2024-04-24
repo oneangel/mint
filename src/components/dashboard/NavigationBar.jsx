@@ -81,7 +81,7 @@ export const NavigationBar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-40 px-6 bg-white shadow dark:bg-zinc-900">
+    <nav className="fixed top-0 left-0 right-0 z-40 px-6 bg-white shadow dark:bg-[#2C2F42]">
       <div className="flex items-center justify-between h-16 mx-auto max-w-7xl">
         <button
           onClick={toggleMenu}
@@ -136,7 +136,7 @@ export const NavigationBar = () => {
           >
             {themeIcon}
           </button>
-          <Dropdown>
+          <Dropdown className="dark:bg-[#2C2F42]">
             <DropdownTrigger>
               <div className="overflow-hidden rounded-full size-8">
                 {!isLoading && (

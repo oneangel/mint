@@ -236,7 +236,7 @@ export const Wallet = () => {
   }, [isLoadingGoals, goalsData]);
 
   return (
-    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
+    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-[#1A1A24]">
       <NavigationBar />
       <div className="mt-20 md:mt-32">
         <h1 className="hidden pl-20 text-4xl font-semibold md:flex text-sky-700 dark:text-white">
@@ -246,7 +246,7 @@ export const Wallet = () => {
         <div className="grid flex-wrap grid-cols-1 gap-10 mx-4 xl:grid-cols-3 md:mx-20">
           <div className="flex flex-col pt-10 lg:col-span-1">
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
-            <Card className="h-[340px] shadow-md mt-8 rounded-3xl border-1 w-full dark:bg-zinc-900 dark:border-zinc-800">
+            <Card className="h-[340px] shadow-md mt-8 rounded-3xl border-1 w-full dark:bg-[#2C2F42] dark:border-zinc-800">
               {!isLoadingGoals && selectedGoal.description == "Ninguna" && (
                 <CardBody className="flex flex-wrap justify-center w-full gap-5">
                   <p className="text-xl text-center">
@@ -388,6 +388,7 @@ export const Wallet = () => {
               {!isLoadingGoals && (
                 <Table
                   className="max-h-[600px]"
+                  classNames={{wrapper: "dark:bg-[#2D3141]", th: "dark:bg-[#2D3141]",}}
                   selectionMode="single"
                   aria-label="Lista de Metas"
                   defaultSelectedKeys={["1"]}

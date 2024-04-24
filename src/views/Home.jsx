@@ -92,7 +92,7 @@ export const Home = () => {
   };
 
   return (
-    <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-zinc-950">
+    <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-[#1A1A24]">
       <NavigationBar />
 
       <div className="mt-20 md:mt-32">
@@ -104,7 +104,7 @@ export const Home = () => {
 
         <div className="grid grid-cols-1 gap-10 mx-4 mt-8 md:mx-20 lg:grid-cols-3">
           {/* Gastos generales */}
-          <div className="flex items-center w-full col-span-1 bg-white shadow-md rounded-3xl border-1 dark:bg-zinc-900 dark:border-zinc-800">
+          <div className="flex items-center w-full col-span-1 bg-white shadow-md rounded-3xl border-1 dark:bg-[#2C2F42] dark:border-zinc-800">
             <div className="">...</div>
           </div>
 
@@ -119,9 +119,9 @@ export const Home = () => {
                 className="p-1 rounded-3xl"
               >
                 {!isLoadingTotalIncome && (
-                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-teal-950 dark:border-teal-800">
+                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-[#2C2F42] dark:border-zinc-800">
                     <CardHeader className="flex gap-4">
-                      <IoCaretUpCircle  Circle className="text-teal-600 dark:text-white size-10" />
+                      <IoCaretUpCircle  Circle className="text-teal-600 dark:text-teal-500 size-10" />
                       <div className="flex flex-col">
                         <p className="text-md">Total de ingresos</p>
                         <p className="text-small text-default-500">
@@ -144,9 +144,9 @@ export const Home = () => {
                 className="p-1 rounded-3xl"
               >
                 {!isLoadingTotalExpense && (
-                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-red-950 dark:border-red-800">
+                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-[#2C2F42] dark:border-zinc-800">
                     <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-white" />
+                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
                       <div className="flex flex-col">
                         <p className="text-md">Total de cargos</p>
                         <p className="text-small text-default-500">
@@ -174,7 +174,7 @@ export const Home = () => {
               }
               className="shadow-md rounded-3xl"
             >
-              <div className="bg-white rounded-3xl border-1 border-gray-200 w-[100%] h-[400px] dark:bg-zinc-900 dark:border-zinc-800 transition">
+              <div className="bg-white rounded-3xl border-1 border-gray-200 w-[100%] h-[400px] dark:bg-[#2C2F42] dark:border-zinc-800 transition">
                 <AreaChart currentData={currWeekData} lastData={lastWeekData} />
               </div>
             </Skeleton>
