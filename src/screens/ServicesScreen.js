@@ -130,35 +130,12 @@ const ServicesScreen = () => {
           />
         ) : (
           <SegmentedArc
-            segments={[
-              {
-                scale: 0.25,
-                filledColor: "#49DC4F",
-                emptyColor: "#49DC4F",
-                data: { label: "muy bajo" },
-              },
-              {
-                scale: 0.25,
-                filledColor: "#FBDA84",
-                emptyColor: "#FBDA84",
-                data: { label: "bajo" },
-              },
-              {
-                scale: 0.25,
-                filledColor: "#F7944C",
-                emptyColor: "#F7944C",
-                data: { label: "normal" },
-              },
-              {
-                scale: 0.25,
-                filledColor: "#D94545",
-                emptyColor: "#D94545",
-                data: { label: "excesivo" },
-              },
-            ]}
+            segments={segments}
             fillValue={70}
             isAnimated={true}
             animationDelay={1000}
+            showArcRanges={showArcRanges}
+            ranges={ranges}
           >
             {(metaData) => (
               <TouchableOpacity
