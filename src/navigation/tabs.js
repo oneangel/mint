@@ -12,6 +12,7 @@ import LandingScreen from "../screens/LandingScreen";
 import RegisterScreen from "../screens/RegisterScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import { Ionicons } from "@expo/vector-icons";
+import LoadingScreen from "../screens/LoadingScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -88,21 +89,10 @@ const Tabs = () => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Image
-          source={require("../../assets/Icons/mint2.png")}
-          style={{
-            width: 200,
-            height: 200,
-            alignSelf: "center",
-            tintColor: "#3E70A1",
-          }}
-          resizeMode="contain"
-        />
-        <ActivityIndicator size="large" color="#3E70A1" />
-      </View>
+      <LoadingScreen text="Cargando..." />
     );
   }
+
   return (
     <Tab.Navigator>
       {TabArr.map((item, index) => (
@@ -112,6 +102,7 @@ const Tabs = () => {
           component={item.component}
           options={{
             headerShown: false,
+            tabBarShowLabel: false,
             tabBarActiveTintColor: "#fff",
             tabBarInactiveTintColor: "#ABABAB",
             tabBarStyle: {
@@ -122,7 +113,7 @@ const Tabs = () => {
             tabBarIcon: ({ focused }) => (
               <Ionicons
                 name={item.icon}
-                size={24}
+                size={30}
                 color={focused ? "#fff" : "#ABABAB"}
               />
             ),

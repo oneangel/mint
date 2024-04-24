@@ -1,15 +1,30 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import * as Progress from "react-native-progress";
+import AnimatedProgressWheel from 'react-native-progress-wheel';
 import React, { useState, useEffect } from "react";
 import GoalList from "../components/GoalList";
 import { ScrollView } from "react-native-gesture-handler";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import GoalSheet from "../components/GoalSheet";
+import { useQuery } from "react-query";
+import { useGetB } from "../hooks/transaction.hooks";
+import { useGetGL } from "../hooks/goal.hooks";
 
 const WalletScreen = () => {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [status, setStatus] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
+  const {
+    data: balanceData,
+    isLoading: isLoadingBalance,
+    isError: isErrorBalance,
+  } = useQuery("balance", useGetB);
+
+  const {
+    data: goalsData,
+    isLoading: isLoadingGoals,
+    isError: isErrorGoals,
+  } = useQuery("goals", useGetGL);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,44 +53,68 @@ const WalletScreen = () => {
         <View style={styles.background}></View>
         <View style={styles.circle}>
           <Text style={styles.circleText}>Balance General</Text>
-          <Text style={styles.circleText2}>$14,400</Text>
+          {!isLoadingBalance && (<Text style={styles.circleText2}>${balanceData.data.balance.toFixed(2)}</Text>)}
           <Text style={styles.circleText3}>{formatDate(currentDateTime)}</Text>
         </View>
         <View style={styles.metaContainer}>
-          <Text style={styles.metaText}>Meta seleccionada</Text>
-          <View style={styles.metaSelected}>
-            <Text>Pc Gamer</Text>
-            <Text>$2,000</Text>
-            <Progress.Bar
-              progress={0.3}
-              width={160}
-              color="#1C9782"
-              unfilledColor="#fff"
-            />
-          </View>
+          {selectedItem === null && (
+            <View style={{ height: 190, justifyContent: "center" }}>
+              <Text style={{ fontSize: 18, alignSelf: "center" }}>No se ha seleccionado una meta</Text>
+            </View>
+          )}
+          {selectedItem != null && (<>
+            <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 18, justifyContent: "space-between" }}>
+              <View style={{ flexDirection: "row" }}>
+                <MaterialCommunityIcons
+                  style={{ backgroundColor: "#0D9488", borderRadius: 50, padding: 7 }}
+                  name="piggy-bank"
+                  size={35}
+                  color="#fff" />
+                <View style={{ marginLeft: 8 }}>
+                  <Text style={styles.metaText}>Meta seleccionada</Text>
+                  <Text style={styles.metaText}>{selectedItem.description}</Text>
+                </View>
+              </View>
 
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <View>
-              <Text>Fecha de incio:</Text>
-              <Text>Marzo 31, 2024</Text>
+              <TouchableOpacity>
+                <Ionicons name="add-circle" size={35} color="#1B3E73" />
+              </TouchableOpacity>
             </View>
-            <View>
-              <Text>Fecha límite:</Text>
-              <Text>Agosto 31, 2024</Text>
+
+            <View style={{ flexDirection: "row" }}>
+              <AnimatedProgressWheel
+                size={120}
+                width={20}
+                color={'#1C9782'}
+                progress={((selectedItem.amount / selectedItem.amountGoal) * 100)}
+                labelStyle={{ color: "#0D9488", fontSize: 20 }}
+                backgroundColor={'#f1f1f1'}
+                showProgressLabel={true}
+                showPercentageSymbol={true}
+              />
+              <View style={{ marginLeft: 20 }}>
+                <View style={{ marginBottom: 10 }}>
+                  <Text style={{ color: "#aaa", fontSize: 16, marginBottom: 4 }}>Monto actual</Text>
+                  <Text style={{ fontWeight: "bold", fontSize: 20 }}>${selectedItem.amount.toFixed(2)}</Text>
+                </View>
+                <View>
+                  <Text style={{ color: "#aaa", fontSize: 16, marginBottom: 4 }}>Meta</Text>
+                  <Text style={{ fontWeight: "bold", fontSize: 20 }}>${selectedItem.amountGoal.toFixed(2)}</Text>
+                </View>
+              </View>
             </View>
-          </View>
+          </>)}
+
         </View>
         <View style={styles.goalListContainer}>
           <View style={styles.headerContainer}>
-            <Text style={styles.goalText}>Transacciones</Text>
-            <TouchableOpacity style={styles.addButton}  onPress={() => setStatus(true)}>
+            <Text style={styles.goalText}>Metas</Text>
+            <TouchableOpacity style={styles.addButton} onPress={() => setStatus(true)}>
               <FontAwesome5 name="piggy-bank" size={15} color="white" />
             </TouchableOpacity>
           </View>
           <ScrollView style={{ maxHeight: 160, minHeight: 160 }}>
-            <GoalList />
+            {!isLoadingGoals && (<GoalList data={goalsData.data} setItem={setSelectedItem} />)}
           </ScrollView>
         </View>
         {status && <GoalSheet setStatus={setStatus} />}
@@ -149,12 +188,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   goalListContainer: {
-    height: 220,
+    height: 260,
     backgroundColor: "#fff",
     width: "90%",
-    height: 220,
     borderRadius: 10,
-    top: 160,
+    top: 235,
   },
   headerContainer: {
     flexDirection: "row",

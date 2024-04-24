@@ -3,18 +3,41 @@ import React from "react";
 import LastestTrans from "../components/LastestTrans";
 import GeneralBalance from "../components/GeneralBalance";
 import { Ionicons } from "@expo/vector-icons";
+import { useQuery } from "react-query";
+import { useGetTE, useGetTI, useGetLT } from "../hooks/transaction.hooks";
 
 const HomeScreen = () => {
+
+  const {
+    data: totalExpense,
+    isLoading: isLoadingTotalExpense,
+    isError: isErrorTotalExpense
+  } = useQuery("totalExpense", useGetTE);
+
+  const {
+    data: totalIncome,
+    isLoading: isLoadingTotalIncome,
+    isError: isErrorTotalIncome
+  } = useQuery("totalIncome", useGetTI);
+
+  const {
+    data: lastTransactions,
+    isLoading: isLoadingLT,
+    isError: isErrorLT
+  } = useQuery("lastTransactions", useGetLT);
+
   return (
     <View style={styles.container}>
       <View style={styles.lowerContainer}>
         <Text style={styles.h3}>Servicios</Text>
 
-        <View style={{flexDirection: "row" , justifyContent: 'start', marginLeft: 20, marginTop: 20,}}>
-          <View style={styles.waterContainer}><Ionicons name="water-sharp" size={20} color="#000"/><Text>Agua</Text></View>
-          <View style={styles.energyContainer}><Ionicons name="flash-sharp" size={20} color="#000"/><Text>Agua</Text></View>
+        <View style={{ flexDirection: "row", justifyContent: 'start', marginLeft: 20, marginTop: 20, }}>
+          <View style={styles.waterContainer}><Ionicons name="water-sharp" size={20} color="#000" /><Text>Agua</Text></View>
+          <View style={styles.energyContainer}><Ionicons name="flash-sharp" size={20} color="#000" /><Text>Agua</Text></View>
         </View>
-        <LastestTrans />
+        {!isLoadingLT && (
+          <LastestTrans data={lastTransactions.data} />
+        )}
       </View>
       <View style={styles.upperContainer}>
         <Image
@@ -29,7 +52,9 @@ const HomeScreen = () => {
         />
         <Text style={styles.h1}>Hola, Lalito!</Text>
         <Text style={styles.h2}>Aqui esta tu balance general.</Text>
-        <GeneralBalance />
+        {!isLoadingTotalExpense && !isLoadingTotalIncome && (
+          <GeneralBalance expenses={totalExpense.data.expenseTotal} incomes={totalIncome.data.incomeTotal} />
+        )}
       </View>
     </View>
   );

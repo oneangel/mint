@@ -5,44 +5,17 @@ import {
 } from "react-native";
 import GoalCard from "./GoalCard";
 
-export const DATA = [
-  {
-    id: 1,
-    description: "Chuy",
-    date: "2022-10-01",
-    goal: 100,
-  },
-  {
-    id: 2,
-    description: "Chuy",
-    date: "2022-10-01",
-    goal: 200,
-  },
-  {
-    id: 3,
-    description: "Chuy",
-    date: "2022-10-01",
-    goal: 300,
-  },
-  {
-    id: 4,
-    description: "Chuy",
-    date: "2022-10-01",
-    goal: 400,
-  },
-];
-
-const GoalList = () => {
+const GoalList = ({ data, setItem }) => {
   return (
     <View style={styles.transferListContainer}>
-      
-        <View style={styles.flashListContainer}>
-          <FlashList
-            data={DATA}
-            renderItem={({ item }) => <GoalCard {...item} />}
-            estimatedItemSize={200}
-          />
-        </View>
+
+      <View style={styles.flashListContainer}>
+        <FlashList
+          data={data}
+          renderItem={({ item }) => <GoalCard item={item} setItem={setItem} />}
+          estimatedItemSize={200}
+        />
+      </View>
     </View>
   );
 };

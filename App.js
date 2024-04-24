@@ -1,8 +1,14 @@
 import React from "react";
-import { View, Image, ActivityIndicator  } from "react-native";
+import { View, Image, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import MainStackNavigator from "./src/navigation/tabs";
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ModalPortal } from "react-native-modals";
+import { AlertNotificationRoot } from "react-native-alert-notification";
+
+
+const queryClient = new QueryClient();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,8 +39,13 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <MainStackNavigator />
-    </NavigationContainer>
+    <QueryClientProvider client={queryClient}>
+      <AlertNotificationRoot>
+        <NavigationContainer>
+          <MainStackNavigator />
+        </NavigationContainer>
+      </AlertNotificationRoot>
+      <ModalPortal />
+    </QueryClientProvider>
   );
 }

@@ -1,23 +1,19 @@
 import { FlashList } from "@shopify/flash-list";
 import { View, Text, StyleSheet } from "react-native";
 import TransferCard from "./TransferCard";
-import { DATA } from "./TransferList";
 
-const getLastThreeTransfers = () => {
-  const lastIndex = DATA.length - 1;
-  const lastThreeTransfers = DATA.slice(Math.max(lastIndex - 2, 0));
-  return lastThreeTransfers.reverse();
-};
-
-const LastestTrans = () => {
-  const lastThreeTransfers = getLastThreeTransfers();
+const LastestTrans = ({ data }) => {
 
   return (
     <View style={styles.transferListContainer}>
-      <Text style={styles.h3}>Transacciones Recientes</Text>
+      <View style={styles.row}>
+        <Text style={styles.h3}>Transacciones Recientes</Text>
+        <Text style={styles.h3}>Ver todos</Text>
+      </View>
+
       <View style={styles.flashListContainer}>
         <FlashList
-          data={lastThreeTransfers}
+          data={data}
           renderItem={({ item }) => <TransferCard {...item} />}
           estimatedItemSize={200}
         />
@@ -29,18 +25,34 @@ const LastestTrans = () => {
 const styles = StyleSheet.create({
   h3: {
     color: "#363636",
-    fontSize: 25,
+    fontSize: 16,
     marginTop: "5%",
     marginLeft: "5%",
     fontWeight: "bold",
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   transferListContainer: {
     flex: 1,
     justifyContent: "flex-end",
   },
   flashListContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 15,
+    margin: 15,
     flex: 1,
     paddingHorizontal: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 4, // Esto es para Android
   },
 });
 
