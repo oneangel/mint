@@ -1,5 +1,4 @@
 import { Service, TariffE, TariffW } from "../models/models.js";
-import { startOfDay, endOfDay, parseISO, formatISO } from "date-fns";
 
 //Creates a new user
 export const registerService = async (req, res) => {
@@ -7,14 +6,10 @@ export const registerService = async (req, res) => {
     req.body;
 
   try {
-    const searchDate = parseISO(createdAt);
-    const startOfDayDate = startOfDay(searchDate);
-    const endOfDayDate = endOfDay(searchDate);
-
     const existingService = await Service.findOne({
       serial, type, createdAt: {
-        $gte: new Date(new Date(startOfDayDate).setHours(0, 0, 0, 0)),
-        $lte: new Date(new Date(endOfDayDate).setHours(23, 59, 59, 999))
+        $gte: new Date(new Date(createdAt).setHours(0, 0, 0, 0)),
+        $lte: new Date(new Date(createdAt).setHours(23, 59, 59, 999))
       }
     });
 
@@ -140,47 +135,47 @@ export const getTarrifWaterCost = async (req, res) => {
     const existingService = await Service.find({ serial: code, type: "water" });
 
     if (existingService.length === 0) {
-      return res.status(404).send("Services not found");
-    }
-
-    const totalMeasure = await Service.aggregate([
-      {
-        $match: {
-          serial: code,
-          type: "water",
-          createdAt: {
-            $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
-            $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+      res.json({ totalPay: 0, measure: 0 });
+    } else {
+      const totalMeasure = await Service.aggregate([
+        {
+          $match: {
+            serial: code,
+            type: "water",
+            createdAt: {
+              $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+              $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+            }
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalMeasure: { $sum: "$measurement" }
           }
         },
-      },
-      {
-        $group: {
-          _id: null,
-          totalMeasure: { $sum: "$measurement" }
-        }
-      },
-    ]);
+      ]);
 
-    if (totalMeasure.length === 0) {
-      return res.status(404).send("TotalMeasure not found");
-    }
+      if (totalMeasure.length === 0) {
+        return res.status(404).send("TotalMeasure not found");
+      }
 
-    const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
-    const cubicMeters = totalMeasure[0].totalMeasure / 1000;
+      const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
+      const cubicMeters = totalMeasure[0].totalMeasure / 1000;
 
-    if (cubicMeters >= 1) {
-      const tariff = await TariffW.findOne({
-        range_from: { $lte: cubicMeters },
-        range_to: { $gte: cubicMeters }
-      });
-      const totalPay = cubicMeters * tariff.percentage;
+      if (cubicMeters >= 1) {
+        const tariff = await TariffW.findOne({
+          range_from: { $lte: cubicMeters },
+          range_to: { $gte: cubicMeters }
+        });
+        const totalPay = cubicMeters * tariff.percentage;
 
-      res.json({ totalPay, measure: total });
-    } else if (cubicMeters >= 0 && cubicMeters < 1) {
-      res.json({ totalPay: 0, measure: total });
-    } else {
-      res.json({ totalPay: 0, measure: 0 });
+        res.json({ totalPay, measure: total });
+      } else if (cubicMeters >= 0 && cubicMeters < 1) {
+        res.json({ totalPay: 0, measure: total });
+      } else {
+        res.json({ totalPay: 0, measure: 0 });
+      }
     }
   } catch (error) {
     console.log(error);
