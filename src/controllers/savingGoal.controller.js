@@ -105,7 +105,7 @@ export const addAmountGoal = async (req, res) => {
       existingsavingGoals.state = false;
     }
 
-    if (existingSavingGoal.amount > existingsavingGoals.amountGoal) {
+    if (existingsavingGoals.amount > existingsavingGoals.amountGoal) {
       existingsavingGoals.amount = existingsavingGoals.amountGoal;
     }
 
