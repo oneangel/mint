@@ -46,9 +46,6 @@ const ServicesScreen = () => {
 
   const ranges = ["10", "20", "30", "40", "50"];
 
-  const _handlePress = () => {
-    setShowArcRanges(!showArcRanges);
-  };
   return (
     <View style={{ flex: 1, backgroundColor: "#F9FDFE" }}>
       <View
