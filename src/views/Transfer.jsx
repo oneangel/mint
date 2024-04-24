@@ -27,7 +27,6 @@ import {
   IoCaretDownCircle,
   IoCaretUpCircle,
 } from "react-icons/io5";
-import PieChart2 from "../components/charts/PieChart2";
 import { TableCustom } from "../components/dashboard/TableCustom";
 import { SearchBar } from "../components/dashboard/SearchBar";
 import {
@@ -36,9 +35,11 @@ import {
   getTotalIncome,
   useAddTransaction,
   useDeleteTransaction,
+  useDeleteFTransaction,
   useUpdateTransaction,
   useGetIncomesList,
   useGetExpensesList,
+  useRecoverTransaction,
 } from "../hooks/transaction.hooks"; // Asumiendo que tienes estas funciones en transaction.hooks.js
 
 import { useForm } from "react-hook-form";
@@ -204,6 +205,54 @@ export const Transfer = () => {
 
   const onDelete = (id) => {
     deleteTransactionMutation.mutate(id);
+  };
+
+  const deleteFTransactionMutation = useMutation(useDeleteFTransaction, {
+    onSuccess: () => {
+      queryClient.refetchQueries("transactionList");
+      queryClient.refetchQueries("totalIncome");
+      queryClient.refetchQueries("totalExpense");
+      queryClient.refetchQueries("incomeList");
+      toast.dismiss();
+      toast.success("Transaccion eliminada para siempre con exito");
+    },
+
+    onError: () => {
+      toast.dismiss();
+      toast.error("¡Hubo un error en la operacion!");
+    },
+
+    onMutate: () => {
+      toast.loading("Eliminando transaccion...");
+    },
+  });
+
+  const onDeleteF = (id) => {
+    deleteFTransactionMutation.mutate(id);
+  };
+
+  const recoverTransactionMutation = useMutation(useRecoverTransaction, {
+    onSuccess: () => {
+      queryClient.refetchQueries("transactionList");
+      queryClient.refetchQueries("totalIncome");
+      queryClient.refetchQueries("totalExpense");
+      queryClient.refetchQueries("incomeList");
+      toast.dismiss();
+      toast.success("Transaccion recuperada con exito");
+    },
+
+    onError: () => {
+      toast.dismiss();
+      toast.error("¡Hubo un error en la operacion!");
+    },
+
+    onMutate: () => {
+      toast.loading("Recuperando la transaccion...");
+    },
+  });
+
+  const onRecover = (id) => {
+    recoverTransactionMutation.mutate(id);
   };
 
   const updateTransactionMutation = useMutation(useUpdateTransaction, {
@@ -427,6 +476,8 @@ export const Transfer = () => {
                     <CardBody>
                       <TableCustom
                         onDelete={onDelete}
+                        onDeleteF={onDeleteF}
+                        onRecover={onRecover}
                         onUpdate={onUpdate}
                         columns={columns}
                         data={getPaginatedRows(filteredData)}

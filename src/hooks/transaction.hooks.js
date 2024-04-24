@@ -22,6 +22,29 @@ export const useDeleteTransaction = async (id) => {
 	try {
 		const token = localStorage.getItem("token");
 		const res = await transactionService.deleteTransaction(id, token);
+		console.log(res);
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export const useDeleteFTransaction = async (id) => {
+	try {
+		const token = localStorage.getItem("token");
+		const res = await transactionService.deleteFTransaction(id, token);
+		console.log('Eliminar');
+		console.log(res);
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export const useRecoverTransaction = async (id) => {
+	try {
+		const token = localStorage.getItem("token");
+		const res = await transactionService.recoverTransaction(id, token);
 		return res;
 	} catch (error) {
 		console.log(error);

@@ -56,7 +56,16 @@ export function addTransaction(user, transaction, token) {
 }
 
 export function deleteTransaction(id, token) {
+	console.log('PEPOM');
 	return axios.put(`${URL_API}/delete/transaction/${id}`, { headers: { Authorization: token } })
+}
+
+export function deleteFTransaction(id, token) {
+	return axios.delete(`${URL_API}/deleteF/transaction/${id}`, { headers: { Authorization: token } })
+}
+
+export function recoverTransaction(id, token) {
+	return axios.put(`${URL_API}/recover/transaction/${id}`, { headers: { Authorization: token } })
 }
 
 export function updateTransaction(id, transaction, token) {

@@ -23,9 +23,17 @@ import { FaPen } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useForm } from "react-hook-form";
 
-export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
+export const TableCustom = ({
+  columns,
+  data,
+  onDelete,
+  onDeleteF,
+  onUpdate,
+  onRecover,
+}) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [selectedItem, setSelectedItem] = useState({
     description: "",
@@ -104,16 +112,24 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
                       )}
 
                       {!item.status && (
-                        <Tooltip content="Recuperar">
-                          <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
-                            <FaRepeat />
-                          </span>
-                        </Tooltip>
+                        <div
+                          onClick={() => {
+                            setSelectedItemId(item._id);
+                            setShowRecoveryModal(true);
+                          }}
+                        >
+                          <Tooltip content="Recuperar">
+                            <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
+                              <FaRepeat />
+                            </span>
+                          </Tooltip>
+                        </div>
                       )}
 
                       <div
                         onClick={() => {
                           setSelectedItemId(item._id);
+                          setSelectedItem(item);
                           setShowDeleteModal(true);
                         }}
                       >
@@ -210,7 +226,11 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
       <Modal isOpen={showDeleteModal} onOpenChange={setShowDeleteModal}>
         <ModalContent>
           <ModalHeader>Eliminar transacción</ModalHeader>
-          <ModalBody>¿Estas seguro de eliminar la transacción?</ModalBody>
+          <ModalBody>
+            {selectedItem.status
+              ? "¿Estas seguro de eliminar la transacción?"
+              : "¿Estas seguro de eliminar la transacción para siempre?"}
+          </ModalBody>
           <ModalFooter>
             <Button
               color="primary"
@@ -222,12 +242,48 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
             <Button
               color="danger"
               onPress={() => {
-                onDelete(selectedItemId);
+                selectedItem.status
+                  ? onDelete(selectedItemId)
+                  : onDeleteF(selectedItemId);
                 setShowDeleteModal(false);
                 setSelectedItemId(null);
+                setSelectedItem({
+                  description: "",
+                  amount: "",
+                  destination: "",
+                  createdAt: "",
+                });
               }}
             >
               Eliminar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={showRecoveryModal} onOpenChange={setShowRecoveryModal}>
+        <ModalContent>
+          <ModalHeader>Recuperar transacción</ModalHeader>
+          <ModalBody>
+            ¿Estas seguro que deseas recuperar la transacción?
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="primary"
+              variant="light"
+              onPress={() => setShowRecoveryModal(false)}
+            >
+              Cancelar
+            </Button>
+            <Button
+              color="success"
+              onPress={() => {
+                onRecover(selectedItemId);
+                setShowRecoveryModal(false);
+                setSelectedItemId(null);
+              }}
+            >
+              Recuperar
             </Button>
           </ModalFooter>
         </ModalContent>
