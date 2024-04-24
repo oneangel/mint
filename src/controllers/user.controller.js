@@ -85,8 +85,11 @@ export const updateUser = async (req, res) => {
 
     const existingUsername = await User.findOne({ username });
 
+
     if (existingUsername) {
-      return res.status(409).send("Username already exists.");
+      if (username != existingUser.username) {
+        return res.status(409).send("Username already exists.");
+      }
     }
 
     let passwordHash = ""
