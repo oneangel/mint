@@ -1,4 +1,4 @@
-import { User, Client } from "../models/models.js";
+import { User, Client, Meter } from "../models/models.js";
 import { sendEmail } from '../config/mailer.js';
 import { getToken, getTokenData } from "../config/jwt.config.js";
 import { uploadImage } from "../middlewares/cloudinary.middleware.js";
@@ -59,7 +59,7 @@ export const deleteClient = async (req, res) => {
 //Update an existing client
 export const updateClient = async (req, res) => {
 	const { code } = req.params;
-	const { username, email, phone, firstname, lastname, gender } = req.body;
+	const { username, email, meter } = req.body;
 
 	try {
 		const existingClient = await Client.findOne({ username: code });
@@ -68,12 +68,15 @@ export const updateClient = async (req, res) => {
 			return res.status(404).send("Client not found");
 		}
 
+		const existingMeter = await Meter.findOne({ serial: meter });
+		if (existingMeter) {
+			return res.status(409).send("Meter not found.");
+		}
+
 		existingClient.username = username;
 		existingClient.email = email;
-		existingClient.phone = phone;
-		existingClient.firstname = firstname;
-		existingClient.lastname = lastname;
-		existingClient.gender = gender;
+		existingClient.meter = meter;
+
 
 		const updatedClient = await existingClient.save();
 

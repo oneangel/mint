@@ -74,7 +74,7 @@ export const deleteUser = async (req, res) => {
 //Update an existing user
 export const updateUser = async (req, res) => {
   const { code } = req.params;
-  const { username, password, meter } = req.body;
+  const { username, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ username: code });
@@ -90,14 +90,8 @@ export const updateUser = async (req, res) => {
       return res.status(409).send("Username already exists.");
     }
 
-    const existingMeter = await Meter.findOne({ serial: meter });
-    if (existingMeter) {
-      return res.status(409).send("Meter not found.");
-    }
-
     existingUser.username = username;
     existingUser.password = passwordHash;
-    existingUser.meter = meter;
 
     const updatedUser = await existingUser.save();
 
