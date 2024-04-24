@@ -108,7 +108,7 @@ export const getUserTransactionsList = async (req, res) => {
   const { code } = req.params;
 
   try {
-    const transactionList = await Transaction.find({ username: code, status: true });
+    const transactionList = await Transaction.find({ username: code });
 
     if (!transactionList) {
       return res.json(null);
