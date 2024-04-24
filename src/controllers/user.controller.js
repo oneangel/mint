@@ -1,4 +1,4 @@
-import { User } from "../models/models.js";
+import { Meter, User } from "../models/models.js";
 import bcryptjs from "bcryptjs";
 import cookie from 'cookie-parser';
 import { getToken } from "../config/jwt.config.js"
@@ -88,6 +88,11 @@ export const updateUser = async (req, res) => {
 
     if (existingUsername) {
       return res.status(409).send("Username already exists.");
+    }
+
+    const existingMeter = await Meter.findOne({ serial: meter });
+    if (existingMeter) {
+      return res.status(409).send("Meter not found.");
     }
 
     existingUser.username = username;

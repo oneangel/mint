@@ -74,7 +74,7 @@ router.post('/register/tariff/water', TariffWController.registerTariffW);
 router.get('/get/tariff/water/:code', TariffWController.getTariffW);
 
 //Upload image
-router.post('/update/imageProfile/:code', ClientController.updateImage);
+router.put('/update/imageProfile/:code', ClientController.updateImage);
 
 //Verify token
 router.get('/verify-token', authMiddleware, (req, res) => { res.json({ message: 'Acceso permitido' }) })
