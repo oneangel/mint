@@ -74,7 +74,7 @@ export const deleteUser = async (req, res) => {
 //Update an existing user
 export const updateUser = async (req, res) => {
   const { code } = req.params;
-  const { username, password } = req.body;
+  const { username, password, meter } = req.body;
 
   try {
     const existingUser = await User.findOne({ username: code });
@@ -90,9 +90,9 @@ export const updateUser = async (req, res) => {
       return res.status(409).send("Username already exists.");
     }
 
-    console.log(existingUser);
     existingUser.username = username;
     existingUser.password = passwordHash;
+    existingUser.meter = meter;
 
     const updatedUser = await existingUser.save();
 
