@@ -68,14 +68,18 @@ export const updateClient = async (req, res) => {
 			return res.status(404).send("Client not found");
 		}
 
-		const existingMeter = await Meter.findOne({ serial: meter });
-		if (existingMeter) {
-			return res.status(409).send("Meter not found.");
+		if (existingClient.meter != meter) {
+			existingClient.meter = meter;
+		} else {
+			const existingMeter = await Meter.findOne({ serial: meter });
+			if (existingMeter) {
+				return res.status(404).send("Meter not found.");
+			}
 		}
 
 		existingClient.username = username;
 		existingClient.email = email;
-		existingClient.meter = meter;
+
 
 
 		const updatedClient = await existingClient.save();
