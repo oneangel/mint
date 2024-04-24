@@ -46,6 +46,25 @@ export const deleteTransaction = async (req, res) => {
   }
 }
 
+//Recovers an existing Transaction
+export const recoverTransaction = async (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const existingTransaction = await Transaction.findOne({ _id: code });
+
+    if (!existingTransaction) {
+      return res.status(404).send("Transaction not found");
+    }
+
+    existingTransaction.status = true;
+    const updatedTransaction = await existingTransaction.save();
+    res.send(updatedTransaction);
+  } catch (error) {
+    res.status(500).send("Transaction cannot be deleted")
+  }
+}
+
 //Updates an existing Transaction
 export const updateTransaction = async (req, res) => {
   const { code } = req.params;
