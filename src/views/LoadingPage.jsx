@@ -12,7 +12,7 @@ export const LoadingPage = ({ label }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen dark:bg-[#1A1A24]">
       <div>
         <MintIcon className="w-20 mb-5 dark:hidden" />
         <MintIconL className="hidden w-20 mb-5 dark:flex" />

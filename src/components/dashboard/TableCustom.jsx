@@ -67,7 +67,7 @@ export const TableCustom = ({
 
   return (
     <>
-      <Table className="max-h-[600px]" classNames={{wrapper: "dark:bg-[#232733]", th: "dark:bg-[#2D3141]"}}>
+      <Table className="max-h-[600px]" classNames={{wrapper: "dark:bg-[#2C2F42]", th: "dark:bg-[#2D3141]", td: "dark:bg-[#2D3141]"}}>
         <TableHeader columns={columns}>
           {(column) => (
             <TableColumn

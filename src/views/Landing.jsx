@@ -58,7 +58,7 @@ export const Landing = () => {
   return (
     <div className="">
       <Header />
-      <div className="h-screen overflow-auto bg-white dark:bg-[#1A1A24]">
+      <div className="h-screen overflow-auto bg-white dark:bg-[#1A1A24] max-w-screen">
         {/* Inicio */}
         <section id="home" className="w-full max-h-screen ">
           <div className="grid h-full gap-2 mx-auto space-x-5 md:grid-cols-2">
@@ -71,10 +71,10 @@ export const Landing = () => {
                     content: "drop-shadow shadow-black text-white",
                   }}
                 >
-                  New
+                  Nuevo
                 </Chip>
                 <p className="ml-2 text-sm font-semibold">
-                  The Mint Dashboard 1.0 is Live!
+                  Dashboard Mint 1.0 esta Activo!
                 </p>
               </div>
               <div className="mt-4">
@@ -134,14 +134,14 @@ export const Landing = () => {
         </section>
 
         {/* Nosotros */}
-        <section id="nosotros" className="flex flex-col w-full min-h-screen">
+        <section id="nosotros" className="flex flex-col w-screen min-h-screen">
           <div className="grid w-screen grid-cols-1 h-[700px] lg:grid-cols-3">
             <div className="col-span-1">
               <h2>Seguridad y Confianza</h2>
             </div>
-            <div className="grid grid-cols-1 col-span-2 gap-4 p-16 shadow lg:grid-cols-2 bg-gradient-to-b from-sky-200 to-sky-50 rounded-s-3xl">
+            <div className="grid grid-cols-1 col-span-2 gap-4 p-16 shadow lg:grid-cols-2 bg-gradient-to-b from-sky-200 to-sky-50 dark:bg-gradient-to-b dark:from-[#232733] dark:to-[#2C2F42] rounded-s-3xl">
               {caracteristicas.map((caracteristica, index) => (
-                <Tilt>
+                <Tilt key={index}>
                   <div key={index} className="col-span-1 lg:col-span-1">
                     <div className="flex flex-wrap items-center gap-3 mb-4">
                       <span className="p-1 bg-white text-sky-700 rounded-xl">
@@ -161,7 +161,7 @@ export const Landing = () => {
 
         <section
           id="contacto"
-          className="w-full h-screen overflow-auto bg-black"
+          className="w-screen h-screen overflow-auto bg-black"
         >
           <div className="pt-20">
             <h2 className="w-1/2 mx-auto text-4xl font-semibold text-center text-white md:text-6xl">

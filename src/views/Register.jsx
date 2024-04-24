@@ -81,7 +81,7 @@ export const Register = () => {
   };
 
   return (
-    <div className="grid h-screen grid-cols-1 lg:grid-cols-2 bg-zinc-700">
+    <div className="grid h-screen grid-cols-1 lg:grid-cols-2 dark:bg-[#2C2F42]">
       <div className="flex-col col-span-1 lg:flex hidden bg-[#3E70A1]">
         <header className="flex items-center mx-auto h-36">
           <Link
@@ -91,14 +91,14 @@ export const Register = () => {
             <MintIconL className="w-16" />
           </Link>
         </header>
-        <div className="flex flex-wrap items-center justify-center max-w-3xl p-10 py-20 mx-auto my-auto bg-white dark:bg-zinc-800 rounded-3xl">
-          <h1 className="text-5xl font-semibold w-80 text-sky-700">Tus ingresos están protegidos</h1>
+        <div className="flex flex-wrap items-center justify-center max-w-3xl p-10 py-20 mx-auto my-auto bg-white dark:bg-[#2C2F42] rounded-3xl">
+          <h1 className="text-5xl font-semibold w-80 text-sky-700 dark:text-sky-400">Tus ingresos están protegidos</h1>
           <img src={secureimg} alt="" />
         </div>
       </div>
-      <div className="flex flex-col col-span-2 bg-white md:col-span-1 dark:bg-zinc-900">
+      <div className="flex flex-col col-span-2 bg-white md:col-span-1 dark:bg-[#1A1A24]">
         <div className="my-auto">
-          <h1 className="mb-10 text-6xl font-bold text-center text-gray-800">
+          <h1 className="mb-10 text-6xl font-bold text-center text-gray-800 dark:text-white">
             REGISTRARSE
           </h1>
           <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl mx-auto">

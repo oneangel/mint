@@ -13,26 +13,48 @@ export const Step1 = ({ control, nextStep }) => {
   const validateEmail = (value) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
+  const validatePhone = (value) => value.match(/^\d{10}$/);
+
+  const validateUsername = (value) => value.match(/^[a-zA-Z0-9]+$/);
+
   const handleUsernameChange = (value) => {
     setUsername(value);
-    setUsernameError(value ? "" : "Por favor ingresa un nombre de usuario");
+    setUsernameError(
+      value
+        ? validateUsername(value)
+          ? ""
+          : "El nombre de usuario no puede contener espacios ni caracteres especiales"
+        : "Por favor ingresa un nombre de usuario"
+    );
   };
 
   const handleEmailChange = (value) => {
     setEmail(value);
-    setEmailError(value ? (validateEmail(value) ? "" : "Por favor ingresa un correo válido") : "El campo es obligatorio");
+    setEmailError(
+      value
+        ? validateEmail(value)
+          ? ""
+          : "Por favor ingresa un correo electrónico válido"
+        : "El campo es obligatorio"
+    );
   };
 
   const handlePhoneChange = (value) => {
     setPhone(value);
-    setPhoneError(value ? "" : "Por favor ingresa un número de teléfono");
+    setPhoneError(
+      value
+        ? validatePhone(value)
+          ? ""
+          : "Por favor ingresa un número de teléfono válido (10 dígitos)"
+        : "El campo es obligatorio"
+    );
   };
 
   const isFormValid = username && phone && validateEmail(email);
 
   const handleNextStep = () => {
     if (!isFormValid) {
-      toast.error("Ingresa tus datos para continuar");
+      toast.error("Ingresa tus datos correctamente para continuar");
     } else {
       nextStep();
     }
@@ -111,4 +133,3 @@ export const Step1 = ({ control, nextStep }) => {
     </>
   );
 };
-

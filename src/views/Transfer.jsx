@@ -298,44 +298,54 @@ export const Transfer = () => {
             <div className="flex flex-col items-start col-span-1">
               <div className="flex flex-wrap justify-center w-full gap-20 mt-6">
                 {/* Abonos */}
-                {!isLoadingTotalIncome && (
-                  <Card className="flex flex-col items-center h-40 w-80 border-1 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
-                    <CardHeader className="flex gap-3">
-                      <IoCaretUpCircle className="text-teal-600 size-10 dark:text-teal-400" />
-                      <div className="flex flex-col">
-                        <p className="text-md">Total de Abonos</p>
-                        <p className="text-small text-default-500">
-                          24 de marzo
+                <Skeleton
+                  isLoaded={!isLoadingTotalIncome}
+                  className="rounded-3xl"
+                >
+                  {!isLoadingTotalIncome && (
+                    <Card className="flex flex-col items-center h-40 w-80 border-1 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
+                      <CardHeader className="flex gap-3">
+                        <IoCaretUpCircle className="text-teal-600 size-10 dark:text-teal-400" />
+                        <div className="flex flex-col">
+                          <p className="text-md">Total de Abonos</p>
+                          <p className="text-small text-default-500">
+                            24 de marzo
+                          </p>
+                        </div>
+                      </CardHeader>
+                      <CardBody>
+                        <p className="mb-4 text-4xl font-semibold">
+                          ${totalIncomeData.data.incomeTotal.toFixed(2)}
                         </p>
-                      </div>
-                    </CardHeader>
-                    <CardBody>
-                      <p className="mb-4 text-4xl font-semibold">
-                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
-                      </p>
-                    </CardBody>
-                  </Card>
-                )}
+                      </CardBody>
+                    </Card>
+                  )}
+                </Skeleton>
 
                 {/* Cargos */}
-                {!isLoadingTotalExpense && (
-                  <Card className="flex flex-col items-center h-40 border-1 w-80 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
-                    <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
-                      <div className="flex flex-col">
-                        <p className="text-md">Total de cargos</p>
-                        <p className="text-small text-default-500">
-                          24 de marzo
+                <Skeleton
+                  isLoaded={!isLoadingExpenseList}
+                  className="rounded-3xl"
+                >
+                  {!isLoadingTotalExpense && (
+                    <Card className="flex flex-col items-center h-40 border-1 w-80 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
+                      <CardHeader className="flex gap-4">
+                        <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
+                        <div className="flex flex-col">
+                          <p className="text-md">Total de cargos</p>
+                          <p className="text-small text-default-500">
+                            24 de marzo
+                          </p>
+                        </div>
+                      </CardHeader>
+                      <CardBody>
+                        <p className="mb-4 text-4xl font-semibold">
+                          ${totalExpenseData.data.expenseTotal.toFixed(2)}
                         </p>
-                      </div>
-                    </CardHeader>
-                    <CardBody>
-                      <p className="mb-4 text-4xl font-semibold">
-                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
-                      </p>
-                    </CardBody>
-                  </Card>
-                )}
+                      </CardBody>
+                    </Card>
+                  )}
+                </Skeleton>
               </div>
               <div className="grid w-full grid-cols-2 gap-4 mt-10 lg:grid-cols-4">
                 <div className="col-span-1 lg:col-span-1">
@@ -468,29 +478,38 @@ export const Transfer = () => {
               </div>
 
               <div className="w-full col-span-1 mt-4">
-                {!isLoadingTransactionList && (
-                  <Card className="dark:bg-[#2C2F42]">
-                    <CardHeader>
-                      <p>Lista de las transacciones</p>
-                    </CardHeader>
-                    <CardBody>
-                      <TableCustom
-                        onDelete={onDelete}
-                        onDeleteF={onDeleteF}
-                        onRecover={onRecover}
-                        onUpdate={onUpdate}
-                        columns={columns}
-                        data={getPaginatedRows(filteredData)}
-                      />
-                    </CardBody>
-                  </Card>
-                )}
+                <Skeleton
+                  isLoaded={!isLoadingTransactionList}
+                  className="rounded-3xl"
+                >
+                  {!isLoadingTransactionList && (
+                    <Card className="dark:bg-[#2C2F42]">
+                      <CardHeader>
+                        <p>Lista de las transacciones</p>
+                      </CardHeader>
+                      <CardBody>
+                        <TableCustom
+                          onDelete={onDelete}
+                          onDeleteF={onDeleteF}
+                          onRecover={onRecover}
+                          onUpdate={onUpdate}
+                          columns={columns}
+                          data={getPaginatedRows(filteredData)}
+                        />
+                      </CardBody>
+                    </Card>
+                  )}
+                </Skeleton>
 
                 {!isLoadingTransactionList && (
                   <Pagination
                     showControls
                     className="flex justify-end mt-2"
-                    classNames={{item: "dark:bg-[#2C2F42]", next: "dark:bg-[#2C2F42]", prev: "dark:bg-[#2C2F42]"}}
+                    classNames={{
+                      item: "dark:bg-[#2C2F42]",
+                      next: "dark:bg-[#2C2F42]",
+                      prev: "dark:bg-[#2C2F42]",
+                    }}
                     total={Math.ceil(
                       (filteredData?.length || 0) / itemsPerPage
                     )}
@@ -502,49 +521,51 @@ export const Transfer = () => {
             </div>
 
             {/* Right side / total-graphs */}
-            <Card className="items-center col-span-1 dark:bg-[#2C2F42]">
-              <CardHeader className="flex justify-center pt-6 bg">
-                <IoPieChart className="size-10" />
-                <div className="flex flex-col ml-2">
-                  <p className="text-md">Abonos y cargos</p>
-                  <p className="text-small text-default-500">Comparacion</p>
-                </div>
-                <ButtonGroup className="ml-8">
-                  <Button
-                    className="text-white bg-teal-600"
-                    onClick={() => {
-                      if (!transactionType) {
-                        setTransactionType(!transactionType);
+            <Skeleton isLoaded={!isLoadingTotalIncome} className="p-1 rounded-3xl">
+              <Card className="items-center col-span-1 shadow-sm border-1 dark:border-zinc-800 dark:bg-[#2C2F42]">
+                <CardHeader className="flex justify-center pt-6">
+                  <IoPieChart className="size-10" />
+                  <div className="flex flex-col ml-2">
+                    <p className="text-md">Abonos y cargos</p>
+                    <p className="text-small text-default-500">Comparacion</p>
+                  </div>
+                  <ButtonGroup className="ml-8">
+                    <Button
+                      className="text-white bg-teal-600"
+                      onClick={() => {
+                        if (!transactionType) {
+                          setTransactionType(!transactionType);
+                        }
+                      }}
+                    >
+                      Ingresos
+                    </Button>
+                    <Button
+                      className="text-white bg-red-500"
+                      onClick={() => {
+                        if (transactionType) {
+                          setTransactionType(!transactionType);
+                        }
+                      }}
+                    >
+                      Gastos
+                    </Button>
+                  </ButtonGroup>
+                </CardHeader>
+                <CardBody>
+                  {!isLoadingIncomeList && incomeListData && (
+                    <LargeAreaChart
+                      data={
+                        transactionType
+                          ? incomeListData.data
+                          : expenseListData.data
                       }
-                    }}
-                  >
-                    Ingresos
-                  </Button>
-                  <Button
-                    className="text-white bg-red-500"
-                    onClick={() => {
-                      if (transactionType) {
-                        setTransactionType(!transactionType);
-                      }
-                    }}
-                  >
-                    Gastos
-                  </Button>
-                </ButtonGroup>
-              </CardHeader>
-              <CardBody>
-                {!isLoadingIncomeList && incomeListData && (
-                  <LargeAreaChart
-                    data={
-                      transactionType
-                        ? incomeListData.data
-                        : expenseListData.data
-                    }
-                    type={transactionType ? "income" : "expense"}
-                  />
-                )}
-              </CardBody>
-            </Card>
+                      type={transactionType ? "income" : "expense"}
+                    />
+                  )}
+                </CardBody>
+              </Card>
+            </Skeleton>
           </div>
         </div>
         <Toaster />

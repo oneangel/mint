@@ -178,66 +178,68 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <div className="flex w-full">
-                    <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
-                      <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
-                        <span>
-                          <IoWater className="size-8" />
-                        </span>
-                        Agua
-                      </p>
-                      <Skeleton isLoaded={!isLoadingTariffW}>
-                        {!isLoadingTariffW && (
-                          <div className="flex items-center justify-center">
-                            <LiquidFillChart
-                              litros={
-                                measureData ? tariffWData.data?.measure : 0
-                              }
-                            />
+                  <Skeleton className="rounded-3xl" isLoaded={serial}>
+                    <div className="flex w-full">
+                      <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
+                        <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
+                          <span>
+                            <IoWater className="size-8" />
+                          </span>
+                          Agua
+                        </p>
+                        <Skeleton isLoaded={!isLoadingTariffW}>
+                          {!isLoadingTariffW && (
+                            <div className="flex items-center justify-center">
+                              <LiquidFillChart
+                                litros={
+                                  measureData ? tariffWData.data?.measure : 0
+                                }
+                              />
+                            </div>
+                          )}
+                        </Skeleton>
+
+                        <div className="flex flex-wrap mx-10">
+                          <div className="w-1/2">
+                            <p className="mt-10 text-xl font-semibold">
+                              Total de litros:{" "}
+                              {!isLoadingTariffW && (
+                                <span className="ml-2 text-default-400">
+                                  {tariffWData.data.measure}L
+                                </span>
+                              )}
+                            </p>
                           </div>
+
+                          <div className="w-1/2 ">
+                            <p className="text-xl text-center">Gastos</p>
+                            <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
+                              {!isLoadingTariffW && !isErrorTariffW && (
+                                <p className="text-2xl font-bold text-red-700 dark:text-white">
+                                  $
+                                  {tariffWData
+                                    ? tariffWData.data.totalPay.toFixed(2)
+                                    : 0}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
+                        <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
+                          <IoCalendar />
+                          <span>Seguimiento mensual</span>
+                        </div>
+                        {!isLoadingWaterServices && (
+                          <LargeAreaChart
+                            data={waterServicesData.data}
+                            type="services"
+                          />
                         )}
-                      </Skeleton>
-
-                      <div className="flex flex-wrap mx-10">
-                        <div className="w-1/2">
-                          <p className="mt-10 text-xl font-semibold">
-                            Total de litros:{" "}
-                            {!isLoadingTariffW && (
-                              <span className="ml-2 text-default-400">
-                                {tariffWData.data.measure}L
-                              </span>
-                            )}
-                          </p>
-                        </div>
-
-                        <div className="w-1/2 ">
-                          <p className="text-xl text-center">Gastos</p>
-                          <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
-                            {!isLoadingTariffW && !isErrorTariffW && (
-                              <p className="text-2xl font-bold text-red-700 dark:text-white">
-                                $
-                                {tariffWData
-                                  ? tariffWData.data.totalPay.toFixed(2)
-                                  : 0}
-                              </p>
-                            )}
-                          </div>
-                        </div>
                       </div>
                     </div>
-                    <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
-                      <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
-                        <IoCalendar />
-                        <span>Seguimiento mensual</span>
-                      </div>
-                      {!isLoadingWaterServices && (
-                        <LargeAreaChart
-                          data={waterServicesData.data}
-                          type="services"
-                        />
-                      )}
-                    </div>
-                  </div>
+                  </Skeleton>
                 </Tab>
                 <Tab
                   value="electricity"
@@ -248,86 +250,88 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <div className="flex w-full">
-                    <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
-                      <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
-                        <span>
-                          <IoFlash className="size-8" />
-                        </span>
-                        Electricidad
-                      </p>
-                      {!isLoadingMeasure && !isLoadingTariffs && (
-                        <div className="flex items-center justify-center">
-                          <GaugeChart
-                            kw={
-                              measureData
-                                ? measureData.data.totalMeasure / 100
-                                : 0
-                            }
-                            basic={
-                              tariffsData
-                                ? tariffsData.data.tariffs.basic.limit / 100
-                                : 0
-                            }
-                            middle={
-                              tariffsData
-                                ? tariffsData.data.tariffs.middle.limit / 100
-                                : 0
-                            }
-                            excedent={
-                              tariffsData
-                                ? tariffsData.data.tariffs.basic.limit /
-                                  0.3333 /
-                                  100
-                                : 0
-                            }
-                          />
-                        </div>
-                      )}
+                  <Skeleton className="rounded-3xl" isLoaded={serial}>
+                    <div className="flex w-full">
+                      <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
+                        <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
+                          <span>
+                            <IoFlash className="size-8" />
+                          </span>
+                          Electricidad
+                        </p>
+                        {!isLoadingMeasure && !isLoadingTariffs && (
+                          <div className="flex items-center justify-center">
+                            <GaugeChart
+                              kw={
+                                measureData
+                                  ? measureData.data.totalMeasure / 100
+                                  : 0
+                              }
+                              basic={
+                                tariffsData
+                                  ? tariffsData.data.tariffs.basic.limit / 100
+                                  : 0
+                              }
+                              middle={
+                                tariffsData
+                                  ? tariffsData.data.tariffs.middle.limit / 100
+                                  : 0
+                              }
+                              excedent={
+                                tariffsData
+                                  ? tariffsData.data.tariffs.basic.limit /
+                                    0.3333 /
+                                    100
+                                  : 0
+                              }
+                            />
+                          </div>
+                        )}
 
-                      <div className="grid grid-cols-2 mx-10">
-                        <div className="col-span-2 md:col-span-1">
-                          <p className="mt-10 text-xl font-semibold">
-                            Total de kW:{" "}
-                            {!isLoadingMeasure && (
-                              <span className="ml-2 text-default-400">
-                                {measureData
-                                  ? measureData.data.totalMeasure
-                                  : 0}{" "}
-                                kw
-                              </span>
-                            )}
-                          </p>
-                        </div>
+                        <div className="grid grid-cols-2 mx-10">
+                          <div className="col-span-2 md:col-span-1">
+                            <p className="mt-10 text-xl font-semibold">
+                              Total de kW:{" "}
+                              {!isLoadingMeasure && (
+                                <span className="ml-2 text-default-400">
+                                  {measureData
+                                    ? measureData.data.totalMeasure
+                                    : 0}{" "}
+                                  kw
+                                </span>
+                              )}
+                            </p>
+                          </div>
 
-                        <div className="col-span-2 md:col-span-1">
-                          <p className="text-xl text-center">Gastos</p>
-                          <div className="flex items-center justify-center h-20 mx-auto w-[70%] mt-6 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
-                            {!isLoadingTariff && (
-                              <p className="text-2xl font-bold text-red-700 dark:text-white">
-                                $
-                                {tariffData
-                                  ? tariffData.data.total.toFixed(2)
-                                  : 0}
-                              </p>
-                            )}
+                          <div className="col-span-2 md:col-span-1">
+                            <p className="text-xl text-center">Gastos</p>
+                            <div className="flex items-center justify-center h-20 mx-auto w-[70%] mt-6 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
+                              {!isLoadingTariff && (
+                                <p className="text-2xl font-bold text-red-700 dark:text-white">
+                                  $
+                                  {tariffData
+                                    ? tariffData.data.total.toFixed(2)
+                                    : 0}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
-                      <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
-                        <IoCalendar />
-                        <span>Seguimiento mensual</span>
+                      <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
+                        <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
+                          <IoCalendar />
+                          <span>Seguimiento mensual</span>
+                        </div>
+                        {!isLoadingElectricityServices && (
+                          <LargeAreaChart
+                            data={ElectricityServicesData.data}
+                            type="services"
+                          />
+                        )}
                       </div>
-                      {!isLoadingElectricityServices && (
-                        <LargeAreaChart
-                          data={ElectricityServicesData.data}
-                          type="services"
-                        />
-                      )}
                     </div>
-                  </div>
+                  </Skeleton>
                 </Tab>
               </Tabs>
             </div>

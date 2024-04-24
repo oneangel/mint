@@ -109,7 +109,9 @@ export const Home = () => {
           </div>
 
           {/* General Balance */}
+          <Skeleton isLoaded={!isLoadingBalance} className="p-1 rounded-3xl">
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
+          </Skeleton>
 
           {/* Abonos */}
           <div className="flex justify-center col-span-1">
@@ -121,7 +123,10 @@ export const Home = () => {
                 {!isLoadingTotalIncome && (
                   <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-[#2C2F42] dark:border-zinc-800">
                     <CardHeader className="flex gap-4">
-                      <IoCaretUpCircle  Circle className="text-teal-600 dark:text-teal-500 size-10" />
+                      <IoCaretUpCircle
+                        Circle
+                        className="text-teal-600 dark:text-teal-500 size-10"
+                      />
                       <div className="flex flex-col">
                         <p className="text-md">Total de ingresos</p>
                         <p className="text-small text-default-500">
@@ -179,14 +184,13 @@ export const Home = () => {
               </div>
             </Skeleton>
           </div>
+          <Skeleton isLoaded={!isLoadingLastTransactions} className="p-1 rounded-3xl">
             <div className="flex items-center col-span-1 lg:col-span-1">
               {!isLoadingLastTransactions && (
-                <TransactionHistory
-                  transactions={lastTransactionsData.data}
-                  isLoading={isLoadingLastTransactions}
-                />
+                <TransactionHistory transactions={lastTransactionsData.data} />
               )}
             </div>
+          </Skeleton>
         </div>
       </div>
       <Toaster />

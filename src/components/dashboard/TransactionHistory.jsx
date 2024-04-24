@@ -4,29 +4,20 @@ import { Skeleton } from "@nextui-org/react";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
-export const TransactionHistory = ({ transactions, isLoading }) => {
+export const TransactionHistory = ({ transactions}) => {
   return (
-    <div className=" shadow-md w-full dark:border-zinc-800bg-white rounded-3xl border-1 border-gray-200 h-[400px] bg-white dark:bg-[#2C2F42] dark:border-zinc-800 transition">
-      <div className="flex justify-between px-6 pt-6">
-        <Skeleton isLoaded={!isLoading} className="rounded-3xl">
+      <div className=" shadow-md w-full dark:border-zinc-800bg-white rounded-3xl border-1 border-gray-200 h-[400px] bg-white dark:bg-[#2C2F42] dark:border-zinc-800 transition">
+        <div className="flex justify-between px-6 pt-6">
           <h1 className="text-xl font-semibold">Historial de Transacciones</h1>
-        </Skeleton>
-        <Skeleton isLoaded={!isLoading} className="rounded-3xl">
           <Link
             className="font-semibold text-medium text-sky-700 dark:text-sky-400"
             to="/transfer"
           >
             Ver Todos
           </Link>
-        </Skeleton>
-      </div>
+        </div>
 
-      {transactions.map((transaction, index) => (
-        <Skeleton
-          isLoaded={!isLoading}
-          key={index}
-          className="mx-auto my-3 rounded-3xl"
-        >
+        {transactions.map((transaction, index) => (
           <div key={index} className="flex flex-wrap px-6 mt-6">
             <div className="flex items-center w-1/3">
               <div
@@ -66,8 +57,7 @@ export const TransactionHistory = ({ transactions, isLoading }) => {
               </div>
             </div>
           </div>
-        </Skeleton>
-      ))}
-    </div>
+        ))}
+      </div>
   );
 };

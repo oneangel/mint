@@ -245,83 +245,91 @@ export const Wallet = () => {
 
         <div className="grid flex-wrap grid-cols-1 gap-10 mx-4 xl:grid-cols-3 md:mx-20">
           <div className="flex flex-col pt-10 lg:col-span-1">
-            {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
-            <Card className="h-[340px] shadow-md mt-8 rounded-3xl border-1 w-full dark:bg-[#2C2F42] dark:border-zinc-800">
-              {!isLoadingGoals && selectedGoal.description == "Ninguna" && (
-                <CardBody className="flex flex-wrap justify-center w-full gap-5">
-                  <p className="text-xl text-center">
-                    No hay ninguna meta seleccionada
-                  </p>
-                </CardBody>
-              )}
-              {!isLoadingGoals && selectedGoal.description != "Ninguna" && (
-                <>
-                  <CardHeader className="flex gap-3">
-                    <span className="text-5xl">
-                      <FaPiggyBank />
-                    </span>
-                    <div className="flex flex-col">
-                      <p className="text-md">Meta seleccionada</p>
-                      <p className="text-small text-default-500">
-                        {selectedGoal.description}
-                      </p>
-                    </div>
-                    <Button
-                      color="primary"
-                      radius="full"
-                      size="sm"
-                      variant="solid"
-                      className="ml-5 bg-sky-700"
-                      onPress={() => setShowAddAmountModal(true)}
-                    >
-                      Abonar
-                    </Button>
-                  </CardHeader>
-
-                  <CardBody className="flex flex-wrap items-center justify-center w-full gap-5">
-                    <div className="flex flex-col w-40 items-left">
-                      <Percentage
-                        value={selectedGoal.amount}
-                        max={selectedGoal.amountGoal}
-                      />
-                    </div>
-                    <div className="flex flex-col w-90">
-                      <div className="w-60">
-                        <p className="text-md text-default-500">
-                          •Monto actual:
-                        </p>
-                        <p className="text-2xl">${selectedGoal.amount}</p>
-                        <p>Ultimo abono de 30%</p>
-                      </div>
-                      <div className="mt-4 w-60">
-                        <p className="text-md text-default-500">•Meta:</p>
-                        <p className="text-2xl">${selectedGoal.amountGoal}</p>
-                        <p>Ultimo abono de 30%</p>
-                      </div>
-                    </div>
+            <Skeleton className="rounded-3xl" isLoaded={!isLoadingBalance}>
+              {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
+            </Skeleton>
+            <Skeleton className="mt-8 rounded-3xl" isLoaded={!isLoadingGoals}>
+              <Card className="h-[340px] shadow-md rounded-3xl border-1 w-full dark:bg-[#2C2F42] dark:border-zinc-800">
+                {!isLoadingGoals && selectedGoal.description == "Ninguna" && (
+                  <CardBody className="flex flex-wrap justify-center w-full gap-5">
+                    <p className="text-xl text-center">
+                      No hay ninguna meta seleccionada
+                    </p>
                   </CardBody>
-                </>
-              )}
-            </Card>
+                )}
+                {!isLoadingGoals && selectedGoal.description != "Ninguna" && (
+                  <>
+                    <CardHeader className="flex gap-3">
+                      <span className="text-5xl">
+                        <FaPiggyBank />
+                      </span>
+                      <div className="flex flex-col">
+                        <p className="text-md">Meta seleccionada</p>
+                        <p className="text-small text-default-500">
+                          {selectedGoal.description}
+                        </p>
+                      </div>
+                      <Button
+                        color="primary"
+                        radius="full"
+                        size="sm"
+                        variant="solid"
+                        className="ml-5 bg-sky-700"
+                        onPress={() => setShowAddAmountModal(true)}
+                      >
+                        Abonar
+                      </Button>
+                    </CardHeader>
+
+                    <CardBody className="flex flex-wrap items-center justify-center w-full gap-5">
+                      <div className="flex flex-col w-40 items-left">
+                        <Percentage
+                          value={selectedGoal.amount}
+                          max={selectedGoal.amountGoal}
+                        />
+                      </div>
+                      <div className="flex flex-col w-90">
+                        <div className="w-60">
+                          <p className="text-md text-default-500">
+                            •Monto actual:
+                          </p>
+                          <p className="text-2xl">${selectedGoal.amount}</p>
+                          <p>Ultimo abono de 30%</p>
+                        </div>
+                        <div className="mt-4 w-60">
+                          <p className="text-md text-default-500">•Meta:</p>
+                          <p className="text-2xl">${selectedGoal.amountGoal}</p>
+                          <p>Ultimo abono de 30%</p>
+                        </div>
+                      </div>
+                    </CardBody>
+                  </>
+                )}
+              </Card>
+            </Skeleton>
           </div>
 
           <div className="max-h-[400px] mt-10 lg:col-span-2">
             <div className="flex flex-wrap">
               <div className="w-3/4">
-                <SearchBar
-                  searchTerm={searchTerm}
-                  handleSearchChange={handleSearchChange}
-                />
+                <Skeleton className="rounded-2xl" isLoaded={!isLoadingGoals}>
+                  <SearchBar
+                    searchTerm={searchTerm}
+                    handleSearchChange={handleSearchChange}
+                  />
+                </Skeleton>
               </div>
 
               <div className="flex justify-end w-1/4">
-                <Button
-                  className="w-56 text-xl text-white h-14 bg-sky-700"
-                  startContent={<IoAddCircle className="text-white size-6" />}
-                  onPress={onOpen}
-                >
-                  Crear Meta
-                </Button>
+                <Skeleton className="rounded-2xl" isLoaded={!isLoadingGoals}>
+                  <Button
+                    className="w-56 text-xl text-white h-14 bg-sky-700"
+                    startContent={<IoAddCircle className="text-white size-6" />}
+                    onPress={onOpen}
+                  >
+                    Crear Meta
+                  </Button>
+                </Skeleton>
 
                 <Modal
                   isOpen={isOpen}
@@ -385,103 +393,110 @@ export const Wallet = () => {
             </div>
 
             <div className="mt-4">
-              {!isLoadingGoals && (
-                <Table
-                  className="max-h-[600px]"
-                  classNames={{wrapper: "dark:bg-[#2D3141]", th: "dark:bg-[#2D3141]",}}
-                  selectionMode="single"
-                  aria-label="Lista de Metas"
-                  defaultSelectedKeys={["1"]}
-                >
-                  <TableHeader columns={columns}>
-                    {(column) => (
-                      <TableColumn
-                        key={column.key}
-                        className="text-xl text-neutral-800 dark:text-neutral-200"
-                      >
-                        {column.label}
-                      </TableColumn>
-                    )}
-                  </TableHeader>
-                  <TableBody
-                    items={filteredData.slice(
-                      (currentPage - 1) * itemsPerPage,
-                      currentPage * itemsPerPage
-                    )}
-                    emptyContent={"No existen metas registradas aún."}
+              <Skeleton isLoaded={!isLoadingGoals} className="p-1 rounded-3xl">
+                {!isLoadingGoals && (
+                  <Table
+                    className="max-h-[600px]"
+                    classNames={{
+                      wrapper: "dark:bg-[#2D3141]",
+                      th: "dark:bg-[#2D3141]",
+                    }}
+                    selectionMode="single"
+                    aria-label="Lista de Metas"
+                    defaultSelectedKeys={["1"]}
                   >
-                    {(item) => (
-                      <TableRow
-                        key={item.idGoal}
-                        onClick={() => {
-                          setSelectedGoal(item);
-                          setSelectedItemId(item._id);
-                        }}
-                      >
-                        {(columnKey) => (
-                          <TableCell className="pt-8 text-xl">
-                            {columnKey === "acciones" ? (
-                              <div className="relative flex items-center gap-2 ml-4">
-                                <div
-                                  onClick={() => {
-                                    setSelectedItemId(item._id);
-                                    setShowEditModal(true);
-                                    setSelectedItem(item);
-                                  }}
-                                >
-                                  <Tooltip content="Editar" aria-label="Editar">
-                                    <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
-                                      <FaPen />
-                                    </span>
-                                  </Tooltip>
-                                </div>
+                    <TableHeader columns={columns}>
+                      {(column) => (
+                        <TableColumn
+                          key={column.key}
+                          className="text-xl text-neutral-800 dark:text-neutral-200"
+                        >
+                          {column.label}
+                        </TableColumn>
+                      )}
+                    </TableHeader>
+                    <TableBody
+                      items={filteredData.slice(
+                        (currentPage - 1) * itemsPerPage,
+                        currentPage * itemsPerPage
+                      )}
+                      emptyContent={"No existen metas registradas aún."}
+                    >
+                      {(item) => (
+                        <TableRow
+                          key={item.idGoal}
+                          onClick={() => {
+                            setSelectedGoal(item);
+                            setSelectedItemId(item._id);
+                          }}
+                        >
+                          {(columnKey) => (
+                            <TableCell className="pt-8 text-xl">
+                              {columnKey === "acciones" ? (
+                                <div className="relative flex items-center gap-2 ml-4">
+                                  <div
+                                    onClick={() => {
+                                      setSelectedItemId(item._id);
+                                      setShowEditModal(true);
+                                      setSelectedItem(item);
+                                    }}
+                                  >
+                                    <Tooltip
+                                      content="Editar"
+                                      aria-label="Editar"
+                                    >
+                                      <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
+                                        <FaPen />
+                                      </span>
+                                    </Tooltip>
+                                  </div>
 
-                                <div
-                                  onClick={() => {
-                                    setSelectedItemId(item._id);
-                                    setShowDeleteModal(true);
-                                  }}
-                                >
-                                  <Tooltip color="danger" content="Eliminar">
-                                    <span className="text-xl cursor-pointer text-danger active:opacity-50">
-                                      <IoTrash />
-                                    </span>
-                                  </Tooltip>
+                                  <div
+                                    onClick={() => {
+                                      setSelectedItemId(item._id);
+                                      setShowDeleteModal(true);
+                                    }}
+                                  >
+                                    <Tooltip color="danger" content="Eliminar">
+                                      <span className="text-xl cursor-pointer text-danger active:opacity-50">
+                                        <IoTrash />
+                                      </span>
+                                    </Tooltip>
+                                  </div>
                                 </div>
-                              </div>
-                            ) : columnKey === "state" ? (
-                              <Chip
-                                className="capitalize"
-                                color={statusColorMap[item.state]}
-                                size="sm"
-                                aria-label="Estado"
-                                variant="flat"
-                              >
-                                {item.state ? "Activo" : "Finalizada"}
-                              </Chip>
-                            ) : columnKey === "finalDate" ? (
-                              item.finalDate ? (
-                                <span className="ml-2 font-normal text-default-700">
-                                  {new Date(item.finalDate).toLocaleDateString(
-                                    undefined,
-                                    {
+                              ) : columnKey === "state" ? (
+                                <Chip
+                                  className="capitalize"
+                                  color={statusColorMap[item.state]}
+                                  size="sm"
+                                  aria-label="Estado"
+                                  variant="flat"
+                                >
+                                  {item.state ? "Activo" : "Finalizada"}
+                                </Chip>
+                              ) : columnKey === "finalDate" ? (
+                                item.finalDate ? (
+                                  <span className="ml-2 font-normal text-default-700">
+                                    {new Date(
+                                      item.finalDate
+                                    ).toLocaleDateString(undefined, {
                                       year: "numeric",
                                       month: "long",
                                       day: "numeric",
-                                    }
-                                  )}
-                                </span>
-                              ) : null
-                            ) : (
-                              getKeyValue(item, columnKey)
-                            )}
-                          </TableCell>
-                        )}
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              )}
+                                    })}
+                                  </span>
+                                ) : null
+                              ) : (
+                                getKeyValue(item, columnKey)
+                              )}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                )}
+              </Skeleton>
               <Modal
                 isOpen={showEditModal}
                 onOpenChange={setShowEditModal}

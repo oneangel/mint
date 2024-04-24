@@ -91,7 +91,7 @@ export const Login = () => {
                 <MintIconL className="w-16" />
               </Link>
             </header>
-            <div className="flex flex-col max-w-3xl mx-auto my-auto bg-white h-[400px] dark:bg-zinc-800 rounded-3xl">
+            <div className="flex flex-col max-w-3xl mx-auto my-auto bg-white h-[400px] dark:bg-[#2C2F42] rounded-3xl">
               <h1 className="mx-10 mt-6 text-5xl font-semibold text-sky-700 dark:text-sky-400">
                 Alcanza tus metas financieras más rápido
               </h1>
@@ -112,7 +112,7 @@ export const Login = () => {
               retroalimentacion y control al tomar una decisión financiera.{" "}
             </p>
           </div>
-          <div className="flex flex-col col-span-2 bg-white xl:col-span-1 dark:bg-zinc-900">
+          <div className="flex flex-col col-span-2 bg-white xl:col-span-1 dark:bg-[#1A1A24]">
             <div className="my-auto">
               <h1 className="mb-10 text-6xl font-bold text-center text-gray-800 dark:text-white ">
                 INICIAR SESIÓN
@@ -133,7 +133,7 @@ export const Login = () => {
                       })}
                       size="lg"
                       classNames={{ label: "text-2xl" }}
-                      className="bg-white rounded-2xl dark:bg-zinc-800"
+                      className="bg-white rounded-2xl dark:bg-[#2C2F42]"
                       startContent={
                         <IoMailSharp className="flex-shrink-0 text-2xl pointer-events-none text-sky-700" />
                       }
@@ -151,13 +151,13 @@ export const Login = () => {
                       {...register("password", {
                         required: "el campo es obligatorio",
                       })}
-                      className="bg-white rounded-2xl dark:bg-zinc-800 "
+                      className="bg-white rounded-2xl dark:bg-[#2C2F42]"
                       classNames={{ label: "text-2xl" }}
                       startContent={
                         <IoLockClosed className="flex-shrink-0 text-2xl pointer-events-none text-sky-700" />
                       }
                       endContent={
-                        <div className="my-auto focus:outline-none">
+                        <div className="my-auto cursor-pointer focus:outline-none">
                           {showPassword ? (
                             <GoEyeClosed
                               className="text-2xl text-default-400"
