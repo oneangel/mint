@@ -13,10 +13,13 @@ export const registerService = async (req, res) => {
 
     const existingService = await Service.findOne({
       serial, type, createdAt: {
-        $gte: formatISO(startOfDayDate),
-        $lte: formatISO(endOfDayDate)
+        $gte: new Date(new Date(startOfDayDate).setHours(0, 0, 0, 0)),
+        $lte: new Date(new Date(endOfDayDate).setHours(23, 59, 59, 999))
       }
     });
+
+    console.log('Servicio existente');
+    console.log(existingService);
 
     if (!existingService) {
       const newService = new Service({
@@ -107,7 +110,9 @@ export const getTarrifCost = async (req, res) => {
           totalMeasure: { $sum: "$measurement" }
         }
       },
-    ])
+    ]);
+    console.log('Total');
+    console.log(totalMeasure);
 
     const totalKw = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
     const { basic, middle, excedent } = tariff.tariffs;
@@ -132,7 +137,11 @@ export const getTarrifWaterCost = async (req, res) => {
     const { code } = req.params;
     const { startDate, endDate } = req.body;
 
-    console.log(code);
+    const existingService = await Service.find({ serial: code, type: "water" });
+
+    if (existingService.length === 0) {
+      return res.status(404).send("Services not found");
+    }
 
     const totalMeasure = await Service.aggregate([
       {
@@ -153,19 +162,23 @@ export const getTarrifWaterCost = async (req, res) => {
       },
     ]);
 
-    const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
-    const cubicMeters = 0;
+    if (totalMeasure.length === 0) {
+      return res.status(404).send("TotalMeasure not found");
+    }
 
-    if (total > 0) {
-      cubicMeters = totalMeasure[0].totalMeasure / 1000;
+    const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
+    const cubicMeters = totalMeasure[0].totalMeasure / 1000;
+
+    if (cubicMeters >= 1) {
       const tariff = await TariffW.findOne({
         range_from: { $lte: cubicMeters },
         range_to: { $gte: cubicMeters }
       });
-
       const totalPay = cubicMeters * tariff.percentage;
 
-      res.json({ totalPay, measure: totalMeasure[0].totalMeasure });
+      res.json({ totalPay, measure: total });
+    } else if (cubicMeters >= 0 && cubicMeters < 1) {
+      res.json({ totalPay: 0, measure: total });
     } else {
       res.json({ totalPay: 0, measure: 0 });
     }

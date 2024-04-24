@@ -3,7 +3,7 @@ import { Transaction, Client } from "../models/models.js";
 //Creates a new Transaction
 export const registerTransaction = async (req, res) => {
   const { code } = req.params;
-  const { description, amount, destination, createdAt, origin, type, state, status } =
+  const { description, amount, createdAt, origin, type, state, status } =
     req.body;
   try {
 
@@ -16,13 +16,14 @@ export const registerTransaction = async (req, res) => {
     const idTransaction = Math.random().toString(36).slice(2, 10 + 2);
 
     const newTransaction = new Transaction({
-      idTransaction, username: code, description, amount, destination, createdAt, origin, type, state, status
+      idTransaction, username: code, description, amount, createdAt, origin, type, state, status
     });
 
     const saveTransaction = await newTransaction.save();
     res.send(saveTransaction);
   } catch (error) {
-    res.status(500).json({ error: error });
+    console.log('Pepeee');
+    res.status(500).json({ error });
   }
 };
 
@@ -48,7 +49,7 @@ export const deleteTransaction = async (req, res) => {
 //Updates an existing Transaction
 export const updateTransaction = async (req, res) => {
   const { code } = req.params;
-  const { description, amount, destination } =
+  const { description, amount } =
     req.body;
 
   try {
@@ -61,7 +62,6 @@ export const updateTransaction = async (req, res) => {
     console.log(description);
     existingTransaction.description = description;
     existingTransaction.amount = amount;
-    existingTransaction.destination = destination;
     existingTransaction.type = amount > 0 ? "income" : "expense";
 
     const updatedTransaction = await existingTransaction.save();
