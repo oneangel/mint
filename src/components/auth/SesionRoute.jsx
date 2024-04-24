@@ -1,18 +1,24 @@
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { useContext } from "react";
+import { useQuery } from "react-query";
+import { useVerifyToken } from "../../hooks/client.hooks";
 
 const SesionRoute = ({ children }) => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const token = localStorage.getItem("token");
+  const { data, isLoading, isError, error } = useQuery(
+    "verify-token",
+    useVerifyToken,
+    {
+      retry: false,
+    }
+  );
 
-  if (token != null) {
-    return <Navigate to="/home" replace />;
-  }
-
-  if (token == null) {
+  if (!isLoading && isError) {
+    logout();
     return children;
-  } else {
+  } else if (!isLoading && !isError) {
     return <Navigate to="/home" replace />;
   }
 };

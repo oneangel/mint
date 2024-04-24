@@ -18,6 +18,7 @@ import {
 } from "@nextui-org/react";
 import { IoArrowUpOutline, IoArrowDownSharp, IoTrash } from "react-icons/io5";
 import { format } from "date-fns";
+import { FaRepeat } from "react-icons/fa6";
 import { FaPen } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useForm } from "react-hook-form";
@@ -74,24 +75,41 @@ export const TableCustom = ({ columns, data, onDelete, onUpdate }) => {
           emptyContent={"No existen transacciones registradas aún."}
         >
           {(item) => (
-            <TableRow key={item._id}>
+            <TableRow
+              key={item._id}
+              className={` ${
+                item.status
+                  ? ""
+                  : "bg-gray-200 opacity-50 cursor-not-allowed rounded"
+              }`}
+            >
               {(columnKey) => (
                 <TableCell className="pt-8 text-xl">
                   {columnKey === "acciones" ? (
                     <div className="relative flex items-center gap-2 ml-4">
-                      <div
-                        onClick={() => {
-                          setSelectedItem(item);
-                          setSelectedItemId(item._id);
-                          setShowEditModal(true);
-                        }}
-                      >
-                        <Tooltip content="Editar">
+                      {item.status && (
+                        <div
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setSelectedItemId(item._id);
+                            setShowEditModal(true);
+                          }}
+                        >
+                          <Tooltip content="Editar">
+                            <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
+                              <FaPen />
+                            </span>
+                          </Tooltip>
+                        </div>
+                      )}
+
+                      {!item.status && (
+                        <Tooltip content="Recuperar">
                           <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
-                            <FaPen />
+                            <FaRepeat />
                           </span>
                         </Tooltip>
-                      </div>
+                      )}
 
                       <div
                         onClick={() => {

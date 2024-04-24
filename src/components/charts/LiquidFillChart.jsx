@@ -4,6 +4,7 @@ import "echarts-liquidfill";
 
 function LiquidFillChart({ litros }) {
   useEffect(() => {
+    console.log(litros);
     // Inicializar el gráfico
     const chart = echarts.init(document.getElementById("liquidfill-chart"));
 
@@ -25,7 +26,7 @@ function LiquidFillChart({ litros }) {
             fontSize: 24,
             fontWeight: "bold",
             formatter: function (param) {
-              return (param.value * 100).toFixed(0) + "%"; // Formato de etiqueta
+              return (param.value * 100).toFixed(2) + "%"; // Formato de etiqueta
             },
           },
         },
@@ -39,14 +40,9 @@ function LiquidFillChart({ litros }) {
     return () => {
       chart.dispose();
     };
-  }, []);
+  }, [litros]);
 
-  return (
-    <div
-      id="liquidfill-chart"
-      className="w-[400px] h-[400px]"
-    ></div>
-  );
+  return <div id="liquidfill-chart" className="w-[400px] h-[400px]"></div>;
 }
 
 export default LiquidFillChart;

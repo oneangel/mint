@@ -280,7 +280,10 @@ export const Wallet = () => {
 
                   <CardBody className="flex flex-wrap items-center justify-center w-full gap-5">
                     <div className="flex flex-col w-40 items-left">
-                      <Percentage value={200} max={selectedGoal.amountGoal} />
+                      <Percentage
+                        value={selectedGoal.amount}
+                        max={selectedGoal.amountGoal}
+                      />
                     </div>
                     <div className="flex flex-col w-90">
                       <div className="w-60">
@@ -326,58 +329,56 @@ export const Wallet = () => {
                   aria-label="Crear nueva meta"
                 >
                   <ModalContent>
-                    {(onClose) => (
-                      <>
-                        <ModalHeader className="flex flex-col gap-1">
-                          Crear nueva meta
-                        </ModalHeader>
-                        <ModalBody>
-                          <form onSubmit={handleSubmit(onSubmit)}>
-                            <Input
-                              type="text"
-                              label="Descripción"
-                              name="description"
-                              className="mb-5"
-                              {...register("description", {
-                                required: "el campo es obligatorio",
-                              })}
-                            />
-                            <Input
-                              type="number"
-                              name="amountGoal"
-                              label="Meta"
-                              className="mb-5"
-                              {...register("amountGoal", {
-                                required: "el campo es obligatorio",
-                              })}
-                            />
-                            <Input
-                              type="date"
-                              name="finalDate"
-                              label="Fecha de meta"
-                              placeholder="dd/mm/aaaa"
-                              className="mb-5"
-                              {...register("finalDate", {
-                                required: "el campo es obligatorio",
-                              })}
-                            />
-                          </form>
-                        </ModalBody>
-                        <ModalFooter>
-                          <Button variant="light" onPress={onClose}>
-                            Cerrar
-                          </Button>
-                          <Button
-                            color="primary"
-                            disabled={!isValid}
-                            onPress={handleSubmit(onSubmit)}
-                            className="text-white bg-sky-700"
-                          >
-                            Crear
-                          </Button>
-                        </ModalFooter>
-                      </>
-                    )}
+                    <>
+                      <ModalHeader className="flex flex-col gap-1">
+                        Crear nueva meta
+                      </ModalHeader>
+                      <ModalBody>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <Input
+                            type="text"
+                            label="Descripción"
+                            name="description"
+                            className="mb-5"
+                            {...register("description", {
+                              required: "el campo es obligatorio",
+                            })}
+                          />
+                          <Input
+                            type="number"
+                            name="amountGoal"
+                            label="Meta"
+                            className="mb-5"
+                            {...register("amountGoal", {
+                              required: "el campo es obligatorio",
+                            })}
+                          />
+                          <Input
+                            type="date"
+                            name="finalDate"
+                            label="Fecha de meta"
+                            placeholder="dd/mm/aaaa"
+                            className="mb-5"
+                            {...register("finalDate", {
+                              required: "el campo es obligatorio",
+                            })}
+                          />
+                        </form>
+                      </ModalBody>
+                      <ModalFooter>
+                        <Button variant="light" onPress={onClose}>
+                          Cerrar
+                        </Button>
+                        <Button
+                          color="primary"
+                          onPress={handleSubmit(onSubmit)}
+                          className="text-white bg-sky-700"
+                          isDisabled={!isValid}
+                        >
+                          Crear
+                        </Button>
+                      </ModalFooter>
+                    </>
                   </ModalContent>
                 </Modal>
               </div>

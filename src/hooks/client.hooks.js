@@ -14,6 +14,7 @@ export const getClient = async () => {
 export const useVerifyToken = async () => {
 	try {
 		const res = await clientService.verifyToken(localStorage.getItem("token"));
+		console.log('Autenticado');
 		console.log(res);
 		return res;
 	} catch (error) {

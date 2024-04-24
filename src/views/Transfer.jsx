@@ -488,6 +488,7 @@ export const Transfer = () => {
                         ? incomeListData.data
                         : expenseListData.data
                     }
+                    type={transactionType ? "income" : "expense"}
                   />
                 )}
               </CardBody>

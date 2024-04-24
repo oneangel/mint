@@ -28,7 +28,14 @@ export default function App() {
           <HashRouter>
             <Routes>
               <Route path="/" element={<Landing />}></Route>
-              <Route path="/login" element={<Login />}></Route>
+              <Route
+                path="/login"
+                element={
+                  <SesionRoute>
+                    <Login />
+                  </SesionRoute>
+                }
+              ></Route>
               <Route path="/register" element={<Register />} />
               <Route path="/verificate" element={<CheckScreen />} />
               <Route

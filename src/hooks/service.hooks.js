@@ -59,6 +59,7 @@ export const useGetTariffWCost = async () => {
         startDate,
         endDate,
       }, token);
+      console.log(res);
       return res;
     } else {
       return "";
@@ -68,3 +69,20 @@ export const useGetTariffWCost = async () => {
     console.log(error);
   }
 }
+
+export const useGetServiceList = async (type) => {
+  try {
+    const serial = localStorage.getItem("serial");
+    const token = localStorage.getItem("token");
+    const res = await serviceService.getServicesList(serial, {
+      startDate,
+      endDate,
+      type
+    }, token);
+    console.log('Servicios');
+    console.log(res);
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -78,13 +78,13 @@ const GaugeChart = ({ kw, basic, middle, excedent }) => {
             offsetCenter: [0, "-35%"],
             valueAnimation: true,
             formatter: function (value) {
-              return Math.round(value * 100) + "";
+              return (value * 100).toFixed(3) + "";
             },
             color: "inherit",
           },
           data: [
             {
-              value: kw,
+              value: kw ? kw : 0,
               name: "Kw",
             },
           ],

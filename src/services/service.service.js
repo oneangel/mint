@@ -13,3 +13,8 @@ export function getTariffCost(serial, data, token) {
 export function getTariffWCost(serial, data, token) {
   return axios.post(`${URL_API}/get/tariff/water/cost/${serial}`, data, { headers: { Authorization: token } })
 }
+
+export function getServicesList(serial, data, token) {
+  return axios.post(`${URL_API}/get/services/list/${serial}`, data,
+    { headers: { Authorization: token } });
+}

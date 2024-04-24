@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-const LargeAreaChart = ({ data }) => {
+const LargeAreaChart = ({ data, type }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -26,7 +26,10 @@ const LargeAreaChart = ({ data }) => {
       xAxis: {
         type: "category",
         boundaryGap: false,
-        data: data.map((item) => item._id),
+        data:
+          type === "income" || type === "expense"
+            ? data.map((item) => item._id)
+            : data.map((item) => item.createdAt),
       },
       yAxis: {
         type: "value",
@@ -48,26 +51,40 @@ const LargeAreaChart = ({ data }) => {
       ],
       series: [
         {
-          name: "Fake Data",
+          name:
+            type === "income"
+              ? "Ingreso"
+              : type === "expense"
+              ? "Gasto"
+              : "Medicion",
           type: "line",
           symbol: "none",
           sampling: "lttb",
           itemStyle: {
-            color: "rgb(13, 148, 136)",
+            color: `${
+              type === "income" ? "rgb(13, 148, 136)" : "rgb(208, 0, 0)"
+            }`,
           },
           areaStyle: {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: "rgb(27, 62, 115)",
+                color: `${
+                  type === "income" ? "rgb(27, 62, 115)" : "rgb(255, 0, 0)"
+                }`,
               },
               {
                 offset: 1,
-                color: "rgb(13, 148, 136)",
+                color: `${
+                  type === "income" ? "rgb(13, 148, 136)" : "rgb(208, 0, 0)"
+                }`,
               },
             ]),
           },
-          data: data.map((item) => [item._id, item.total]),
+          data:
+            type === "income" || type === "expense"
+              ? data.map((item) => [item._id, item.total])
+              : data.map((item) => [item.createdAt, item.measurement]),
         },
       ],
     };
