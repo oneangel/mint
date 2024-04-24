@@ -93,6 +93,7 @@ export const addAmountGoal = async (req, res) => {
   const { amount } = req.body;
 
   try {
+    console.log('Este es el monto' + amount);
     const existingsavingGoals = await SavingsGoal.findOne({ _id: code });
 
     if (!existingsavingGoals) {

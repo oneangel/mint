@@ -51,7 +51,7 @@ router.post('/register/goal', SavingsGoal.registerSavingGoals);
 router.delete('/delete/goal/:code', SavingsGoal.deleteSavingGoals);
 router.put('/update/goal/:code', authMiddleware, SavingsGoal.updateSavingGoals);
 router.get('/get/goals/:code', authMiddleware, SavingsGoal.getsavingGoals);
-router.put('/add/amount/goal/:code', authMiddleware, SavingsGoal.addAmountGoal);
+router.put('/add/amount/goal/:code', SavingsGoal.addAmountGoal);
 
 //Meter
 router.post('/register/meter', MeterController.registerMeter);
