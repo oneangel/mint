@@ -125,11 +125,11 @@ export const EditProfile = () => {
   ];
 
   return (
-    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-zinc-950">
+    <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-[#1A1A24]">
       <NavigationBar />
       <div className="flex flex-col items-center w-full h-full">
         <div className="mt-40 max-w-[700px]">
-          <div className="flex flex-wrap w-full p-2 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+          <div className="flex flex-wrap w-full p-2 bg-white border-2 shadow-sm rounded-3xl dark:bg-[#2C2F42] dark:border-zinc-800">
             <div className="flex items-center justify-center w-1/4 p-4">
               <div className="overflow-hidden rounded-full size-24 md:size-36">
                 {selectedImageUrl ? ( // Si hay una imagen seleccionada, mostrarla
@@ -149,7 +149,7 @@ export const EditProfile = () => {
                 )}
               </div>
             </div>
-            <div className="flex flex-col w-3/4 pt-8 pl-10">
+            <div className="flex flex-col w-3/4 pt-8 pl-10 dark:bg-[#2C2F42] dark:border-zinc-800">
               <Input
                 id="file-upload"
                 type="file"
@@ -173,7 +173,7 @@ export const EditProfile = () => {
             </div>
           </div>
 
-          <div className="p-6 mt-10 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+          <div className="p-6 mt-10 bg-white border-2 shadow-sm rounded-3xl dark:bg-[#2C2F42] dark:border-zinc-800">
             <form onSubmit={handleSubmit(onUpdate)}>
               {labels.map((label, index) => (
                 <div className="flex flex-wrap mb-5" key={index}>
@@ -226,7 +226,7 @@ export const EditProfile = () => {
         <Button
           color="default"
           variant="ghost"
-          className="w-40 font-semibold md:w-56 mt-4"
+          className="w-40 mt-4 font-semibold md:w-56 dark:bg-[#2C2F42] dark:border-zinc-800"
           onClick={handleSubmit(onUpdate)}
         >
           Actualizar

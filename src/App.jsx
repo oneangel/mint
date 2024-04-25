@@ -1,6 +1,8 @@
 import React from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
 import {
+  AboutUs,
+  Contact,
   EditProfile,
   ErrorPage,
   Home,
@@ -28,6 +30,8 @@ export default function App() {
           <HashRouter>
             <Routes>
               <Route path="/" element={<Landing />}></Route>
+              <Route path="/nosotros" element={<AboutUs />}></Route>
+              <Route path="/contacto" element={<Contact />}></Route>
               <Route
                 path="/login"
                 element={

@@ -326,24 +326,22 @@ export const Transfer = () => {
                   isLoaded={!isLoadingTotalIncome}
                   className="rounded-3xl"
                 >
-                  {!isLoadingTotalIncome && (
-                    <Card className="flex flex-col items-center h-40 w-80 border-1 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
-                      <CardHeader className="flex gap-3">
-                        <IoCaretUpCircle className="text-teal-600 size-10 dark:text-teal-400" />
-                        <div className="flex flex-col">
-                          <p className="text-md">Total de Abonos</p>
-                          <p className="text-small text-default-500">
-                            24 de marzo
-                          </p>
-                        </div>
-                      </CardHeader>
-                      <CardBody>
-                        <p className="mb-4 text-4xl font-semibold">
-                          ${totalIncomeData.data.incomeTotal.toFixed(2)}
+                  <Card className="flex flex-col items-center h-40 w-80 border-1 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
+                    <CardHeader className="flex gap-3">
+                      <IoCaretUpCircle className="text-teal-600 size-10 dark:text-teal-400" />
+                      <div className="flex flex-col">
+                        <p className="text-md">Total de Abonos</p>
+                        <p className="text-small text-default-500">
+                          24 de marzo
                         </p>
-                      </CardBody>
-                    </Card>
-                  )}
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <p className="mb-4 text-4xl font-semibold">
+                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
+                      </p>
+                    </CardBody>
+                  </Card>
                 </Skeleton>
 
                 {/* Cargos */}
@@ -351,24 +349,22 @@ export const Transfer = () => {
                   isLoaded={!isLoadingExpenseList}
                   className="rounded-3xl"
                 >
-                  {!isLoadingTotalExpense && (
-                    <Card className="flex flex-col items-center h-40 border-1 w-80 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
-                      <CardHeader className="flex gap-4">
-                        <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
-                        <div className="flex flex-col">
-                          <p className="text-md">Total de cargos</p>
-                          <p className="text-small text-default-500">
-                            24 de marzo
-                          </p>
-                        </div>
-                      </CardHeader>
-                      <CardBody>
-                        <p className="mb-4 text-4xl font-semibold">
-                          ${totalExpenseData.data.expenseTotal.toFixed(2)}
+                  <Card className="flex flex-col items-center h-40 border-1 w-80 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
+                    <CardHeader className="flex gap-4">
+                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
+                      <div className="flex flex-col">
+                        <p className="text-md">Total de cargos</p>
+                        <p className="text-small text-default-500">
+                          24 de marzo
                         </p>
-                      </CardBody>
-                    </Card>
-                  )}
+                      </div>
+                    </CardHeader>
+                    <CardBody>
+                      <p className="mb-4 text-4xl font-semibold">
+                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
+                      </p>
+                    </CardBody>
+                  </Card>
                 </Skeleton>
               </div>
               <div className="grid w-full grid-cols-2 gap-4 mt-10 lg:grid-cols-4">

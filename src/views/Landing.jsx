@@ -63,7 +63,7 @@ export const Landing = () => {
       <Header />
       <div className="h-screen overflow-auto overflow-x-hidden bg-white dark:bg-[#1A1A24] max-w-screen">
         {/* Inicio */}
-        <section id="home" className="w-full">
+        <section className="w-full">
           <div className="grid h-full gap-2 mx-auto space-x-5 md:grid-cols-2">
             <div className="p-10 my-auto md:px-20 lg:col-span-1 md:col-span-2">
               <div className="flex flex-wrap items-center p-2 rounded-full bg-default-200 w-80">
@@ -129,15 +129,15 @@ export const Landing = () => {
             </div>
 
             <div className="items-center hidden justify-cemter lg:col-span-1 lg:block">
-              <div className="flex items-center justify-center h-full">
-                <img src={bg2} alt="Mint" className="" />
+              <div className="flex items-center justify-center h-[800px]">
+                  <img src={bg2} alt="Mint" className="" />
               </div>
             </div>
           </div>
         </section>
 
         {/* Nosotros */}
-        <section id="nosotros" className="flex flex-col w-full min-h-screen">
+        <section className="flex flex-col w-full min-h-screen">
           <div className="grid w-screen h-auto grid-cols-1 min-h-[700px] lg:grid-cols-3">
             <div className="flex flex-col justify-center col-span-1 p-14">
               <h2 className="gap-2 text-6xl font-semibold">
@@ -180,10 +180,7 @@ export const Landing = () => {
           </div>
         </section>
 
-        <section
-          id="contacto"
-          className="w-full h-screen overflow-auto bg-black"
-        >
+        <section className="w-full h-screen overflow-auto bg-black">
           <div className="pt-20">
             <h2 className="w-1/2 mx-auto text-4xl font-semibold text-center text-white md:text-6xl">
               Comienza a construir tu futuro financiero con Mint
@@ -210,7 +207,9 @@ export const Landing = () => {
           <div className="w-[90%] mx-auto">
             <span className="flex items-center gap-2 mt-4">
               <img src={techforge} alt="techforge logo" className="w-16" />
-              <p className="text-white">© TechForge. Todos los derechos reservados.</p>
+              <p className="text-white">
+                © TechForge. Todos los derechos reservados.
+              </p>
             </span>
           </div>
         </section>

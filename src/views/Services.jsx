@@ -187,18 +187,15 @@ export const Services = () => {
                           </span>
                           Agua
                         </p>
-                        <Skeleton isLoaded={!isLoadingTariffW}>
-                          {!isLoadingTariffW && (
-                            <div className="flex items-center justify-center">
-                              <LiquidFillChart
-                                litros={
-                                  measureData ? tariffWData.data?.measure : 0
-                                }
-                              />
-                            </div>
-                          )}
-                        </Skeleton>
-
+                        {!isLoadingTariffW && (
+                          <div className="flex items-center justify-center">
+                            <LiquidFillChart
+                              litros={
+                                measureData ? tariffWData.data?.measure : 0
+                              }
+                            />
+                          </div>
+                        )}
                         <div className="flex flex-wrap mx-10">
                           <div className="w-1/2">
                             <p className="mt-10 text-xl font-semibold">

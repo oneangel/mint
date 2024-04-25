@@ -10,5 +10,6 @@ import { Step2 } from "./Step2";
 import { Step3 } from "./Step3";
 import { Transfer } from "./Transfer";
 import { Wallet } from "./Wallet";
-
-export { Login, Register, Home, Transfer, Wallet, Step1, Step2, Step3, Landing, ErrorPage, Services, EditProfile};
+import {AboutUs} from './AboutUs'
+import {Contact} from './Contact'
+export { Login, Register, Home, Transfer, Wallet, Step1, Step2, Step3, Landing, ErrorPage, Services, EditProfile, AboutUs, Contact};

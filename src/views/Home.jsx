@@ -98,7 +98,7 @@ export const Home = () => {
       <div className="mt-20 md:mt-32">
         <div className="justify-between hidden mx-20 md:flex">
           <h1 className="text-4xl font-semibold text-sky-700 dark:text-white">
-            Home
+            Inicio
           </h1>
         </div>
 

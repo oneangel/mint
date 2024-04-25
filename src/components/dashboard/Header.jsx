@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, NavLink } from "react-router-dom";
 import { MintIcon } from "../../icons/MintIcon";
 import { MintIconL } from "../../icons/MintIconL";
 import { IoMenu, IoMoon, IoSunny } from "react-icons/io5";
@@ -47,6 +47,11 @@ export const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const getActiveClassName = (isActive) =>
+    `block px-3 py-2 rounded-md hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white ${
+      isActive ? "bg-sky-700 text-white" : ""
+    }`;
+
   return (
     <header className="fixed top-0 left-0 right-0 z-40 px-6 bg-white shadow dark:bg-[#232733]">
       <div className="flex items-center justify-between h-16 mx-auto lg:px-20 ">
@@ -72,30 +77,30 @@ export const Header = () => {
             <MintIconL className="hidden w-10 dark:flex" />
           </Link>
           <div className="hidden ml-8 space-x-8 md:flex">
-            <a
-              className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
-                location.hash === "#home" ? "text-sky-500" : ""
-              }`}
-              href="#home"
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "text-sky-700 font-semibold hover:text-sky-500 hover:scale-110 transition" : "text-zinc-700 dark:text-zinc-200 hover:text-sky-500 hover:scale-110 transition"
+              }
             >
               Inicio
-            </a>
-            <a
-              className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
-                location.hash === "#nosotros" ? "text-sky-500" : ""
-              }`}
-              href="#nosotros"
+            </NavLink>
+            <NavLink
+              to="/nosotros"
+              className={({ isActive }) =>
+                isActive ? "text-sky-700 font-semibold hover:text-sky-500 hover:scale-110 transition" : "text-zinc-700 dark:text-zinc-200 hover:text-sky-500 hover:scale-110 transition"
+              }
             >
               Nosotros
-            </a>
-            <a
-              className={`px-3 py-2 transition-colors text-zinc-700 dark:text-zinc-200 ${
-                location.hash === "#contacto" ? "text-sky-500" : ""
-              }`}
-              href="#contacto"
+            </NavLink>
+            <NavLink
+              to="/contacto"
+              className={({ isActive }) =>
+                isActive ? "text-sky-700 font-semibold hover:text-sky-500 hover:scale-110 transition" : "text-zinc-700 dark:text-zinc-200 hover:text-sky-500 hover:scale-110 transition"
+              }
             >
               Contacto
-            </a>
+            </NavLink>
           </div>
         </div>
         <div className="flex gap-4">
@@ -116,24 +121,26 @@ export const Header = () => {
       {/* Links movil */}
       {isMenuOpen && (
         <div className="py-2 space-y-1 border-t md:hidden">
-          <a
-            href="#home"
-            className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
+          <NavLink
+            to="/"
+            className={({ isActive }) => getActiveClassName(isActive)}
           >
             Inicio
-          </a>
-          <a
-            href="#nosotros"
-            className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
+          </NavLink>
+
+          <NavLink
+            to="/nosotros"
+            className={({ isActive }) => getActiveClassName(isActive)}
           >
             Nosotros
-          </a>
-          <a
-            href="#contacto"
-            className="block px-3 py-2 rounded-md text-zinc-700 hover:bg-primary hover:text-white dark:text-zinc-200 dark:hover:text-white"
+          </NavLink>
+
+          <NavLink
+            to="/contacto"
+            className={({ isActive }) => getActiveClassName(isActive)}
           >
             Contacto
-          </a>
+          </NavLink>
         </div>
       )}
     </header>
