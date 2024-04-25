@@ -137,7 +137,6 @@ export const Landing = () => {
         <section id="nosotros" className="flex flex-col w-screen min-h-screen">
           <div className="grid w-screen grid-cols-1 h-[700px] lg:grid-cols-3">
             <div className="col-span-1">
-              <h2>Seguridad y Confianza</h2>
             </div>
             <div className="grid grid-cols-1 col-span-2 gap-4 p-16 shadow lg:grid-cols-2 bg-gradient-to-b from-sky-200 to-sky-50 dark:bg-gradient-to-b dark:from-[#232733] dark:to-[#2C2F42] rounded-s-3xl">
               {caracteristicas.map((caracteristica, index) => (

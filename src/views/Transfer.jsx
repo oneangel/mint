@@ -46,6 +46,8 @@ import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { isWithinInterval } from "date-fns";
 import LargeAreaChart from "../components/charts/LargeAreaChart";
+import { AddModal } from "../components/modals/AddModal";
+import { DeleteModal } from "../components/modals/DeleteModal";
 
 const columns = [
   {
@@ -70,6 +72,28 @@ const columns = [
   },
 ];
 
+const inputs = [
+  {
+    type: "text",
+    label: "Descripción",
+    name: "description",
+  },
+  {
+    type: "number",
+    label: "Cantidad",
+    name: "amount",
+  },
+  {
+    type: "text",
+    label: "Destinatario",
+    name: "destination",
+  },
+  {
+    type: "date",
+    label: "Fecha",
+    name: "createdAt",
+  },
+];
 export const Transfer = () => {
   const {
     register,
@@ -410,7 +434,21 @@ export const Transfer = () => {
                     </Button>
                   </Skeleton>
 
-                  <Modal isOpen={isOpen} onClose={onClose}>
+                  {/* <AddModal
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    title="Agregar Transaccion"
+                    data={inputs}
+                    control={register}
+                  /> */}
+
+                  <DeleteModal
+                    isOpen={isOpen}
+                    onClose={onClose}
+                    title="Estas a punto de eliminar una transaccion"
+                  />
+
+                  {/* <Modal isOpen={isOpen} onClose={onClose}>
                     <ModalContent>
                       <ModalHeader className="flex flex-col gap-1">
                         Agregar Transacción
@@ -473,7 +511,7 @@ export const Transfer = () => {
                         </Button>
                       </ModalFooter>
                     </ModalContent>
-                  </Modal>
+                  </Modal> */}
                 </div>
               </div>
 
@@ -521,7 +559,10 @@ export const Transfer = () => {
             </div>
 
             {/* Right side / total-graphs */}
-            <Skeleton isLoaded={!isLoadingTotalIncome} className="p-1 rounded-3xl">
+            <Skeleton
+              isLoaded={!isLoadingTotalIncome}
+              className="p-1 rounded-3xl"
+            >
               <Card className="items-center col-span-1 shadow-sm border-1 dark:border-zinc-800 dark:bg-[#2C2F42]">
                 <CardHeader className="flex justify-center pt-6">
                   <IoPieChart className="size-10" />
