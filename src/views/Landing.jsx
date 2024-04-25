@@ -3,6 +3,8 @@ import { IoArrowForwardOutline, IoLogoAndroid } from "react-icons/io5";
 import {
   TbCalculatorFilled,
   TbChartAreaFilled,
+  TbCircleCheck,
+  TbCircleCheckFilled,
   TbCoins,
   TbDeviceHeartMonitorFilled,
 } from "react-icons/tb";
@@ -12,6 +14,7 @@ import { Button, Chip } from "@nextui-org/react";
 import bg2 from "../assets/img/mint-movil.png";
 import { Tilt } from "@jdion/tilt-react";
 import { TypeAnimation } from "react-type-animation";
+import techforge from "../assets/img/icons/techforge.webp";
 
 const personas = [
   { nombre: "Ricardo López", rol: "Rol de la persona" },
@@ -34,33 +37,33 @@ export const Landing = () => {
       icono: <TbCalculatorFilled className="size-10" />,
       titulo: "Control de gastos",
       texto:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+        "Esta función te permite registrar y categorizar todos tus gastos diarios y mensuales de manera fácil y rápida. Puedes agregar detalles como la fecha, la cantidad gastada y la descripción del gasto (alimentación, transporte, entretenimiento, etc.)",
     },
     {
       icono: <TbChartAreaFilled className="size-10" />,
       titulo: "Analisis financiero",
       texto:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+        "Podrás visualizar tus hábitos de gasto y patrones financieros mediante gráficos claros y fáciles de entender. Podrás ver dónde estás gastando más dinero, identificar áreas de mejora y realizar un seguimiento de tu progreso financiero a lo largo del tiempo.",
     },
     {
       icono: <TbCoins className="size-10" />,
       titulo: "Control de ingresos",
       texto:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+        "Puedes registrar todos tus ingresos, ya sean salarios, ingresos adicionales, o cualquier otra fuente de ingresos. Puedes categorizar tus ingresos para un mejor seguimiento y establecer metas de ingresos mensuales o anuales. Esta función te ayuda a tener una visión clara de cuánto dinero estás ganando y cómo se compara con tus gastos.",
     },
     {
       icono: <TbDeviceHeartMonitorFilled className="size-10" />,
       titulo: "Sevicios basicos",
       texto:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. In at facere asperiores, corrupti, ipsa dolorem, aliquid sit odit placeat fugit temporibus? Inventore nisi hic corporis deleniti laudantium accusantium non earum.",
+        "Este módulo te permite llevar un registro detallado de tus gastos en servicios básicos como agua y luz. Puedes ingresar los montos pagados por cada servicio y obtener un análisis detallado de cuánto estás gastando en ellos mes a mes.",
     },
   ];
   return (
     <div className="">
       <Header />
-      <div className="h-screen overflow-auto bg-white dark:bg-[#1A1A24] max-w-screen">
+      <div className="h-screen overflow-auto overflow-x-hidden bg-white dark:bg-[#1A1A24] max-w-screen">
         {/* Inicio */}
-        <section id="home" className="w-full max-h-screen ">
+        <section id="home" className="w-full">
           <div className="grid h-full gap-2 mx-auto space-x-5 md:grid-cols-2">
             <div className="p-10 my-auto md:px-20 lg:col-span-1 md:col-span-2">
               <div className="flex flex-wrap items-center p-2 rounded-full bg-default-200 w-80">
@@ -134,9 +137,28 @@ export const Landing = () => {
         </section>
 
         {/* Nosotros */}
-        <section id="nosotros" className="flex flex-col w-screen min-h-screen">
-          <div className="grid w-screen grid-cols-1 h-[700px] lg:grid-cols-3">
-            <div className="col-span-1">
+        <section id="nosotros" className="flex flex-col w-full min-h-screen">
+          <div className="grid w-screen h-auto grid-cols-1 min-h-[700px] lg:grid-cols-3">
+            <div className="flex flex-col justify-center col-span-1 p-14">
+              <h2 className="gap-2 text-6xl font-semibold">
+                Administra tu dinero de manera mas organizada
+              </h2>
+              <p className="mt-14">
+                Mantén un registro claro y detallado de todos tus ingresos y
+                gastos para entender mejor tus hábitos financieros.
+              </p>
+              <span className="flex items-center gap-2 mt-5 font-bold text-sky-700">
+                <TbCircleCheckFilled className="size-6" />
+                <p className="text-sky-600">Seguimiento Detallado</p>
+              </span>
+              <span className="flex items-center gap-2 mt-2 font-bold text-sky-700">
+                <TbCircleCheckFilled className="size-6" />
+                <p className="text-sky-600">Categorización Efectiva</p>
+              </span>
+              <span className="flex items-center gap-2 mt-2 font-bold text-sky-700">
+                <TbCircleCheckFilled className="size-6" />
+                <p className="text-sky-600">Planificación Financiera</p>
+              </span>
             </div>
             <div className="grid grid-cols-1 col-span-2 gap-4 p-16 shadow lg:grid-cols-2 bg-gradient-to-b from-sky-200 to-sky-50 dark:bg-gradient-to-b dark:from-[#232733] dark:to-[#2C2F42] rounded-s-3xl">
               {caracteristicas.map((caracteristica, index) => (
@@ -160,7 +182,7 @@ export const Landing = () => {
 
         <section
           id="contacto"
-          className="w-screen h-screen overflow-auto bg-black"
+          className="w-full h-screen overflow-auto bg-black"
         >
           <div className="pt-20">
             <h2 className="w-1/2 mx-auto text-4xl font-semibold text-center text-white md:text-6xl">
@@ -185,6 +207,12 @@ export const Landing = () => {
             <p className="text-white">Política de privacidad</p>
           </div>
           <hr className="mt-36 w-[90%] mx-auto flex " />
+          <div className="w-[90%] mx-auto">
+            <span className="flex items-center gap-2 mt-4">
+              <img src={techforge} alt="techforge logo" className="w-16" />
+              <p className="text-white">© TechForge. Todos los derechos reservados.</p>
+            </span>
+          </div>
         </section>
       </div>
     </div>
