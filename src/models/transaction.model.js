@@ -28,12 +28,6 @@ const transactionSchema = new mongoose.Schema({
     required: true,
   },
 
-  destination: {
-    type: String,
-    required: true,
-    validate: validator.isAlphanumeric
-  },
-
   createdAt: {
     type: Date,
     default: Date.now,
