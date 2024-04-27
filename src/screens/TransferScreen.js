@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
   Text,
   Image,
   TouchableOpacity,
-  TextInput,
-  Pressable,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import TransferList from "../components/TransferList";
@@ -32,9 +30,32 @@ import {
 } from "react-native-alert-notification";
 import DeleteModal from "../components/DeleteModal";
 import UpdateModal from "../components/UpdateModal";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { ScrollView } from "react-native-gesture-handler";
 
 const TransferScreen = () => {
   const queryClient = useQueryClient();
+
+  const inputs = [
+    {
+      type: "text",
+      label: "Descripción",
+      name: "description",
+      icon: "description"
+    },
+    {
+      type: "number",
+      label: "Cantidad",
+      name: "amount",
+      icon: "attach-money"
+    },
+    {
+      type: "date",
+      label: "Fecha",
+      name: "createdAt",
+      icon: "date-range"
+    },
+  ];
 
   const {
     data: transactionList,
@@ -234,16 +255,27 @@ const TransferScreen = () => {
           <Ionicons name="add" size={20} color="white" />
         </TouchableOpacity>
       </View>
-      {!isLoadingTransactionList && (
-        <TransferList
-          data={transactionList.data}
-          toggleModal={toggleDeleteModal}
-          toggleModalUp={toggleUpdateModal}
-          setItem={setSelectedItem}
-        />
-      )}
+      <ScrollView style={{ maxHeight: 160, maxHeight: 230 }}>
+        {!isLoadingTransactionList && (
+          <TransferList
+            data={transactionList.data}
+            toggleModal={toggleDeleteModal}
+            toggleModalUp={toggleUpdateModal}
+            setItem={setSelectedItem}
+          />
+        )}
+      </ScrollView>
 
       <CustomModal
+        title="Agregar transaccion"
+        subtitle="Estas a punto de agregar una transaccion."
+        icon={<FontAwesome5
+          name="hand-holding-usd"
+          size={65}
+          color="#fff"
+          style={{ textAlign: "center", marginBottom: 15 }}
+        />}
+        data={inputs}
         setValue={setValue}
         isVisible={isVisible}
         toggleModal={toggleModal}
@@ -251,6 +283,8 @@ const TransferScreen = () => {
       />
       <DeleteModal
         isVisible={isVisibleDelete}
+        title="Estas a punto de eliminar esta transaccion"
+        subtitle="Esta transaccion sera eliminada para siempre"
         toggleModal={toggleDeleteModal}
         onDelete={() => onDelete(selectedItem._id)}
       />

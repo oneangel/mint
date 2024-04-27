@@ -71,8 +71,6 @@ export const useGetIBD = async () => {
     weeklyTotal[dayOfWeek].amount += transaction.totalAmount;
   });
 
-  console.log('Semanaaa');
-  console.log(weeklyTotal);
   return weeklyTotal;
 };
 
@@ -90,8 +88,6 @@ export const useGetEBD = async () => {
     weeklyTotal[dayOfWeek].amount += transaction.totalAmount;
   });
 
-  console.log('Semanaaa Gastos');
-  console.log(weeklyTotal);
   return weeklyTotal;
 };
 
@@ -114,6 +110,8 @@ export const useAddT = async (transaction) => {
   try {
     const user = await AsyncStorage.getItem('user');
     const token = await AsyncStorage.getItem('token');
+    console.log(token);
+    console.log(transaction);
     const finalTransaction = {
       ...transaction,
       amount: Number(transaction["amount"]),
@@ -122,6 +120,8 @@ export const useAddT = async (transaction) => {
       type: transaction["amount"] > 0 ? "income" : "expense",
       state: "succesfully"
     }
+    console.log('Final Transaction');
+    console.log(finalTransaction);
     const res = await transactionServices.addTransaction(user, finalTransaction, token);
     return res;
   } catch (error) {
@@ -131,8 +131,6 @@ export const useAddT = async (transaction) => {
 
 export const useDT = async (id) => {
   try {
-    console.log('Pepe');
-    console.log(id);
     const token = await AsyncStorage.getItem('token');
     const res = await transactionServices.deleteTransaction(id, token);
     return res;

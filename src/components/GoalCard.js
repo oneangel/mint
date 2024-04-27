@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 const GoalCard = ({ item, setItem }) => {
   const { _id, description, createdAt, amountGoal } = item;

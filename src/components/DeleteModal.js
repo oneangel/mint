@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Text,
   StyleSheet,
-  TextInput,
   View
 } from "react-native";
 import { Modal, ModalContent, ModalFooter, ModalButton } from "react-native-modals";
 import { FontAwesome } from "@expo/vector-icons";
 
-const DeleteModal = ({ isVisible, toggleModal, onDelete }) => {
-  const [date, setDate] = React.useState(null);
-  const [show, setShow] = React.useState(false);
+const DeleteModal = ({ isVisible, toggleModal, onDelete, title, subtitle }) => {
 
   return (
     <Modal visible={isVisible} onTouchOutside={toggleModal}>
@@ -23,10 +20,10 @@ const DeleteModal = ({ isVisible, toggleModal, onDelete }) => {
         />
         <View style={{ padding: 12 }}>
           <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
-            Estas apunto de eliminar esta transaccion.
+            {title}
           </Text>
           <Text style={{ fontSize: 15, color: "#666", textAlign: "center", marginBottom: 4 }}>
-            Esta transaccion sera eliminada para siempre
+            {subtitle}
           </Text>
           <Text style={{ fontSize: 15, color: "#666", textAlign: "center" }}>
             Estas seguro?

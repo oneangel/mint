@@ -2,82 +2,122 @@ import React, { useState } from "react";
 import {
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
-  Animated,
-  Pressable,
   View
 } from "react-native";
 import { Modal, ModalTitle, ModalContent, ModalFooter, ModalButton } from "react-native-modals";
+import { Input, Icon } from "native-base";
+
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const CustomModal = ({ isVisible, toggleModal, setValue, onSubmit }) => {
-  const [date, setDate] = React.useState(null);
-  const [show, setShow] = React.useState(false);
-  const slide = React.useRef(new Animated.Value(300)).current;
+const CustomModal = ({ isVisible, toggleModal, setValue, onSubmit, title, subtitle, icon, data }) => {
+  const [date, setDate] = useState(null);
+  const [show, setShow] = useState(false);
 
   const toggleDatePicker = () => {
     setShow(!show);
   };
 
+  const onClick = (data) => {
+    setDate(null);
+    onSubmit(data);
+  };
+
 
   return (
     <Modal visible={isVisible} onTouchOutside={toggleModal}>
-      <ModalContent>
-        <MaterialIcons
-          name="note-add"
-          size={65}
-          color="#0D9488"
-          style={{ textAlign: "center", marginBottom: 15 }}
-        />
+      <ModalTitle style={{ backgroundColor: "#3E70A1" }} title={<View>
+        {icon}
         <View style={{ padding: 12 }}>
-          <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", marginBottom: 10 }}>
-            Agregar Transacción.
+          <Text style={{ fontSize: 18, fontWeight: "bold", color: "#fff", textAlign: "center", marginBottom: 10 }}>
+            {title}
           </Text>
-          <Text style={{ fontSize: 15, color: "#666", textAlign: "center", marginBottom: 4 }}>
-            Estas a punto de agregar una transaccion.
+          <Text style={{ fontSize: 15, color: "#eee", textAlign: "center", marginBottom: 4 }}>
+            {subtitle}
           </Text>
         </View>
-        <TextInput
-          placeholder="Descripcion"
-          onChangeText={text => setValue('description', text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Cantidad"
-          onChangeText={text => setValue('amount', text)}
-          style={styles.input}
-        />
-        <TouchableOpacity onPress={toggleDatePicker}>
-          <TextInput
-            placeholder="Fecha"
-            style={styles.input}
-            editable={false}
-            value={date ? new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0] : ''}
-          />
-        </TouchableOpacity>
+      </View>} />
 
-        {show && (
-          <DateTimePicker
-            value={date || new Date()}
-            mode="date"
-            display="spinner"
-            onChange={(event, selectedDate) => {
-              setShow(false);
-              if (selectedDate) {
-                setDate(selectedDate);
-                const adjustedDate = new Date(selectedDate);
-                adjustedDate.setHours(selectedDate.getHours() - selectedDate.getTimezoneOffset() / 60);
-                setValue("createdAt", adjustedDate.toISOString());
+      <ModalContent>
+        {data.map((input, index) => {
+          return input.name != "createdAt" && input.name != "finalDate" ? (
+            <Input
+              key={index}
+              placeholder={input.label}
+              onChangeText={text => setValue(`${input.name}`, text)}
+              style={styles.input}
+              keyboardType={input.name === "amount" ? "numeric" : "default"}
+              bg="white"
+              variant="rounded"
+              marginBottom={3}
+              w={{
+                base: "100%",
+                md: "25%",
+              }}
+              h={{ base: "12" }}
+              InputLeftElement={
+                <Icon
+                  as={<MaterialIcons name={input.icon} />}
+                  size={5}
+                  ml="2"
+                  color="muted.400"
+                />
               }
-            }}
-          />
-        )}
+            />
+          ) : (
+            <View key={index}>
+              <TouchableOpacity onPress={toggleDatePicker}>
+                <Input
+                  placeholder="Fecha"
+                  style={styles.input}
+                  editable={false}
+                  value={date ? new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0] : ''}
+                  bg="white"
+                  variant="rounded"
+                  marginBottom={3}
+                  w={{
+                    base: "100%",
+                    md: "25%",
+                  }}
+                  h={{ base: "12" }}
+                  InputLeftElement={
+                    <Icon
+                      as={<MaterialIcons name={input.icon} />}
+                      size={5}
+                      ml="2"
+                      color="muted.400"
+                    />
+                  }
+                />
+              </TouchableOpacity>
+
+              {show && (
+                <DateTimePicker
+                  value={date || new Date()}
+                  mode="date"
+                  display="spinner"
+                  onChange={(event, selectedDate) => {
+                    setShow(false);
+                    if (selectedDate) {
+                      setDate(selectedDate);
+                      const adjustedDate = new Date(selectedDate);
+                      adjustedDate.setHours(selectedDate.getHours() - selectedDate.getTimezoneOffset() / 60);
+                      setValue(`${input.name}`, adjustedDate.toISOString());
+                    }
+                  }}
+                />
+              )}
+            </View>
+
+
+
+          )
+        })}
       </ModalContent>
       <ModalFooter>
         <ModalButton text="Cerrar" textStyle={{ color: "#B91C1C" }} onPress={toggleModal}></ModalButton>
-        <ModalButton text="Aceptar" textStyle={{ color: "#fff" }} onPress={onSubmit} style={{ backgroundColor: "#0D9488" }}></ModalButton>
+        <ModalButton text="Aceptar" textStyle={{ color: "#fff" }} onPress={(data) => onClick(data)} style={{ backgroundColor: "#3E70A1" }}></ModalButton>
       </ModalFooter>
     </Modal>
   );
@@ -108,11 +148,7 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: 40,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#bcbcbc",
-    paddingHorizontal: 15,
-    marginBottom: 10,
+    fontSize: 15,
   },
   button: {
     paddingHorizontal: 30,
@@ -123,62 +159,3 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
 });
-
-{/* <Modal visible={isVisible} onTouchOutside={toggleModal}>
-      <ModalContent>
-        <ModalTitle title={
-          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-            <Ionicons
-              name="bag-add"
-              size={65}
-              color="#1B3E73"
-              style={{ textAlign: "center" }}
-            />
-          </View>
-        } hasTitleBar={false} style={{ marginBottom: 0 }} />
-
-        <View style={{ padding: 12 }}>
-          <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", marginBottom: 14 }}>
-            Agregar Transacción.
-          </Text>
-          <TextInput
-            placeholder="Descripcion"
-            onChangeText={text => setValue('description', text)}
-            style={styles.input}
-          />
-          <TextInput
-            placeholder="Cantidad"
-            onChangeText={text => setValue('amount', text)}
-            style={styles.input}
-          />
-          <TouchableOpacity onPress={toggleDatePicker}>
-            <TextInput
-              placeholder="Fecha"
-              style={styles.input}
-              editable={false}
-              value={date ? new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().split('T')[0] : ''}
-            />
-          </TouchableOpacity>
-        </View>
-        {show && (
-          <DateTimePicker
-            value={date || new Date()}
-            mode="date"
-            display="spinner"
-            onChange={(event, selectedDate) => {
-              setShow(false);
-              if (selectedDate) {
-                setDate(selectedDate);
-                const adjustedDate = new Date(selectedDate);
-                adjustedDate.setHours(selectedDate.getHours() - selectedDate.getTimezoneOffset() / 60);
-                setValue("createdAt", adjustedDate.toISOString());
-              }
-            }}
-          />
-        )}
-      </ModalContent>
-      <ModalFooter>
-        <ModalButton text="Cancelar" textStyle={{ color: "#B91C1C" }} style={{ backgroundColor: "fff" }} onPress={toggleModal} />
-        <ModalButton text="Aceptar" textStyle={{ color: "#fff" }} style={{ backgroundColor: "#1B3E73" }} onPress={onSubmit} />
-      </ModalFooter>
-    </Modal> */}

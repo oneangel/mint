@@ -11,40 +11,58 @@ import BottomSheet from "../components/BottomSheet";
 import { Center } from "native-base";
 import { LiquidGauge } from "react-native-liquid-gauge";
 import { SegmentedArc } from "@shipt/segmented-arc-for-react-native";
+import { useForm } from "react-hook-form";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { useGetTWC, useMM, useGetTC } from "../hooks/service.hooks";
+import { VictoryChart, VictoryArea, VictoryTheme, VictoryLabel, VictoryContainer, VictoryAxis, VictoryZoomContainer } from "victory-native";
 
 const ServicesScreen = () => {
   const [status, setStatus] = React.useState(false);
   const [showArcRanges, setShowArcRanges] = React.useState(false);
   const [selectedOption, setSelectedOption] = React.useState("agua");
 
+  const queryClient = useQueryClient();
+
+  const {
+    data: measureData,
+    isLoading: isLoadingMeasure,
+    isError: isErrorMeasure,
+  } = useQuery("measure", useMM);
+
+  const {
+    data: tariffWData,
+    isLoading: isLoadingTariffW,
+    isError: isErrorTariffW,
+  } = useQuery("tariffw", useGetTWC);
+
+  const {
+    data: tariffData,
+    isLoading: isLoadingTariff,
+    isError: isErrorTariff,
+  } = useQuery("tariff", useGetTC);
+
   const segments = [
     {
       scale: 0.25,
       filledColor: "#49DC4F",
       emptyColor: "#49DC4F",
-      data: { label: "muy bajo" },
-    },
-    {
-      scale: 0.25,
-      filledColor: "#FBDA84",
-      emptyColor: "#FBDA84",
-      data: { label: "bajo" },
+      data: { label: "Basico" },
     },
     {
       scale: 0.25,
       filledColor: "#F7944C",
       emptyColor: "#F7944C",
-      data: { label: "normal" },
+      data: { label: "Intermedio" },
     },
     {
       scale: 0.25,
       filledColor: "#D94545",
       emptyColor: "#D94545",
-      data: { label: "excesivo" },
+      data: { label: "Excesivo" },
     },
   ];
 
-  const ranges = ["10", "20", "30", "40", "50"];
+  const ranges = ["0", "150", "300", "450"];
 
   return (
     <View style={{ flex: 1, backgroundColor: "#F9FDFE" }}>
@@ -111,43 +129,95 @@ const ServicesScreen = () => {
         shadow={2}
       >
         {selectedOption === "agua" ? (
-          <LiquidGauge
-            config={{
-              textVertPosition: 0.8,
-              waveAnimateTime: 5000,
-              waveHeight: 0.15,
-              waveAnimate: false,
-              waveOffset: 0.25,
-              valueCountUp: false,
-              textSuffix: "",
-            }}
-            value={30}
-            width={200}
-            height={200}
-          />
+          <>
+            <LiquidGauge
+              config={{
+                textVertPosition: 0.8,
+                waveAnimateTime: 5000,
+                waveHeight: 0.15,
+                waveAnimate: false,
+                waveOffset: 0.25,
+                valueCountUp: false,
+                textSuffix: "%",
+                toFixed: 2
+              }}
+              value={!isLoadingTariffW && tariffWData ? tariffWData.data?.measure / 340687.06056 : 0}
+              width={200}
+              height={200}
+            />
+            <View style={{ flexDirection: "row" }}>
+              <Text>
+                {!isLoadingTariffW && tariffWData ? tariffWData.data.measure : 0}L
+              </Text>
+              <Text style={{ marginLeft: 10 }}>
+                {!isLoadingTariffW && tariffWData
+                  ? tariffWData.data.totalPay.toFixed(2)
+                  : 0}
+              </Text>
+            </View>
+
+          </>
+
         ) : (
-          <SegmentedArc
-            segments={segments}
-            fillValue={70}
-            isAnimated={true}
-            animationDelay={1000}
-            showArcRanges={showArcRanges}
-            ranges={ranges}
-          >
-            {(metaData) => (
-              <TouchableOpacity
-                onPress={() => setShowArcRanges(!showArcRanges)}
-                style={{ alignItems: "center" }}
-              >
-                <Text style={{ lineHeight: 50, fontSize: 24 }}>0kw</Text>
-                <Text style={{ fontSize: 16, paddingTop: 16 }}>
-                  {metaData.lastFilledSegment.data.label}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </SegmentedArc>
+          <>
+            <SegmentedArc
+              segments={segments}
+              fillValue={!isLoadingMeasure && measureData ? measureData.data.totalMeasure : 0}
+              isAnimated={true}
+              animationDelay={1000}
+              showArcRanges={showArcRanges}
+              ranges={ranges}
+            >
+              {(metaData) => (
+                <TouchableOpacity
+                  onPress={() => setShowArcRanges(!showArcRanges)}
+                  style={{ alignItems: "center" }}
+                >
+                  <Text style={{ lineHeight: 50, fontSize: 24 }}>0kw</Text>
+                  <Text style={{ fontSize: 16, paddingTop: 16 }}>
+                    {metaData.lastFilledSegment.data.label}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </SegmentedArc>
+            <View style={{ flexDirection: "row" }}>
+              <Text>
+                {!isLoadingMeasure && measureData ? measureData.data.totalMeasure.toFixed(2) : 0}kw
+              </Text>
+              <Text style={{ marginLeft: 10 }}>
+                {!isLoadingTariff && tariffData ? tariffData.data.total.toFixed(2) : 0}
+              </Text>
+            </View>
+          </>
         )}
       </Center>
+
+      <VictoryChart
+        theme={VictoryTheme.material}
+        containerComponent={
+          <VictoryZoomContainer
+            zoomDimension="x" // Define sobre qué eje aplicar el zoom
+            zoomDomain={{ x: [1, 3] }} // Dominio inicial del zoom (opcional)
+            onZoomDomainChange={this.handleZoom} // Función para manejar los cambios en el dominio de zoom
+          />
+        }
+      >
+        <VictoryAxis
+          style={{ axis: { stroke: "transparent" } }}
+        />
+        <VictoryArea
+          interpolation="natural"
+          style={{ data: { fill: "#3E70A1" } }}
+          labels={({ datum }) => datum.y}
+          data={[
+            { x: 1, y: 2, y0: 0 },
+            { x: 2, y: 3, y0: 1 },
+            { x: 3, y: 5, y0: 1 },
+            { x: 4, y: 4, y0: 2 },
+            { x: 5, y: 6, y0: 2 }
+          ]}
+        />
+      </VictoryChart>
     </View>
   );
 };
