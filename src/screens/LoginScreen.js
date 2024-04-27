@@ -7,6 +7,7 @@ import {
   TextInput,
   Dimensions,
   Pressable,
+  Image,
 } from "react-native";
 import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import ButtonGradient from "../components/ButtonGradient";
@@ -27,15 +28,16 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 const { width, height } = Dimensions.get("window");
 
 export default function LoginScreen() {
+  const navigation = useNavigation();
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     setValue,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
-  const navigation = useNavigation();
 
   const onSubmit = (data) => {
     console.log(data);
@@ -117,6 +119,11 @@ export default function LoginScreen() {
       <AlertNotificationRoot>
         <View style={styles.mainContainer}>
           <View style={styles.containerSVG}>
+            <Image
+              source={require("../../assets/Icons/mint2.png")}
+              style={styles.logo}
+              resizeMode="contain"
+            />
             <SvgTop />
           </View>
           <View style={styles.container}>
@@ -140,7 +147,7 @@ export default function LoginScreen() {
                     color="muted.400"
                   />
                 }
-                placeholder="Name"
+                placeholder="Nombre de usuario"
               />
               <Input
                 onChangeText={(text) => setValue("password", text)}
@@ -152,6 +159,14 @@ export default function LoginScreen() {
                 type={show ? "text" : "password"}
                 variant="rounded"
                 bg="white"
+                InputLeftElement={
+                  <Icon
+                    as={<MaterialIcons name="lock" />}
+                    size={5}
+                    ml="2"
+                    color="muted.400"
+                  />
+                }
                 InputRightElement={
                   <Pressable onPress={() => setShow(!show)}>
                     <Icon
@@ -166,17 +181,18 @@ export default function LoginScreen() {
                     />
                   </Pressable>
                 }
-                placeholder="Password"
+                placeholder="Contraseña"
               />
             </Stack>
-            <Text style={styles.forgotPassword}>¿Olvidaste tu contraseña?</Text>
             <ButtonGradient
               onSubmit={handleSubmit(onSubmit)}
               title="Iniciar Sesión"
               valid={!isValid}
               route="Main"
             />
-            <Text style={styles.forgotPassword}>¿No tienes una cuenta?</Text>
+            <Pressable onPress={() => navigation.navigate("Register")}>
+              <Text style={styles.forgotPassword}>¿No tienes una cuenta? Registrate</Text>
+            </Pressable>
             <StatusBar style="auto" />
           </View>
         </View>
@@ -199,6 +215,7 @@ const styles = StyleSheet.create({
     marginTop: -100,
     justifyContent: "flex-start",
     alignItems: "center",
+    position: "relative",
   },
   titulo: {
     fontSize: 50,
@@ -225,4 +242,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {},
+  logo: {
+    position: "absolute",
+    width: 200,
+    height: 200,
+    top: 100,
+    zIndex: 1,
+  },
 });

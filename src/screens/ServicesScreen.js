@@ -114,6 +114,16 @@ const ServicesScreen = () => {
             Electricidad
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={() => setSelectedOption("temperatura")}>
+          <Text
+            style={[
+              styles.optionText,
+              selectedOption === "temperatura" && styles.selectedOption,
+            ]}
+          >
+            Temperatura
+          </Text>
+        </TouchableOpacity>
       </View>
 
       <Center
@@ -157,8 +167,7 @@ const ServicesScreen = () => {
             </View>
 
           </>
-
-        ) : (
+        ) : selectedOption === "electricidad" ? (
           <>
             <SegmentedArc
               segments={segments}
@@ -189,7 +198,29 @@ const ServicesScreen = () => {
               </Text>
             </View>
           </>
-        )}
+        ) : selectedOption === "temperatura" ? (
+          <>
+          <SegmentedArc
+              segments={segments} // Define tus segmentos para temperatura
+              fillValue={!isLoadingMeasure && measureData ? measureData.data.totalMeasure : 0}
+              isAnimated={true}
+              animationDelay={1000}
+              showArcRanges={showArcRanges}
+              ranges={ranges}
+            >
+              {(metaData) => (
+                <TouchableOpacity onPress={() => setShowArcRanges(!showArcRanges)} style={{ alignItems: "center" }}>
+                  <Text style={{ lineHeight: 50, fontSize: 24 }}>0°C</Text>
+                  <Text style={{ fontSize: 16, paddingTop: 16 }}>{metaData.lastFilledSegment.data.label}</Text>
+                </TouchableOpacity>
+              )}
+            </SegmentedArc>
+            <View style={{ flexDirection: "row" }}>
+              <Text>{!isLoadingMeasure && measureData ? measureData.data.totalMeasure.toFixed(2) : 0}°C</Text>
+              <Text style={{ marginLeft: 10 }}>{!isLoadingTariff && tariffData ? tariffData.data.total.toFixed(2) : 0}</Text>
+            </View>
+          </>
+        ): null}
       </Center>
 
       <VictoryChart
