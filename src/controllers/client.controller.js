@@ -117,7 +117,7 @@ export const verifyAccount = async (req, res) => {
 
 		const updatedClient = await existingClient.save();
 
-		res.send('User was updated succesfully');
+		res.redirect('https://front-mint.onrender.com/#/verifyed')
 	} catch (error) {
 		res.status(401).json({ message: 'Token is not valid' });
 	}
