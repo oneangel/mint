@@ -1,8 +1,10 @@
 import React, { useContext, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import { getClient } from "../hooks/client.hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "react-query";
 import {
   Card,
   CardHeader,
@@ -32,26 +34,61 @@ import { BsPencilSquare } from "react-icons/bs";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { updateAvatar } from "../services/client.service";
 import { MdEmail } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaCheckCircle, FaTachometerAlt } from "react-icons/fa";
 import { FaCamera } from "react-icons/fa";
 import { IoIosSend } from "react-icons/io";
 import toast, { Toaster } from "react-hot-toast";
 import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { MdCancel } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import { updateSchema } from "../schemas/schemas";
+import { clientHooks } from "../hooks/hooks";
+import { useEffect } from "react";
 
 export const EditProfile = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordC, setShowPasswordC] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const {
+    register: update,
+    handleSubmit: handleUpdate,
+    formState: { errors, isValid },
+  } = useForm({ mode: "onTouched", resolver: zodResolver(updateSchema) });
+
+  const queryClient = useQueryClient();
   const [selectedImageUrl, setSelectedImageUrl] = useState(null);
+  const [editAble, setEditAble] = useState(true);
   const fileInputRef = useRef(null);
 
   const auth = useContext(AuthContext);
   const { data, isLoading, isError } = useQuery("client", getClient);
+  const [selectedClient, setSelectClient] = useState({});
 
   const [imagen, setImagen] = useState(null);
 
   const handleOpenImageSelector = () => {
     fileInputRef.current.click();
+  };
+
+  const updateClientMutation = useMutation(clientHooks.useUpdateClient, {
+    onSuccess: () => {
+      queryClient.refetchQueries("client");
+      toast.dismiss();
+      toast.success("Perfil actualizada con exito");
+      setEditAble(true);
+    },
+
+    onError: () => {
+      toast.dismiss();
+      toast.error("¡Hubo un error en la operacion!");
+      setEditAble(false);
+    },
+
+    onMutate: () => {
+      toast.loading("Actualizando perfil...");
+      setEditAble(true);
+    },
+  });
+
+  const onUpdate = (data) => {
+    updateClientMutation.mutate(data);
   };
 
   const handleSeleccionarImagen = (event) => {
@@ -76,6 +113,12 @@ export const EditProfile = () => {
       console.log("Primero selecciona una imagen.");
     }
   };
+
+  useEffect(() => {
+    if (!isLoading && !isError) {
+      setSelectClient(data.data);
+    }
+  }, [data, isLoading, isError]);
 
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-[#1A1A24]">
@@ -185,26 +228,72 @@ export const EditProfile = () => {
                   <h1 className="pl-5 text-2xl font-semibold md:flex text-sky-700 dark:text-white mb-10">
                     Detalles del perfil
                   </h1>
-                  <Button
-                    isIconOnly
-                    className="mr-2"
-                    color="success"
-                    variant="faded"
-                    aria-label="select_image"
-                    size="md"
-                  >
-                    <FaUserEdit className="text-2xl" />
-                  </Button>
+                  <div>
+                    {!editAble && (
+                      <>
+                        <Button
+                          isIconOnly
+                          className="mr-2"
+                          color="danger"
+                          variant="faded"
+                          aria-label="select_image"
+                          size="md"
+                          onClick={() => {
+                            queryClient.refetchQueries("client");
+                            setEditAble(!editAble);
+                          }}
+                        >
+                          <MdCancel className="text-2xl" />
+                        </Button>
+                        <Button
+                          isIconOnly
+                          className="mr-2"
+                          color="success"
+                          variant="faded"
+                          aria-label="select_image"
+                          size="md"
+                          isDisabled={!isValid}
+                          onClick={handleUpdate(onUpdate)}
+                        >
+                          <FaCheckCircle className="text-2xl" />
+                        </Button>
+                      </>
+                    )}
+                    <Button
+                      isIconOnly
+                      className="mr-2"
+                      color="warning"
+                      variant="faded"
+                      aria-label="select_image"
+                      size="md"
+                      onClick={() => setEditAble(!editAble)}
+                    >
+                      <FaUserEdit className="text-2xl" />
+                    </Button>
+                  </div>
                 </div>
 
                 <div className="flex flex-wrap mb-5">
                   <div className="w-[90%]">
                     <Input
-                      isDisabled
-                      startContent={<IoPerson className="mb-1 text-sky-700" />}
-                      label="Nombre de usuario"
-                      type="text"
-                      defaultValue={data.data.username}
+                      isDisabled={editAble}
+                      startContent={
+                        <FaTachometerAlt className="mb-1 text-sky-700" />
+                      }
+                      label="Meter"
+                      type="number"
+                      {...update("meter", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.meter}
+                      errorMessage={errors.meter?.message || ""}
+                      value={selectedClient.meter || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          meter: e.target.value,
+                        })
+                      }
                       size="md"
                     />
                   </div>
@@ -212,23 +301,22 @@ export const EditProfile = () => {
                 <div className="flex flex-wrap mb-5">
                   <div className="w-[90%]">
                     <Input
-                      isDisabled
-                      startContent={<IoMail className="mb-1 text-sky-700" />}
-                      label="Email"
-                      type="email"
-                      defaultValue={data.data.email}
-                      size="md"
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-wrap mb-5">
-                  <div className="w-[90%]">
-                    <Input
-                      isDisabled
+                      isDisabled={editAble}
                       startContent={<IoCall className="mb-1 text-sky-700" />}
                       label="Numero de telefono"
                       type="number"
-                      defaultValue={data.data.phone}
+                      {...update("phone", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.phone}
+                      errorMessage={errors.phone?.message || ""}
+                      value={selectedClient.phone || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          phone: e.target.value,
+                        })
+                      }
                       size="md"
                     />
                   </div>
@@ -236,11 +324,22 @@ export const EditProfile = () => {
                 <div className="flex flex-wrap mb-5">
                   <div className="w-[90%]">
                     <Input
-                      isDisabled
+                      isDisabled={editAble}
                       startContent={<IoPerson className="mb-1 text-sky-700" />}
                       label="Nombre"
                       type="text"
-                      defaultValue={data.data.firstname}
+                      {...update("firstname", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.firstname}
+                      errorMessage={errors.firstname?.message || ""}
+                      value={selectedClient.firstname || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          firstname: e.target.value,
+                        })
+                      }
                       size="md"
                     />
                   </div>
@@ -248,11 +347,22 @@ export const EditProfile = () => {
                 <div className="flex flex-wrap mb-5">
                   <div className="w-[90%]">
                     <Input
-                      isDisabled
+                      isDisabled={editAble}
                       startContent={<IoPerson className="mb-1 text-sky-700" />}
                       label="Apellido"
                       type="text"
-                      defaultValue={data.data.lastname}
+                      {...update("lastname", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.lastname}
+                      errorMessage={errors.lastname?.message || ""}
+                      value={selectedClient.lastname || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          lastname: e.target.value,
+                        })
+                      }
                       size="md"
                     />
                   </div>
@@ -266,156 +376,3 @@ export const EditProfile = () => {
     </div>
   );
 };
-
-{
-  /* <div key={index} className="flex flex-wrap mb-5">
-                  <div className="w-[90%]">
-                    <Input
-                      isDisabled
-                      startContent={
-                        <field.icon className="mb-1 text-sky-700" />
-                      }
-                      label={field.label}
-                      type="text"
-                      defaultValue={field.defaultValue}
-                      size="md"
-                    />
-                  </div>
-                  <div className="flex items-center justify-end w-[10%]">
-                    <Tooltip content="Editar">
-                      <span
-                        onClick={() => toggleModal(field.index)}
-                        className="flex items-center justify-center rounded-md size-10 bg-primary"
-                      >
-                        <BsPencilSquare className="text-white size-6" />
-                      </span>
-                    </Tooltip>
-
-                    <Modal
-                      isOpen={modals[field.index].isOpen}
-                      onClose={() => toggleModal(field.index)}
-                    >
-                      <ModalContent>
-                        <ModalHeader className="flex flex-col gap-1">
-                          {field.label}
-                        </ModalHeader>
-                        <ModalBody>
-                          {field.index === 0 && (
-                            <>
-                              <Input
-                                placeholder="Nombre"
-                                size="sm"
-                                type="text"
-                                value={modals[field.index].content.name}
-                                onChange={(e) => {
-                                  const newModals = [...modals];
-                                  newModals[field.index].content.name =
-                                    e.target.value;
-                                  setModals(newModals);
-                                }}
-                              />
-                              <Input
-                                placeholder="Apellidos"
-                                size="sm"
-                                type="text"
-                                value={modals[field.index].content.lastName}
-                                onChange={(e) => {
-                                  const newModals = [...modals];
-                                  newModals[field.index].content.lastName =
-                                    e.target.value;
-                                  setModals(newModals);
-                                }}
-                              />
-                            </>
-                          )}
-                          {field.index === 3 && (
-                            <>
-                              <Input
-                                placeholder="Contraseña"
-                                size="sm"
-                                type={showPassword ? "text" : "password"}
-                                value={modals[field.index].content.password}
-                                onChange={(e) => {
-                                  const newModals = [...modals];
-                                  newModals[field.index].content.password =
-                                    e.target.value;
-                                  setModals(newModals);
-                                }}
-                                endContent={
-                                  <button className="my-auto focus:outline-none">
-                                    {" "}
-                                    {showPassword ? (
-                                      <GoEyeClosed
-                                        className="text-2xl text-default-400"
-                                        onClick={() => setShowPassword(false)}
-                                      />
-                                    ) : (
-                                      <GoEye
-                                        className="text-2xl text-default-400"
-                                        onClick={() => setShowPassword(true)}
-                                      />
-                                    )}
-                                  </button>
-                                }
-                              />
-                              <Input
-                                placeholder="Confirmar Contraseña"
-                                size="sm"
-                                type={showPasswordC ? "text" : "password"}
-                                value={
-                                  modals[field.index].content.confirmPassword
-                                }
-                                onChange={(e) => {
-                                  const newModals = [...modals];
-                                  newModals[
-                                    field.index
-                                  ].content.confirmPassword = e.target.value;
-                                  setModals(newModals);
-                                }}
-                                endContent={
-                                  <button className="my-auto focus:outline-none">
-                                    {" "}
-                                    {showPasswordC ? (
-                                      <GoEyeClosed
-                                        className="text-2xl text-default-400"
-                                        onClick={() => setShowPasswordC(false)}
-                                      />
-                                    ) : (
-                                      <GoEye
-                                        className="text-2xl text-default-400"
-                                        onClick={() => setShowPasswordC(true)}
-                                      />
-                                    )}
-                                  </button>
-                                }
-                              />
-                            </>
-                          )}
-                        </ModalBody>
-                        <ModalFooter>
-                          <Button
-                            color="danger"
-                            variant="light"
-                            onClick={() => toggleModal(field.index)}
-                          >
-                            Cerrar
-                          </Button>
-                          <Button
-                            color="primary"
-                            onClick={() => {
-                              console.log(
-                                `Nuevo valor para ${field.label}: ${
-                                  modals[field.index].content
-                                }`
-                              );
-                              toggleModal(field.index);
-                            }}
-                          >
-                            Guardar
-                          </Button>
-                        </ModalFooter>
-                      </ModalContent>
-                    </Modal>
-                  </div>
-                </div> */
-}

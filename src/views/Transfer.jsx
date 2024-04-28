@@ -29,14 +29,22 @@ import { columns, inputs } from "./data";
 import { IoAddCircle, IoPieChart } from "react-icons/io5";
 import { GiSwapBag } from "react-icons/gi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { transactionSchema } from "../schemas/schemas";
+import { transactionSchema, updateGoalSchema } from "../schemas/schemas";
 
 export const Transfer = () => {
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: "onTouched", resolver: zodResolver(transactionSchema) });
+
+  const {
+    register: update,
+    reset: resetUp,
+    handleSubmit: handleUpdate,
+    formState: { errors: errorsUp, isValid: isValidUp },
+  } = useForm({ mode: "onTouched", resolver: zodResolver(updateGoalSchema) });
 
   const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useState(1);
@@ -366,7 +374,10 @@ export const Transfer = () => {
 
                   <AddModal
                     isOpen={isOpen}
-                    onClose={onClose}
+                    onClose={() => {
+                      reset();
+                      onClose();
+                    }}
                     title="Agregar Transaccion"
                     data={inputs}
                     control={register}
@@ -401,14 +412,17 @@ export const Transfer = () => {
 
                   <EditModal
                     isOpen={isOpenU}
-                    onClose={onCloseU}
+                    onClose={() => {
+                      reset();
+                      onCloseU();
+                    }}
                     title="Editar Transaccion"
                     data={inputs}
                     selectedItem={selectedItem}
-                    control={register}
-                    onSubmit={handleSubmit(onUpdate)}
-                    isValid={!isValid}
-                    errors={errors}
+                    control={update}
+                    onSubmit={handleUpdate(onUpdate)}
+                    isValid={!isValidUp}
+                    errors={errorsUp}
                   />
 
                   <RecoverModal

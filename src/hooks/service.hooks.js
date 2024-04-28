@@ -28,6 +28,27 @@ export const useMonthMeasure = async () => {
   }
 };
 
+export const useMonthMeasureT = async () => {
+  try {
+    const serial = localStorage.getItem("serial");
+    if (serial != null) {
+      const serialUp = serial.replace(/"/g, '');
+      const token = localStorage.getItem("token");
+      const res = await serviceService.getMonthTempMeasure(serialUp, {
+        startDate,
+        endDate
+      }, token);
+      console.log(res);
+      return res;
+    }
+    else {
+      return "";
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const useGetTariffCost = async () => {
   try {
     const serial = localStorage.getItem("serial");

@@ -48,7 +48,46 @@ export const registerSchema = z.object({
 });
 
 //Definir el schema del registro
+export const updateSchema = z.object({
+  phone: z
+    .string()
+    .length(10, {
+      message: "El numero de telefono debe contener 10 character(s)",
+    })
+    .refine((value) => value.startsWith("618") || value.startsWith("555"), {
+      message:
+        "El número de teléfono debe comenzar con una lada válida (618 o 555)",
+    })
+    .refine((value) => /^\d+$/.test(value), {
+      message:
+        "El número de teléfono no puede contener caracteres no numéricos",
+    }),
+  firstname: z.string().min(1, { message: "El nombre es requerido" }),
+  lastname: z.string().min(1, { message: "El apellido es requerido" }),
+  meter: z.string().min(1, { message: "Debes completar el campo" }).refine((value) => /^\d+$/.test(value), {
+    message:
+      "El numero serial no puede contener caracteres no numéricos",
+  }),
+});
+
+//Definir el schema del registro
 export const transactionSchema = z.object({
+  description: z
+    .string()
+    .regex(/^[\w\s]+$/, {
+      message: "La descripción no debe contener caracteres especiales"
+    }),
+  amount: z
+    .string()
+    .refine(value => /^-?\d+$/.test(value), {
+      message: "El número debe ser un entero o un número entero negativo"
+    })
+    .refine(value => Number(value) != 0, { message: "El valor no puede ser igual a cero" }),
+  createdAt: z.string().min(1, { message: "Debes completar el campo" })
+});
+
+//Definir el schema del registro
+export const updateTransactionSchema = z.object({
   description: z
     .string()
     .regex(/^[\w\s]+$/, {
@@ -64,6 +103,22 @@ export const transactionSchema = z.object({
 
 //Definir el schema del registro
 export const goalSchema = z.object({
+  description: z
+    .string()
+    .regex(/^[\w\s]+$/, {
+      message: "La descripción no debe contener caracteres especiales"
+    }),
+  amountGoal: z
+    .string()
+    .refine(value => /^-?\d+$/.test(value), {
+      message: "El número debe ser un entero o un número entero negativo"
+    })
+    .refine(value => Number(value) != 0, { message: "El valor no puede ser igual a cero" }),
+  finalDate: z.string().min(1, { message: "Debes completar el campo" })
+});
+
+//Definir el schema del registro
+export const updateGoalSchema = z.object({
   description: z
     .string()
     .regex(/^[\w\s]+$/, {

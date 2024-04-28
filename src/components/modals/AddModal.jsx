@@ -52,6 +52,8 @@ export const AddModal = ({
                   {...control(`${input.name}`, {
                     required: "el campo es onligatorio",
                   })}
+                  isInvalid={!!errors[input.name]}
+                  errorMessage={errors[input.name]?.message || ""}
                 />
               );
             })}

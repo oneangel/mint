@@ -31,8 +31,8 @@ export const useVerifyToken = async () => {
 export const useUpdateClient = async (data) => {
 	try {
 		const token = localStorage.getItem("token");
-		const res1 = await clientService.updateClient(data.username, data, token);
-		const res2 = await userService.updateUser(data.username, data, token);
+		const user = localStorage.getItem("username");
+		const res1 = await clientService.updateClient(user, data, token);
 		return res1;
 	} catch (error) {
 		console.log(error);

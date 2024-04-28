@@ -29,6 +29,7 @@ export const Wallet = () => {
 
   const {
     register: control,
+    reset: resetAdd,
     handleSubmit: handleSubmitAdd,
     formState: { errors: errorAdd, isValid: isValidAdd },
   } = useForm({ mode: "onTouched", resolver: zodResolver(addGoalSchema) });
@@ -177,8 +178,8 @@ export const Wallet = () => {
   });
 
   const onUpdate = (data) => {
+    onCloseU();
     updateGoalMutation.mutate({ selectedItemId, data });
-    setShowEditModal(false);
   };
 
   const onAdd = (data) => {
@@ -195,6 +196,7 @@ export const Wallet = () => {
   };
 
   const onSubmit = (data) => {
+    onClose();
     addGoalMutation.mutate(data);
   };
 
@@ -317,7 +319,10 @@ export const Wallet = () => {
                 control={control}
                 data={inputsAdd}
                 isOpen={isOpenAA}
-                onClose={onCloseAA}
+                onClose={() => {
+                  resetAdd();
+                  onCloseAA();
+                }}
                 isValid={!isValidAdd}
                 title="Abonar monto"
                 icon={
@@ -331,7 +336,10 @@ export const Wallet = () => {
                 control={register}
                 data={inputs2}
                 isOpen={isOpen}
-                onClose={onClose}
+                onClose={() => {
+                  reset();
+                  onClose();
+                }}
                 isValid={!isValid}
                 title="Crear meta"
                 icon={

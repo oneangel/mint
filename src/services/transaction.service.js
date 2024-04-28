@@ -25,20 +25,20 @@ export function getExpensesList(user, token) {
 		{ headers: { Authorization: token } })
 }
 
-export function getTotalExpenseByDate(user, range) {
-	return axios.post(`${URL_API}/get/expensesTotal/bydate/${user}`, range)
+export function getTotalExpenseByDate(user, range, token) {
+	return axios.post(`${URL_API}/get/expensesTotal/bydate/${user}`, range, { headers: { Authorization: token } })
 }
 
-export function getTotalIncomeByDate(user, range) {
-	return axios.post(`${URL_API}/get/incomesTotal/bydate/${user}`, range)
+export function getTotalIncomeByDate(user, range, token) {
+	return axios.post(`${URL_API}/get/incomesTotal/bydate/${user}`, range, { headers: { Authorization: token } })
 }
 
-export function getTotalExpense(user) {
-	return axios.get(`${URL_API}/get/expensesTotal/${user}`)
+export function getTotalExpense(user, token) {
+	return axios.get(`${URL_API}/get/expensesTotal/${user}`, { headers: { Authorization: token } })
 }
 
-export function getTotalIncome(user) {
-	return axios.get(`${URL_API}/get/incomesTotal/${user}`)
+export function getTotalIncome(user, token) {
+	return axios.get(`${URL_API}/get/incomesTotal/${user}`, { headers: { Authorization: token } })
 }
 
 export function getBalance(user, token) {
@@ -56,7 +56,7 @@ export function addTransaction(user, transaction, token) {
 }
 
 export function deleteTransaction(id, token) {
-	console.log('PEPOM');
+	console.log(token);
 	return axios.put(`${URL_API}/delete/transaction/${id}`, { headers: { Authorization: token } })
 }
 

@@ -55,9 +55,6 @@ export const EditModal = ({
                     selectedItem[`${input.name}`].toString().split("T")[0]
                   }
                   className="mb-5"
-                  {...control(`${input.name}`, {
-                    required: "el campo es onligatorio",
-                  })}
                   disabled
                 />
               );
