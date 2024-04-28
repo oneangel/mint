@@ -188,5 +188,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     top: 100,
+    tintColor: "#3E70A1"
   },
 });
