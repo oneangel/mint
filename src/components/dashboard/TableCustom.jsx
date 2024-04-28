@@ -8,51 +8,25 @@ import {
   TableCell,
   getKeyValue,
   Tooltip,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Input,
-  Button,
+  Pagination,
 } from "@nextui-org/react";
 import { IoArrowUpOutline, IoArrowDownSharp, IoTrash } from "react-icons/io5";
+import { GrCycle } from "react-icons/gr";
 import { format } from "date-fns";
-import { FaRepeat } from "react-icons/fa6";
 import { FaPen } from "react-icons/fa";
-import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { useForm } from "react-hook-form";
 
 export const TableCustom = ({
   columns,
   data,
-  onDelete,
-  onDeleteF,
-  onUpdate,
-  onRecover,
+  onOpenD,
+  onOpenU,
+  onOpenR,
+  setSelectedItemId,
+  setSelectedItem,
+  currentPage,
+  handlePageChange,
+  total,
 }) => {
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [showRecoveryModal, setShowRecoveryModal] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState(null);
-  const [selectedItem, setSelectedItem] = useState({
-    description: "",
-    amount: "",
-    destination: "",
-    createdAt: "",
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({ mode: "onTouched" });
-
-  const onSubmit = (data) => {
-    setShowEditModal(false);
-    onUpdate(selectedItemId, data);
-  };
-
   const formatDate = (dateString) => {
     return format(new Date(dateString), "yyyy-MM-dd");
   };
@@ -67,7 +41,14 @@ export const TableCustom = ({
 
   return (
     <>
-      <Table className="max-h-[600px]" classNames={{wrapper: "dark:bg-[#2C2F42]", th: "dark:bg-[#2D3141]", td: "dark:bg-[#2D3141]"}}>
+      <Table
+        className="max-h-[600px]"
+        classNames={{
+          wrapper: "dark:bg-[#2C2F42]",
+          th: "dark:bg-[#2D3141]",
+          td: "dark:bg-[#2D3141]",
+        }}
+      >
         <TableHeader columns={columns}>
           {(column) => (
             <TableColumn
@@ -92,15 +73,15 @@ export const TableCustom = ({
               }`}
             >
               {(columnKey) => (
-                <TableCell className="pt-8 text-xl">
-                  {columnKey === "acciones" ? (
+                <TableCell className="pt-8 text-xl" aria-label="table-cell">
+                  {columnKey === "acciones" && (
                     <div className="relative flex items-center gap-2 ml-4">
                       {item.status && (
                         <div
                           onClick={() => {
                             setSelectedItem(item);
                             setSelectedItemId(item._id);
-                            setShowEditModal(true);
+                            onOpenU();
                           }}
                         >
                           <Tooltip content="Editar">
@@ -115,12 +96,12 @@ export const TableCustom = ({
                         <div
                           onClick={() => {
                             setSelectedItemId(item._id);
-                            setShowRecoveryModal(true);
+                            onOpenR();
                           }}
                         >
-                          <Tooltip content="Recuperar">
+                          <Tooltip content="Recuperar" aria-label="tool-tip">
                             <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
-                              <FaRepeat />
+                              <GrCycle />
                             </span>
                           </Tooltip>
                         </div>
@@ -130,7 +111,7 @@ export const TableCustom = ({
                         onClick={() => {
                           setSelectedItemId(item._id);
                           setSelectedItem(item);
-                          setShowDeleteModal(true);
+                          onOpenD();
                         }}
                       >
                         <Tooltip color="danger" content="Eliminar">
@@ -140,23 +121,24 @@ export const TableCustom = ({
                         </Tooltip>
                       </div>
                     </div>
-                  ) : (
-                    columnKey === "type" && (
-                      <div className="flex items-center">
-                        {console.log(item._id)}
-                        {getStatusIcon(item.type)}
-                        <span className="ml-1">
-                          {getKeyValue(
-                            item.type === "income" ? "Ingreso" : "Gasto",
-                            columnKey
-                          )}
-                        </span>
-                      </div>
-                    )
+                  )}
+
+                  {columnKey === "type" && (
+                    <div className="flex items-center">
+                      {getStatusIcon(item.type)}
+                      <span className="ml-1">
+                        {getKeyValue(
+                          item.type === "income" ? "Ingreso" : "Gasto",
+                          columnKey
+                        )}
+                      </span>
+                    </div>
                   )}
 
                   {columnKey === "createdAt" && (
-                    <span>{formatDate(getKeyValue(item, columnKey))}</span>
+                    <span>
+                      {new Date(item.createdAt).toISOString().slice(0, 10)}
+                    </span>
                   )}
 
                   {columnKey != "type" && columnKey != "createdAt" && (
@@ -168,126 +150,19 @@ export const TableCustom = ({
           )}
         </TableBody>
       </Table>
-      <Modal isOpen={showEditModal} onOpenChange={setShowEditModal}>
-        <ModalContent>
-          <ModalHeader>Editar transacción</ModalHeader>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <ModalBody>
-              <Input
-                type="text"
-                label="Descripción"
-                name="description"
-                className="mb-5"
-                defaultValue={selectedItem.description}
-                {...register("description")}
-              />
-              <Input
-                type="number"
-                label="Cantidad"
-                name="amount"
-                className="mb-5"
-                defaultValue={selectedItem.amount}
-                {...register("amount")}
-              />
-              <Input
-                type="text"
-                label="Destinatario"
-                name="destination"
-                className="mb-5"
-                description="*A quien esta dirigido el monto"
-                defaultValue={selectedItem.destination}
-                {...register("destination")}
-              />
-              <Input
-                type="date"
-                name="createdAt"
-                defaultValue={selectedItem.createdAt.toString().split("T")[0]}
-                className="mb-5"
-                readOnly
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button color="primary" type="submit">
-                Guardar cambios
-              </Button>
-              <Button
-                color="danger"
-                variant="light"
-                onPress={() => setShowEditModal(false)}
-              >
-                Cancelar
-              </Button>
-            </ModalFooter>
-          </form>
-        </ModalContent>
-      </Modal>
 
-      {/* Modal de eliminación */}
-      <Modal isOpen={showDeleteModal} onOpenChange={setShowDeleteModal}>
-        <ModalContent>
-          <ModalHeader>Eliminar transacción</ModalHeader>
-          <ModalBody>
-            {selectedItem.status
-              ? "¿Estas seguro de eliminar la transacción?"
-              : "¿Estas seguro de eliminar la transacción para siempre?"}
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color="primary"
-              variant="light"
-              onPress={() => setShowDeleteModal(false)}
-            >
-              Cancelar
-            </Button>
-            <Button
-              color="danger"
-              onPress={() => {
-                selectedItem.status
-                  ? onDelete(selectedItemId)
-                  : onDeleteF(selectedItemId);
-                setShowDeleteModal(false);
-                setSelectedItemId(null);
-                setSelectedItem({
-                  description: "",
-                  amount: "",
-                  destination: "",
-                  createdAt: "",
-                });
-              }}
-            >
-              Eliminar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-
-      <Modal isOpen={showRecoveryModal} onOpenChange={setShowRecoveryModal}>
-        <ModalContent>
-          <ModalHeader>Recuperar transacción</ModalHeader>
-          <ModalBody>
-            ¿Estas seguro que deseas recuperar la transacción?
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              color="primary"
-              variant="light"
-              onPress={() => setShowRecoveryModal(false)}
-            >
-              Cancelar
-            </Button>
-            <Button
-              color="success"
-              onPress={() => {
-                onRecover(selectedItemId);
-                setShowRecoveryModal(false);
-                setSelectedItemId(null);
-              }}
-            >
-              Recuperar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <Pagination
+        showControls
+        className="flex justify-end mt-2"
+        classNames={{
+          item: "dark:bg-[#2C2F42]",
+          next: "dark:bg-[#2C2F42]",
+          prev: "dark:bg-[#2C2F42]",
+        }}
+        total={total}
+        current={currentPage}
+        onChange={handlePageChange}
+      />
     </>
   );
 };

@@ -7,7 +7,11 @@ export function login(user) {
 }
 
 export function registerUser(user) {
-    return axios.post(`${URL_API}/register/user`, user)
+    const newUser = {
+        username: user.username,
+        password: user.passwords.password,
+    };
+    return axios.post(`${URL_API}/register/user`, newUser)
 }
 
 export function updateUser(client, data, token) {

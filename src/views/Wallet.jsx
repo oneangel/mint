@@ -1,79 +1,53 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
-import {
-  Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Progress,
-  Skeleton,
-  useDisclosure,
-  Input,
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Pagination,
-  getKeyValue,
-  Tooltip,
-  Chip,
-  Card,
-  CardBody,
-  CardHeader,
-  Image,
-} from "@nextui-org/react";
-import { useAddGoal, useDeleteGoal, useUpdateGoal } from "../hooks/goal.hooks";
-import { useGetGoalsList, useAddAmountGoal } from "../hooks/goal.hooks";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 import { transactionService } from "../services/services";
+import { goalHooks } from "../hooks/hooks";
+import { useForm } from "react-hook-form";
+import { Button, Skeleton, useDisclosure, Pagination } from "@nextui-org/react";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import { CurrentBalance } from "../components/dashboard/CurrentBalance";
-import { IoAddCircle, IoSearch, IoTrash } from "react-icons/io5";
-import { FaPen } from "react-icons/fa";
-import { FaPiggyBank } from "react-icons/fa6";
-import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "react-query";
+import { IoAddCircle } from "react-icons/io5";
 import { SearchBar } from "../components/dashboard/SearchBar";
-import Percentage from "../components/charts/Percentage";
 import toast, { Toaster } from "react-hot-toast";
-
-const statusColorMap = {
-  true: "success",
-  false: "danger",
-};
-
-const columns = [
-  {
-    key: "finalDate",
-    label: "Fecha Limite",
-  },
-  {
-    key: "description",
-    label: "Descripción",
-  },
-  {
-    key: "amountGoal",
-    label: "Meta",
-  },
-  {
-    key: "state",
-    label: "Estado",
-  },
-  {
-    key: "acciones",
-    label: "Acciones",
-  },
-];
+import { columns2, inputs2, inputsAdd } from "./data";
+import { SelectedGoal } from "../components/dashboard/SelectedGoal";
+import { TableCustomW } from "../components/dashboard/TableCustomW";
+import { DeleteModal, AddModal, EditModal } from "../components/modals/modals";
+import { RiHandCoinFill } from "react-icons/ri";
+import { PiPiggyBankFill } from "react-icons/pi";
+import { goalSchema, addGoalSchema } from "../schemas/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Navigate } from "react-router-dom";
 
 export const Wallet = () => {
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: "onTouched" });
+  } = useForm({ mode: "onTouched", resolver: zodResolver(goalSchema) });
+
+  const {
+    register: control,
+    handleSubmit: handleSubmitAdd,
+    formState: { errors: errorAdd, isValid: isValidAdd },
+  } = useForm({ mode: "onTouched", resolver: zodResolver(addGoalSchema) });
+
+  const {
+    isOpen: isOpenAA,
+    onOpen: onOpenAA,
+    onClose: onCloseAA,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenD,
+    onOpen: onOpenD,
+    onClose: onCloseD,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenU,
+    onOpen: onOpenU,
+    onClose: onCloseU,
+  } = useDisclosure();
 
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,7 +55,6 @@ export const Wallet = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
-  const [isFollowed, setIsFollowed] = useState(false);
   const [selectedItem, setSelectedItem] = useState({
     amount: 0,
     description: "",
@@ -110,7 +83,7 @@ export const Wallet = () => {
     data: goalsData,
     isLoading: isLoadingGoals,
     isError: isErrorGoals,
-  } = useQuery("goals", useGetGoalsList);
+  } = useQuery("goals", goalHooks.useGetGoalsList);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -129,15 +102,17 @@ export const Wallet = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7;
 
-  const addGoalMutation = useMutation(useAddGoal, {
+  const addGoalMutation = useMutation(goalHooks.useAddGoal, {
     onSuccess: () => {
       toast.dismiss();
       toast.success("Meta añadida correctamente");
       onClose();
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
+      reset();
     },
     onError: () => {
+      reset();
       toast.dismiss();
       toast.error("¡Hubo un error en la operacion!");
     },
@@ -147,7 +122,7 @@ export const Wallet = () => {
     },
   });
 
-  const deleteGoalMutation = useMutation(useDeleteGoal, {
+  const deleteGoalMutation = useMutation(goalHooks.useDeleteGoal, {
     onSuccess: () => {
       toast.dismiss();
       toast.success("Meta eliminada correctamente");
@@ -164,14 +139,16 @@ export const Wallet = () => {
     },
   });
 
-  const updateGoalMutation = useMutation(useUpdateGoal, {
+  const updateGoalMutation = useMutation(goalHooks.useUpdateGoal, {
     onSuccess: () => {
+      reset();
       toast.dismiss();
       toast.success("Meta actualizada correctamente");
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
     },
     onError: () => {
+      reset();
       toast.dismiss();
       toast.error("¡Hubo un error en la operacion!");
       console.error("¡Hubo un error en la operacion!");
@@ -181,12 +158,13 @@ export const Wallet = () => {
     },
   });
 
-  const addAmountGoalMutation = useMutation(useAddAmountGoal, {
-    onSuccess: () => {
+  const addAmountGoalMutation = useMutation(goalHooks.useAddAmountGoal, {
+    onSuccess: (data) => {
       toast.dismiss();
       toast.success("Monto agregado correctamente");
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
+      setSelectedGoal(data.data);
     },
     onError: () => {
       toast.dismiss();
@@ -204,11 +182,15 @@ export const Wallet = () => {
   };
 
   const onAdd = (data) => {
-    addAmountGoalMutation.mutate({ selectedItemId, amount: data });
-    setShowAddAmountModal(false);
+    onCloseAA();
+    addAmountGoalMutation.mutateAsync({
+      selectedItemId,
+      amount: parseFloat(data.amount),
+    });
   };
 
   const onDelete = (id) => {
+    onCloseD();
     deleteGoalMutation.mutate(id);
   };
 
@@ -228,12 +210,25 @@ export const Wallet = () => {
     amountGoal: 0,
   });
 
-  const [showAddAmountModal, setShowAddAmountModal] = useState(false);
+  const getPaginatedRows = (arr) => {
+    return arr.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
+  };
+
   useEffect(() => {
     if (!isLoadingGoals && goalsData) {
       setFilteredData(goalsData.data);
     }
   }, [isLoadingGoals, goalsData]);
+
+  if (
+    (!isLoadingBalance && isErrorBalance) ||
+    (!isLoadingGoals && isErrorGoals)
+  ) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-[#1A1A24]">
@@ -249,66 +244,12 @@ export const Wallet = () => {
               {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
             </Skeleton>
             <Skeleton className="mt-8 rounded-3xl" isLoaded={!isLoadingGoals}>
-              <Card className="h-[340px] shadow-md rounded-3xl border-1 w-full dark:bg-[#2C2F42] dark:border-zinc-800">
-                {!isLoadingGoals && selectedGoal.description == "Ninguna" && (
-                  <CardBody className="flex flex-wrap justify-center w-full gap-5">
-                    <p className="text-xl text-center">
-                      No hay ninguna meta seleccionada
-                    </p>
-                  </CardBody>
-                )}
-                {!isLoadingGoals && selectedGoal.description != "Ninguna" && (
-                  <>
-                    <CardHeader className="flex gap-3">
-                      <span className="text-5xl">
-                        <FaPiggyBank />
-                      </span>
-                      <div className="flex flex-col">
-                        <p className="text-md">Meta seleccionada</p>
-                        <p className="text-small text-default-500">
-                          {selectedGoal.description}
-                        </p>
-                      </div>
-                      <Button
-                        isDisabled={
-                          selectedGoal.amount == selectedGoal.amountGoal
-                        }
-                        color="primary"
-                        radius="full"
-                        size="sm"
-                        variant="solid"
-                        className="ml-5 bg-sky-700"
-                        onPress={() => setShowAddAmountModal(true)}
-                      >
-                        Abonar
-                      </Button>
-                    </CardHeader>
-
-                    <CardBody className="flex flex-wrap items-center justify-center w-full gap-5">
-                      <div className="flex flex-col w-40 items-left">
-                        <Percentage
-                          value={selectedGoal.amount}
-                          max={selectedGoal.amountGoal}
-                        />
-                      </div>
-                      <div className="flex flex-col w-90">
-                        <div className="w-60">
-                          <p className="text-md text-default-500">
-                            •Monto actual:
-                          </p>
-                          <p className="text-2xl">${selectedGoal.amount}</p>
-                          <p>Ultimo abono de 30%</p>
-                        </div>
-                        <div className="mt-4 w-60">
-                          <p className="text-md text-default-500">•Meta:</p>
-                          <p className="text-2xl">${selectedGoal.amountGoal}</p>
-                          <p>Ultimo abono de 30%</p>
-                        </div>
-                      </div>
-                    </CardBody>
-                  </>
-                )}
-              </Card>
+              {!isLoadingGoals && (
+                <SelectedGoal
+                  selectedGoal={selectedGoal}
+                  setShowAddAmountModal={onOpenAA}
+                />
+              )}
             </Skeleton>
           </div>
 
@@ -333,297 +274,73 @@ export const Wallet = () => {
                     Crear Meta
                   </Button>
                 </Skeleton>
-
-                <Modal
-                  isOpen={isOpen}
-                  onOpenChange={onOpenChange}
-                  aria-label="Crear nueva meta"
-                >
-                  <ModalContent>
-                    <>
-                      <ModalHeader className="flex flex-col gap-1">
-                        Crear nueva meta
-                      </ModalHeader>
-                      <ModalBody>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <Input
-                            type="text"
-                            label="Descripción"
-                            name="description"
-                            className="mb-5"
-                            {...register("description", {
-                              required: "el campo es obligatorio",
-                            })}
-                          />
-                          <Input
-                            type="number"
-                            name="amountGoal"
-                            label="Meta"
-                            className="mb-5"
-                            {...register("amountGoal", {
-                              required: "el campo es obligatorio",
-                            })}
-                          />
-                          <Input
-                            type="date"
-                            name="finalDate"
-                            label="Fecha de meta"
-                            placeholder="dd/mm/aaaa"
-                            className="mb-5"
-                            {...register("finalDate", {
-                              required: "el campo es obligatorio",
-                            })}
-                          />
-                        </form>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button variant="light" onPress={onClose}>
-                          Cerrar
-                        </Button>
-                        <Button
-                          color="primary"
-                          onPress={handleSubmit(onSubmit)}
-                          className="text-white bg-sky-700"
-                          isDisabled={!isValid}
-                        >
-                          Crear
-                        </Button>
-                      </ModalFooter>
-                    </>
-                  </ModalContent>
-                </Modal>
               </div>
             </div>
 
             <div className="mt-4">
               <Skeleton isLoaded={!isLoadingGoals} className="p-1 rounded-3xl">
-                {!isLoadingGoals && (
-                  <Table
-                    className="max-h-[600px]"
-                    classNames={{
-                      wrapper: "dark:bg-[#2D3141]",
-                      th: "dark:bg-[#2D3141]",
-                    }}
-                    selectionMode="single"
-                    aria-label="Lista de Metas"
-                    defaultSelectedKeys={["1"]}
-                  >
-                    <TableHeader columns={columns}>
-                      {(column) => (
-                        <TableColumn
-                          key={column.key}
-                          className="text-xl text-neutral-800 dark:text-neutral-200"
-                        >
-                          {column.label}
-                        </TableColumn>
-                      )}
-                    </TableHeader>
-                    <TableBody
-                      items={filteredData.slice(
-                        (currentPage - 1) * itemsPerPage,
-                        currentPage * itemsPerPage
-                      )}
-                      emptyContent={"No existen metas registradas aún."}
-                    >
-                      {(item) => (
-                        <TableRow
-                          key={item.idGoal}
-                          onClick={() => {
-                            setSelectedGoal(item);
-                            setSelectedItemId(item._id);
-                          }}
-                        >
-                          {(columnKey) => (
-                            <TableCell className="pt-8 text-xl">
-                              {columnKey === "acciones" ? (
-                                <div className="relative flex items-center gap-2 ml-4">
-                                  <div
-                                    onClick={() => {
-                                      setSelectedItemId(item._id);
-                                      setShowEditModal(true);
-                                      setSelectedItem(item);
-                                    }}
-                                  >
-                                    <Tooltip
-                                      content="Editar"
-                                      aria-label="Editar"
-                                    >
-                                      <span className="text-xl cursor-pointer text-default-400 active:opacity-50">
-                                        <FaPen />
-                                      </span>
-                                    </Tooltip>
-                                  </div>
-
-                                  <div
-                                    onClick={() => {
-                                      setSelectedItemId(item._id);
-                                      setShowDeleteModal(true);
-                                    }}
-                                  >
-                                    <Tooltip color="danger" content="Eliminar">
-                                      <span className="text-xl cursor-pointer text-danger active:opacity-50">
-                                        <IoTrash />
-                                      </span>
-                                    </Tooltip>
-                                  </div>
-                                </div>
-                              ) : columnKey === "state" ? (
-                                <Chip
-                                  className="capitalize"
-                                  color={statusColorMap[item.state]}
-                                  size="sm"
-                                  aria-label="Estado"
-                                  variant="flat"
-                                >
-                                  {item.state ? "Activo" : "Finalizada"}
-                                </Chip>
-                              ) : columnKey === "finalDate" ? (
-                                item.finalDate ? (
-                                  <span className="ml-2 font-normal text-default-700">
-                                    {new Date(
-                                      item.finalDate
-                                    ).toLocaleDateString(undefined, {
-                                      year: "numeric",
-                                      month: "long",
-                                      day: "numeric",
-                                    })}
-                                  </span>
-                                ) : null
-                              ) : (
-                                getKeyValue(item, columnKey)
-                              )}
-                            </TableCell>
-                          )}
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                )}
+                <TableCustomW
+                  onOpenD={onOpenD}
+                  onOpenU={onOpenU}
+                  columns={columns2}
+                  data={getPaginatedRows(filteredData)}
+                  setSelectedGoal={setSelectedGoal}
+                  setSelectedItem={setSelectedItem}
+                  setSelectedItemId={setSelectedItemId}
+                />
               </Skeleton>
-              <Modal
-                isOpen={showEditModal}
-                onOpenChange={setShowEditModal}
-                aria-label="Actualizar meta"
-              >
-                <ModalContent>
-                  <ModalHeader>Editar Meta</ModalHeader>
-                  <ModalBody>
-                    <form onSubmit={handleSubmit(onUpdate)}>
-                      <Input
-                        type="text"
-                        label="Descripción"
-                        name="description"
-                        className="mb-5"
-                        defaultValue={selectedItem.description}
-                        {...register("description")}
-                      />
-                      <Input
-                        type="number"
-                        name="amountGoal"
-                        label="Meta"
-                        className="mb-5"
-                        defaultValue={selectedItem.amountGoal}
-                        {...register("amountGoal")}
-                      />
-                      <Input
-                        type="date"
-                        name="finalDate"
-                        label="Fecha de meta"
-                        placeholder="dd/mm/aaaa"
-                        className="mb-5"
-                        defaultValue={
-                          selectedItem.finalDate.toString().split("T")[0]
-                        }
-                        {...register("finalDate")}
-                      />
-                    </form>
-                  </ModalBody>
-                  <ModalFooter>
-                    <Button
-                      color="danger"
-                      variant="light"
-                      onPress={() => setShowEditModal(false)}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button color="primary" onClick={handleSubmit(onUpdate)}>
-                      Guardar cambios
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
+
+              {/* Modal de actualizacion */}
+              <EditModal
+                isOpen={isOpenU}
+                onClose={onCloseU}
+                data={inputs2}
+                control={register}
+                isValid={!isValid}
+                selectedItem={selectedGoal}
+                title="Actualizar meta"
+                errors={errors}
+                onSubmit={handleSubmit(onUpdate)}
+              />
 
               {/* Modal de eliminación */}
-              <Modal
-                isOpen={showDeleteModal}
-                onOpenChange={setShowDeleteModal}
-                aria-label="eliminar Meta"
-              >
-                <ModalContent>
-                  <ModalHeader>Eliminar Meta</ModalHeader>
-                  <ModalBody>¿Estás seguro de eliminar esta Meta?</ModalBody>
-                  <ModalFooter>
-                    <Button
-                      color="primary"
-                      variant="light"
-                      onPress={() => setShowDeleteModal(false)}
-                    >
-                      Cancelar
-                    </Button>
-                    <Button
-                      color="danger"
-                      onPress={() => {
-                        onDelete(selectedItemId);
-                        setShowDeleteModal(false);
-                      }}
-                    >
-                      Eliminar
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-              <Modal
-                isOpen={showAddAmountModal}
-                onOpenChange={setShowAddAmountModal}
-              >
-                <ModalContent>
-                  <form onSubmit={handleSubmit(onAdd)}>
-                    <ModalHeader>Agregar Monto</ModalHeader>
-                    <ModalBody>
-                      <Input
-                        type="number"
-                        label="Monto"
-                        name="amount"
-                        className="mb-5"
-                        defaultValue={0}
-                        onChange={(e) => {
-                          setSelectedItem({
-                            ...selectedItem,
-                            amount: parseFloat(e.target.value), // Convertir a número
-                          });
-                        }}
-                      />
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button
-                        color="primary"
-                        variant="light"
-                        onPress={() => setShowAddAmountModal(false)}
-                      >
-                        Cancelar
-                      </Button>
-                      <Button
-                        isDisabled={selectedItem.amount <= 0}
-                        type="submit"
-                        color="primary"
-                        onPress={() => onAdd(selectedItem.amount)}
-                      >
-                        Guardar
-                      </Button>
-                    </ModalFooter>
-                  </form>
-                </ModalContent>
-              </Modal>
+              <DeleteModal
+                isOpen={isOpenD}
+                onClose={onCloseD}
+                onDelete={() => onDelete(selectedItemId)}
+                title="Estas a punto de eliminar una meta"
+                subtitle="Esto eliminara tu meta para siempre"
+                type={true}
+              />
+
+              <AddModal
+                control={control}
+                data={inputsAdd}
+                isOpen={isOpenAA}
+                onClose={onCloseAA}
+                isValid={!isValidAdd}
+                title="Abonar monto"
+                icon={
+                  <RiHandCoinFill className="text-teal-600 size-40 dark:text-teal-400" />
+                }
+                errors={errorAdd}
+                onSubmit={handleSubmitAdd(onAdd)}
+              />
+
+              <AddModal
+                control={register}
+                data={inputs2}
+                isOpen={isOpen}
+                onClose={onClose}
+                isValid={!isValid}
+                title="Crear meta"
+                icon={
+                  <PiPiggyBankFill className="text-teal-600 size-40 dark:text-teal-400" />
+                }
+                errors={errors}
+                onSubmit={handleSubmit(onSubmit)}
+              />
+
               {!isLoadingGoals && (
                 <Pagination
                   showControls

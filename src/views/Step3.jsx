@@ -1,32 +1,7 @@
-import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import React from "react";
 import { Button, Input } from "@nextui-org/react";
 
-export const Step3 = ({ control, previousStep }) => {
-  const [name, setName] = useState("");
-  const [nameIsTouched, setNameIsTouched] = useState(false);
-  const [lastName, setLastName] = useState("");
-  const [lastNameIsTouched, setLastNameIsTouched] = useState(false);
-
-  const isNameInvalid = React.useMemo(() => {
-    if (name === "" || !nameIsTouched) return false;
-    return false;
-  }, [name, nameIsTouched]);
-
-  const isLastNameInvalid = React.useMemo(() => {
-    if (lastName === "" || !lastNameIsTouched) return false;
-    return false;
-  }, [lastName, lastNameIsTouched]);
-
-  const isFormValid = React.useMemo(() => {
-    const isAnyFieldTouched = nameIsTouched || lastNameIsTouched;
-    return (
-      isAnyFieldTouched &&
-      (!nameIsTouched || !isNameInvalid) &&
-      (!lastNameIsTouched || !isLastNameInvalid)
-    );
-  }, [nameIsTouched, lastNameIsTouched, isNameInvalid, isLastNameInvalid]);
-
+export const Step3 = ({ control, previousStep, errors }) => {
   return (
     <>
       <div className="mb-12">
@@ -41,14 +16,8 @@ export const Step3 = ({ control, previousStep }) => {
             size="lg"
             classNames={{ label: "text-2xl" }}
             className="bg-white rounded-2xl"
-            onValueChange={(value) => {
-              setName(value);
-              setNameIsTouched(true);
-            }}
-            isInvalid={nameIsTouched && isNameInvalid}
-            errorMessage={
-              nameIsTouched && isNameInvalid && "El nombre no es válido."
-            }
+            isInvalid={!!errors.firstname}
+            errorMessage={errors?.firstname?.message}
           />
         </div>
       </div>
@@ -64,16 +33,8 @@ export const Step3 = ({ control, previousStep }) => {
             size="lg"
             classNames={{ label: "text-2xl" }}
             className="bg-white rounded-2xl"
-            onValueChange={(value) => {
-              setLastName(value);
-              setLastNameIsTouched(true);
-            }}
-            isInvalid={lastNameIsTouched && isLastNameInvalid}
-            errorMessage={
-              lastNameIsTouched &&
-              isLastNameInvalid &&
-              "Los apellidos no son válidos."
-            }
+            isInvalid={!!errors.lastname}
+            errorMessage={errors?.lastname?.message}
           />
         </div>
         <p className="mt-3 text-xl font-light">

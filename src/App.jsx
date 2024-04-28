@@ -19,7 +19,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 import SesionRoute from "./components/auth/SesionRoute.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { CheckScreen } from "./views/check.jsx";
+import { CheckScreen } from "./views/CheckScreen.jsx";
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -84,6 +84,8 @@ export default function App() {
                   </ProtectedRoute>
                 }
               ></Route>
+
+              <Route path="/verifyed" element={<CheckScreen />}></Route>
               <Route path="*" element={<ErrorPage />} />
             </Routes>
           </HashRouter>

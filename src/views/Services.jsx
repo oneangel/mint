@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
-import { Link } from "react-router-dom";
 import GaugeChart from "../components/charts/GaugeChart";
 import { IoFlash, IoWater, IoAddCircle, IoCalendar } from "react-icons/io5";
 import LiquidFillChart from "../components/charts/LiquidFillChart";
@@ -30,7 +29,7 @@ import { useLinkMeter } from "../hooks/meter.hooks";
 import toast, { Toaster } from "react-hot-toast";
 import LargeAreaChart from "../components/charts/LargeAreaChart";
 import { useQueryClient } from "react-query";
-import { TbDropletHalf2 } from "react-icons/tb";
+import { CiTempHigh } from "react-icons/ci";
 
 export const Services = () => {
   const [selectedOption, setSelectedOption] = useState("water");
@@ -50,38 +49,64 @@ export const Services = () => {
     data: measureData,
     isLoading: isLoadingMeasure,
     isError: isErrorMeasure,
-  } = useQuery("measure", useMonthMeasure);
+  } = useQuery("measure", useMonthMeasure, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: tariffData,
     isLoading: isLoadingTariff,
     isError: isErrorTariff,
-  } = useQuery("tariff", useGetTariffCost);
+  } = useQuery("tariff", useGetTariffCost, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: tariffWData,
     isLoading: isLoadingTariffW,
     isError: isErrorTariffW,
-  } = useQuery("tariffw", useGetTariffWCost);
+  } = useQuery("tariffw", useGetTariffWCost, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: tariffsData,
     isLoading: isLoadingTariffs,
     isError: isErrorTariffs,
-  } = useQuery("tariffs", useGetTariffs);
+  } = useQuery("tariffs", useGetTariffs, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: waterServicesData,
     isLoading: isLoadingWaterServices,
     isError: isErrorWaterServices,
-  } = useQuery("waterServicesList", () => useGetServiceList("water"));
+  } = useQuery("waterServicesList", () => useGetServiceList("water"), {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: ElectricityServicesData,
     isLoading: isLoadingElectricityServices,
     isError: isErrorElectricityServices,
-  } = useQuery("ElectricityServicesList", () =>
-    useGetServiceList("electricity")
+  } = useQuery(
+    "ElectricityServicesList",
+    () => useGetServiceList("electricity"),
+    {
+      refetchInterval: 30000,
+      refetchIntervalInBackground: true,
+      refetchOnWindowFocus: true,
+    }
   );
 
   const linkMeterMutation = useMutation(useLinkMeter, {
@@ -202,7 +227,10 @@ export const Services = () => {
                               Total de litros:{" "}
                               {!isLoadingTariffW && (
                                 <span className="ml-2 text-default-400">
-                                  {tariffWData.data.measure}L
+                                  {tariffData
+                                    ? tariffWData.data.measure.toFixed(2)
+                                    : 0}
+                                  L
                                 </span>
                               )}
                             </p>
@@ -292,7 +320,7 @@ export const Services = () => {
                               {!isLoadingMeasure && (
                                 <span className="ml-2 text-default-400">
                                   {measureData
-                                    ? measureData.data.totalMeasure
+                                    ? measureData.data.totalMeasure.toFixed(2)
                                     : 0}{" "}
                                   kw
                                 </span>
@@ -329,6 +357,20 @@ export const Services = () => {
                       </div>
                     </div>
                   </Skeleton>
+                </Tab>
+                <Tab
+                  key="temperature"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <CiTempHigh />
+                      <span>Temperatura</span>
+                    </div>
+                  }
+                >
+                  <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
+                    <IoCalendar />
+                    <span>Seguimiento mensual</span>
+                  </div>
                 </Tab>
               </Tabs>
             </div>

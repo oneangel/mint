@@ -11,23 +11,18 @@ import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import secureimg from "../assets/img/secure.png";
 import { LoadingPage } from "./LoadingPage";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema } from "../schemas/schemas";
 
 export const Register = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showLoading, setShowLoading] = useState(false);
-  const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordC, setPasswordC] = useState("");
-  const [passwordIsTouched, setPasswordIsTouched] = useState(false);
-  const [passwordCIsTouched, setPasswordCIsTouched] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: "onTouched" });
+  } = useForm({ mode: "onTouched", resolver: zodResolver(registerSchema) });
 
   const nextStep = () => {
     console.log("hola");
@@ -62,8 +57,8 @@ export const Register = () => {
   const registerClientMutation = useMutation(clientService.registerClient, {
     onSuccess: () => {
       setShowLoading(false);
-      toast.success("Registro exitoso");
-      navigate("/login");
+      toast.success("Registro exitoso y redireccionando al login");
+      setTimeout(navigate("/login"), 5000);
     },
     onError: (error) => {
       toast.dismiss();
@@ -119,29 +114,23 @@ export const Register = () => {
                   <Step1
                     control={register}
                     nextStep={nextStep}
-                    username={username}
-                    phone={phone}
-                    email={email}
-                    setUsername={setUsername}
-                    setPhone={setPhone}
-                    setEmail={setEmail}
+                    errors={errors}
+                    isValid={!isValid}
                   />
                 ) : currentIndex === 1 ? (
                   <Step2
                     control={register}
                     nextStep={nextStep}
                     previousStep={previousStep}
-                    password={password}
-                    passwordC={passwordC}
-                    setPassword={setPassword}
-                    setPasswordC={setPasswordC}
-                    passwordCIsTouched={passwordCIsTouched}
-                    setPasswordCIsTouched={setPasswordCIsTouched}
-                    passwordIsTouched={passwordIsTouched}
-                    setPasswordIsTouched={setPasswordIsTouched}
+                    errors={errors}
+                    isValid={!isValid}
                   />
                 ) : (
-                  <Step3 control={register} previousStep={previousStep} />
+                  <Step3
+                    control={register}
+                    previousStep={previousStep}
+                    errors={errors}
+                  />
                 )}
 
                 {currentIndex === 2 ? (

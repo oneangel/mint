@@ -1,69 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Button, Input } from "@nextui-org/react";
 
-export const Step1 = ({
-  control,
-  nextStep,
-  username,
-  phone,
-  email,
-  setUsername,
-  setPhone,
-  setEmail,
-}) => {
-  const [usernameError, setUsernameError] = React.useState("");
-  const [phoneError, setPhoneError] = React.useState("");
-  const [emailError, setEmailError] = React.useState("");
-
-  const validateEmail = (value) =>
-    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
-
-  const validatePhone = (value) => value.match(/^\d{10}$/);
-
-  const validateUsername = (value) => value.match(/^[a-zA-Z0-9]+$/);
-
-  const handleUsernameChange = (value) => {
-    setUsername(value);
-    setUsernameError(
-      value
-        ? validateUsername(value)
-          ? ""
-          : "El nombre de usuario no puede contener espacios ni caracteres especiales"
-        : "Por favor ingresa un nombre de usuario"
-    );
-  };
-
-  const handleEmailChange = (value) => {
-    setEmail(value);
-    setEmailError(
-      value
-        ? validateEmail(value)
-          ? ""
-          : "Por favor ingresa un correo electrónico válido"
-        : "El campo es obligatorio"
-    );
-  };
-
-  const handlePhoneChange = (value) => {
-    setPhone(value);
-    setPhoneError(
-      value
-        ? validatePhone(value)
-          ? ""
-          : "Por favor ingresa un número de teléfono válido (10 dígitos)"
-        : "El campo es obligatorio"
-    );
-  };
-
-  const isFormValid = username && phone && validateEmail(email);
+export const Step1 = ({ control, nextStep, errors, isValid }) => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
   const handleNextStep = () => {
-    if (!isFormValid) {
-      toast.error("Ingresa tus datos correctamente para continuar");
-    } else {
-      nextStep();
-    }
+    nextStep();
   };
 
   return (
@@ -75,13 +20,12 @@ export const Step1 = ({
             type="text"
             name="username"
             label="Nombre de Usuario"
-            {...control("username", { required: "el campo es obligatorio" })}
+            {...control("username", { required: "El campo es obligatorio" })}
             variant="bordered"
             size="lg"
-            value={username}
-            onChange={(e) => handleUsernameChange(e.target.value)}
-            isInvalid={!!usernameError}
-            errorMessage={usernameError}
+            onChange={(e) => setUsername(e.target.value)}
+            isInvalid={!!errors.username}
+            errorMessage={errors.username ? errors.username.message : ""}
           />
         </div>
       </div>
@@ -96,10 +40,9 @@ export const Step1 = ({
             {...control("email", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
-            value={email}
-            onChange={(e) => handleEmailChange(e.target.value)}
-            isInvalid={!!emailError}
-            errorMessage={emailError}
+            onChange={(e) => setEmail(e.target.value)}
+            isInvalid={!!errors.email}
+            errorMessage={errors.email ? errors.email.message : ""}
           />
         </div>
       </div>
@@ -114,10 +57,9 @@ export const Step1 = ({
             {...control("phone", { required: "el campo es obligatorio" })}
             variant="bordered"
             size="lg"
-            value={phone}
-            onChange={(e) => handlePhoneChange(e.target.value)}
-            isInvalid={!!phoneError}
-            errorMessage={phoneError}
+            onChange={(e) => setPhone(e.target.value)}
+            isInvalid={!!errors.phone}
+            errorMessage={errors.phone ? errors.phone.message : ""}
           />
         </div>
         <p className="mt-3 text-2xl font-light">
@@ -131,7 +73,14 @@ export const Step1 = ({
           className="w-full py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={handleNextStep}
           isDisabled={
-            !isFormValid && !!phoneError && !!emailError && !!usernameError
+            username.length === 0 ||
+            errors.username ||
+            email.length === 0 ||
+            errors.email ||
+            phone.length === 0 ||
+            errors.phone
+              ? true
+              : false
           }
         >
           Siguiente

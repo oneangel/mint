@@ -2,73 +2,30 @@ import React, { useState } from "react";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import { Button, Input } from "@nextui-org/react";
 
-export const Step2 = ({
-  control,
-  nextStep,
-  previousStep,
-  password,
-  passwordC,
-  setPassword,
-  setPasswordC,
-  passwordCIsTouched,
-  setPasswordCIsTouched,
-  passwordIsTouched,
-  setPasswordIsTouched,
-}) => {
+export const Step2 = ({ control, nextStep, previousStep, errors, isValid }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordC, setShowPasswordC] = useState(false);
-
-  const isPasswordInvalid = React.useMemo(() => {
-    if (password === "" || !passwordIsTouched) return false;
-    const hasNumber = /\d/.test(password);
-    const hasLetter = /[a-zA-Z]/.test(password);
-    const isLongEnough = password.length >= 8;
-    return !(hasNumber && hasLetter && isLongEnough);
-  }, [password, passwordIsTouched]);
-
-  const isPasswordCInvalid = React.useMemo(() => {
-    if (passwordC === "" || !passwordCIsTouched) return false;
-    return passwordC !== password;
-  }, [passwordC, passwordCIsTouched, password]);
-
-  const isFormValid = React.useMemo(() => {
-    const isAnyFieldTouched = passwordIsTouched || passwordCIsTouched;
-    return (
-      isAnyFieldTouched &&
-      (!passwordIsTouched || !isPasswordInvalid) &&
-      (!passwordCIsTouched || !isPasswordCInvalid)
-    );
-  }, [
-    passwordIsTouched,
-    passwordCIsTouched,
-    isPasswordInvalid,
-    isPasswordCInvalid,
-  ]);
+  const [password, setPassword] = useState("");
+  const [passwordC, setPasswordC] = useState("");
 
   return (
     <>
       <div className="mb-8">
         <div className="relative text-3xl font-light">
           <Input
-            isRequired
             type={showPassword ? "text" : "password"}
             name="password"
             label="Contraseña"
-            {...control("password", { required: "el campo es obligatorio" })}
+            {...control("passwords.password", {
+              required: "el campo es obligatorio",
+            })}
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
             className="bg-white rounded-2xl"
-            onValueChange={(value) => {
-              setPassword(value);
-              setPasswordIsTouched(true);
-            }}
-            isInvalid={passwordIsTouched && isPasswordInvalid}
-            errorMessage={
-              passwordIsTouched &&
-              isPasswordInvalid &&
-              "La contraseña debe tener al menos 8 caracteres, un número y una letra."
-            }
+            isInvalid={!!errors.passwords?.password}
+            errorMessage={errors.passwords?.password?.message}
+            onChange={(e) => setPassword(e.target.value)}
             endContent={
               showPassword ? (
                 <GoEyeClosed
@@ -92,21 +49,16 @@ export const Step2 = ({
             type={showPasswordC ? "text" : "password"}
             name="passwordC"
             label="Confirmar Contraseña"
-            {...control("passwordC", { required: "el campo es obligatorio" })}
+            {...control("passwords.confirmPassword", {
+              required: "el campo es obligatorio",
+            })}
             variant="bordered"
             size="lg"
             classNames={{ label: "text-2xl" }}
             className="bg-white rounded-2xl"
-            onValueChange={(value) => {
-              setPasswordC(value);
-              setPasswordCIsTouched(true);
-            }}
-            isInvalid={passwordCIsTouched && isPasswordCInvalid}
-            errorMessage={
-              passwordCIsTouched &&
-              isPasswordCInvalid &&
-              "Las contraseñas no coinciden."
-            }
+            isInvalid={!!errors.passwords?.confirmPassword}
+            errorMessage={errors.passwords?.confirmPassword?.message}
+            onChange={(e) => setPasswordC(e.target.value)}
             endContent={
               showPasswordC ? (
                 <GoEyeClosed
@@ -134,7 +86,14 @@ export const Step2 = ({
           type="submit"
           className="w-1/2 py-8 text-4xl font-medium bg-white border shadow-lg text-sky-700 border-sky-700 rounded-2xl"
           onClick={nextStep}
-          isDisabled={!isFormValid}
+          isDisabled={
+            password.length === 0 ||
+            errors.passwords?.password ||
+            passwordC.length === 0 ||
+            errors.passwords?.confirmPassword
+              ? true
+              : false
+          }
         >
           Siguiente
         </Button>
