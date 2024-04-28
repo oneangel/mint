@@ -61,6 +61,7 @@ router.put('/link/meter', authMiddleware, MeterController.linkMeter);
 //Service
 router.put('/register/service', ServiceController.registerService);
 router.post('/get/totalMonthMeasure/:code', authMiddleware, ServiceController.getTotalEMonthMeasure);
+router.post('/get/totalTMeasure/:code', authMiddleware, ServiceController.getTotalTemperatureMeasure);
 router.post('/get/tariff/cost/:code', authMiddleware, ServiceController.getTarrifCost);
 router.post('/get/tariff/water/cost/:code', authMiddleware, ServiceController.getTarrifWaterCost);
 router.post('/get/services/list/:code', authMiddleware, ServiceController.getServicesList);

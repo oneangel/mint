@@ -183,6 +183,45 @@ export const getTarrifWaterCost = async (req, res) => {
   }
 };
 
+//get temperature total measure
+export const getTotalTemperatureMeasure = async (req, res) => {
+  try {
+    const { code } = req.params;
+    const { startDate, endDate } = req.body;
+
+    const existingService = await Service.find({ serial: code, type: "temperature" });
+
+    if (existingService.length === 0) {
+      res.json({ measure: 0 });
+    } else {
+      const totalMeasure = await Service.aggregate([
+        {
+          $match: {
+            serial: code,
+            type: "temperature",
+            createdAt: {
+              $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)), //It sets the time at 00:00:00:000
+              $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999)) //It sets the time at 23:59:59:999
+            }
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalMeasure: { $sum: "$measurement" }
+          }
+        },
+      ]);
+
+      const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
+      res.json({ total: total })
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Server error' })
+  }
+};
+
 export const getServicesList = async (req, res) => {
   const { code } = req.params;
   const { type, startDate, endDate } = req.body;
