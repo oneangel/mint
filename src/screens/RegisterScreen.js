@@ -1,8 +1,9 @@
 import { StatusBar } from "expo-status-bar";
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { userServices, clientServices } from "../services/services";
+import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
   Text,
@@ -10,98 +11,136 @@ import {
   TextInput,
   Dimensions,
   Image,
+  Alert,
 } from "react-native";
-import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
+import {
+  ALERT_TYPE,
+  Dialog,
+  AlertNotificationRoot,
+  Toast,
+} from "react-native-alert-notification";
 import ButtonGradient from "../components/ButtonGradient";
+import LoadingScreen from "./LoadingScreen";
 
 const { width, height } = Dimensions.get("window");
 
 export default function RegisterScreen() {
-  function SvgTop() {
+  const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors, isValid },
+  } = useForm({ mode: "onChange" });
+
+  const registerUserMutation = useMutation(userServices.registerUser, {
+    onError: (error) => {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: "Hubo un error al Registrarte intentalo de nuevo!",
+        textBody:
+          "Por favor, ingresa tus credenciales nuevamente.",
+        button: "Aceptar",
+        onPressButton: () => Dialog.hide(),
+      });
+      console.log(error);
+    },
+  });
+
+  const registerClientMutation = useMutation(clientServices.registerClient, {
+    onSuccess: () => {
+      setIsLoading(false);
+      navigation.navigate("Login");
+    },
+    onError: (error) => {
+      Dialog.show({
+        type: ALERT_TYPE.DANGER,
+        title: "Hubo un error al Registrarte intentalo de nuevo!",
+        textBody:
+          "Por favor, ingresa tus credenciales nuevamente.",
+        button: "Aceptar",
+        onPressButton: () => Dialog.hide(),
+      });
+      console.log(error);
+    },
+  });
+
+  const onSubmit = (data) => {
+    try {
+      console.log("IMprmir dataaaa");
+      console.log(data);
+      registerUserMutation.mutateAsync(data).then(() => {
+        registerClientMutation.mutate(data);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  if (isLoading) {
+    return <LoadingScreen text="Registrando..." />;
+  }
+
+  if (!isLoading) {
     return (
-      <Svg
-        width={500}
-        height={350}
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <Path
-          d="M297.871 315.826c73.405 13.896 165.338-13.964 202.129-29.63V230H1.326v63.5c69.15-42.913 204.789 4.957 296.545 22.326z"
-          fill="url(#prefix__paint0_linear_103:6)"
-          fillOpacity={0.5}
-        />
-        <Path
-          d="M237.716 308.627C110.226 338.066 30.987 318.618 0 304.77V0h500v304.77c-43.161-12.266-134.794-25.581-262.284 3.857z"
-          fill="url(#prefix__paint1_linear_103:6)"
-        />
-        <Defs>
-          <LinearGradient
-            id="prefix__paint0_linear_103:6"
-            x1={492.715}
-            y1={231.205}
-            x2={480.057}
-            y2={364.215}
-            gradientUnits="userSpaceOnUse"
-          >
-            <Stop stopColor="#3290E7" />
-            <Stop offset={1} stopColor="#32BBE7" />
-          </LinearGradient>
-          <LinearGradient
-            id="prefix__paint1_linear_103:6"
-            x1={7.304}
-            y1={4.155}
-            x2={144.016}
-            y2={422.041}
-            gradientUnits="userSpaceOnUse"
-          >
-            <Stop stopColor="#32BBE7" />
-            <Stop offset={1} stopColor="#3E70A1" />
-          </LinearGradient>
-        </Defs>
-      </Svg>
+      <View style={styles.mainContainer}>
+        <View style={styles.containerSVG}>
+          <Image
+            source={require("../../assets/Icons/mint2.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
+        <View style={styles.container}>
+          <Text style={styles.titulo}>Regístrate</Text>
+          <Text style={styles.subTitle}>
+            Ingresa tus datos para crear una cuenta
+          </Text>
+          <TextInput
+            placeholder="Nombre de usuario"
+            style={styles.textInput}
+            onChangeText={(text) => setValue("username", text)}
+          />
+          <TextInput
+            placeholder="Correo electrónico"
+            style={styles.textInput}
+            onChangeText={(text) => setValue("email", text)}
+          />
+          <TextInput
+            placeholder="Número de teléfono"
+            style={styles.textInput}
+            onChangeText={(text) => setValue("phone", text)}
+          />
+          <TextInput
+            placeholder="Contraseña"
+            style={styles.textInput}
+            secureTextEntry={true}
+            onChangeText={(text) => setValue("password", text)}
+          />
+          <TextInput
+            placeholder="Nombre"
+            style={styles.textInput}
+            onChangeText={(text) => setValue("firstname", text)}
+          />
+          <TextInput
+            placeholder="Apellidos"
+            style={styles.textInput}
+            onChangeText={(text) => setValue("lastname", text)}
+          />
+          <ButtonGradient
+            title="Registrarse"
+            route="Login"
+            onSubmit={handleSubmit(onSubmit)}
+            disabled={!isValid}
+          />
+          <StatusBar style="auto" />
+        </View>
+      </View>
     );
   }
-  return (
-    <View style={styles.mainContainer}>
-      <View style={styles.containerSVG}>
-        <Image
-          source={require("../../assets/Icons/mint2.png")}
-          style={styles.logo}
-          resizeMode="contain"
-        />
-        <SvgTop />
-      </View>
-      <View style={styles.container}>
-        <Text style={styles.titulo}>Registrate</Text>
-        <Text style={styles.subTitle}>
-          Ingresa tus datos para crear una cuenta
-        </Text>
-        <TextInput placeholder="Correo electrónico" style={styles.textInput} />
-        <TextInput
-          placeholder="Número de teléfono"
-          style={styles.textInput}
-          secureTextEntry={true}
-        />
-        <TextInput
-          placeholder="Contraseña"
-          style={styles.textInput}
-          secureTextEntry={true}
-        />
-        <TextInput
-          placeholder="Nombre"
-          style={styles.textInput}
-          secureTextEntry={true}
-        />
-        <TextInput
-          placeholder="Apellidos"
-          style={styles.textInput}
-          secureTextEntry={true}
-        />
-        <ButtonGradient title="Registrarse" route="Login" />
-        <StatusBar style="auto" />
-      </View>
-    </View>
-  );
 }
 
 const styles = StyleSheet.create({
@@ -123,7 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
     color: "#34434D",
     fontWeight: "bold",
-    marginTop: 20,
+    marginTop: 50,
   },
   subTitle: {
     fontSize: 20,
@@ -145,10 +184,9 @@ const styles = StyleSheet.create({
   },
   button: {},
   logo: {
-    position: "absolute",
+    position: "relative",
     width: 200,
     height: 200,
     top: 100,
-    zIndex: 1,
   },
 });
