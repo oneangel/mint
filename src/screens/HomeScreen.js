@@ -5,25 +5,25 @@ import GeneralBalance from "../components/GeneralBalance";
 import { Ionicons } from "@expo/vector-icons";
 import { useQuery } from "react-query";
 import { useGetTE, useGetTI, useGetLT } from "../hooks/transaction.hooks";
+import { Skeleton } from "native-base";
 
 const HomeScreen = () => {
-
   const {
     data: totalExpense,
     isLoading: isLoadingTotalExpense,
-    isError: isErrorTotalExpense
+    isError: isErrorTotalExpense,
   } = useQuery("totalExpense", useGetTE);
 
   const {
     data: totalIncome,
     isLoading: isLoadingTotalIncome,
-    isError: isErrorTotalIncome
+    isError: isErrorTotalIncome,
   } = useQuery("totalIncome", useGetTI);
 
   const {
     data: lastTransactions,
     isLoading: isLoadingLT,
-    isError: isErrorLT
+    isError: isErrorLT,
   } = useQuery("lastTransactions", useGetLT);
 
   return (
@@ -31,13 +31,24 @@ const HomeScreen = () => {
       <View style={styles.lowerContainer}>
         <Text style={styles.h3}>Servicios</Text>
 
-        <View style={{ flexDirection: "row", justifyContent: 'start', marginLeft: 20, marginTop: 20, }}>
-          <View style={styles.waterContainer}><Ionicons name="water-sharp" size={20} color="#000" /><Text>Agua</Text></View>
-          <View style={styles.energyContainer}><Ionicons name="flash-sharp" size={20} color="#000" /><Text>Agua</Text></View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "start",
+            marginLeft: 20,
+            marginTop: 20,
+          }}
+        >
+          <View style={styles.waterContainer}>
+            <Ionicons name="water-sharp" size={20} color="#000" />
+            <Text>Agua</Text>
+          </View>
+          <View style={styles.energyContainer}>
+            <Ionicons name="flash-sharp" size={20} color="#000" />
+            <Text>Agua</Text>
+          </View>
         </View>
-        {!isLoadingLT && (
-          <LastestTrans data={lastTransactions.data} />
-        )}
+        {!isLoadingLT && <LastestTrans data={lastTransactions.data} />}
       </View>
       <View style={styles.upperContainer}>
         <Image
@@ -50,10 +61,22 @@ const HomeScreen = () => {
           style={styles.headerImage}
           resizeMode="contain"
         />
-        <Text style={styles.h1}>Hola, Lalito!</Text>
-        <Text style={styles.h2}>Aqui esta tu balance general.</Text>
+        <Skeleton.Text
+          lines={2}
+          px="4"
+          isLoaded={false}
+          size="5"
+          style={{ marginTop: 90 }}
+        >
+          <Text style={styles.h1}>Hola, Lalito!</Text>
+          <Text style={styles.h2}>Aqui esta tu balance general.</Text>
+        </Skeleton.Text>
+
         {!isLoadingTotalExpense && !isLoadingTotalIncome && (
-          <GeneralBalance expenses={totalExpense.data.expenseTotal} incomes={totalIncome.data.incomeTotal} />
+          <GeneralBalance
+            expenses={totalExpense.data.expenseTotal}
+            incomes={totalIncome.data.incomeTotal}
+          />
         )}
       </View>
     </View>
@@ -136,8 +159,8 @@ const styles = StyleSheet.create({
   waterContainer: {
     width: 60,
     height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#B8D3ED",
     borderWidth: 1,
     borderColor: "#7797B7",
@@ -147,8 +170,8 @@ const styles = StyleSheet.create({
   energyContainer: {
     width: 60,
     height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#FBE0B8",
     borderWidth: 1,
     borderColor: "#E3B775",

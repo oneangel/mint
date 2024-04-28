@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  TextInput,
   Dimensions,
   Pressable,
   Image,
@@ -191,7 +190,9 @@ export default function LoginScreen() {
               route="Main"
             />
             <Pressable onPress={() => navigation.navigate("Register")}>
-              <Text style={styles.forgotPassword}>¿No tienes una cuenta? Registrate</Text>
+              <Text style={styles.forgotPassword}>
+                ¿No tienes una cuenta? Registrate
+              </Text>
             </Pressable>
             <StatusBar style="auto" />
           </View>
