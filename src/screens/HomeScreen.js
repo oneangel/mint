@@ -64,7 +64,7 @@ const HomeScreen = () => {
         <Skeleton.Text
           lines={2}
           px="4"
-          isLoaded={false}
+          isLoaded={!isLoadingTotalExpense}
           size="5"
           style={{ marginTop: 90 }}
         >
