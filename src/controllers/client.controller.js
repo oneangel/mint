@@ -59,7 +59,7 @@ export const deleteClient = async (req, res) => {
 //Update an existing client
 export const updateClient = async (req, res) => {
 	const { code } = req.params;
-	const { username, meter } = req.body;
+	const { meter, phone, firstname, lastname } = req.body;
 
 	try {
 		const existingClient = await Client.findOne({ username: code });
@@ -73,8 +73,9 @@ export const updateClient = async (req, res) => {
 			return res.status(404).send("Meter not found.");
 		}
 
-		existingClient.username = username;
-		existingClient.meter = meter;
+		existingClient.phone = phone;
+		existingClient.firstname = firstname;
+		existingClient.lastname = lastname;
 
 
 		const updatedClient = await existingClient.save();
