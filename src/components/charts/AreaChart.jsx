@@ -7,9 +7,8 @@ const AreaChart = ({ currentData, lastData }) => {
   useEffect(() => {
     const chartDom = chartRef.current;
     const myChart = echarts.init(chartDom);
-
     const option = {
-      color: ["#80FFA5", "#00DDFF", "#37A2FF", "#FF0087", "#FFBF00"],
+      color: ["#80FFA5", "#FFFF00", "#37A2FF", "#FF0087", "#FFBF00"], // Cambiar el segundo color a amarillo
       title: {
         text: "Balance semanal",
       },
@@ -28,13 +27,9 @@ const AreaChart = ({ currentData, lastData }) => {
       toolbox: {
         feature: {
           saveAsImage: {},
-          dataView: {
-            readOnly: false,
-            title: "Balances",
-            lang: ["DataView", "Cerrar", "Actualizar"],
-            buttonColor: "#0D9488",
+          magicType: {
+            type: ["line", "bar"],
           },
-          magicType: { type: ["line", "bar"] },
         },
       },
       grid: {
@@ -100,11 +95,11 @@ const AreaChart = ({ currentData, lastData }) => {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
               {
                 offset: 0,
-                color: "rgb(255, 250, 0)",
+                color: "rgb(255, 255, 0)", // Cambiar el color inicial a amarillo
               },
               {
                 offset: 1,
-                color: "rgb(255, 252, 77)",
+                color: "rgb(255, 255, 77)", // Cambiar el color final a un amarillo más claro
               },
             ]),
           },
@@ -115,7 +110,6 @@ const AreaChart = ({ currentData, lastData }) => {
         },
       ],
     };
-
     option && myChart.setOption(option);
 
     // Limpiar el gráfico al desmontar el componente

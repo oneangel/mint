@@ -22,7 +22,7 @@ export const DeleteModal = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent>
         <ModalHeader className="flex flex-col items-center justify-center text-center">
-          <MdDeleteForever className="text-red-600 size-40 dark:text-teal-400" />
+          <MdDeleteForever className="text-red-600 size-40 dark:text-red-600" />
           <p>{title}</p>
         </ModalHeader>
         <ModalBody>

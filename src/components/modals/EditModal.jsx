@@ -54,8 +54,11 @@ export const EditModal = ({
                   defaultValue={
                     selectedItem[`${input.name}`].toString().split("T")[0]
                   }
+                  {...control(`${input.name}`, {
+                    required: "el campo es onligatorio",
+                  })}
                   className="mb-5"
-                  disabled
+                  disabled={input.name === "createdAt" ? true : false}
                 />
               );
             })}

@@ -11,14 +11,11 @@ import {
 import { Skeleton } from "@nextui-org/react";
 import { AreaChart } from "../components/charts/charts";
 import { TotalCard } from "../components/dashboard/TotalCard";
-import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { IoCaretDownCircle, IoCaretUpCircle } from "react-icons/io5";
 
 export const Home = () => {
-  const { logout } = useContext(AuthContext);
-
   const useTransactionsByRange = (weeksAgo) => {
     return useQuery(`transactionsByRange${weeksAgo}`, () =>
       getTransactionsByRange(weeksAgo)
@@ -102,26 +99,12 @@ export const Home = () => {
                 isLoaded={!isLoadingTotalIncome}
                 className="p-1 rounded-3xl"
               >
-                {!isLoadingTotalIncome && (
-                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-[#2C2F42] dark:border-zinc-800">
-                    <CardHeader className="flex gap-4">
-                      <IoCaretUpCircle
-                        Circle
-                        className="text-teal-600 dark:text-teal-500 size-10"
-                      />
-                      <div className="flex flex-col">
-                        <p className="text-md">Total de ingresos</p>
-                        <p className="text-small text-default-500">
-                          24 de marzo
-                        </p>
-                      </div>
-                    </CardHeader>
-                    <CardBody>
-                      <p className="mb-4 text-4xl font-semibold">
-                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
-                      </p>
-                    </CardBody>
-                  </Card>
+                {!isLoadingTotalIncome && totalIncomeData && (
+                  <TotalCard
+                    title="Total de ingresos"
+                    total={totalIncomeData?.data?.incomeTotal}
+                    type="income"
+                  />
                 )}
               </Skeleton>
 
@@ -130,23 +113,12 @@ export const Home = () => {
                 isLoaded={!isLoadingTotalExpense}
                 className="p-1 rounded-3xl"
               >
-                {!isLoadingTotalExpense && (
-                  <Card className="flex flex-col items-center bg-white shadow w-80 h-30 md:w-100 rounded-3xl border-1 dark:bg-[#2C2F42] dark:border-zinc-800">
-                    <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
-                      <div className="flex flex-col">
-                        <p className="text-md">Total de cargos</p>
-                        <p className="text-small text-default-500">
-                          24 de marzo
-                        </p>
-                      </div>
-                    </CardHeader>
-                    <CardBody>
-                      <p className="mb-4 text-4xl font-semibold">
-                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
-                      </p>
-                    </CardBody>
-                  </Card>
+                {!isLoadingTotalExpense && totalExpenseData && (
+                  <TotalCard
+                    title="Total de gastos"
+                    total={totalExpenseData?.data?.expenseTotal}
+                    type="expense"
+                  />
                 )}
               </Skeleton>
             </div>

@@ -4,7 +4,6 @@ import "echarts-liquidfill";
 
 function LiquidFillChart({ litros }) {
   useEffect(() => {
-    console.log(litros);
     // Inicializar el gráfico
     const chart = echarts.init(document.getElementById("liquidfill-chart"));
 

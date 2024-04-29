@@ -29,8 +29,8 @@ export const Login = () => {
   state of login and finally it sets a token and a username
   in the localstorage */
   const loginMutation = useMutation(useLogin, {
-    onSuccess: () => {
-      auth.login();
+    onSuccess: (data) => {
+      auth.login(data.data.token, data.data.username);
       setShowLoading(false);
       navigate("/home");
     },
@@ -49,7 +49,6 @@ export const Login = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     loginMutation.mutate(data);
   };
 

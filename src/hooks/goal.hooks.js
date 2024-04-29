@@ -7,7 +7,12 @@ export const useGetGoalsList = async () => {
     const res = await goalService.getGoals(username, token);
     return res;
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 };
 
@@ -22,7 +27,12 @@ export const useAddGoal = async (goal) => {
     const res = await goalService.addGoal(finalGoal, token);
     return res;
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 }
 
@@ -32,7 +42,12 @@ export const useDeleteGoal = async (id) => {
     const res = await goalService.deleteGoal(id, token);
     return res;
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 }
 
@@ -42,19 +57,26 @@ export const useUpdateGoal = async (id) => {
     const res = await goalService.updateGoal(id.selectedItemId, id.data, token);
     return res;
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 }
 
 export const useAddAmountGoal = async (data) => {
   try {
     const token = localStorage.getItem("token");
-    console.log('Aquiii');
-    console.log(data);
-    console.log(data.selectedItemId);
     const res = await goalService.addAmountGoal(data.selectedItemId, data.amount, token);
     return res;
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 }

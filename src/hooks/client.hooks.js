@@ -5,7 +5,6 @@ export const getClient = async () => {
 		const username = localStorage.getItem("username");
 		const token = localStorage.getItem("token");
 		const res = await clientService.getClient(username, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -15,6 +14,23 @@ export const getClient = async () => {
 export const useVerifyToken = async () => {
 	try {
 		const res = await clientService.verifyToken(localStorage.getItem("token"));
+		return res;
+	} catch (error) {
+		if (error.response && error.response.status === 401) {
+			console.log(error);
+			console.log(localStorage.getItem("token"));
+			throw new Error("Token expired or Invalid");
+		} else {
+			console.log(error);
+			console.log('Peponcio');
+			throw new Error("Something went wrong");
+		}
+	}
+}
+
+export const useVerifyUsername = async () => {
+	try {
+		const res = await clientService.verifyUsername(localStorage.getItem("username"));
 		return res;
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
@@ -35,7 +51,14 @@ export const useUpdateClient = async (data) => {
 		const res1 = await clientService.updateClient(user, data, token);
 		return res1;
 	} catch (error) {
-		console.log(error);
+		if (error.response && error.response.status === 401) {
+			console.log(error);
+			console.log(localStorage.getItem("token"));
+			throw new Error("Token expired or Invalid");
+		} else {
+			console.log(error);
+			throw new Error("Something went wrong");
+		}
 	}
 }
 
@@ -45,6 +68,13 @@ export const useUpdateAvatar = async (data) => {
 		const res = await clientService.updateAvatar(data.username, data.avatar, token);
 		return res;
 	} catch (error) {
-		console.log(error);
+		if (error.response && error.response.status === 401) {
+			console.log(error);
+			console.log(localStorage.getItem("token"));
+			throw new Error("Token expired or Invalid");
+		} else {
+			console.log(error);
+			throw new Error("Something went wrong");
+		}
 	}
 }

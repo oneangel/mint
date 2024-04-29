@@ -15,7 +15,11 @@ import { TableCustomW } from "../components/dashboard/TableCustomW";
 import { DeleteModal, AddModal, EditModal } from "../components/modals/modals";
 import { RiHandCoinFill } from "react-icons/ri";
 import { PiPiggyBankFill } from "react-icons/pi";
-import { goalSchema, addGoalSchema } from "../schemas/schemas";
+import {
+  goalSchema,
+  addGoalSchema,
+  updateGoalSchema,
+} from "../schemas/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Navigate } from "react-router-dom";
 
@@ -26,6 +30,13 @@ export const Wallet = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: "onTouched", resolver: zodResolver(goalSchema) });
+
+  const {
+    register: update,
+    reset: resetUp,
+    handleSubmit: handleUpdate,
+    formState: { errors: errorUp, isValid: isValidUp },
+  } = useForm({ mode: "onTouched", resolver: zodResolver(updateGoalSchema) });
 
   const {
     register: control,
@@ -141,12 +152,13 @@ export const Wallet = () => {
   });
 
   const updateGoalMutation = useMutation(goalHooks.useUpdateGoal, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       reset();
       toast.dismiss();
       toast.success("Meta actualizada correctamente");
       queryClient.refetchQueries("balance");
       queryClient.refetchQueries("goals");
+      setSelectedGoal(data.data);
     },
     onError: () => {
       reset();
@@ -295,14 +307,17 @@ export const Wallet = () => {
               {/* Modal de actualizacion */}
               <EditModal
                 isOpen={isOpenU}
-                onClose={onCloseU}
+                onClose={() => {
+                  resetUp();
+                  onCloseU();
+                }}
                 data={inputs2}
-                control={register}
-                isValid={!isValid}
+                control={update}
+                isValid={!isValidUp}
                 selectedItem={selectedGoal}
                 title="Actualizar meta"
-                errors={errors}
-                onSubmit={handleSubmit(onUpdate)}
+                errors={errorUp}
+                onSubmit={handleUpdate(onUpdate)}
               />
 
               {/* Modal de eliminación */}

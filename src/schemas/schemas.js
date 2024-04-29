@@ -83,7 +83,8 @@ export const transactionSchema = z.object({
       message: "El número debe ser un entero o un número entero negativo"
     })
     .refine(value => Number(value) != 0, { message: "El valor no puede ser igual a cero" }),
-  createdAt: z.string().min(1, { message: "Debes completar el campo" })
+  createdAt: z.string()
+    .refine(value => value !== "", { message: "La fecha de creación no puede ser igual a cierto valor" })
 });
 
 //Definir el schema del registro
@@ -111,9 +112,7 @@ export const goalSchema = z.object({
     }),
   amountGoal: z
     .string()
-    .refine(value => /^-?\d+$/.test(value), {
-      message: "El número debe ser un entero o un número entero negativo"
-    })
+    .refine(value => Number(value) > 0, { message: "El valor debe ser mayor que cero" })
     .refine(value => Number(value) != 0, { message: "El valor no puede ser igual a cero" }),
   finalDate: z.string().min(1, { message: "Debes completar el campo" })
 });
@@ -131,6 +130,7 @@ export const updateGoalSchema = z.object({
       message: "El número debe ser un entero o un número entero negativo"
     })
     .refine(value => Number(value) != 0, { message: "El valor no puede ser igual a cero" }),
+  finalDate: z.string().refine(value => value !== "", { message: "La fecha de creación no puede ser igual a cierto valor" })
 });
 
 export const addGoalSchema = z.object({

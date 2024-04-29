@@ -161,6 +161,7 @@ export const Transfer = () => {
         queryClient.refetchQueries("totalIncome");
         queryClient.refetchQueries("totalExpense");
         queryClient.refetchQueries("incomeList");
+        queryClient.refetchQueries("expenseList");
       },
 
       onError: () => {
@@ -187,6 +188,7 @@ export const Transfer = () => {
         queryClient.refetchQueries("totalIncome");
         queryClient.refetchQueries("totalExpense");
         queryClient.refetchQueries("incomeList");
+        queryClient.refetchQueries("expenseList");
         toast.dismiss();
         toast.success("Transaccion eliminada con exito");
       },
@@ -215,6 +217,7 @@ export const Transfer = () => {
         queryClient.refetchQueries("totalIncome");
         queryClient.refetchQueries("totalExpense");
         queryClient.refetchQueries("incomeList");
+        queryClient.refetchQueries("expenseList");
         toast.dismiss();
         toast.success("Transaccion eliminada para siempre con exito");
       },
@@ -243,6 +246,7 @@ export const Transfer = () => {
         queryClient.refetchQueries("totalIncome");
         queryClient.refetchQueries("totalExpense");
         queryClient.refetchQueries("incomeList");
+        queryClient.refetchQueries("expenseList");
         toast.dismiss();
         toast.success("Transaccion recuperada con exito");
       },
@@ -271,6 +275,7 @@ export const Transfer = () => {
         queryClient.refetchQueries("totalIncome");
         queryClient.refetchQueries("totalExpense");
         queryClient.refetchQueries("incomeList");
+        queryClient.refetchQueries("expenseList");
         toast.dismiss();
         toast.success("Transaccion actualizada con exito");
       },
@@ -286,8 +291,9 @@ export const Transfer = () => {
     }
   );
 
-  const onUpdate = (id, transaction) => {
-    updateTransactionMutation.mutate({ id, transaction });
+  const onUpdate = (transaction) => {
+    onCloseU();
+    updateTransactionMutation.mutate({ id: selectedItemId, transaction });
   };
 
   useEffect(() => {
@@ -504,16 +510,19 @@ export const Transfer = () => {
                   </ButtonGroup>
                 </CardHeader>
                 <CardBody>
-                  {!isLoadingIncomeList && incomeListData && (
-                    <LargeAreaChart
-                      data={
-                        transactionType
-                          ? incomeListData.data
-                          : expenseListData.data
-                      }
-                      type={transactionType ? "income" : "expense"}
-                    />
-                  )}
+                  {!isLoadingIncomeList &&
+                    incomeListData &&
+                    !isLoadingExpenseList &&
+                    expenseListData && (
+                      <LargeAreaChart
+                        data={
+                          transactionType
+                            ? incomeListData.data
+                            : expenseListData.data
+                        }
+                        type={transactionType ? "income" : "expense"}
+                      />
+                    )}
                 </CardBody>
               </Card>
             </Skeleton>

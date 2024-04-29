@@ -14,7 +14,12 @@ export const useAddTransaction = async (transaction) => {
 		const res = await transactionService.addTransaction(username, finalTransaction, token);
 		return res;
 	} catch (error) {
-		console.log(error);
+		if (error.response && error.response.status === 401) {
+			throw new Error("Token expired or Invalid");
+		} else {
+			console.log(error);
+			throw new Error("Something went wrong");
+		}
 	}
 }
 
@@ -24,7 +29,12 @@ export const useDeleteTransaction = async (id) => {
 		const res = await transactionService.deleteTransaction(id, token);
 		return res;
 	} catch (error) {
-		console.log(error);
+		if (error.response && error.response.status === 401) {
+			throw new Error("Token expired or Invalid");
+		} else {
+			console.log(error);
+			throw new Error("Something went wrong");
+		}
 	}
 }
 

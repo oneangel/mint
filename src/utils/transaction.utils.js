@@ -14,7 +14,5 @@ export const getTransactionsByRange = async (weeksAgo) => {
         weeklyTotal[dayOfWeek] += transaction.totalAmount;
     });
 
-    console.log(weeklyTotal);
-
     return weeklyTotal;
 };

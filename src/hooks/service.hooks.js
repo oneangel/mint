@@ -17,14 +17,20 @@ export const useMonthMeasure = async () => {
         startDate,
         endDate
       }, token);
-      console.log(res);
       return res;
     }
     else {
       return "";
     }
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      console.log(error);
+      console.log(localStorage.getItem("token"));
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 };
 
@@ -38,14 +44,20 @@ export const useMonthMeasureT = async () => {
         startDate,
         endDate
       }, token);
-      console.log(res);
       return res;
     }
     else {
       return "";
     }
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      console.log(error);
+      console.log(localStorage.getItem("token"));
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 };
 
@@ -80,14 +92,20 @@ export const useGetTariffWCost = async () => {
         startDate,
         endDate,
       }, token);
-      console.log(res);
       return res;
     } else {
       return "";
     }
 
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      console.log(error);
+      console.log(localStorage.getItem("token"));
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 }
 
@@ -100,10 +118,15 @@ export const useGetServiceList = async (type) => {
       endDate,
       type
     }, token);
-    console.log('Servicios');
-    console.log(res);
     return res;
   } catch (error) {
-    console.log(error);
+    if (error.response && error.response.status === 401) {
+      console.log(error);
+      console.log(localStorage.getItem("token"));
+      throw new Error("Token expired or Invalid");
+    } else {
+      console.log(error);
+      throw new Error("Something went wrong");
+    }
   }
 };

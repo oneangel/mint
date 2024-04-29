@@ -6,7 +6,7 @@ const LargeAreaChart = ({ data, type }) => {
 
   useEffect(() => {
     if (data.length === 1) {
-      if (data._id != null) {
+      if (data[0]._id != null && data[0]._id !== undefined) {
         let fecha = new Date(data[0]._id);
         // Obtener un día antes
         let unDiaAntes = new Date(fecha);
@@ -15,11 +15,14 @@ const LargeAreaChart = ({ data, type }) => {
         let unDiaDespues = new Date(fecha);
         unDiaDespues.setDate(fecha.getDate() + 1);
 
-        console.log(unDiaAntes.toISOString().slice(0, 10));
-
-        data.unshift(unDiaAntes.toISOString().slice(0, 10));
-        data.push(unDiaDespues.toISOString().slice(0, 10));
-        console.log(data);
+        data.unshift({
+          _id: unDiaAntes.toISOString().slice(0, 10),
+          total: 0,
+        });
+        data.push({
+          _id: unDiaDespues.toISOString().slice(0, 10),
+          total: 0,
+        });
       } else {
         let fecha = new Date(data[0].createdAt);
         // Obtener un día antes
@@ -29,8 +32,6 @@ const LargeAreaChart = ({ data, type }) => {
         let unDiaDespues = new Date(fecha);
         unDiaDespues.setDate(fecha.getDate() + 1);
 
-        console.log(unDiaAntes.toISOString().slice(0, 10));
-
         data.unshift({
           createdAt: unDiaAntes.toISOString().slice(0, 10),
           measurement: 0,
@@ -39,7 +40,6 @@ const LargeAreaChart = ({ data, type }) => {
           createdAt: unDiaDespues.toISOString().slice(0, 10),
           measurement: 0,
         });
-        console.log(data);
       }
     }
 
@@ -125,7 +125,7 @@ const LargeAreaChart = ({ data, type }) => {
             type === "income" || type === "expense"
               ? data.map((item) => [
                   new Date(item._id).toISOString().slice(0, 10),
-                  item.total,
+                  Math.abs(item.total),
                 ])
               : data.map((item) => [
                   new Date(item.createdAt).toISOString().slice(0, 10),

@@ -14,6 +14,10 @@ export function verifyToken(token) {
 	return axios.get(`${URL_API}/verify-token`, { headers: { Authorization: token } })
 }
 
+export function verifyUsername(username) {
+	return axios.get(`${URL_API}/verify-username/${username}`)
+}
+
 export function updateClient(client, data, token) {
 	console.log(data);
 	return axios.put(`${URL_API}/update/client/${client}`, data, { headers: { Authorization: token } })

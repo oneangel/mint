@@ -59,7 +59,6 @@ export const Register = () => {
     onSuccess: () => {
       setShowLoading(false);
       toast.success("Registro exitoso y redireccionando al login");
-      setTimeout(navigate("/login"), 5000);
     },
     onError: (error) => {
       toast.dismiss();

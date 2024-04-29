@@ -177,7 +177,7 @@ export const NavigationBar = () => {
       {isMenuOpen && (
         <div className="py-2 space-y-1 border-t md:hidden">
           {navLinks.map((link, index) => (
-            <Link to={link.path}>
+            <Link to={link.path} key={index}>
               <div
                 className={`flex items-center rounded-lg hover:bg-sky-100 dark:hover:bg-sky-600 hover:scale-110 transition ${
                   location.pathname === link.path

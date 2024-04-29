@@ -12,14 +12,8 @@ import {
   CardFooter,
   Divider,
 } from "@nextui-org/react";
-import {
-  Button,
-  Input,
-} from "@nextui-org/react";
-import {
-  IoCall,
-  IoPerson,
-} from "react-icons/io5";
+import { Button, Input } from "@nextui-org/react";
+import { IoCall, IoPerson } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
 import { updateAvatar } from "../services/client.service";
 import { MdEmail } from "react-icons/md";
@@ -64,10 +58,12 @@ export const EditProfile = () => {
       setEditAble(true);
     },
 
-    onError: () => {
+    onError: (error) => {
       toast.dismiss();
-      toast.error("¡Hubo un error en la operacion!");
       setEditAble(false);
+      console.log("Aqui el status");
+      console.log(error.message);
+      toast.error("¡Hubo un error en la operacion!");
     },
 
     onMutate: () => {
