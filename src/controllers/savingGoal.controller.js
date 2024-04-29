@@ -75,6 +75,10 @@ export const updateSavingGoals = async (req, res) => {
       return res.status(404).send("savingGoals not found");
     }
 
+    if (amountGoal > existingsavingGoals.amountGoal) {
+      existingsavingGoals.state = true;
+    }
+
     existingsavingGoals.description = description;
     existingsavingGoals.finalDate = finalDate;
     existingsavingGoals.amountGoal = amountGoal;
