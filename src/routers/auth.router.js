@@ -80,4 +80,7 @@ router.put('/update/imageProfile/:code', authMiddleware, ClientController.update
 //Verify token
 router.get('/verify-token', authMiddleware, (req, res) => { res.json({ message: 'Acceso permitido' }) })
 
+//Verify username
+router.get('/verify-username/:code', ClientController.getUsername);
+
 export default router;

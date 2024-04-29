@@ -174,3 +174,19 @@ export const updateImage = async (req, res) => {
 		res.status(500).send("User cannot be updated");
 	}
 };
+
+export const getUsername = async (req, res) => {
+	const { code } = req.params;
+	try {
+		const existingClient = await Client.findOne({ username: code });
+
+		if (!existingClient) {
+			return res.status(404).send("User not found");
+		}
+		const username = existingClient.username;
+
+		return res.json({ message: "Acceso permitido", username })
+	} catch (error) {
+		res.status(500).send(error);
+	}
+}
