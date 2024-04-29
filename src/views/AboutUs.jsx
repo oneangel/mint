@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "../components/dashboard/Header";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
-import marin from '../assets/img/ricardo.png'
+import images from '../const/persons'
 
 export const AboutUs = () => {
   return (
@@ -19,26 +19,31 @@ export const AboutUs = () => {
         </div>
       </section>
       <section className="flex h-screen">
-        <div className="bg-green-400 h-[500px] w-full mx-20 overflow-x-scroll flex flex-wrap">
-          <Card isFooterBlurred radius="lg" className="border-none">
-            <Image
-              alt="marin"
-              className="object-cover"
-              src={marin}
-            />
-            <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-              <p className="text-tiny text-white/80">Available soon.</p>
-              <Button
-                className="text-white text-tiny bg-black/20"
-                variant="flat"
-                color="default"
-                radius="lg"
-                size="sm"
-              >
-                Notify me
-              </Button>
-            </CardFooter>
-          </Card>
+        <div className="h-[400px] w-[80%] mx-auto overflow-x-auto flex">
+          {/* Mapea sobre el array de imágenes para renderizar cada tarjeta */}
+          {images.map((image, index) => (
+            <div key={index} className="flex-shrink-0 mr-4">
+              <Card isFooterBlurred radius="lg" className="h-full border-none">
+                <Image
+                  alt={image.name}
+                  className="object-cover h-[400px] w-[200px]"
+                  src={image.imageUrl}
+                />
+                <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%-_8px)] shadow-small ml-1 z-10">
+                  <p className="text-tiny text-white/80">{image.name}</p>
+                  <Button
+                    className="text-white text-tiny bg-black/20"
+                    variant="flat"
+                    color="default"
+                    radius="lg"
+                    size="sm"
+                  >
+                    {image.role}
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          ))}
         </div>
       </section>
     </div>
