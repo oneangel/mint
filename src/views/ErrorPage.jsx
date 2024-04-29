@@ -5,17 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 export const ErrorPage = () => {
   const navigate = useNavigate();
-  
+
   const handleHome = () => {
     navigate("/");
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div className="flex flex-col items-center justify-center h-screen">
       <div>
         <img src={Cartera} alt="" className="mb-12" />
       </div>
-      <h1 className="text-center text-7xl font-medium text-default-700 mb-8">
+      <h1 className="mb-8 font-medium text-center text-7xl text-default-700">
         PAGE NOT FOUND
       </h1>
       <p className="text-xl text-pretty">Solo hemos encontrado moscas...</p>
@@ -23,7 +23,7 @@ export const ErrorPage = () => {
       <Button
         size="lg"
         onClick={handleHome}
-        className="bg-gradient-to-r from-cyan-700 to-cyan-500 text-white shadow-lg text-2xl px-16 mt-8"
+        className="px-16 mt-8 text-2xl text-white shadow-lg bg-gradient-to-r from-cyan-700 to-cyan-500"
       >
         Home
       </Button>

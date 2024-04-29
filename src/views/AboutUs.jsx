@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "../components/dashboard/Header";
 import { Card, CardFooter, Image, Button } from "@nextui-org/react";
-import images from '../const/persons'
+import images from "../const/persons";
 
 export const AboutUs = () => {
   return (
@@ -12,13 +12,18 @@ export const AboutUs = () => {
           <h1 className="font-semibold text-center text-7xl">
             La mejor manera de controlar tus ganancias
           </h1>
-          <p className="text-xl text-center">
+          <p className="mt-4 text-xl text-center">
             Mint te ayuda a controlar tus finanzas de una manera agil y sencilla
             para mantener una salud financiera.
           </p>
         </div>
       </section>
-      <section className="flex h-screen">
+      <section className="flex flex-col h-screen">
+        <div className="w-[80%] py-20 mx-auto">
+          <h1 className="text-5xl font-bold">Nuestro</h1>
+          <h2 className="mt-3 text-3xl">Equipo de trabajo</h2>
+        </div>
+
         <div className="h-[400px] w-[80%] mx-auto overflow-x-auto flex">
           {/* Mapea sobre el array de imágenes para renderizar cada tarjeta */}
           {images.map((image, index) => (

@@ -15,23 +15,12 @@ import {
 import {
   Button,
   Input,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Tooltip,
 } from "@nextui-org/react";
 import {
-  IoCalendarClear,
   IoCall,
-  IoLockClosed,
   IoPerson,
-  IoMail,
 } from "react-icons/io5";
 import { FaUserEdit } from "react-icons/fa";
-import { BsPencilSquare } from "react-icons/bs";
-import { GoEye, GoEyeClosed } from "react-icons/go";
 import { updateAvatar } from "../services/client.service";
 import { MdEmail } from "react-icons/md";
 import { FaUser, FaCheckCircle, FaTachometerAlt } from "react-icons/fa";
@@ -124,23 +113,23 @@ export const EditProfile = () => {
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-[#1A1A24]">
       <NavigationBar />
       <div className="mt-20 md:mt-32">
-        <h1 className="hidden pl-20 text-4xl font-semibold md:flex text-sky-700 dark:text-white mb-10">
+        <h1 className="hidden pl-20 mb-10 text-4xl font-semibold md:flex text-sky-700 dark:text-white">
           Perfil
         </h1>
 
         <div className="grid flex-wrap grid-cols-1 gap-10 mx-4 xl:grid-cols-3 md:mx-20">
-          <div className="flex flex-col items-center pt-10 pb-10 lg:col-span-1 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+          <div className="flex flex-col items-center pt-10 pb-10 bg-white border-2 shadow-sm lg:col-span-1 rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
             <Card
               isFooterBlurred
               className="w-[300px] h-[300px] col-span-12 sm:col-span-7 mb-5"
             >
               {!isLoading && (
-                <CardHeader className="absolute z-10 top-1 flex-row items-start items-center">
-                  <h4 className="text-white/90 font-medium text-xl">
+                <CardHeader className="absolute z-10 flex-row items-center top-1">
+                  <h4 className="text-xl font-medium text-white/90">
                     {data.data.username}
                   </h4>
                   {data.data.verify ? (
-                    <RiVerifiedBadgeFill className="text-white text-2xl" />
+                    <RiVerifiedBadgeFill className="text-2xl text-white" />
                   ) : (
                     <></>
                   )}
@@ -150,12 +139,12 @@ export const EditProfile = () => {
                 <Image
                   removeWrapper
                   alt="Relaxing app background"
-                  className="z-0 w-full h-full object-cover"
+                  className="z-0 object-cover w-full h-full"
                   src={selectedImageUrl ? selectedImageUrl : data.data.avatar}
                 />
               )}
-              <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
-                <div className="flex flex-grow gap-2 items-center">
+              <CardFooter className="absolute bottom-0 z-10 bg-black/40 border-t-1 border-default-600 dark:border-default-100">
+                <div className="flex items-center flex-grow gap-2">
                   <div className="flex flex-col">
                     <p className="text-tiny text-white/60">
                       Seleccionar una imagen en formato JPG y PNG para evitar
@@ -204,7 +193,7 @@ export const EditProfile = () => {
                   readOnly
                   className="w-[350px] mt-2"
                   startContent={
-                    <MdEmail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    <MdEmail className="flex-shrink-0 text-2xl pointer-events-none text-default-400" />
                   }
                 />
                 <Input
@@ -214,7 +203,7 @@ export const EditProfile = () => {
                   readOnly
                   className="w-[350px] mt-2"
                   startContent={
-                    <FaUser className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                    <FaUser className="flex-shrink-0 text-2xl pointer-events-none text-default-400" />
                   }
                 />
               </>
@@ -223,9 +212,9 @@ export const EditProfile = () => {
 
           {!isLoading && (
             <div className="min-h-[400px] w-full lg:col-span-2 flex">
-              <div className="p-6 bg-white w-full border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+              <div className="w-full p-6 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
                 <div className="flex justify-between">
-                  <h1 className="pl-5 text-2xl font-semibold md:flex text-sky-700 dark:text-white mb-10">
+                  <h1 className="pl-5 mb-10 text-2xl font-semibold md:flex text-sky-700 dark:text-white">
                     Detalles del perfil
                   </h1>
                   <div>
