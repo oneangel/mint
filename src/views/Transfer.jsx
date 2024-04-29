@@ -413,7 +413,7 @@ export const Transfer = () => {
                   <EditModal
                     isOpen={isOpenU}
                     onClose={() => {
-                      reset();
+                      resetUp();
                       onCloseU();
                     }}
                     title="Editar Transaccion"
