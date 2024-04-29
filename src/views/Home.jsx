@@ -13,6 +13,8 @@ import { AreaChart } from "../components/charts/charts";
 import { TotalCard } from "../components/dashboard/TotalCard";
 import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
+import { IoCaretDownCircle, IoCaretUpCircle } from "react-icons/io5";
 
 export const Home = () => {
   const { logout } = useContext(AuthContext);
@@ -116,7 +118,7 @@ export const Home = () => {
                     </CardHeader>
                     <CardBody>
                       <p className="mb-4 text-4xl font-semibold">
-                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
+                        {/* ${totalIncomeData.data.incomeTotal.toFixed(2)} */}
                       </p>
                     </CardBody>
                   </Card>
@@ -141,7 +143,7 @@ export const Home = () => {
                     </CardHeader>
                     <CardBody>
                       <p className="mb-4 text-4xl font-semibold">
-                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
+                        {/* ${totalExpenseData.data.expenseTotal.toFixed(2)} */}
                       </p>
                     </CardBody>
                   </Card>
