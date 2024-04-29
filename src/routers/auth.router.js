@@ -30,7 +30,7 @@ router.get('/verify/user/:token', ClientController.verifyAccount);
 router.post('/register/transaction/:code', authMiddleware, TransactionController.registerTransaction);
 router.put('/delete/transaction/:code', TransactionController.deleteTransaction);
 router.delete('/deleteF/transaction/:code', authMiddleware, TransactionController.deleteTransactionF);
-router.put('/recover/transaction/:code', authMiddleware, TransactionController.recoverTransaction);
+router.put('/recover/transaction/:code', TransactionController.recoverTransaction);
 router.put('/update/transaction/:code', authMiddleware, TransactionController.updateTransaction);
 router.get('/get/transaction/:code', authMiddleware, TransactionController.getTransaction);
 router.get('/get/user/transactions/:code', authMiddleware, TransactionController.getUserTransactionsList);
