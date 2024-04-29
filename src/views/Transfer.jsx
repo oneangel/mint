@@ -29,7 +29,7 @@ import { columns, inputs } from "./data";
 import { IoAddCircle, IoPieChart } from "react-icons/io5";
 import { GiSwapBag } from "react-icons/gi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { transactionSchema, updateGoalSchema } from "../schemas/schemas";
+import { transactionSchema, updateTransactionSchema } from "../schemas/schemas";
 
 export const Transfer = () => {
   const {
@@ -44,7 +44,10 @@ export const Transfer = () => {
     reset: resetUp,
     handleSubmit: handleUpdate,
     formState: { errors: errorsUp, isValid: isValidUp },
-  } = useForm({ mode: "onTouched", resolver: zodResolver(updateGoalSchema) });
+  } = useForm({
+    mode: "onTouched",
+    resolver: zodResolver(updateTransactionSchema),
+  });
 
   const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useState(1);

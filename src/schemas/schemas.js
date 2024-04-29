@@ -101,6 +101,7 @@ export const updateTransactionSchema = z.object({
     .refine(value => Number(value) != 0, { message: "El valor no puede ser igual a cero" }),
 });
 
+
 //Definir el schema del registro
 export const goalSchema = z.object({
   description: z

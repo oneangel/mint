@@ -55,7 +55,7 @@ export const EditModal = ({
                     selectedItem[`${input.name}`].toString().split("T")[0]
                   }
                   className="mb-5"
-                  readOnly
+                  disabled
                 />
               );
             })}
