@@ -178,9 +178,9 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <Skeleton className="rounded-3xl" isLoaded={serial}>
-                    <div className="flex w-full">
-                      <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
+                  <Skeleton className="p-2 rounded-3xl" isLoaded={serial}>
+                    <div className="grid w-full grid-cols-5 gap-4 justify-items-center">
+                      <div className="items-center lg:col-span-2 col-span-5 w-[500px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
                         <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                           <span>
                             <IoWater className="size-8" />
@@ -210,7 +210,7 @@ export const Services = () => {
 
                           <div className="w-1/2 ">
                             <p className="text-xl text-center">Gastos</p>
-                            <div className="flex items-center justify-center h-20 mx-4 mt-2 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
+                            <div className="flex items-center justify-center h-20 mx-4 mt-2 mb-4 bg-red-50 border-1 dark:bg-red-950 dark:border-red-800 rounded-3xl">
                               {!isLoadingTariffW && !isErrorTariffW && (
                                 <p className="text-2xl font-bold text-red-700 dark:text-white">
                                   $
@@ -223,7 +223,7 @@ export const Services = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
+                      <div className="items-center lg:col-span-3 col-span-5 w-[500px] md:w-full bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
                         <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
                           <IoCalendar />
                           <span>Seguimiento mensual</span>
@@ -247,9 +247,9 @@ export const Services = () => {
                     </div>
                   }
                 >
-                  <Skeleton className="rounded-3xl" isLoaded={serial}>
-                    <div className="flex w-full">
-                      <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
+                  <Skeleton className="p-2 rounded-3xl" isLoaded={serial}>
+                    <div className="grid w-full grid-cols-5 gap-4 justify-items-center">
+                      <div className="items-center lg:col-span-2 col-span-5 w-[500px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
                         <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
                           <span>
                             <IoFlash className="size-8" />
@@ -315,7 +315,7 @@ export const Services = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
+                      <div className="items-center lg:col-span-3 col-span-5 w-[500px] md:w-full bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
                         <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
                           <IoCalendar />
                           <span>Seguimiento mensual</span>

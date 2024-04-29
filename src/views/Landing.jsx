@@ -64,7 +64,7 @@ export const Landing = () => {
       <div className="h-screen overflow-auto overflow-x-hidden bg-white dark:bg-[#1A1A24] max-w-screen">
         {/* Inicio */}
         <section className="w-full">
-          <div className="grid h-full gap-2 mx-auto space-x-5 md:grid-cols-2">
+          <div className="grid h-full gap-2 p-10 mx-auto space-x-5 md:grid-cols-2">
             <div className="p-10 my-auto md:px-20 lg:col-span-1 md:col-span-2">
               <div className="flex flex-wrap items-center p-2 rounded-full bg-default-200 w-80">
                 <Chip
@@ -131,7 +131,7 @@ export const Landing = () => {
             <div className="items-center hidden justify-cemter lg:col-span-1 lg:block">
               <div className="flex items-center justify-center h-[800px]">
                   <img src={bg2} alt="Mint" className="" />
-              </div>
+                  </div>
             </div>
           </div>
         </section>

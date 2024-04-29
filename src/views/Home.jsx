@@ -133,7 +133,7 @@ export const Home = () => {
                     </CardHeader>
                     <CardBody>
                       <p className="mb-4 text-4xl font-semibold">
-                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
+                        {/* ${totalIncomeData.data.incomeTotal.toFixed(2)} */}
                       </p>
                     </CardBody>
                   </Card>
@@ -158,7 +158,7 @@ export const Home = () => {
                     </CardHeader>
                     <CardBody>
                       <p className="mb-4 text-4xl font-semibold">
-                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
+                        {/* ${totalExpenseData.data.expenseTotal.toFixed(2)} */}
                       </p>
                     </CardBody>
                   </Card>
