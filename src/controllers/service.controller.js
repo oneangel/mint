@@ -156,23 +156,16 @@ export const getTarrifWaterCost = async (req, res) => {
         },
       ]);
 
-      if (totalMeasure.length === 0) {
-        return res.status(404).send("TotalMeasure not found");
-      }
-
       const total = totalMeasure.length > 0 ? totalMeasure[0].totalMeasure : 0;
       const cubicMeters = totalMeasure[0].totalMeasure / 1000;
 
-      if (cubicMeters >= 1) {
-        const tariff = await TariffW.findOne({
-          range_from: { $lte: cubicMeters },
-          range_to: { $gte: cubicMeters }
-        });
-        const totalPay = cubicMeters * tariff.percentage;
+      if (cubicMeters > 0) {
+        const t1 = cubicMeters * 19.73;
+        const s = t1 * 0.7;
+        const a = t1 * 0.20;
+        const totalPay = t1 + s + a;
 
         res.json({ totalPay, measure: total });
-      } else if (cubicMeters >= 0 && cubicMeters < 1) {
-        res.json({ totalPay: 0, measure: total });
       } else {
         res.json({ totalPay: 0, measure: 0 });
       }
