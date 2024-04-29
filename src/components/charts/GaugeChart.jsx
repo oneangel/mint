@@ -1,7 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import * as echarts from "echarts";
 
-const GaugeChart = ({ kw, basic, middle, excedent }) => {
+const GaugeChart = ({
+  kw,
+  basic,
+  middle,
+  excedent,
+  t1,
+  t2,
+  t3,
+  name,
+  c1,
+  c2,
+  c3,
+}) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -21,12 +33,12 @@ const GaugeChart = ({ kw, basic, middle, excedent }) => {
             lineStyle: {
               width: 6,
               color: [
-                [0, "#0D9488"], // Primer grado
-                [0.3333, "#0D9488"], // Primer grado
-                [0.3333, "#FDDD60"], // Segundo grado
-                [0.6666, "#FDDD60"], // Segundo grado
-                [0.6666, "#B91C1C"], // Tercer grado
-                [1, "#B91C1C"], // Tercer grado
+                [0, `${c1}`], // Primer grado
+                [0.3333, `${c1}`], // Primer grado
+                [0.3333, `${c2}`], // Segundo grado
+                [0.6666, `${c2}`], // Segundo grado
+                [0.6666, `${c3}`], // Tercer grado
+                [1, `${c3}`], // Tercer grado
               ],
             },
           },
@@ -60,11 +72,11 @@ const GaugeChart = ({ kw, basic, middle, excedent }) => {
             rotate: "tangential",
             formatter: function (value) {
               if (value <= basic) {
-                return "Basica";
+                return `${t1}`;
               } else if (value > basic && value < middle + basic) {
-                return "Intermedia";
+                return `${t2}`;
               } else if (value > basic + middle) {
-                return "Excesiva";
+                return `${t3}`;
               }
               return "";
             },
@@ -85,7 +97,7 @@ const GaugeChart = ({ kw, basic, middle, excedent }) => {
           data: [
             {
               value: kw ? kw : 0,
-              name: "Kw",
+              name: `${name}`,
             },
           ],
         },

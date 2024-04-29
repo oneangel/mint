@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
-import { Link } from "react-router-dom";
 import GaugeChart from "../components/charts/GaugeChart";
 import { IoFlash, IoWater, IoAddCircle, IoCalendar } from "react-icons/io5";
 import LiquidFillChart from "../components/charts/LiquidFillChart";
@@ -21,6 +20,7 @@ import {
   useMonthMeasure,
   useGetTariffCost,
   useGetTariffWCost,
+  useMonthMeasureT,
 } from "../hooks/service.hooks";
 import { useQuery, useMutation } from "react-query";
 import { useGetTariffs } from "../hooks/tariff.hooks";
@@ -30,7 +30,7 @@ import { useLinkMeter } from "../hooks/meter.hooks";
 import toast, { Toaster } from "react-hot-toast";
 import LargeAreaChart from "../components/charts/LargeAreaChart";
 import { useQueryClient } from "react-query";
-import { TbDropletHalf2 } from "react-icons/tb";
+import { CiTempHigh } from "react-icons/ci";
 
 export const Services = () => {
   const [selectedOption, setSelectedOption] = useState("water");
@@ -50,38 +50,74 @@ export const Services = () => {
     data: measureData,
     isLoading: isLoadingMeasure,
     isError: isErrorMeasure,
-  } = useQuery("measure", useMonthMeasure);
+  } = useQuery("measure", useMonthMeasure, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
+
+  const {
+    data: measureTData,
+    isLoading: isLoadingMeasureT,
+    isError: isErrorMeasureT,
+  } = useQuery("measureT", useMonthMeasureT, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: tariffData,
     isLoading: isLoadingTariff,
     isError: isErrorTariff,
-  } = useQuery("tariff", useGetTariffCost);
+  } = useQuery("tariff", useGetTariffCost, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: tariffWData,
     isLoading: isLoadingTariffW,
     isError: isErrorTariffW,
-  } = useQuery("tariffw", useGetTariffWCost);
+  } = useQuery("tariffw", useGetTariffWCost, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: tariffsData,
     isLoading: isLoadingTariffs,
     isError: isErrorTariffs,
-  } = useQuery("tariffs", useGetTariffs);
+  } = useQuery("tariffs", useGetTariffs, {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: waterServicesData,
     isLoading: isLoadingWaterServices,
     isError: isErrorWaterServices,
-  } = useQuery("waterServicesList", () => useGetServiceList("water"));
+  } = useQuery("waterServicesList", () => useGetServiceList("water"), {
+    refetchInterval: 30000,
+    refetchIntervalInBackground: true,
+    refetchOnWindowFocus: true,
+  });
 
   const {
     data: ElectricityServicesData,
     isLoading: isLoadingElectricityServices,
     isError: isErrorElectricityServices,
-  } = useQuery("ElectricityServicesList", () =>
-    useGetServiceList("electricity")
+  } = useQuery(
+    "ElectricityServicesList",
+    () => useGetServiceList("electricity"),
+    {
+      refetchInterval: 30000,
+      refetchIntervalInBackground: true,
+      refetchOnWindowFocus: true,
+    }
   );
 
   const linkMeterMutation = useMutation(useLinkMeter, {
@@ -169,6 +205,7 @@ export const Services = () => {
                 onSelectionChange={setSelectedOption}
                 selectedKey={selectedOption}
               >
+                {/* Agua */}
                 <Tab
                   key="water"
                   title={
@@ -202,7 +239,10 @@ export const Services = () => {
                               Total de litros:{" "}
                               {!isLoadingTariffW && (
                                 <span className="ml-2 text-default-400">
-                                  {tariffWData.data.measure}L
+                                  {tariffData
+                                    ? tariffWData.data.measure.toFixed(2)
+                                    : 0}
+                                  L
                                 </span>
                               )}
                             </p>
@@ -238,6 +278,7 @@ export const Services = () => {
                     </div>
                   </Skeleton>
                 </Tab>
+                {/* Electricidad */}
                 <Tab
                   value="electricity"
                   title={
@@ -281,6 +322,13 @@ export const Services = () => {
                                     100
                                   : 0
                               }
+                              t1="Basica"
+                              t2="Intermedia"
+                              t3="Excedente"
+                              name="Kw"
+                              c1="#0D9488"
+                              c2="#FDDD60"
+                              c3="#B91C1C"
                             />
                           </div>
                         )}
@@ -292,7 +340,7 @@ export const Services = () => {
                               {!isLoadingMeasure && (
                                 <span className="ml-2 text-default-400">
                                   {measureData
-                                    ? measureData.data.totalMeasure
+                                    ? measureData.data.totalMeasure.toFixed(2)
                                     : 0}{" "}
                                   kw
                                 </span>
@@ -316,6 +364,76 @@ export const Services = () => {
                         </div>
                       </div>
                       <div className="items-center lg:col-span-3 col-span-5 w-[500px] md:w-full bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
+                        <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
+                          <IoCalendar />
+                          <span>Seguimiento mensual</span>
+                        </div>
+                        {!isLoadingElectricityServices && (
+                          <LargeAreaChart
+                            data={ElectricityServicesData.data}
+                            type="services"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  </Skeleton>
+                </Tab>
+                {/* Temperatura */}
+                <Tab
+                  value="temperature"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <CiTempHigh />
+                      <span>Temperatura</span>
+                    </div>
+                  }
+                >
+                  <Skeleton className="rounded-3xl" isLoaded={serial}>
+                    <div className="flex w-full">
+                      <div className="items-center h-[700px] md:w-[600px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800">
+                        <p className="flex items-center pt-10 pl-10 text-2xl font-bold text-default-700">
+                          <span>
+                            <CiTempHigh className="size-8" />
+                          </span>
+                          Temperatura
+                        </p>
+                        {!isLoadingMeasureT && (
+                          <div className="flex items-center justify-center">
+                            <GaugeChart
+                              kw={
+                                measureTData ? measureTData.data.total / 100 : 0
+                              }
+                              basic={14 / 100}
+                              middle={20 / 100}
+                              excedent={11.4 / 0.3333 / 100}
+                              t1="Frio"
+                              t2="Agradable"
+                              t3="Caliente"
+                              name="C°"
+                              c1="#75D2EE"
+                              c2="#0D9488"
+                              c3="#B91C1C"
+                            />
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-2 mx-10">
+                          <div className="col-span-2 md:col-span-1">
+                            <p className="mt-10 text-xl font-semibold">
+                              Total de C°:{" "}
+                              {!isLoadingMeasureT && (
+                                <span className="ml-2 text-default-400">
+                                  {measureData
+                                    ? measureTData.data.total.toFixed(2)
+                                    : 0}{" "}
+                                  C°
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="items-center h-[700px] md:w-[800px] md:h-[640px] bg-white shadow-md rounded-3xl border-1 border-default-200 dark:bg-[#2C2F42] dark:border-zinc-800 ml-4">
                         <div className="flex items-center mt-10 ml-5 space-x-2 text-xl font-semibold">
                           <IoCalendar />
                           <span>Seguimiento mensual</span>

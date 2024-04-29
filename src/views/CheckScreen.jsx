@@ -9,9 +9,15 @@ export const CheckScreen = () => {
         <span className="text-white bg-teal-600 rounded-full text-7xl">
           <IoCheckmark />
         </span>
-        <h1 className="mt-10 text-3xl font-semibold text-neutral-800">¡Verificación completa!</h1>
-        <h2 className="mt-10 text-xl font-light">Su cuenta ha sido verificada correctamente.</h2>
-        <h2 className="mt-3 mb-10 text-xl font-light">Ahora puede cerrar esta ventana y volver a Mint.</h2>
+        <h1 className="mt-10 text-3xl font-semibold text-neutral-800">
+          ¡Verificación completa!
+        </h1>
+        <h2 className="mt-10 text-xl font-light">
+          Su cuenta ha sido verificada correctamente.
+        </h2>
+        <h2 className="mt-3 mb-10 text-xl font-light">
+          Ahora puede cerrar esta ventana y volver a Mint.
+        </h2>
         <Button className="px-10 text-white bg-sky-700">Confirmar</Button>
       </div>
     </div>

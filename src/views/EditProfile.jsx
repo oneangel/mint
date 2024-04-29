@@ -1,236 +1,376 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useQuery, useQueryClient } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
-import { getClient, useUpdateAvatar } from "../hooks/client.hooks";
-import { Button, Input, Tooltip } from "@nextui-org/react";
-import { IoMail, IoSpeedometer, IoLockClosed, IoPerson } from "react-icons/io5";
-import { BsPencilSquare } from "react-icons/bs";
-import { useForm } from "react-hook-form";
-import { useUpdateClient } from "../hooks/client.hooks";
+import { getClient } from "../hooks/client.hooks";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "react-query";
+import {
+  Card,
+  CardHeader,
+  Image,
+  CardFooter,
+  Divider,
+} from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Tooltip,
+} from "@nextui-org/react";
+import {
+  IoCalendarClear,
+  IoCall,
+  IoLockClosed,
+  IoPerson,
+  IoMail,
+} from "react-icons/io5";
+import { FaUserEdit } from "react-icons/fa";
+import { BsPencilSquare } from "react-icons/bs";
+import { GoEye, GoEyeClosed } from "react-icons/go";
+import { updateAvatar } from "../services/client.service";
+import { MdEmail } from "react-icons/md";
+import { FaUser, FaCheckCircle, FaTachometerAlt } from "react-icons/fa";
+import { FaCamera } from "react-icons/fa";
+import { IoIosSend } from "react-icons/io";
 import toast, { Toaster } from "react-hot-toast";
+import { RiVerifiedBadgeFill } from "react-icons/ri";
+import { MdCancel } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import { updateSchema } from "../schemas/schemas";
+import { clientHooks } from "../hooks/hooks";
+import { useEffect } from "react";
 
 export const EditProfile = () => {
-  const queryClient = useQueryClient();
   const {
-    register,
-    handleSubmit,
+    register: update,
+    handleSubmit: handleUpdate,
     formState: { errors, isValid },
-    setValue,
-  } = useForm({ mode: "onTouched" });
+  } = useForm({ mode: "onTouched", resolver: zodResolver(updateSchema) });
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const queryClient = useQueryClient();
   const [selectedImageUrl, setSelectedImageUrl] = useState(null);
-  const [disabledUsername, setDisabledUsername] = useState(true);
-  const [disabledPass, setDisabledPass] = useState(true);
-  const [disabledMeter, setDisabledMeter] = useState(true);
+  const [editAble, setEditAble] = useState(true);
   const fileInputRef = useRef(null);
+
   const auth = useContext(AuthContext);
   const { data, isLoading, isError } = useQuery("client", getClient);
+  const [selectedClient, setSelectClient] = useState({});
 
-  useEffect(() => {
-    if (data && data.data) {
-      setValue("username", data.data.username);
-      setValue("password", data.data.password);
-      setValue("email", data.data.email);
-      setValue("meter", data.data.meter);
-      setValue("avatar", data.data.avatar);
-    }
-  }, [data, setValue]);
+  const [imagen, setImagen] = useState(null);
 
-  const handleButtonClick = () => {
+  const handleOpenImageSelector = () => {
     fileInputRef.current.click();
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
-      setSelectedFile(file);
-      setSelectedImageUrl(URL.createObjectURL(file));
-      setValue("avatar", file); // Crear URL de la imagen seleccionada
-    } else {
-      setSelectedFile(null, file);
-      setSelectedImageUrl(null); // Restablecer la URL de la imagen seleccionada
-      alert("Por favor, seleccione un archivo .jpg o .png");
-    }
-  };
-
-  const updateClientMutation = useMutation(useUpdateClient, {
+  const updateClientMutation = useMutation(clientHooks.useUpdateClient, {
     onSuccess: () => {
+      queryClient.refetchQueries("client");
       toast.dismiss();
-      toast.success("Perfil actualizado con exito");
+      toast.success("Perfil actualizada con exito");
+      setEditAble(true);
     },
 
     onError: () => {
       toast.dismiss();
       toast.error("¡Hubo un error en la operacion!");
+      setEditAble(false);
     },
 
     onMutate: () => {
       toast.loading("Actualizando perfil...");
-    },
-  });
-
-  const updateAvatar = useMutation(useUpdateAvatar, {
-    onSuccess: () => {
-      queryClient.refetchQueries("client");
-      toast.dismiss();
-    },
-
-    onError: () => {
-      toast.dismiss();
-      toast.error("¡Hubo un error en la operacion!");
+      setEditAble(true);
     },
   });
 
   const onUpdate = (data) => {
-    try {
-      updateClientMutation.mutateAsync(data).then(() => {
-        updateAvatar.mutate(data);
-      });
-    } catch (error) {
-      console.log(error);
+    updateClientMutation.mutate(data);
+  };
+
+  const handleSeleccionarImagen = (event) => {
+    const file = event.target.files[0];
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+      setImagen(file);
+      setSelectedImageUrl(URL.createObjectURL(file));
+    } else {
+      setImagen(null);
+      setSelectedImageUrl(null);
+      toast.error("Seleccione una imagen con formato png o jpeg");
     }
   };
 
-  const labels = [
-    {
-      label: "Nombre de usuario",
-      icon: <IoPerson className="mb-1 text-sky-700" />,
-      disabled: disabledUsername,
-      name: "username",
-    },
+  const handleSubmit = () => {
+    console.log("pepe");
+    if (imagen) {
+      console.log("Hola");
+      const codeUsuario = "Begec";
+      updateAvatar(codeUsuario, imagen);
+    } else {
+      console.log("Primero selecciona una imagen.");
+    }
+  };
 
-    {
-      label: "Contraseña",
-      icon: <IoLockClosed className="mb-1 text-sky-700" />,
-      disabled: disabledPass,
-      name: "password",
-    },
-
-    {
-      label: "Email",
-      icon: <IoMail className="mb-1 text-sky-700" />,
-      disabled: true,
-      name: "email",
-    },
-
-    {
-      label: "Medidor",
-      icon: <IoSpeedometer className="mb-1 text-sky-700" />,
-      disabled: disabledMeter,
-      name: "meter",
-    },
-  ];
+  useEffect(() => {
+    if (!isLoading && !isError) {
+      setSelectClient(data.data);
+    }
+  }, [data, isLoading, isError]);
 
   return (
     <div className="h-screen overflow-y-auto bg-sky-50/50 dark:bg-[#1A1A24]">
       <NavigationBar />
-      <div className="flex flex-col items-center w-full h-full">
-        <div className="mt-40 max-w-[700px]">
-          <div className="flex flex-wrap w-full p-2 bg-white border-2 shadow-sm rounded-3xl dark:bg-[#2C2F42] dark:border-zinc-800">
-            <div className="flex items-center justify-center w-1/4 p-4">
-              <div className="overflow-hidden rounded-full size-24 md:size-36">
-                {selectedImageUrl ? ( // Si hay una imagen seleccionada, mostrarla
-                  <img
-                    src={selectedImageUrl}
-                    alt="Profile"
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  !isLoading && ( // Si no hay imagen seleccionada, mostrar la imagen predeterminada
-                    <img
-                      src={data.data.avatar}
-                      alt="Profile"
-                      className="object-cover w-full h-full"
-                    />
-                  )
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col w-3/4 pt-8 pl-10 dark:bg-[#2C2F42] dark:border-zinc-800">
-              <Input
-                id="file-upload"
-                type="file"
-                accept=".jpg .png"
-                onChange={handleFileChange}
-                className="hidden"
-                ref={fileInputRef}
-              />
-              <Button
-                color="default"
-                variant="ghost"
-                className="w-40 font-semibold md:w-56"
-                onClick={handleButtonClick}
-              >
-                Subir nueva Imagen
-              </Button>
-              <p className="mt-5 text-sm text-default-700">
-                Se recomienda agregar una imagen de 800x800 px o menos se
-                recomienda en formato JPG o PNG.
-              </p>
-            </div>
-          </div>
+      <div className="mt-20 md:mt-32">
+        <h1 className="hidden pl-20 text-4xl font-semibold md:flex text-sky-700 dark:text-white mb-10">
+          Perfil
+        </h1>
 
-          <div className="p-6 mt-10 bg-white border-2 shadow-sm rounded-3xl dark:bg-[#2C2F42] dark:border-zinc-800">
-            <form onSubmit={handleSubmit(onUpdate)}>
-              {labels.map((label, index) => (
-                <div className="flex flex-wrap mb-5" key={index}>
-                  <div className="w-[90%]">
-                    {!isLoading && (
-                      <Input
-                        isDisabled={label.disabled}
-                        startContent={label.icon}
-                        name={label.name}
-                        label={label.label}
-                        type="text"
-                        defaultValue={
-                          label.label === "Nombre de usuario"
-                            ? data.data.username
-                            : label.label === "Email"
-                            ? data.data.email
-                            : label.label == "Contraseña"
-                            ? data.data.password
-                            : data.data.meter
-                        }
-                        {...register(label.name)}
-                        size="md"
-                      />
-                    )}
-                  </div>
-                  <div className="flex items-center justify-end w-[10%]">
-                    {label.label != "Email" && (
-                      <div
-                        onClick={() => {
-                          label.label === "Nombre de usuario"
-                            ? setDisabledUsername(!disabledUsername)
-                            : label.label == "Contraseña"
-                            ? setDisabledPass(!disabledPass)
-                            : setDisabledMeter(!disabledMeter);
-                        }}
-                      >
-                        <Tooltip content="Editar">
-                          <span className="flex items-center justify-center rounded-md size-10 bg-primary">
-                            <BsPencilSquare className="text-white size-6" />
-                          </span>
-                        </Tooltip>
-                      </div>
-                    )}
+        <div className="grid flex-wrap grid-cols-1 gap-10 mx-4 xl:grid-cols-3 md:mx-20">
+          <div className="flex flex-col items-center pt-10 pb-10 lg:col-span-1 bg-white border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+            <Card
+              isFooterBlurred
+              className="w-[300px] h-[300px] col-span-12 sm:col-span-7 mb-5"
+            >
+              {!isLoading && (
+                <CardHeader className="absolute z-10 top-1 flex-row items-start items-center">
+                  <h4 className="text-white/90 font-medium text-xl">
+                    {data.data.username}
+                  </h4>
+                  {data.data.verify ? (
+                    <RiVerifiedBadgeFill className="text-white text-2xl" />
+                  ) : (
+                    <></>
+                  )}
+                </CardHeader>
+              )}
+              {!isLoading && (
+                <Image
+                  removeWrapper
+                  alt="Relaxing app background"
+                  className="z-0 w-full h-full object-cover"
+                  src={selectedImageUrl ? selectedImageUrl : data.data.avatar}
+                />
+              )}
+              <CardFooter className="absolute bg-black/40 bottom-0 z-10 border-t-1 border-default-600 dark:border-default-100">
+                <div className="flex flex-grow gap-2 items-center">
+                  <div className="flex flex-col">
+                    <p className="text-tiny text-white/60">
+                      Seleccionar una imagen en formato JPG y PNG para evitar
+                      errores.
+                    </p>
                   </div>
                 </div>
-              ))}
-            </form>
+                <input
+                  type="file"
+                  onChange={handleSeleccionarImagen}
+                  ref={fileInputRef}
+                  className="hidden"
+                />
+                <Button
+                  isIconOnly
+                  className="mr-2"
+                  color="success"
+                  variant="faded"
+                  aria-label="select_image"
+                  size="md"
+                  onClick={() => handleOpenImageSelector()}
+                >
+                  <FaCamera />
+                </Button>
+                <Button
+                  isIconOnly
+                  color="success"
+                  variant="faded"
+                  aria-label=""
+                  size="md"
+                  isDisabled={imagen ? false : true}
+                  onClick={() => handleSubmit()}
+                >
+                  <IoIosSend />
+                </Button>
+              </CardFooter>
+            </Card>
+
+            <Divider className="w-80" />
+            {!isLoading && (
+              <>
+                <Input
+                  type="email"
+                  label="Email"
+                  placeholder={data.data.email}
+                  readOnly
+                  className="w-[350px] mt-2"
+                  startContent={
+                    <MdEmail className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                />
+                <Input
+                  type="text"
+                  label="Nombre completo"
+                  placeholder={`${data.data.firstname} ${data.data.lastname}`}
+                  readOnly
+                  className="w-[350px] mt-2"
+                  startContent={
+                    <FaUser className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                  }
+                />
+              </>
+            )}
           </div>
+
+          {!isLoading && (
+            <div className="min-h-[400px] w-full lg:col-span-2 flex">
+              <div className="p-6 bg-white w-full border-2 shadow-sm rounded-3xl dark:bg-zinc-900 dark:border-zinc-800">
+                <div className="flex justify-between">
+                  <h1 className="pl-5 text-2xl font-semibold md:flex text-sky-700 dark:text-white mb-10">
+                    Detalles del perfil
+                  </h1>
+                  <div>
+                    {!editAble && (
+                      <>
+                        <Button
+                          isIconOnly
+                          className="mr-2"
+                          color="danger"
+                          variant="faded"
+                          aria-label="select_image"
+                          size="md"
+                          onClick={() => {
+                            queryClient.refetchQueries("client");
+                            setEditAble(!editAble);
+                          }}
+                        >
+                          <MdCancel className="text-2xl" />
+                        </Button>
+                        <Button
+                          isIconOnly
+                          className="mr-2"
+                          color="success"
+                          variant="faded"
+                          aria-label="select_image"
+                          size="md"
+                          isDisabled={!isValid}
+                          onClick={handleUpdate(onUpdate)}
+                        >
+                          <FaCheckCircle className="text-2xl" />
+                        </Button>
+                      </>
+                    )}
+                    <Button
+                      isIconOnly
+                      className="mr-2"
+                      color="warning"
+                      variant="faded"
+                      aria-label="select_image"
+                      size="md"
+                      onClick={() => setEditAble(!editAble)}
+                    >
+                      <FaUserEdit className="text-2xl" />
+                    </Button>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap mb-5">
+                  <div className="w-[90%]">
+                    <Input
+                      isDisabled={editAble}
+                      startContent={
+                        <FaTachometerAlt className="mb-1 text-sky-700" />
+                      }
+                      label="Meter"
+                      type="number"
+                      {...update("meter", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.meter}
+                      errorMessage={errors.meter?.message || ""}
+                      value={selectedClient.meter || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          meter: e.target.value,
+                        })
+                      }
+                      size="md"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-wrap mb-5">
+                  <div className="w-[90%]">
+                    <Input
+                      isDisabled={editAble}
+                      startContent={<IoCall className="mb-1 text-sky-700" />}
+                      label="Numero de telefono"
+                      type="number"
+                      {...update("phone", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.phone}
+                      errorMessage={errors.phone?.message || ""}
+                      value={selectedClient.phone || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          phone: e.target.value,
+                        })
+                      }
+                      size="md"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-wrap mb-5">
+                  <div className="w-[90%]">
+                    <Input
+                      isDisabled={editAble}
+                      startContent={<IoPerson className="mb-1 text-sky-700" />}
+                      label="Nombre"
+                      type="text"
+                      {...update("firstname", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.firstname}
+                      errorMessage={errors.firstname?.message || ""}
+                      value={selectedClient.firstname || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          firstname: e.target.value,
+                        })
+                      }
+                      size="md"
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-wrap mb-5">
+                  <div className="w-[90%]">
+                    <Input
+                      isDisabled={editAble}
+                      startContent={<IoPerson className="mb-1 text-sky-700" />}
+                      label="Apellido"
+                      type="text"
+                      {...update("lastname", {
+                        required: "El campo es obligatorio",
+                      })}
+                      isInvalid={!!errors.lastname}
+                      errorMessage={errors.lastname?.message || ""}
+                      value={selectedClient.lastname || ""}
+                      onChange={(e) =>
+                        setSelectClient({
+                          ...selectedClient,
+                          lastname: e.target.value,
+                        })
+                      }
+                      size="md"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-        <Button
-          color="default"
-          variant="ghost"
-          className="w-40 mt-4 font-semibold md:w-56 dark:bg-[#2C2F42] dark:border-zinc-800"
-          onClick={handleSubmit(onUpdate)}
-        >
-          Actualizar
-        </Button>
       </div>
       <Toaster />
     </div>

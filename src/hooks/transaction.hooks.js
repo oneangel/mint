@@ -22,7 +22,6 @@ export const useDeleteTransaction = async (id) => {
 	try {
 		const token = localStorage.getItem("token");
 		const res = await transactionService.deleteTransaction(id, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -33,8 +32,6 @@ export const useDeleteFTransaction = async (id) => {
 	try {
 		const token = localStorage.getItem("token");
 		const res = await transactionService.deleteFTransaction(id, token);
-		console.log('Eliminar');
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -66,7 +63,6 @@ export const getTransactionList = async () => {
 		const username = localStorage.getItem("username");
 		const token = localStorage.getItem("token");
 		const res = await transactionService.getTransactionsList(username, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -78,7 +74,6 @@ export const useGetIncomesList = async () => {
 		const username = localStorage.getItem("username");
 		const token = localStorage.getItem("token");
 		const res = await transactionService.getIncomesList(username, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -110,10 +105,11 @@ export const getBalance = async () => {
 export const getTotalExpenseByDate = async () => {
 	try {
 		const username = localStorage.getItem("username");
+		const token = localStorage.getItem("token");
 		const res = await transactionService.getTotalExpenseByDate(username, {
 			startDate: startOfMonth(new Date()),
 			endDate: endOfMonth(new Date()),
-		});
+		}, token);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -123,10 +119,11 @@ export const getTotalExpenseByDate = async () => {
 export const getTotalIncomeByDate = async () => {
 	try {
 		const username = localStorage.getItem("username");
+		const token = localStorage.getItem("token");
 		const res = await transactionService.getTotalIncomeByDate(username, {
 			startDate: startOfMonth(new Date()),
 			endDate: endOfMonth(new Date()),
-		});
+		}, token);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -136,7 +133,8 @@ export const getTotalIncomeByDate = async () => {
 export const getTotalExpense = async () => {
 	try {
 		const username = localStorage.getItem("username");
-		const res = await transactionService.getTotalExpense(username);
+		const token = localStorage.getItem("token");
+		const res = await transactionService.getTotalExpense(username, token);
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -146,7 +144,8 @@ export const getTotalExpense = async () => {
 export const getTotalIncome = async () => {
 	try {
 		const username = localStorage.getItem("username");
-		const res = await transactionService.getTotalIncome(username);
+		const token = localStorage.getItem("token");
+		const res = await transactionService.getTotalIncome(username, token);
 		return res;
 	} catch (error) {
 		console.log(error);

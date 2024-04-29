@@ -15,8 +15,6 @@ export const getClient = async () => {
 export const useVerifyToken = async () => {
 	try {
 		const res = await clientService.verifyToken(localStorage.getItem("token"));
-		console.log('Autenticado');
-		console.log(res);
 		return res;
 	} catch (error) {
 		if (error.response && error.response.status === 401) {
@@ -33,11 +31,8 @@ export const useVerifyToken = async () => {
 export const useUpdateClient = async (data) => {
 	try {
 		const token = localStorage.getItem("token");
-		const res1 = await clientService.updateClient(data.username, data, token);
-		const res2 = await userService.updateUser(data.username, data, token);
-		console.log('Answers');
-		console.log(res1);
-		console.log(res2);
+		const user = localStorage.getItem("username");
+		const res1 = await clientService.updateClient(user, data, token);
 		return res1;
 	} catch (error) {
 		console.log(error);
@@ -48,7 +43,6 @@ export const useUpdateAvatar = async (data) => {
 	try {
 		const token = localStorage.getItem("token");
 		const res = await clientService.updateAvatar(data.username, data.avatar, token);
-		console.log(res);
 		return res;
 	} catch (error) {
 		console.log(error);

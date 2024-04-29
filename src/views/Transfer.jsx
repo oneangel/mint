@@ -3,15 +3,6 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { NavigationBar } from "../components/dashboard/NavigationBar";
 import {
   Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  Pagination,
-  Select,
-  SelectItem,
   Skeleton,
   useDisclosure,
   Card,
@@ -19,125 +10,88 @@ import {
   CardBody,
   ButtonGroup,
 } from "@nextui-org/react";
-import { animals } from "./data";
-import {
-  IoCalendarOutline,
-  IoPieChart,
-  IoAddCircle,
-  IoCaretDownCircle,
-  IoCaretUpCircle,
-} from "react-icons/io5";
 import { TableCustom } from "../components/dashboard/TableCustom";
 import { SearchBar } from "../components/dashboard/SearchBar";
-import {
-  getTransactionList,
-  getTotalExpense,
-  getTotalIncome,
-  useAddTransaction,
-  useDeleteTransaction,
-  useDeleteFTransaction,
-  useUpdateTransaction,
-  useGetIncomesList,
-  useGetExpensesList,
-  useRecoverTransaction,
-} from "../hooks/transaction.hooks"; // Asumiendo que tienes estas funciones en transaction.hooks.js
-
+import { transactionHooks } from "../hooks/hooks";
 import { useForm } from "react-hook-form";
 import toast, { Toaster } from "react-hot-toast";
 import { isWithinInterval } from "date-fns";
 import LargeAreaChart from "../components/charts/LargeAreaChart";
-import { AddModal } from "../components/modals/AddModal";
-import { DeleteModal } from "../components/modals/DeleteModal";
+import {
+  AddModal,
+  DeleteModal,
+  EditModal,
+  RecoverModal,
+} from "../components/modals/modals";
+import { TotalCard } from "../components/dashboard/TotalCard";
+import { SelectCustom } from "../components/dashboard/SelectCustom";
+import { columns, inputs } from "./data";
+import { IoAddCircle, IoPieChart } from "react-icons/io5";
+import { GiSwapBag } from "react-icons/gi";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { transactionSchema, updateTransactionSchema } from "../schemas/schemas";
 
-const columns = [
-  {
-    key: "createdAt",
-    label: "Fecha",
-  },
-  {
-    key: "type",
-    label: "Tipo",
-  },
-  {
-    key: "description",
-    label: "Descripción",
-  },
-  {
-    key: "amount",
-    label: "Cantidad",
-  },
-  {
-    key: "acciones",
-    label: "Acciones",
-  },
-];
-
-const inputs = [
-  {
-    type: "text",
-    label: "Descripción",
-    name: "description",
-  },
-  {
-    type: "number",
-    label: "Cantidad",
-    name: "amount",
-  },
-  {
-    type: "text",
-    label: "Destinatario",
-    name: "destination",
-  },
-  {
-    type: "date",
-    label: "Fecha",
-    name: "createdAt",
-  },
-];
 export const Transfer = () => {
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: "onTouched" });
+  } = useForm({ mode: "onTouched", resolver: zodResolver(transactionSchema) });
+
+  const {
+    register: update,
+    reset: resetUp,
+    handleSubmit: handleUpdate,
+    formState: { errors: errorsUp, isValid: isValidUp },
+  } = useForm({
+    mode: "onTouched",
+    resolver: zodResolver(updateTransactionSchema),
+  });
 
   const queryClient = useQueryClient();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [transactionType, setTransactionType] = useState(true);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+  const itemsPerPage = 4;
+  const [selectedItem, setSelectedItem] = useState({
+    description: "",
+    amount: "",
+    destination: "",
+    createdAt: "",
+  });
 
   const {
     data: transactionListData,
     isLoading: isLoadingTransactionList,
     isError: isErrorTransactionList,
-  } = useQuery("transactionList", getTransactionList);
+  } = useQuery("transactionList", transactionHooks.getTransactionList);
 
   const {
     data: incomeListData,
     isLoading: isLoadingIncomeList,
     isError: isErrorIncomeList,
-  } = useQuery("incomeList", useGetIncomesList);
+  } = useQuery("incomeList", transactionHooks.useGetIncomesList);
 
   const {
     data: expenseListData,
     isLoading: isLoadingExpenseList,
     isError: isErrorExpenseList,
-  } = useQuery("expenseList", useGetExpensesList);
+  } = useQuery("expenseList", transactionHooks.useGetExpensesList);
 
   const {
     data: totalExpenseData,
     isLoading: isLoadingTotalExpense,
     isError: isErrorTotalExpense,
-  } = useQuery("totalExpense", getTotalExpense);
+  } = useQuery("totalExpense", transactionHooks.getTotalExpense);
 
   const {
     data: totalIncomeData,
     isLoading: isLoadingTotalIncome,
     isError: isErrorTotalIncome,
-  } = useQuery("totalIncome", getTotalIncome);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
-  const [transactionType, setTransactionType] = useState(true);
-  const itemsPerPage = 4;
+  } = useQuery("totalIncome", transactionHooks.getTotalIncome);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -181,123 +135,156 @@ export const Transfer = () => {
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenD,
+    onOpen: onOpenD,
+    onClose: onCloseD,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenU,
+    onOpen: onOpenU,
+    onClose: onCloseU,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenR,
+    onOpen: onOpenR,
+    onClose: onCloseR,
+  } = useDisclosure();
 
-  const addTransactionMutation = useMutation(useAddTransaction, {
-    onSuccess: () => {
-      onClose();
-      toast.dismiss();
-      toast.success("Transaccion agregada con exito");
-      queryClient.refetchQueries("transactionList");
-      queryClient.refetchQueries("totalIncome");
-      queryClient.refetchQueries("totalExpense");
-      queryClient.refetchQueries("incomeList");
-    },
+  const addTransactionMutation = useMutation(
+    transactionHooks.useAddTransaction,
+    {
+      onSuccess: () => {
+        toast.dismiss();
+        toast.success("Transaccion agregada con exito");
+        queryClient.refetchQueries("transactionList");
+        queryClient.refetchQueries("totalIncome");
+        queryClient.refetchQueries("totalExpense");
+        queryClient.refetchQueries("incomeList");
+      },
 
-    onError: () => {
-      toast.dismiss();
-      toast.error("Hubo un error en la operacion");
-    },
+      onError: () => {
+        toast.dismiss();
+        toast.error("Hubo un error en la operacion");
+      },
 
-    onMutate: () => {
-      toast.loading("Agregando transaccion...");
-    },
-  });
+      onMutate: () => {
+        toast.loading("Agregando transaccion...");
+      },
+    }
+  );
 
   const onSubmit = (data) => {
+    onClose();
     addTransactionMutation.mutate(data);
   };
 
-  const deleteTransactionMutation = useMutation(useDeleteTransaction, {
-    onSuccess: () => {
-      queryClient.refetchQueries("transactionList");
-      queryClient.refetchQueries("totalIncome");
-      queryClient.refetchQueries("totalExpense");
-      queryClient.refetchQueries("incomeList");
-      toast.dismiss();
-      toast.success("Transaccion eliminada con exito");
-    },
+  const deleteTransactionMutation = useMutation(
+    transactionHooks.useDeleteTransaction,
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries("transactionList");
+        queryClient.refetchQueries("totalIncome");
+        queryClient.refetchQueries("totalExpense");
+        queryClient.refetchQueries("incomeList");
+        toast.dismiss();
+        toast.success("Transaccion eliminada con exito");
+      },
 
-    onError: () => {
-      toast.dismiss();
-      toast.error("¡Hubo un error en la operacion!");
-    },
+      onError: () => {
+        toast.dismiss();
+        toast.error("¡Hubo un error en la operacion!");
+      },
 
-    onMutate: () => {
-      toast.loading("Eliminando transaccion...");
-    },
-  });
+      onMutate: () => {
+        toast.loading("Eliminando transaccion...");
+      },
+    }
+  );
 
   const onDelete = (id) => {
+    onCloseD();
     deleteTransactionMutation.mutate(id);
   };
 
-  const deleteFTransactionMutation = useMutation(useDeleteFTransaction, {
-    onSuccess: () => {
-      queryClient.refetchQueries("transactionList");
-      queryClient.refetchQueries("totalIncome");
-      queryClient.refetchQueries("totalExpense");
-      queryClient.refetchQueries("incomeList");
-      toast.dismiss();
-      toast.success("Transaccion eliminada para siempre con exito");
-    },
+  const deleteFTransactionMutation = useMutation(
+    transactionHooks.useDeleteFTransaction,
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries("transactionList");
+        queryClient.refetchQueries("totalIncome");
+        queryClient.refetchQueries("totalExpense");
+        queryClient.refetchQueries("incomeList");
+        toast.dismiss();
+        toast.success("Transaccion eliminada para siempre con exito");
+      },
 
-    onError: () => {
-      toast.dismiss();
-      toast.error("¡Hubo un error en la operacion!");
-    },
+      onError: () => {
+        toast.dismiss();
+        toast.error("¡Hubo un error en la operacion!");
+      },
 
-    onMutate: () => {
-      toast.loading("Eliminando transaccion...");
-    },
-  });
+      onMutate: () => {
+        toast.loading("Eliminando transaccion...");
+      },
+    }
+  );
 
   const onDeleteF = (id) => {
+    onCloseD();
     deleteFTransactionMutation.mutate(id);
   };
 
-  const recoverTransactionMutation = useMutation(useRecoverTransaction, {
-    onSuccess: () => {
-      queryClient.refetchQueries("transactionList");
-      queryClient.refetchQueries("totalIncome");
-      queryClient.refetchQueries("totalExpense");
-      queryClient.refetchQueries("incomeList");
-      toast.dismiss();
-      toast.success("Transaccion recuperada con exito");
-    },
+  const recoverTransactionMutation = useMutation(
+    transactionHooks.useRecoverTransaction,
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries("transactionList");
+        queryClient.refetchQueries("totalIncome");
+        queryClient.refetchQueries("totalExpense");
+        queryClient.refetchQueries("incomeList");
+        toast.dismiss();
+        toast.success("Transaccion recuperada con exito");
+      },
 
-    onError: () => {
-      toast.dismiss();
-      toast.error("¡Hubo un error en la operacion!");
-    },
+      onError: () => {
+        toast.dismiss();
+        toast.error("¡Hubo un error en la operacion!");
+      },
 
-    onMutate: () => {
-      toast.loading("Recuperando la transaccion...");
-    },
-  });
+      onMutate: () => {
+        toast.loading("Recuperando la transaccion...");
+      },
+    }
+  );
 
   const onRecover = (id) => {
+    onCloseR();
     recoverTransactionMutation.mutate(id);
   };
 
-  const updateTransactionMutation = useMutation(useUpdateTransaction, {
-    onSuccess: () => {
-      queryClient.refetchQueries("transactionList");
-      queryClient.refetchQueries("totalIncome");
-      queryClient.refetchQueries("totalExpense");
-      queryClient.refetchQueries("incomeList");
-      toast.dismiss();
-      toast.success("Transaccion actualizada con exito");
-    },
+  const updateTransactionMutation = useMutation(
+    transactionHooks.useUpdateTransaction,
+    {
+      onSuccess: () => {
+        queryClient.refetchQueries("transactionList");
+        queryClient.refetchQueries("totalIncome");
+        queryClient.refetchQueries("totalExpense");
+        queryClient.refetchQueries("incomeList");
+        toast.dismiss();
+        toast.success("Transaccion actualizada con exito");
+      },
 
-    onError: () => {
-      toast.dismiss();
-      toast.error("¡Hubo un error en la operacion!");
-    },
+      onError: () => {
+        toast.dismiss();
+        toast.error("¡Hubo un error en la operacion!");
+      },
 
-    onMutate: () => {
-      toast.loading("Actualizando transaccion...");
-    },
-  });
+      onMutate: () => {
+        toast.loading("Actualizando transaccion...");
+      },
+    }
+  );
 
   const onUpdate = (id, transaction) => {
     updateTransactionMutation.mutate({ id, transaction });
@@ -326,45 +313,27 @@ export const Transfer = () => {
                   isLoaded={!isLoadingTotalIncome}
                   className="rounded-3xl"
                 >
-                  <Card className="flex flex-col items-center h-40 w-80 border-1 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
-                    <CardHeader className="flex gap-3">
-                      <IoCaretUpCircle className="text-teal-600 size-10 dark:text-teal-400" />
-                      <div className="flex flex-col">
-                        <p className="text-md">Total de Abonos</p>
-                        <p className="text-small text-default-500">
-                          24 de marzo
-                        </p>
-                      </div>
-                    </CardHeader>
-                    <CardBody>
-                      <p className="mb-4 text-4xl font-semibold">
-                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
-                      </p>
-                    </CardBody>
-                  </Card>
+                  {!isLoadingTotalIncome && (
+                    <TotalCard
+                      title="Total de ingresos"
+                      total={totalIncomeData.data.incomeTotal}
+                      type="income"
+                    />
+                  )}
                 </Skeleton>
 
                 {/* Cargos */}
                 <Skeleton
-                  isLoaded={!isLoadingExpenseList}
+                  isLoaded={!isLoadingTotalExpense}
                   className="rounded-3xl"
                 >
-                  <Card className="flex flex-col items-center h-40 border-1 w-80 dark:bg-[#2C2F42] dark:border-zinc-800 rounded-3xl">
-                    <CardHeader className="flex gap-4">
-                      <IoCaretDownCircle className="text-red-500 size-10 dark:text-red-400" />
-                      <div className="flex flex-col">
-                        <p className="text-md">Total de cargos</p>
-                        <p className="text-small text-default-500">
-                          24 de marzo
-                        </p>
-                      </div>
-                    </CardHeader>
-                    <CardBody>
-                      <p className="mb-4 text-4xl font-semibold">
-                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
-                      </p>
-                    </CardBody>
-                  </Card>
+                  {!isLoadingTotalExpense && (
+                    <TotalCard
+                      title="Total de gastos"
+                      total={totalExpenseData.data.expenseTotal}
+                      type="expense"
+                    />
+                  )}
                 </Skeleton>
               </div>
               <div className="grid w-full grid-cols-2 gap-4 mt-10 lg:grid-cols-4">
@@ -373,31 +342,7 @@ export const Transfer = () => {
                     isLoaded={!isLoadingTransactionList}
                     className="max-w-xs rounded-xl"
                   >
-                    <Select
-                      variant="bordered"
-                      startContent={
-                        <IoCalendarOutline className="text-sky-700" />
-                      }
-                      defaultSelectedKeys={["esta-semana"]}
-                      className="max-w-xs text-2xl bg-white text-sky-600 dark:bg-[#2C2F42]"
-                      classNames={{
-                        value: [
-                          "placeholder:text-default-700/50 dark:placeholder:text-white text-xl",
-                        ],
-                      }}
-                    >
-                      {animals.map((animal) => (
-                        <SelectItem
-                          key={animal.value}
-                          value={animal.value}
-                          onClick={() =>
-                            handleFilterByDate(animal.startDate, animal.endDate)
-                          }
-                        >
-                          {animal.label}
-                        </SelectItem>
-                      ))}
-                    </Select>
+                    <SelectCustom handleFilterByDate={handleFilterByDate} />
                   </Skeleton>
                 </div>
 
@@ -430,84 +375,65 @@ export const Transfer = () => {
                     </Button>
                   </Skeleton>
 
-                  {/* <AddModal
+                  <AddModal
                     isOpen={isOpen}
-                    onClose={onClose}
+                    onClose={() => {
+                      reset();
+                      onClose();
+                    }}
                     title="Agregar Transaccion"
                     data={inputs}
                     control={register}
-                  /> */}
-
-                  <DeleteModal
-                    isOpen={isOpen}
-                    onClose={onClose}
-                    title="Estas a punto de eliminar una transaccion"
+                    onSubmit={handleSubmit(onSubmit)}
+                    isValid={!isValid}
+                    errors={errors}
+                    icon={
+                      <GiSwapBag className="text-teal-600 size-40 dark:text-teal-400" />
+                    }
                   />
 
-                  {/* <Modal isOpen={isOpen} onClose={onClose}>
-                    <ModalContent>
-                      <ModalHeader className="flex flex-col gap-1">
-                        Agregar Transacción
-                      </ModalHeader>
-                      <ModalBody>
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                          <Input
-                            type="text"
-                            label="Descripción"
-                            name="description"
-                            className="mb-5"
-                            {...register("description", {
-                              required: "el campo es onligatorio",
-                            })}
-                          />
-                          <Input
-                            type="number"
-                            label="Cantidad"
-                            name="amount"
-                            className="mb-5"
-                            {...register("amount", {
-                              required: "el campo es onligatorio",
-                            })}
-                          />
-                          <Input
-                            type="text"
-                            label="Destinatario"
-                            name="destination"
-                            className="mb-5"
-                            description="*A quien esta dirigido el monto"
-                            {...register("destination", {
-                              required: "el campo es onligatorio",
-                            })}
-                          />
-                          <Input
-                            type="date"
-                            className="mb-5"
-                            {...register("createdAt", {
-                              required: "el campo es onligatorio",
-                            })}
-                          />
-                        </form>
-                      </ModalBody>
-                      <ModalFooter>
-                        <Button
-                          variant="light"
-                          onPress={onClose}
-                          aria-label="Cerrar"
-                        >
-                          Cerrar
-                        </Button>
-                        <Button
-                          color="primary"
-                          onPress={handleSubmit(onSubmit)}
-                          className="text-white bg-sky-700"
-                          aria-label="Agregar Transfer"
-                          isDisabled={!isValid}
-                        >
-                          Agregar
-                        </Button>
-                      </ModalFooter>
-                    </ModalContent>
-                  </Modal> */}
+                  <DeleteModal
+                    onDelete={() => {
+                      selectedItem.status
+                        ? onDelete(selectedItemId)
+                        : onDeleteF(selectedItemId);
+                    }}
+                    isOpen={isOpenD}
+                    onClose={onCloseD}
+                    title={
+                      selectedItem.status
+                        ? "Estas a punto de eliminar una transaccion"
+                        : "Estas a punto de eliminar una transaccion para siempre"
+                    }
+                    subtitle={
+                      selectedItem.status
+                        ? " Esto eliminara tu transaccion, pero podras recuperarla mas tarde"
+                        : " Esto eliminara tu transaccion para siempre"
+                    }
+                    type={selectedItem.status}
+                  />
+
+                  <EditModal
+                    isOpen={isOpenU}
+                    onClose={() => {
+                      resetUp();
+                      onCloseU();
+                    }}
+                    title="Editar Transaccion"
+                    data={inputs}
+                    selectedItem={selectedItem}
+                    control={update}
+                    onSubmit={handleUpdate(onUpdate)}
+                    isValid={!isValidUp}
+                    errors={errorsUp}
+                  />
+
+                  <RecoverModal
+                    isOpen={isOpenR}
+                    onClose={onCloseR}
+                    title="Recuperar transaccion"
+                    onRecover={() => onRecover(selectedItemId)}
+                  />
                 </div>
               </div>
 
@@ -517,40 +443,28 @@ export const Transfer = () => {
                   className="rounded-3xl"
                 >
                   {!isLoadingTransactionList && (
-                    <Card className="dark:bg-[#2C2F42]">
-                      <CardHeader>
-                        <p>Lista de las transacciones</p>
-                      </CardHeader>
-                      <CardBody>
-                        <TableCustom
-                          onDelete={onDelete}
-                          onDeleteF={onDeleteF}
-                          onRecover={onRecover}
-                          onUpdate={onUpdate}
-                          columns={columns}
-                          data={getPaginatedRows(filteredData)}
-                        />
-                      </CardBody>
-                    </Card>
+                    <>
+                      <Card className="bg-transparent border-0">
+                        <CardBody>
+                          <TableCustom
+                            onOpenD={onOpenD}
+                            onOpenU={onOpenU}
+                            onOpenR={onOpenR}
+                            setSelectedItemId={setSelectedItemId}
+                            setSelectedItem={setSelectedItem}
+                            columns={columns}
+                            data={getPaginatedRows(filteredData)}
+                            currentPage={currentPage}
+                            handlePageChange={handlePageChange}
+                            total={Math.ceil(
+                              (filteredData?.length || 0) / itemsPerPage
+                            )}
+                          />
+                        </CardBody>
+                      </Card>
+                    </>
                   )}
                 </Skeleton>
-
-                {!isLoadingTransactionList && (
-                  <Pagination
-                    showControls
-                    className="flex justify-end mt-2"
-                    classNames={{
-                      item: "dark:bg-[#2C2F42]",
-                      next: "dark:bg-[#2C2F42]",
-                      prev: "dark:bg-[#2C2F42]",
-                    }}
-                    total={Math.ceil(
-                      (filteredData?.length || 0) / itemsPerPage
-                    )}
-                    current={currentPage}
-                    onChange={handlePageChange}
-                  />
-                )}
               </div>
             </div>
 

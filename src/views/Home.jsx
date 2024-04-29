@@ -1,27 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useQuery } from "react-query";
+import { transactionHooks, meterHooks } from "../hooks/hooks";
+import { getTransactionsByRange } from "../utils/transaction.utils";
+import toast, { Toaster } from "react-hot-toast";
 import {
   CurrentBalance,
   NavigationBar,
   TransactionHistory,
 } from "../components/dashboard/dashboard-components";
-import { useGetMeter } from "../hooks/meter.hooks";
-import { Skeleton, Card, CardHeader, CardBody } from "@nextui-org/react";
-import { PieChart, AreaChart } from "../components/charts/charts";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
-import {
-  getBalance,
-  getLastTransactions,
-  getTotalExpenseByDate,
-  getTotalIncomeByDate,
-} from "../hooks/transaction.hooks";
-import { getTransactionsByRange } from "../utils/transaction.utils";
-import toast, { Toaster } from "react-hot-toast";
-import { IoCaretDownCircle, IoCaretUpCircle } from "react-icons/io5";
+import { Skeleton } from "@nextui-org/react";
+import { AreaChart } from "../components/charts/charts";
+import { TotalCard } from "../components/dashboard/TotalCard";
+import { AuthContext } from "../context/AuthContext";
+import { Navigate } from "react-router-dom";
 
 export const Home = () => {
-  const [month, setMonth] = useState("");
+  const { logout } = useContext(AuthContext);
 
   const useTransactionsByRange = (weeksAgo) => {
     return useQuery(`transactionsByRange${weeksAgo}`, () =>
@@ -33,7 +27,7 @@ export const Home = () => {
     data: meterData,
     isLoading: isLoadingMeter,
     isError: isErrorMeter,
-  } = useQuery("meter", useGetMeter);
+  } = useQuery("meter", meterHooks.useGetMeter);
 
   const {
     data: currWeekData,
@@ -50,46 +44,37 @@ export const Home = () => {
     data: balanceData,
     isLoading: isLoadingBalance,
     isError: isErrorBalance,
-  } = useQuery("balance", getBalance);
+  } = useQuery("balance", transactionHooks.getBalance);
 
   const {
     data: lastTransactionsData,
     isLoading: isLoadingLastTransactions,
     isError: isErrorLastTransactions,
-  } = useQuery("lastTransactions", getLastTransactions);
+  } = useQuery("lastTransactions", transactionHooks.getLastTransactions);
 
   const {
     data: totalExpenseData,
     isLoading: isLoadingTotalExpense,
     isError: isErrorTotalExpense,
-  } = useQuery("totalExpenses", getTotalExpenseByDate);
+  } = useQuery("totalExpenses", transactionHooks.getTotalExpenseByDate);
 
   const {
     data: totalIncomeData,
     isLoading: isLoadingTotalIncome,
     isError: isErrorTotalIncome,
-  } = useQuery("totalIncomes", getTotalIncomeByDate);
+  } = useQuery("totalIncomes", transactionHooks.getTotalIncomeByDate);
 
-  useEffect(() => {
-    const today = new Date();
-    setMonth(format(today, "MMMM", { locale: es }));
-  }, []);
-
-  useEffect(() => {
-    if (isErrorMeter && localStorage.getItem("serial") === null) {
-      toast.error("No hay un medidor asociado a la cuenta.");
-    }
-  }, [meterData]);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-  };
+  if (
+    (!isLoadingBalance && isErrorBalance) ||
+    (!isLoadingLastTransactions && isErrorLastTransactions) ||
+    (!isLoadingMeter && isErrorMeter) ||
+    (!isLoadingTotalExpense && isErrorTotalExpense) ||
+    (!isLoadingTotalIncome && isErrorTotalIncome) ||
+    (!isLoadingcurr && isErrorcurr) ||
+    (!isLoadinglast && isErrorlast)
+  ) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <div className="h-screen overflow-auto bg-sky-50/50 dark:bg-[#1A1A24]">
@@ -103,8 +88,6 @@ export const Home = () => {
         </div>
 
         <div className="grid grid-cols-1 gap-10 mx-4 mt-8 md:mx-20 lg:grid-cols-3">
-          {/* Gastos generales */}
-
           {/* General Balance */}
           <Skeleton isLoaded={!isLoadingBalance} className="p-1 rounded-3xl">
             {!isLoadingBalance && <CurrentBalance balance={balanceData} />}
@@ -133,7 +116,7 @@ export const Home = () => {
                     </CardHeader>
                     <CardBody>
                       <p className="mb-4 text-4xl font-semibold">
-                        {/* ${totalIncomeData.data.incomeTotal.toFixed(2)} */}
+                        ${totalIncomeData.data.incomeTotal.toFixed(2)}
                       </p>
                     </CardBody>
                   </Card>
@@ -158,7 +141,7 @@ export const Home = () => {
                     </CardHeader>
                     <CardBody>
                       <p className="mb-4 text-4xl font-semibold">
-                        {/* ${totalExpenseData.data.expenseTotal.toFixed(2)} */}
+                        ${totalExpenseData.data.expenseTotal.toFixed(2)}
                       </p>
                     </CardBody>
                   </Card>

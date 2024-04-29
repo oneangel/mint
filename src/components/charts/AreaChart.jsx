@@ -33,36 +33,6 @@ const AreaChart = ({ currentData, lastData }) => {
             title: "Balances",
             lang: ["DataView", "Cerrar", "Actualizar"],
             buttonColor: "#0D9488",
-            /* optionToContent: function (opt) {
-              var axisData = opt.xAxis[0].data;
-              var series = opt.series;
-              var table =
-                '<table style="width:100%;text-align:center"><tbody><tr>' +
-                "<td>Time</td>" +
-                "<td>" +
-                series[0].name +
-                "</td>" +
-                "<td>" +
-                series[1].name +
-                "</td>" +
-                "</tr>";
-              for (var i = 0, l = axisData.length; i < l; i++) {
-                table +=
-                  "<tr>" +
-                  "<td>" +
-                  axisData[i] +
-                  "</td>" +
-                  "<td>" +
-                  series[0].data[i] +
-                  "</td>" +
-                  "<td>" +
-                  series[1].data[i] +
-                  "</td>" +
-                  "</tr>";
-              }
-              table += "</tbody></table>";
-              return table;
-            }, */
           },
           magicType: { type: ["line", "bar"] },
         },

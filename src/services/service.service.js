@@ -6,6 +6,11 @@ export function getMonthMeasure(serial, range, token) {
   return axios.post(`${URL_API}/get/totalMonthMeasure/${serial}`, range, { headers: { Authorization: token } })
 }
 
+export function getMonthTempMeasure(serial, range, token) {
+  return axios.post(`${URL_API}/get/totalTMeasure/${serial}`, range, { headers: { Authorization: token } })
+}
+
+
 export function getTariffCost(serial, data, token) {
   return axios.post(`${URL_API}/get/tariff/cost/${serial}`, data, { headers: { Authorization: token } })
 }

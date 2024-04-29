@@ -8,8 +8,10 @@ import {
   Button,
   Input,
 } from "@nextui-org/react";
+import { GiSwapBag } from "react-icons/gi";
+import { PiPencilCircle } from "react-icons/pi";
 
-export const AddModal = ({
+export const EditModal = ({
   isOpen,
   onClose,
   title,
@@ -17,14 +19,14 @@ export const AddModal = ({
   control,
   onSubmit,
   isValid,
-  icon,
+  selectedItem,
   errors,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalContent>
         <ModalHeader className="flex flex-col items-center justify-center text-center">
-          {icon}
+          <PiPencilCircle className="text-teal-600 size-40 dark:text-teal-400" />
           <p>{title}</p>
         </ModalHeader>
         <ModalBody>
@@ -36,6 +38,7 @@ export const AddModal = ({
                   type={input.type}
                   label={input.label}
                   name={input.name}
+                  defaultValue={selectedItem[`${input.name}`]}
                   className="mb-5"
                   {...control(`${input.name}`, {
                     required: "el campo es onligatorio",
@@ -48,12 +51,11 @@ export const AddModal = ({
                   key={index}
                   type={input.type}
                   name={input.name}
+                  defaultValue={
+                    selectedItem[`${input.name}`].toString().split("T")[0]
+                  }
                   className="mb-5"
-                  {...control(`${input.name}`, {
-                    required: "el campo es onligatorio",
-                  })}
-                  isInvalid={!!errors[input.name]}
-                  errorMessage={errors[input.name]?.message || ""}
+                  disabled
                 />
               );
             })}

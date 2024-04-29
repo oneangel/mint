@@ -5,6 +5,44 @@ const LargeAreaChart = ({ data, type }) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
+    if (data.length === 1) {
+      if (data._id != null) {
+        let fecha = new Date(data[0]._id);
+        // Obtener un día antes
+        let unDiaAntes = new Date(fecha);
+        unDiaAntes.setDate(fecha.getDate() - 1);
+
+        let unDiaDespues = new Date(fecha);
+        unDiaDespues.setDate(fecha.getDate() + 1);
+
+        console.log(unDiaAntes.toISOString().slice(0, 10));
+
+        data.unshift(unDiaAntes.toISOString().slice(0, 10));
+        data.push(unDiaDespues.toISOString().slice(0, 10));
+        console.log(data);
+      } else {
+        let fecha = new Date(data[0].createdAt);
+        // Obtener un día antes
+        let unDiaAntes = new Date(fecha);
+        unDiaAntes.setDate(fecha.getDate() - 1);
+
+        let unDiaDespues = new Date(fecha);
+        unDiaDespues.setDate(fecha.getDate() + 1);
+
+        console.log(unDiaAntes.toISOString().slice(0, 10));
+
+        data.unshift({
+          createdAt: unDiaAntes.toISOString().slice(0, 10),
+          measurement: 0,
+        });
+        data.push({
+          createdAt: unDiaDespues.toISOString().slice(0, 10),
+          measurement: 0,
+        });
+        console.log(data);
+      }
+    }
+
     const chartDom = chartRef.current;
     const myChart = echarts.init(chartDom);
     const option = {
@@ -28,8 +66,10 @@ const LargeAreaChart = ({ data, type }) => {
         boundaryGap: false,
         data:
           type === "income" || type === "expense"
-            ? data.map((item) => item._id)
-            : data.map((item) => item.createdAt),
+            ? data.map((item) => new Date(item._id).toISOString().slice(0, 10))
+            : data.map((item) =>
+                new Date(item.createdAt).toISOString().slice(0, 10)
+              ),
       },
       yAxis: {
         type: "value",
@@ -62,7 +102,7 @@ const LargeAreaChart = ({ data, type }) => {
           sampling: "lttb",
           itemStyle: {
             color: `${
-              type === "income" ? "rgb(13, 148, 136)" : "rgb(208, 0, 0)"
+              type === "income" ? "rgb(128, 255, 165)" : "rgb(208, 0, 0)"
             }`,
           },
           areaStyle: {
@@ -70,7 +110,7 @@ const LargeAreaChart = ({ data, type }) => {
               {
                 offset: 0,
                 color: `${
-                  type === "income" ? "rgb(27, 62, 115)" : "rgb(255, 0, 0)"
+                  type === "income" ? "rgb(128, 255, 165)" : "rgb(255, 0, 0)"
                 }`,
               },
               {
@@ -83,8 +123,14 @@ const LargeAreaChart = ({ data, type }) => {
           },
           data:
             type === "income" || type === "expense"
-              ? data.map((item) => [item._id, item.total])
-              : data.map((item) => [item.createdAt, item.measurement]),
+              ? data.map((item) => [
+                  new Date(item._id).toISOString().slice(0, 10),
+                  item.total,
+                ])
+              : data.map((item) => [
+                  new Date(item.createdAt).toISOString().slice(0, 10),
+                  item.measurement,
+                ]),
         },
       ],
     };
