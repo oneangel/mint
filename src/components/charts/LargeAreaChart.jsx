@@ -3,10 +3,11 @@ import * as echarts from "echarts";
 
 const LargeAreaChart = ({ data, type }) => {
   const chartRef = useRef(null);
-
+  console.log(data);
   useEffect(() => {
     if (data.length === 1) {
-      if (data[0]._id != null && data[0]._id !== undefined) {
+      if (data[0].createdAt == null && data[0].createdAt == undefined) {
+        console.log(data[0]._id);
         let fecha = new Date(data[0]._id);
         // Obtener un día antes
         let unDiaAntes = new Date(fecha);

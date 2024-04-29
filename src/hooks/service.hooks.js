@@ -118,6 +118,8 @@ export const useGetServiceList = async (type) => {
       endDate,
       type
     }, token);
+    console.log("Pepe");
+    console.log(res);
     return res;
   } catch (error) {
     if (error.response && error.response.status === 401) {

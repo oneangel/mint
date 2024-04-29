@@ -128,6 +128,20 @@ export const Services = () => {
     }
   );
 
+  const {
+    data: TemperatureServicesData,
+    isLoading: isLoadingTemperatureServices,
+    isError: isErrorTemperatureServices,
+  } = useQuery(
+    "TemperatureServicesList",
+    () => useGetServiceList("temperature"),
+    {
+      refetchInterval: 30000,
+      refetchIntervalInBackground: true,
+      refetchOnWindowFocus: true,
+    }
+  );
+
   const linkMeterMutation = useMutation(useLinkMeter, {
     onSuccess: () => {
       queryClient.refetchQueries("measure");
@@ -385,7 +399,7 @@ export const Services = () => {
                             {!isLoadingElectricityServices && (
                               <LargeAreaChart
                                 data={ElectricityServicesData.data}
-                                type="services"
+                                type="temperature"
                               />
                             )}
                           </div>
@@ -452,9 +466,9 @@ export const Services = () => {
                               <IoCalendar />
                               <span>Seguimiento mensual</span>
                             </div>
-                            {!isLoadingElectricityServices && (
+                            {!isLoadingTemperatureServices && (
                               <LargeAreaChart
-                                data={ElectricityServicesData.data}
+                                data={TemperatureServicesData.data}
                                 type="services"
                               />
                             )}
